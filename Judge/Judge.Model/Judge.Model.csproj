@@ -46,6 +46,7 @@
     <Compile Include="Entities\Contests\Task.cs" />
     <Compile Include="Entities\Problem.cs" />
     <Compile Include="Entities\Submit.cs" />
+    <Compile Include="Entities\SubmitResult.cs" />
     <Compile Include="Entities\SubmitStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

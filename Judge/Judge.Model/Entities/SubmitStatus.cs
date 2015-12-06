@@ -3,7 +3,6 @@
     public enum SubmitStatus
     {
         None,
-        Pending,
         CompilationError,
         RuntimeError,
         TimeLimitExceeded,
