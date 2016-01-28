@@ -4,6 +4,5 @@
     {
         public long SubmitId { get; set; }
         public SubmitStatus Status { get; set; }
-
     }
 }
