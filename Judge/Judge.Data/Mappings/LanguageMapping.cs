@@ -1,7 +1,7 @@
 ﻿using System.Data.Entity.ModelConfiguration;
 using Judge.Model.Entities;
 
-namespace Judge.Data
+namespace Judge.Data.Mappings
 {
     internal sealed class LanguageMapping : EntityTypeConfiguration<Language>
     {

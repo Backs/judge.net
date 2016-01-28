@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using Judge.Data.Mappings;
 
 namespace Judge.Data
 {
@@ -14,6 +15,7 @@ namespace Judge.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Configurations.Add(new LanguageMapping());
+            modelBuilder.Configurations.Add(new UserMapping());
         }
     }
 }
