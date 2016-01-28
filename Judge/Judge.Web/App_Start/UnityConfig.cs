@@ -1,6 +1,8 @@
 using System;
 using System.Configuration;
+using System.Web;
 using Judge.Application;
+using Microsoft.Owin.Security;
 using Microsoft.Practices.Unity;
 
 namespace Judge.Web
@@ -36,6 +38,8 @@ namespace Judge.Web
             var connectionString = ConfigurationManager.ConnectionStrings["DataBaseConnection"].ConnectionString;
 
             container.AddExtension(new ApplicationExtension(connectionString));
+            container.RegisterType<IAuthenticationManager>(
+                new InjectionFactory(c => HttpContext.Current.GetOwinContext().Authentication));
         }
     }
 }

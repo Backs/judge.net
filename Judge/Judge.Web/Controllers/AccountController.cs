@@ -1,5 +1,7 @@
 ﻿using System.Web.Mvc;
 using Judge.Application.Interfaces;
+using Judge.Application.ViewModels.Account;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace Judge.Web.Controllers
 {
@@ -15,6 +17,34 @@ namespace Judge.Web.Controllers
         public ActionResult Login()
         {
             return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(LoginViewModel model, string returnUrl)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var result = _securityService.SignIn(model.Email, model.Password, model.RememberMe);
+            if (result == SignInStatus.Success)
+            {
+                return RedirectToLocal(returnUrl);
+            }
+
+            return View(model);
+        }
+
+        private ActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            return RedirectToAction("Index", "Home");
         }
     }
 }
