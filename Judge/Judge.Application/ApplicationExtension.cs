@@ -1,5 +1,7 @@
-﻿using Judge.Application.Interfaces;
+﻿using System.Web;
+using Judge.Application.Interfaces;
 using Judge.Data;
+using Microsoft.Owin.Security;
 using Microsoft.Practices.Unity;
 
 namespace Judge.Application
@@ -17,6 +19,7 @@ namespace Judge.Application
         {
             Container.AddExtension(new DataExtension(_connectionString));
 
+            Container.RegisterType<IAuthenticationManager>(new InjectionFactory(c => HttpContext.Current.GetOwinContext().Authentication));
             Container.RegisterType<ISecurityService, SecurityService>(new PerRequestLifetimeManager());
         }
     }

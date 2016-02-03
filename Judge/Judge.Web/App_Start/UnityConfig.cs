@@ -36,10 +36,7 @@ namespace Judge.Web
         public static void RegisterTypes(IUnityContainer container)
         {
             var connectionString = ConfigurationManager.ConnectionStrings["DataBaseConnection"].ConnectionString;
-
             container.AddExtension(new ApplicationExtension(connectionString));
-            container.RegisterType<IAuthenticationManager>(
-                new InjectionFactory(c => HttpContext.Current.GetOwinContext().Authentication));
         }
     }
 }
