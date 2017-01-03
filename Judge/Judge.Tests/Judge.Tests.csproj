@@ -72,10 +72,14 @@
     <Folder Include="WorkingDirectory\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TestSolutions\InvalidReturnCode.exe" />
-    <Content Include="TestSolutions\RuntimeError.exe" />
+    <Content Include="TestSolutions\InvalidReturnCode.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestSolutions\RuntimeError.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestSolutions\TL.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Choose>

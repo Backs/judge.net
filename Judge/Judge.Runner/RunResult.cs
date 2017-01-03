@@ -13,6 +13,7 @@ namespace Judge.Runner
         public int PeakMemoryBytes { get; private set; }
         public string TextStatus { get; private set; }
         public string Description { get; private set; }
+        public string Output { get; private set; }
 
         private RunResult()
         {
@@ -46,7 +47,8 @@ namespace Judge.Runner
                 PeakMemoryBytes = int.Parse(NumberRegex.Match(peakMemory).Value),
                 RunStatus = GetStatus(textStatus, exitCode != null ? int.Parse(NumberRegex.Match(exitCode).Value) : 0),
                 TextStatus = textStatus,
-                Description = description
+                Description = description,
+                Output = input
             };
             return runResult;
         }

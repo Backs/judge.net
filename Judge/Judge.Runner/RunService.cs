@@ -1,8 +1,9 @@
 ﻿using System.Diagnostics;
+using System.IO;
 
 namespace Judge.Runner
 {
-    public sealed class RunService
+    public sealed class RunService : IRunService
     {
         private readonly string _runnerPath;
         private readonly string _workingDirectory;
@@ -21,6 +22,11 @@ namespace Judge.Runner
                 RedirectStandardOutput = true,
                 WorkingDirectory = _workingDirectory
             };
+
+            if (!Directory.Exists(_workingDirectory))
+            {
+                Directory.CreateDirectory(_workingDirectory);
+            }
 
             var p = new Process { StartInfo = startInfo };
 

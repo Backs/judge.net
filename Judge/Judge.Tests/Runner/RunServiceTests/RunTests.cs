@@ -1,4 +1,5 @@
-﻿using Judge.Runner;
+﻿using System.IO;
+using Judge.Runner;
 using NUnit.Framework;
 
 namespace Judge.Tests.Runner.RunServiceTests
@@ -6,14 +7,13 @@ namespace Judge.Tests.Runner.RunServiceTests
     [TestFixture]
     class RunTests
     {
-        private string _runnerPath = @"C:\Develop\judge.net\judge.net\Judge\Judge.Tests\bin\Debug\run-x64\run.exe";
-        private string _workingDirectory = @"C:\Develop\judge.net\judge.net\Judge\Judge.Tests\WorkingDirectory";
+        private readonly string _runnerPath = Path.Combine(TestContext.CurrentContext.TestDirectory, @"run-x64\run.exe");
+        private readonly string _workingDirectory = Path.Combine(TestContext.CurrentContext.TestDirectory, "WorkingDirectory");
 
         [Test]
         public void RunCmdTest()
         {
-            var service = new RunService(_runnerPath,
-                _workingDirectory);
+            var service = new RunService(_runnerPath, _workingDirectory);
 
             var configuration = new Configuration("cmd", null, 1000, 10 * 1024 * 1024);
 
@@ -25,7 +25,8 @@ namespace Judge.Tests.Runner.RunServiceTests
         {
             var service = new RunService(_runnerPath, _workingDirectory);
 
-            var configuration = new Configuration(@"C:\Develop\judge.net\judge.net\Judge\Judge.Tests\TestSolutions\TL.exe", null, 1000, 10 * 1024 * 1024);
+            var fileName = Path.Combine(TestContext.CurrentContext.TestDirectory, @"TestSolutions\TL.exe");
+            var configuration = new Configuration(fileName, null, 1000, 10 * 1024 * 1024);
 
             var result = service.Run(configuration);
 
@@ -49,7 +50,8 @@ namespace Judge.Tests.Runner.RunServiceTests
         {
             var service = new RunService(_runnerPath, _workingDirectory);
 
-            var configuration = new Configuration(@"C:\Develop\judge.net\judge.net\Judge\Judge.Tests\TestSolutions\InvalidReturnCode.exe", null, 1000, 10 * 1024 * 1024);
+            var fileName = Path.Combine(TestContext.CurrentContext.TestDirectory, @"TestSolutions\InvalidReturnCode.exe");
+            var configuration = new Configuration(fileName, null, 1000, 10 * 1024 * 1024);
 
             var result = service.Run(configuration);
 
@@ -61,7 +63,8 @@ namespace Judge.Tests.Runner.RunServiceTests
         {
             var service = new RunService(_runnerPath, _workingDirectory);
 
-            var configuration = new Configuration(@"C:\Develop\judge.net\judge.net\Judge\Judge.Tests\TestSolutions\RuntimeError.exe", null, 1000, 10 * 1024 * 1024);
+            var fileName = Path.Combine(TestContext.CurrentContext.TestDirectory, @"TestSolutions\RuntimeError.exe");
+            var configuration = new Configuration(fileName, null, 1000, 10 * 1024 * 1024);
 
             var result = service.Run(configuration);
 
