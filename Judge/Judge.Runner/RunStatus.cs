@@ -5,6 +5,7 @@
         Success,
         TimeLimitExceeded,
         MemoryLimitExceeded,
-        SecurityViolation
+        SecurityViolation,
+        RuntimeError
     }
 }

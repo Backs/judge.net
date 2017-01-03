@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Judge.Runner
@@ -19,7 +20,7 @@ namespace Judge.Runner
         }
 
         private static readonly Regex TimeRegex = new Regex(@"\d*\.\d{2}", RegexOptions.Compiled);
-        private static readonly Regex MemoryRegex = new Regex(@"\d+", RegexOptions.Compiled);
+        private static readonly Regex NumberRegex = new Regex(@"\d+", RegexOptions.Compiled);
 
         public static RunResult Parse(string input)
         {
@@ -36,21 +37,27 @@ namespace Judge.Runner
             var timeConsumed = rows[startIndex];
             var timePassed = rows[startIndex + 1];
             var peakMemory = rows[startIndex + 2];
+            var exitCode = rows.FirstOrDefault(o => o.StartsWith("  exit code"));
 
             var runResult = new RunResult
             {
                 TimeConsumedMilliseconds = (int)(double.Parse(TimeRegex.Match(timeConsumed).Value, CultureInfo.InvariantCulture) * 1000),
                 TimePassedMilliseconds = (int)(double.Parse(TimeRegex.Match(timePassed).Value, CultureInfo.InvariantCulture) * 1000),
-                PeakMemoryBytes = int.Parse(MemoryRegex.Match(peakMemory).Value),
-                RunStatus = GetStatus(textStatus),
+                PeakMemoryBytes = int.Parse(NumberRegex.Match(peakMemory).Value),
+                RunStatus = GetStatus(textStatus, exitCode != null ? int.Parse(NumberRegex.Match(exitCode).Value) : 0),
                 TextStatus = textStatus,
                 Description = description
             };
             return runResult;
         }
 
-        private static RunStatus GetStatus(string textStatus)
+        private static RunStatus GetStatus(string textStatus, int exitCode)
         {
+            if (exitCode != 0)
+            {
+                return RunStatus.RuntimeError;
+            }
+
             switch (textStatus)
             {
                 case "Time limit exceeded":

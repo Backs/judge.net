@@ -58,5 +58,23 @@ peak memory: 90112 of 10240 bytes";
             Assert.That(result.TimeConsumedMilliseconds, Is.EqualTo(0));
             Assert.That(result.RunStatus, Is.EqualTo(RunStatus.MemoryLimitExceeded));
         }
+
+        [Test]
+        public void InvalidExitCodeTest()
+        {
+            var input = @"Running ""InvalidReturnCode.exe"", press ESC to terminate...
+Program successfully terminated
+  exit code: 1
+  time consumed: 0.01 of 1.00 sec
+  time passed: 0.05 sec
+peak memory: 3670016 of 10485760 bytes";
+
+            var result = RunResult.Parse(input);
+
+            Assert.That(result.PeakMemoryBytes, Is.EqualTo(3670016));
+            Assert.That(result.TimePassedMilliseconds, Is.EqualTo(50));
+            Assert.That(result.TimeConsumedMilliseconds, Is.EqualTo(10));
+            Assert.That(result.RunStatus, Is.EqualTo(RunStatus.RuntimeError));
+        }
     }
 }

@@ -72,6 +72,7 @@
     <Folder Include="WorkingDirectory\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="TestSolutions\InvalidReturnCode.exe" />
     <Content Include="TestSolutions\TL.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

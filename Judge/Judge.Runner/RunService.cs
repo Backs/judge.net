@@ -13,7 +13,7 @@ namespace Judge.Runner
             _workingDirectory = workingDirectory;
         }
 
-        public void Run(Configuration configuration)
+        public RunResult Run(Configuration configuration)
         {
             var startInfo = new ProcessStartInfo(_runnerPath, configuration.ToString())
             {
@@ -28,11 +28,8 @@ namespace Judge.Runner
 
             var output = p.StandardOutput.ReadToEnd();
             p.WaitForExit();
-        }
 
-        private static void ParseResult(string output)
-        {
-
+            return RunResult.Parse(output);
         }
     }
 }

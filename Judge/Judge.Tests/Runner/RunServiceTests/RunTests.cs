@@ -27,7 +27,9 @@ namespace Judge.Tests.Runner.RunServiceTests
 
             var configuration = new Configuration(@"C:\Develop\judge.net\judge.net\Judge\Judge.Tests\TestSolutions\TL.exe", null, 1000, 10 * 1024 * 1024);
 
-            service.Run(configuration);
+            var result = service.Run(configuration);
+
+            Assert.That(result.RunStatus, Is.EqualTo(RunStatus.TimeLimitExceeded));
         }
 
         [Test]
@@ -37,7 +39,21 @@ namespace Judge.Tests.Runner.RunServiceTests
 
             var configuration = new Configuration(@"notepad", null, 1000, 10 * 1024);
 
-            service.Run(configuration);
+            var result = service.Run(configuration);
+
+            Assert.That(result.RunStatus, Is.EqualTo(RunStatus.MemoryLimitExceeded));
+        }
+
+        [Test]
+        public void InvalidCodeSolutionTest()
+        {
+            var service = new RunService(_runnerPath, _workingDirectory);
+
+            var configuration = new Configuration(@"C:\Develop\judge.net\judge.net\Judge\Judge.Tests\TestSolutions\InvalidReturnCode.exe", null, 1000, 10 * 1024 * 1024);
+
+            var result = service.Run(configuration);
+
+            Assert.That(result.RunStatus, Is.EqualTo(RunStatus.RuntimeError));
         }
     }
 }
