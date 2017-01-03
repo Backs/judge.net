@@ -15,18 +15,27 @@ namespace Judge.Tests.Runner.RunServiceTests
             var service = new RunService(_runnerPath,
                 _workingDirectory);
 
-            var configuration = new Configuration("cmd", null, 1000, 1000);
+            var configuration = new Configuration("cmd", null, 1000, 10 * 1024 * 1024);
 
             service.Run(configuration);
         }
 
         [Test]
-        public void RunTimeLimitSolutionTest()
+        public void TimeLimitSolutionTest()
         {
-            var service = new RunService(_runnerPath,
-    _workingDirectory);
+            var service = new RunService(_runnerPath, _workingDirectory);
 
             var configuration = new Configuration(@"C:\Develop\judge.net\judge.net\Judge\Judge.Tests\TestSolutions\TL.exe", null, 1000, 10 * 1024 * 1024);
+
+            service.Run(configuration);
+        }
+
+        [Test]
+        public void MemoryLimitTest()
+        {
+            var service = new RunService(_runnerPath, _workingDirectory);
+
+            var configuration = new Configuration(@"notepad", null, 1000, 10 * 1024);
 
             service.Run(configuration);
         }

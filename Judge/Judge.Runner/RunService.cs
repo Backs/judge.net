@@ -29,5 +29,10 @@ namespace Judge.Runner
             var output = p.StandardOutput.ReadToEnd();
             p.WaitForExit();
         }
+
+        private static void ParseResult(string output)
+        {
+
+        }
     }
 }

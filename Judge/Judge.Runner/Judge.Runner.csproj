@@ -42,7 +42,9 @@
   <ItemGroup>
     <Compile Include="Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RunResult.cs" />
     <Compile Include="RunService.cs" />
+    <Compile Include="RunStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="run-x64\invoke2.dll">
