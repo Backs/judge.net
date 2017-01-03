@@ -55,5 +55,17 @@ namespace Judge.Tests.Runner.RunServiceTests
 
             Assert.That(result.RunStatus, Is.EqualTo(RunStatus.RuntimeError));
         }
+
+        [Test]
+        public void RuntimeErrorSolutionTest()
+        {
+            var service = new RunService(_runnerPath, _workingDirectory);
+
+            var configuration = new Configuration(@"C:\Develop\judge.net\judge.net\Judge\Judge.Tests\TestSolutions\RuntimeError.exe", null, 1000, 10 * 1024 * 1024);
+
+            var result = service.Run(configuration);
+
+            Assert.That(result.RunStatus, Is.EqualTo(RunStatus.RuntimeError));
+        }
     }
 }

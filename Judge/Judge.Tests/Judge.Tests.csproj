@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestSolutions\InvalidReturnCode.exe" />
+    <Content Include="TestSolutions\RuntimeError.exe" />
     <Content Include="TestSolutions\TL.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
