@@ -21,7 +21,7 @@ namespace Judge.Application
 
         public void Register(RegisterViewModel model)
         {
-            _signInManager.UserManager.CreateAsync(new User { UserName = model.Email }, model.Password);
+            _signInManager.UserManager.CreateAsync(new User { UserName = model.Email }, model.Password).Wait();
         }
     }
 }
