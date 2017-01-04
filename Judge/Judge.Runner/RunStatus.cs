@@ -6,6 +6,7 @@
         TimeLimitExceeded,
         MemoryLimitExceeded,
         SecurityViolation,
-        RuntimeError
+        RuntimeError,
+        InvocationFailed
     }
 }

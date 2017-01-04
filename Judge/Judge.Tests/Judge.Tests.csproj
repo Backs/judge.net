@@ -72,6 +72,9 @@
     <Folder Include="WorkingDirectory\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="TestSolutions\AB.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestSolutions\InvalidReturnCode.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

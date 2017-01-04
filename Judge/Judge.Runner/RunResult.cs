@@ -34,23 +34,43 @@ namespace Judge.Runner
             var startIndex = Array.FindIndex(rows, o => o.StartsWith("  time consumed"));
 
             var textStatus = rows[1];
+            var exitCodeRow = rows.FirstOrDefault(o => o.StartsWith("  exit code"));
+            var runStatus = GetStatus(textStatus, exitCodeRow != null ? int.Parse(NumberRegex.Match(exitCodeRow).Value) : 0);
+
+            if (runStatus == RunStatus.InvocationFailed)
+            {
+                return InvocationFailed(textStatus, input);
+            }
+
             var description = startIndex == 2 ? rows[1] : rows[2];
-            var timeConsumed = rows[startIndex];
-            var timePassed = rows[startIndex + 1];
-            var peakMemory = rows[startIndex + 2];
-            var exitCode = rows.FirstOrDefault(o => o.StartsWith("  exit code"));
+            var timeConsumedRow = rows[startIndex];
+            var timePassedRow = rows[startIndex + 1];
+            var peakMemoryRow = rows[startIndex + 2];
 
             var runResult = new RunResult
             {
-                TimeConsumedMilliseconds = (int)(double.Parse(TimeRegex.Match(timeConsumed).Value, CultureInfo.InvariantCulture) * 1000),
-                TimePassedMilliseconds = (int)(double.Parse(TimeRegex.Match(timePassed).Value, CultureInfo.InvariantCulture) * 1000),
-                PeakMemoryBytes = int.Parse(NumberRegex.Match(peakMemory).Value),
-                RunStatus = GetStatus(textStatus, exitCode != null ? int.Parse(NumberRegex.Match(exitCode).Value) : 0),
+                TimeConsumedMilliseconds =
+                    (int)
+                    (double.Parse(TimeRegex.Match(timeConsumedRow).Value, CultureInfo.InvariantCulture) * 1000),
+                TimePassedMilliseconds =
+                    (int)(double.Parse(TimeRegex.Match(timePassedRow).Value, CultureInfo.InvariantCulture) * 1000),
+                PeakMemoryBytes = int.Parse(NumberRegex.Match(peakMemoryRow).Value),
+                RunStatus = runStatus,
                 TextStatus = textStatus,
                 Description = description,
                 Output = input
             };
             return runResult;
+        }
+
+        private static RunResult InvocationFailed(string textStatus, string output)
+        {
+            return new RunResult
+            {
+                RunStatus = RunStatus.InvocationFailed,
+                TextStatus = textStatus,
+                Output = output
+            };
         }
 
         private static RunStatus GetStatus(string textStatus, int exitCode)
@@ -71,6 +91,10 @@ namespace Judge.Runner
             }
             if (textStatus.StartsWith("Security violation"))
                 return RunStatus.SecurityViolation;
+            if (textStatus.StartsWith("Invocation failed"))
+                return RunStatus.InvocationFailed;
+            if (textStatus.StartsWith("Program successfully terminated"))
+                return RunStatus.Success;
 
             throw new ArgumentOutOfRangeException(nameof(textStatus));
         }
