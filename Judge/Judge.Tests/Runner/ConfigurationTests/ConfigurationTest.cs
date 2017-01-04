@@ -18,10 +18,12 @@ namespace Judge.Tests.Runner.ConfigurationTests
                 Quiet = true,
                 ShowWindow = true,
                 SingleCore = true,
-                TimeLimitMilliseconds = 1500
+                TimeLimitMilliseconds = 1500,
+                InputFile = "input.txt",
+                OutputFile = "output.txt"
             };
 
-            var expected = "-t 1500ms -m 1234K -d \"c:\\temp\" -q -w -1 -Xacp \"main.exe\"";
+            var expected = "-i \"input.txt\" -o \"output.txt\" -t 1500ms -m 1234K -d \"c:\\temp\" -q -w -1 -Xacp \"main.exe\"";
             Assert.That(configuration.ToString(), Is.EqualTo(expected));
         }
     }

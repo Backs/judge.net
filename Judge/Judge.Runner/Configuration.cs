@@ -12,6 +12,8 @@ namespace Judge.Runner
         public bool ShowWindow { get; set; }
         public bool SingleCore { get; set; }
         public bool AllowCreateProcesses { get; set; }
+        public string InputFile { get; set; }
+        public string OutputFile { get; set; }
 
         public Configuration(string fileName, string directory, int timeLimitMilliseconds, int memoryLimitBytes)
         {
@@ -33,6 +35,18 @@ namespace Judge.Runner
         public override string ToString()
         {
             var arguments = new List<string>(16);
+
+            if (!string.IsNullOrWhiteSpace(InputFile))
+            {
+                arguments.Add("-i");
+                arguments.Add($"\"{InputFile}\"");
+            }
+
+            if (!string.IsNullOrWhiteSpace(OutputFile))
+            {
+                arguments.Add("-o");
+                arguments.Add($"\"{OutputFile}\"");
+            }
 
             arguments.Add("-t");
             arguments.Add(TimeLimitMilliseconds + "ms");
