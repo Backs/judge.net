@@ -54,15 +54,28 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Compiler\CompilerTests\CompileTests.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runner\ConfigurationTests\ConfigurationTest.cs" />
     <Compile Include="Runner\RunResultTests\ParseTests.cs" />
     <Compile Include="Runner\RunServiceTests\RunTests.cs" />
+    <None Include="TestSolutions\ABCE.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestSolutions\AB.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Judge.Compiler\Judge.Compiler.csproj">
+      <Project>{e268f774-14ba-4aa7-96fc-15912e89b36f}</Project>
+      <Name>Judge.Compiler</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Judge.Runner\Judge.Runner.csproj">
       <Project>{C4868306-472A-445F-945E-903DCBE8C373}</Project>
       <Name>Judge.Runner</Name>

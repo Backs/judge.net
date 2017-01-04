@@ -80,19 +80,21 @@ namespace Judge.Runner
                 return RunStatus.RuntimeError;
             }
 
-            switch (textStatus)
-            {
-                case "Time limit exceeded":
-                    return RunStatus.TimeLimitExceeded;
-                case "Memory limit exceeded":
-                    return RunStatus.MemoryLimitExceeded;
-                case "Crash":
-                    return RunStatus.RuntimeError;
-            }
+            if (textStatus == "Time limit exceeded")
+                return RunStatus.TimeLimitExceeded;
+
+            if (textStatus == "Memory limit exceeded")
+                return RunStatus.MemoryLimitExceeded;
+
+            if (textStatus == "Crash")
+                return RunStatus.RuntimeError;
+
             if (textStatus.StartsWith("Security violation"))
                 return RunStatus.SecurityViolation;
+
             if (textStatus.StartsWith("Invocation failed"))
                 return RunStatus.InvocationFailed;
+
             if (textStatus.StartsWith("Program successfully terminated"))
                 return RunStatus.Success;
 

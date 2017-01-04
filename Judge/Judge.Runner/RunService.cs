@@ -28,12 +28,14 @@ namespace Judge.Runner
                 Directory.CreateDirectory(_workingDirectory);
             }
 
-            var p = new Process { StartInfo = startInfo };
+            string output;
+            using (var p = new Process { StartInfo = startInfo })
+            {
+                p.Start();
 
-            p.Start();
-
-            var output = p.StandardOutput.ReadToEnd();
-            p.WaitForExit();
+                output = p.StandardOutput.ReadToEnd();
+                p.WaitForExit();
+            }
 
             return RunResult.Parse(output);
         }
