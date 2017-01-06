@@ -1,0 +1,37 @@
+﻿@model Judge.Application.ViewModels.Problems.ProblemsList.ProblemsListViewModel
+
+@{
+    ViewBag.Title = Resources.ProblemsList;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Solved</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var problem in Model.Problems)
+            {
+                <tr>
+                    <td>@problem.Id</td>
+                    <td>
+                        @Html.ActionLink(problem.Name, "Statement", new { id = problem.Id }, null)
+                    </td>
+                    <td>
+                        @if (problem.Solved)
+                        {
+                            <span class="glyphicon glyphicon-ok"></span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

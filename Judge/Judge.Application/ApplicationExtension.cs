@@ -21,6 +21,8 @@ namespace Judge.Application
 
             Container.RegisterType<IAuthenticationManager>(new InjectionFactory(c => HttpContext.Current.GetOwinContext().Authentication));
             Container.RegisterType<ISecurityService, SecurityService>(new PerRequestLifetimeManager());
+
+            Container.RegisterType<IProblemsService, ProblemsService>(new PerRequestLifetimeManager());
         }
     }
 }
