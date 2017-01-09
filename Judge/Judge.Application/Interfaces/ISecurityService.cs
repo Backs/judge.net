@@ -6,6 +6,7 @@ namespace Judge.Application.Interfaces
     public interface ISecurityService
     {
         SignInStatus SignIn(string userName, string password, bool isPersistent);
+        void SignOut();
         void Register(RegisterViewModel model);
     }
 }

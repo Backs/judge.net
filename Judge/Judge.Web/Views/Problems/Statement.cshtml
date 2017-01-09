@@ -12,6 +12,9 @@
 <div class="well well-sm">
     @Html.Raw(Model.Statement)
 </div>
-<div id="submit-container">
-    @Html.Action("SubmitSolution", new { problemId = Model.Id })
-</div>
+@if (User.Identity.IsAuthenticated)
+{
+    <div id="submit-container">
+        @Html.Action("SubmitSolution", new {problemId = Model.Id})
+    </div>
+}

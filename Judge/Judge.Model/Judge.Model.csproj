@@ -67,6 +67,8 @@
     <Compile Include="Entities\SubmitStatus.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SubmitSolution\ISubmitRepository.cs" />
+    <Compile Include="SubmitSolution\Submit.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

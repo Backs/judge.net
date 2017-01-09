@@ -16,6 +16,7 @@ namespace Judge.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.Configurations.Add(new LanguageMapping());
             modelBuilder.Configurations.Add(new UserMapping());
+            modelBuilder.Configurations.Add(new SubmitMapping());
         }
     }
 }

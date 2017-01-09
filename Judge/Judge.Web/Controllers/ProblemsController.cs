@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using Judge.Application.Interfaces;
 using Judge.Application.ViewModels.Submit;
+using Microsoft.AspNet.Identity;
 
 namespace Judge.Web.Controllers
 {
@@ -8,7 +9,7 @@ namespace Judge.Web.Controllers
     {
         private readonly IProblemsService _problemsService;
         private readonly ISubmitSolutionService _submitSolutionService;
-
+        
         public ProblemsController(IProblemsService problemsService, ISubmitSolutionService submitSolutionService)
         {
             _problemsService = problemsService;
@@ -42,7 +43,8 @@ namespace Judge.Web.Controllers
             if (ModelState.IsValid)
             {
                 model.Success = true;
-                _submitSolutionService.SubmitSolution(model.ProblemId, model.SelectedLanguage, model.File);
+                var userId = User.Identity.GetUserId<long>();
+                _submitSolutionService.SubmitSolution(model.ProblemId, model.SelectedLanguage, model.File, userId);
             }
             else
             {

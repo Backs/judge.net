@@ -1,18 +1,19 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Threading.Tasks;
 using Judge.Model.Entities;
 using Microsoft.AspNet.Identity;
 
 namespace Judge.Data
 {
-    internal sealed class UserStore : IUserPasswordStore<User, long>
+    internal sealed class UserStore : IUserPasswordStore<User, long>, IUserLockoutStore<User, long>, IUserTwoFactorStore<User, long>
     {
         private readonly DataContext _context;
         private readonly DbSet<User> _dbSet;
 
-        public UserStore(string connectionString)
+        public UserStore(DataContext context)
         {
-            _context = new DataContext(connectionString);
+            _context = context;
             _dbSet = _context.Set<User>();
         }
 
@@ -62,6 +63,51 @@ namespace Judge.Data
         public Task<bool> HasPasswordAsync(User user)
         {
             return Task.FromResult(!string.IsNullOrWhiteSpace(user.PasswordHash));
+        }
+
+        public Task<DateTimeOffset> GetLockoutEndDateAsync(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SetLockoutEndDateAsync(User user, DateTimeOffset lockoutEnd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> IncrementAccessFailedCountAsync(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ResetAccessFailedCountAsync(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> GetAccessFailedCountAsync(User user)
+        {
+            return Task.FromResult(0);
+        }
+
+        public Task<bool> GetLockoutEnabledAsync(User user)
+        {
+            return Task.FromResult(false);
+        }
+
+        public Task SetLockoutEnabledAsync(User user, bool enabled)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SetTwoFactorEnabledAsync(User user, bool enabled)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> GetTwoFactorEnabledAsync(User user)
+        {
+            return Task.FromResult(false);
         }
     }
 }

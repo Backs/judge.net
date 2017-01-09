@@ -19,6 +19,12 @@ namespace Judge.Web.Controllers
             return View();
         }
 
+        public ActionResult Logout()
+        {
+            _securityService.SignOut();
+            return RedirectToAction("Index", "Home");
+        }
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]

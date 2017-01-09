@@ -1,6 +1,7 @@
 ﻿using Judge.Application.Interfaces;
 using Judge.Application.ViewModels.Account;
 using Judge.Model.Entities;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
 namespace Judge.Application
@@ -22,6 +23,12 @@ namespace Judge.Application
         public void Register(RegisterViewModel model)
         {
             _signInManager.UserManager.CreateAsync(new User { UserName = model.Email }, model.Password).Wait();
+        }
+
+        public void SignOut()
+        {
+            _signInManager.AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie,
+                DefaultAuthenticationTypes.TwoFactorCookie);
         }
     }
 }
