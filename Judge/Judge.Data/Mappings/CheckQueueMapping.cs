@@ -4,18 +4,15 @@ using Judge.Model.SubmitSolution;
 
 namespace Judge.Data.Mappings
 {
-    internal sealed class SubmitMapping : EntityTypeConfiguration<Submit>
+    internal sealed class CheckQueueMapping : EntityTypeConfiguration<CheckQueue>
     {
-        public SubmitMapping()
+        public CheckQueueMapping()
         {
             HasKey(o => o.Id);
             Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(o => o.CreationDateUtc).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            HasRequired(o => o.CheckQueueItem)
-                .WithRequiredPrincipal()
-                .Map(map => map.MapKey("SubmitId"));
-
-            ToTable("Submits", "dbo");
+            ToTable("CheckQueue", "dbo");
         }
     }
 }

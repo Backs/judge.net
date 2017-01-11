@@ -111,6 +111,7 @@
     <Compile Include="DataContainerExtension.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="IUnitOfWorkFactory.cs" />
+    <Compile Include="Mappings\CheckQueueMapping.cs" />
     <Compile Include="Mappings\LanguageMapping.cs" />
     <Compile Include="Mappings\SubmitMapping.cs" />
     <Compile Include="Mappings\UserMapping.cs" />
