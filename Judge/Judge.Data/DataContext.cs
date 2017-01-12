@@ -18,6 +18,7 @@ namespace Judge.Data
             modelBuilder.Configurations.Add(new UserMapping());
             modelBuilder.Configurations.Add(new SubmitMapping());
             modelBuilder.Configurations.Add(new CheckQueueMapping());
+            modelBuilder.Configurations.Add(new SubmitResultMapping());
         }
     }
 }

@@ -114,6 +114,7 @@
     <Compile Include="Mappings\CheckQueueMapping.cs" />
     <Compile Include="Mappings\LanguageMapping.cs" />
     <Compile Include="Mappings\SubmitMapping.cs" />
+    <Compile Include="Mappings\SubmitResultMapping.cs" />
     <Compile Include="Mappings\UserMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\SubmitRepository.cs" />

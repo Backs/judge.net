@@ -1,8 +1,8 @@
 ﻿CREATE TABLE [dbo].[CheckQueue]
 (
     [Id] BIGINT NOT NULL IDENTITY(1,1), 
-    [SubmitId] BIGINT NOT NULL, 
+    [SubmitResultId] BIGINT NOT NULL, 
     [CreationDateUtc] DATETIME NOT NULL DEFAULT GETUTCDATE(), 
     CONSTRAINT [PK_CheckQueue] PRIMARY KEY ([Id]),
-    CONSTRAINT [FK_CheckQueue_Submits] FOREIGN KEY ([SubmitId]) REFERENCES dbo.Submits([Id])
+    CONSTRAINT [FK_CheckQueue_SubmitResults] FOREIGN KEY ([SubmitResultId]) REFERENCES dbo.SubmitResults([Id])
 )

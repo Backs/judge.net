@@ -62,14 +62,13 @@
     <Compile Include="Entities\Contests\Contester.cs" />
     <Compile Include="Entities\Contests\Task.cs" />
     <Compile Include="Entities\Problem.cs" />
-    <Compile Include="Entities\Submit.cs" />
-    <Compile Include="Entities\SubmitResult.cs" />
-    <Compile Include="Entities\SubmitStatus.cs" />
+    <Compile Include="SubmitSolution\SubmitStatus.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubmitSolution\CheckQueue.cs" />
     <Compile Include="SubmitSolution\ISubmitRepository.cs" />
     <Compile Include="SubmitSolution\Submit.cs" />
+    <Compile Include="SubmitSolution\SubmitResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

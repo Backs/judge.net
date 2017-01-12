@@ -6,7 +6,8 @@ namespace Judge.Model.SubmitSolution
     {
         public Submit()
         {
-            CheckQueueItem = new CheckQueue();
+            Results = new HashSet<SubmitResult>();
+            Results.Add(new SubmitResult());
         }
 
         public long UserId { get; set; }
@@ -15,6 +16,6 @@ namespace Judge.Model.SubmitSolution
         public int LanguageId { get; set; }
         public string SourceCode { get; set; }
         public long Id { get; private set; }
-        public CheckQueue CheckQueueItem { get; private set; }
+        public ICollection<SubmitResult> Results { get; }
     }
 }

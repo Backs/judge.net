@@ -11,8 +11,8 @@ namespace Judge.Data.Mappings
             HasKey(o => o.Id);
             Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            HasRequired(o => o.CheckQueueItem)
-                .WithRequiredPrincipal()
+            HasMany(o => o.Results)
+                .WithRequired()
                 .Map(map => map.MapKey("SubmitId"));
 
             ToTable("Submits", "dbo");
