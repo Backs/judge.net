@@ -29,7 +29,7 @@ namespace Judge.Application
                 CreationDate = DateTime.Now,
                 MemoryLimitBytes = 1024 * 10 * 10,
                 Name = "Test" + id,
-                Statement = "<b>Statement</b>",
+                Statement = "**Statement**",
                 TimeLimitMilliseconds = 1000
             };
         }

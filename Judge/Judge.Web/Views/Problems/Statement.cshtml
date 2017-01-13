@@ -1,4 +1,5 @@
-﻿@model Judge.Application.ViewModels.Problems.Statement.StatementViewModel
+﻿@using Markdig
+@model Judge.Application.ViewModels.Problems.Statement.StatementViewModel
 @{
     ViewBag.Title = Model.Name;
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -10,7 +11,7 @@
 <p>Ограничение по памяти: @Model.MemoryLimitMegabytes.ToString("F2") мегабайт</p>
 
 <div class="well well-sm">
-    @Html.Raw(Model.Statement)
+    @Html.Raw(Markdown.ToHtml(Model.Statement))
 </div>
 @if (User.Identity.IsAuthenticated)
 {
