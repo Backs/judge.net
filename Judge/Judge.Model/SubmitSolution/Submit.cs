@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Judge.Model.SubmitSolution
 {
@@ -7,7 +8,7 @@ namespace Judge.Model.SubmitSolution
         public Submit()
         {
             Results = new HashSet<SubmitResult>();
-            Results.Add(new SubmitResult());
+            Results.Add(new SubmitResult(this));
         }
 
         public long UserId { get; set; }
@@ -17,5 +18,6 @@ namespace Judge.Model.SubmitSolution
         public string SourceCode { get; set; }
         public long Id { get; private set; }
         public ICollection<SubmitResult> Results { get; }
+        public DateTime SubmitDateUtc { get; private set; }
     }
 }

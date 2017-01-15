@@ -25,6 +25,7 @@ namespace Judge.Data
             Container.RegisterType<IUserStore<User, long>, UserStore>(new PerRequestLifetimeManager());
 
             Container.RegisterType<ISubmitRepository, SubmitRepository>(new PerRequestLifetimeManager());
+            Container.RegisterType<ISubmitResultRepository, SubmitResultRepository>(new PerRequestLifetimeManager());
         }
     }
 }

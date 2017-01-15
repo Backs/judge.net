@@ -62,6 +62,7 @@
     <Compile Include="Entities\Contests\Contester.cs" />
     <Compile Include="Entities\Contests\Task.cs" />
     <Compile Include="Entities\Problem.cs" />
+    <Compile Include="SubmitSolution\ISubmitResultRepository.cs" />
     <Compile Include="SubmitSolution\SubmitStatus.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

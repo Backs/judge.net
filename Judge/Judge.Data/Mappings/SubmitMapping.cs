@@ -10,9 +10,10 @@ namespace Judge.Data.Mappings
         {
             HasKey(o => o.Id);
             Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(o => o.SubmitDateUtc).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             HasMany(o => o.Results)
-                .WithRequired()
+                .WithRequired(o => o.Submit)
                 .Map(map => map.MapKey("SubmitId"));
 
             ToTable("Submits", "dbo");

@@ -269,6 +269,7 @@
     <Content Include="Views\Problems\Index.cshtml" />
     <Content Include="Views\Problems\Statement.cshtml" />
     <Content Include="Views\Shared\Submit\_SubmitSolution.cshtml" />
+    <Content Include="Views\Shared\Submit\_SubmitQueue.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

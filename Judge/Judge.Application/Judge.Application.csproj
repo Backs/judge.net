@@ -132,10 +132,12 @@
     <Compile Include="ApplicationExtension.cs" />
     <Compile Include="Interfaces\IProblemsService.cs" />
     <Compile Include="Interfaces\ISecurityService.cs" />
+    <Compile Include="Interfaces\ISubmitQueueService.cs" />
     <Compile Include="Interfaces\ISubmitSolutionService.cs" />
     <Compile Include="ProblemsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecurityService.cs" />
+    <Compile Include="SubmitQueueService.cs" />
     <Compile Include="SubmitSolutionService.cs" />
     <Compile Include="ViewModels\Account\LoginViewModel.cs" />
     <Compile Include="ViewModels\Account\RegisterViewModel.cs" />
@@ -144,6 +146,8 @@
     <Compile Include="ViewModels\Problems\ProblemsList\ProblemsListViewModel.cs" />
     <Compile Include="ViewModels\Problems\Statement\StatementViewModel.cs" />
     <Compile Include="ViewModels\Submit\LanguageViewModel.cs" />
+    <Compile Include="ViewModels\Submit\SubmitQueueItem.cs" />
+    <Compile Include="ViewModels\Submit\SubmitQueueViewModel.cs" />
     <Compile Include="ViewModels\Submit\SubmitSolutionViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
