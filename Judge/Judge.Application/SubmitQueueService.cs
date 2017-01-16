@@ -15,12 +15,12 @@ namespace Judge.Application
             _unitOfWorkFactory = unitOfWorkFactory;
         }
 
-        public SubmitQueueViewModel GetSubmitQueue(long? userId)
+        public SubmitQueueViewModel GetSubmitQueue(long? userId, long problemId)
         {
             using (var uow = _unitOfWorkFactory.GetUnitOfWork(false))
             {
                 var repository = uow.GetRepository<ISubmitResultRepository>();
-                var submits = repository.GetLastSubmits(userId, 10);
+                var submits = repository.GetLastSubmits(userId, problemId, 10);
 
                 var items = submits.Select(o => new SubmitQueueItem
                 {

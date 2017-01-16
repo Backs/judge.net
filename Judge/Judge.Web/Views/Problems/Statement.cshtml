@@ -18,6 +18,9 @@
     <div id="submit-container">
         @Html.Action("SubmitSolution", new { problemId = Model.Id })
     </div>
+    <div>
+        @Html.Action("UserSubmitQueue", "Submit", new { problemId = Model.Id })
+    </div>
 }
 else
 {

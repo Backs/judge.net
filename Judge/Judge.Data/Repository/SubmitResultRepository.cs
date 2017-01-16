@@ -14,12 +14,16 @@ namespace Judge.Data.Repository
             _context = context;
         }
 
-        public IEnumerable<SubmitResult> GetLastSubmits(long? userId, int count)
+        public IEnumerable<SubmitResult> GetLastSubmits(long? userId, long? problemId, int count)
         {
             var query = _context.Set<SubmitResult>() as IQueryable<SubmitResult>;
             if (userId != null)
             {
                 query = query.Where(o => o.Submit.UserId == userId);
+            }
+            if (problemId != null)
+            {
+                query = query.Where(o => o.Submit.ProblemId == problemId);
             }
             query = query.OrderByDescending(o => o.Id);
 

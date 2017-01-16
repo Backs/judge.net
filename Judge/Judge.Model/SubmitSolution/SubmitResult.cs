@@ -2,6 +2,10 @@
 {
     public sealed class SubmitResult
     {
+        private SubmitResult()
+        {
+            
+        }
         public SubmitResult(Submit submit)
         {
             CheckQueue = new CheckQueue();
