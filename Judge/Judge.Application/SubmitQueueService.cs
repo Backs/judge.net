@@ -2,6 +2,7 @@
 using Judge.Application.Interfaces;
 using Judge.Application.ViewModels.Submit;
 using Judge.Data;
+using Judge.Model.Configuration;
 using Judge.Model.SubmitSolution;
 
 namespace Judge.Application
@@ -19,12 +20,16 @@ namespace Judge.Application
         {
             using (var uow = _unitOfWorkFactory.GetUnitOfWork(false))
             {
-                var repository = uow.GetRepository<ISubmitResultRepository>();
-                var submits = repository.GetLastSubmits(userId, problemId, 10);
+                var submitResultRepository = uow.GetRepository<ISubmitResultRepository>();
+
+                var languageRepository = uow.GetRepository<ILanguageRepository>();
+                var languages = languageRepository.GetLanguages().ToDictionary(o => o.Id, o => o.Name);
+
+                var submits = submitResultRepository.GetLastSubmits(userId, problemId, 10);
 
                 var items = submits.Select(o => new SubmitQueueItem
                 {
-                    Language = "C++", //TODO
+                    Language = languages[o.Submit.LanguageId],
                     PassedTests = o.PassedTests,
                     ProblemId = o.Submit.ProblemId,
                     ProblemName = "problem name", //TODO

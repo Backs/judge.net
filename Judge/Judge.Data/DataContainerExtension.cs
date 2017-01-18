@@ -1,4 +1,5 @@
 ﻿using Judge.Data.Repository;
+using Judge.Model.Configuration;
 using Judge.Model.Entities;
 using Judge.Model.SubmitSolution;
 using Microsoft.AspNet.Identity;
@@ -26,6 +27,7 @@ namespace Judge.Data
 
             Container.RegisterType<ISubmitRepository, SubmitRepository>(new PerRequestLifetimeManager());
             Container.RegisterType<ISubmitResultRepository, SubmitResultRepository>(new PerRequestLifetimeManager());
+            Container.RegisterType<ILanguageRepository, LanguageRepository>(new PerRequestLifetimeManager());
         }
     }
 }

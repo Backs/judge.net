@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Web;
 using Judge.Application.Interfaces;
 using Judge.Application.ViewModels.Submit;
 using Judge.Data;
+using Judge.Model.Configuration;
 using Judge.Model.SubmitSolution;
 
 namespace Judge.Application
@@ -20,11 +22,16 @@ namespace Judge.Application
 
         public IEnumerable<LanguageViewModel> GetLanguages()
         {
-            return new[]
+            using (var uow = _factory.GetUnitOfWork(false))
             {
-                new LanguageViewModel { Id = 1, Name = "C++" },
-                new LanguageViewModel { Id = 2, Name = "C#" }
-            };
+                var languageRepository = uow.GetRepository<ILanguageRepository>();
+
+                return languageRepository.GetLanguages().Select(o => new LanguageViewModel
+                {
+                    Id = o.Id,
+                    Name = o.Name
+                }).AsEnumerable();
+            }
         }
 
         public void SubmitSolution(long problemId, int selectedLanguage, HttpPostedFileBase file, long userId)

@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\ILanguageRepository.cs" />
     <Compile Include="Entities\Language.cs" />
     <Compile Include="Entities\Contests\Contest.cs" />
     <Compile Include="Entities\Contests\Contester.cs" />
