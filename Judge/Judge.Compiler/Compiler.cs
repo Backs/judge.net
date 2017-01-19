@@ -22,6 +22,7 @@ namespace Judge.Compiler
 
             var options = CompilerOptionsTemplate.Replace(TemplateKeys.FileName, fileNameWithoutExtension)
                                                     .Replace(TemplateKeys.FileNameExtension, fileExtension);
+
             var startInfo = new ProcessStartInfo(CompilerPath, options)
             {
                 UseShellExecute = false,

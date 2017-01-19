@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{43482D0A-64C8-44E5-9048-D8050ADDE2C7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Judge.Checker</RootNamespace>
+    <AssemblyName>Judge.Checker</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Checker.cs" />
+    <Compile Include="CheckResult.cs" />
+    <Compile Include="CheckStatus.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Checkers\acmp.cpp" />
+    <Content Include="Checkers\caseicmp.cpp" />
+    <Content Include="Checkers\casencmp.cpp" />
+    <Content Include="Checkers\casewcmp.cpp" />
+    <Content Include="Checkers\dcmp.cpp" />
+    <Content Include="Checkers\fcmp.cpp" />
+    <Content Include="Checkers\hcmp.cpp" />
+    <Content Include="Checkers\icmp.cpp" />
+    <Content Include="Checkers\icmp.exe" />
+    <Content Include="Checkers\lcmp.cpp" />
+    <Content Include="Checkers\ncmp.cpp" />
+    <Content Include="Checkers\pointscmp.cpp" />
+    <Content Include="Checkers\rcmp.cpp" />
+    <Content Include="Checkers\rcmp4.cpp" />
+    <Content Include="Checkers\rcmp6.cpp" />
+    <Content Include="Checkers\rcmp9.cpp" />
+    <Content Include="Checkers\rncmp.cpp" />
+    <Content Include="Checkers\testlib.h" />
+    <Content Include="Checkers\uncmp.cpp" />
+    <Content Include="Checkers\wcmp.cpp" />
+    <Content Include="Checkers\yesno.cpp" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
