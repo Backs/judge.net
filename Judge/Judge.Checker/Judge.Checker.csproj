@@ -46,27 +46,25 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Checkers\acmp.cpp" />
-    <Content Include="Checkers\caseicmp.cpp" />
-    <Content Include="Checkers\casencmp.cpp" />
-    <Content Include="Checkers\casewcmp.cpp" />
-    <Content Include="Checkers\dcmp.cpp" />
-    <Content Include="Checkers\fcmp.cpp" />
-    <Content Include="Checkers\hcmp.cpp" />
-    <Content Include="Checkers\icmp.cpp" />
+    <Content Include="Checkers\acmp.exe" />
+    <Content Include="Checkers\caseicmp.exe" />
+    <Content Include="Checkers\casencmp.exe" />
+    <Content Include="Checkers\casewcmp.exe" />
+    <Content Include="Checkers\dcmp.exe" />
+    <Content Include="Checkers\fcmp.exe" />
+    <Content Include="Checkers\hcmp.exe" />
     <Content Include="Checkers\icmp.exe" />
-    <Content Include="Checkers\lcmp.cpp" />
-    <Content Include="Checkers\ncmp.cpp" />
-    <Content Include="Checkers\pointscmp.cpp" />
-    <Content Include="Checkers\rcmp.cpp" />
-    <Content Include="Checkers\rcmp4.cpp" />
-    <Content Include="Checkers\rcmp6.cpp" />
-    <Content Include="Checkers\rcmp9.cpp" />
-    <Content Include="Checkers\rncmp.cpp" />
-    <Content Include="Checkers\testlib.h" />
-    <Content Include="Checkers\uncmp.cpp" />
-    <Content Include="Checkers\wcmp.cpp" />
-    <Content Include="Checkers\yesno.cpp" />
+    <Content Include="Checkers\lcmp.exe" />
+    <Content Include="Checkers\ncmp.exe" />
+    <Content Include="Checkers\pointscmp.exe" />
+    <Content Include="Checkers\rcmp.exe" />
+    <Content Include="Checkers\rcmp4.exe" />
+    <Content Include="Checkers\rcmp6.exe" />
+    <Content Include="Checkers\rcmp9.exe" />
+    <Content Include="Checkers\rncmp.exe" />
+    <Content Include="Checkers\uncmp.exe" />
+    <Content Include="Checkers\wcmp.exe" />
+    <Content Include="Checkers\yesno.exe" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
