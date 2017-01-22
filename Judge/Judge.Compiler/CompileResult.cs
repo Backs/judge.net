@@ -1,6 +1,6 @@
 ﻿namespace Judge.Compiler
 {
-    public class CompileResult
+    public sealed class CompileResult
     {
         private CompileResult(CompileStatus compileStatus, string output, string fileName)
         {

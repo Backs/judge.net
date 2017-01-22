@@ -6,5 +6,6 @@ namespace Judge.Model.Configuration
     public interface ILanguageRepository
     {
         IEnumerable<Language> GetLanguages();
+        Language Get(int id);
     }
 }

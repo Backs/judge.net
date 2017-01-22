@@ -34,6 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -43,11 +44,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IJudgeService.cs" />
+    <Compile Include="JudgeServiceBase.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Judge.Compiler\Judge.Compiler.csproj">
+      <Project>{E268F774-14BA-4AA7-96FC-15912E89B36F}</Project>
+      <Name>Judge.Compiler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Judge.Model\Judge.Model.csproj">
+      <Project>{C21CFD2F-64C7-47E8-A088-275D0340F9D8}</Project>
+      <Name>Judge.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

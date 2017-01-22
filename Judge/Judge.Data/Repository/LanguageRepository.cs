@@ -16,7 +16,12 @@ namespace Judge.Data.Repository
 
         public IEnumerable<Language> GetLanguages()
         {
-            return _context.Set<Language>().OrderBy(o => o.Id).AsEnumerable();
+            return _context.Set<Language>().AsNoTracking().OrderBy(o => o.Id).AsEnumerable();
+        }
+
+        public Language Get(int id)
+        {
+            return _context.Set<Language>().AsNoTracking().FirstOrDefault(o => o.Id == id);
         }
     }
 }
