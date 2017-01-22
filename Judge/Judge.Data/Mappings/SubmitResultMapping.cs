@@ -13,8 +13,7 @@ namespace Judge.Data.Mappings
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             HasOptional(o => o.CheckQueue)
-                .WithOptionalPrincipal()
-                .Map(map => map.MapKey("SubmitResultId"));
+                .WithRequired();
 
             ToTable("SubmitResults", "dbo");
         }

@@ -16,7 +16,7 @@ namespace Judge.Data
             _contextCreator = contextCreator;
             if (transactionRequired)
             {
-                _transactionScope = new TransactionScope(TransactionScopeOption.Required);
+                _transactionScope = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted });
             }
         }
         public void Dispose()

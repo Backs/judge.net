@@ -31,5 +31,15 @@ namespace Judge.Data.Repository
 
             return query.Include(o => o.Submit).AsEnumerable();
         }
+
+        public SubmitResult DequeueUnchecked()
+        {
+            var check = _context.DequeueSubmitCheck();
+
+            if (check == null) return null;
+
+            return _context.Set<SubmitResult>().Where(o => o.Id == check.SubmitResultId)
+                .Include(o => o.Submit).First();
+        }
     }
 }

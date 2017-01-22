@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Judge.Compiler", "Judge.Com
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Judge.Checker", "Judge.Checker\Judge.Checker.csproj", "{43482D0A-64C8-44E5-9048-D8050ADDE2C7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Judge.JudgeService", "Judge.JudgeService\Judge.JudgeService.csproj", "{2E820D4C-9D10-452B-A284-A1E01B311199}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{43482D0A-64C8-44E5-9048-D8050ADDE2C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43482D0A-64C8-44E5-9048-D8050ADDE2C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43482D0A-64C8-44E5-9048-D8050ADDE2C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E820D4C-9D10-452B-A284-A1E01B311199}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E820D4C-9D10-452B-A284-A1E01B311199}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E820D4C-9D10-452B-A284-A1E01B311199}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E820D4C-9D10-452B-A284-A1E01B311199}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,5 +95,6 @@ Global
 		{C008CCFE-2DE1-42C0-9D32-B1965BCE14C7} = {96AF6C73-8C99-4D91-B652-B754F3527F62}
 		{E268F774-14BA-4AA7-96FC-15912E89B36F} = {01A29FDA-FEA1-4138-8B3C-12CF0AB4114C}
 		{43482D0A-64C8-44E5-9048-D8050ADDE2C7} = {01A29FDA-FEA1-4138-8B3C-12CF0AB4114C}
+		{2E820D4C-9D10-452B-A284-A1E01B311199} = {01A29FDA-FEA1-4138-8B3C-12CF0AB4114C}
 	EndGlobalSection
 EndGlobal

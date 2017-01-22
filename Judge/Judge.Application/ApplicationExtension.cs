@@ -17,7 +17,7 @@ namespace Judge.Application
 
         protected override void Initialize()
         {
-            Container.AddExtension(new DataContainerExtension(_connectionString));
+            Container.AddExtension(new DataContainerExtension<PerRequestLifetimeManager>(_connectionString));
 
             Container.RegisterType<IAuthenticationManager>(new InjectionFactory(c => HttpContext.Current.GetOwinContext().Authentication));
             Container.RegisterType<ISecurityService, SecurityService>(new PerRequestLifetimeManager());

@@ -1,5 +1,9 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
 using Judge.Data.Mappings;
+using Judge.Model.SubmitSolution;
 
 namespace Judge.Data
 {
@@ -20,5 +24,12 @@ namespace Judge.Data
             modelBuilder.Configurations.Add(new CheckQueueMapping());
             modelBuilder.Configurations.Add(new SubmitResultMapping());
         }
+
+        public CheckQueue DequeueSubmitCheck()
+        {
+            return ObjectContext.ExecuteStoreQuery<CheckQueue>("EXEC dbo.DequeueSubmitCheck").FirstOrDefault();
+        }
+
+        private ObjectContext ObjectContext => ((IObjectContextAdapter)this).ObjectContext;
     }
 }

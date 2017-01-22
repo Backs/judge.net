@@ -8,8 +8,7 @@ namespace Judge.Data.Mappings
     {
         public CheckQueueMapping()
         {
-            HasKey(o => o.Id);
-            Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            HasKey(o => o.SubmitResultId);
             Property(o => o.CreationDateUtc).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             ToTable("CheckQueue", "dbo");

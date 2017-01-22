@@ -7,7 +7,8 @@ using Microsoft.Practices.Unity;
 
 namespace Judge.Data
 {
-    public sealed class DataContainerExtension : UnityContainerExtension
+    public sealed class DataContainerExtension<T> : UnityContainerExtension
+        where T : LifetimeManager, new()
     {
         private readonly string _connectionString;
 
@@ -18,16 +19,16 @@ namespace Judge.Data
 
         protected override void Initialize()
         {
-            Container.RegisterType<DataContext>(new PerRequestLifetimeManager(), new InjectionConstructor(_connectionString));
+            Container.RegisterType<DataContext>(new T(), new InjectionConstructor(_connectionString));
 
-            Container.RegisterType<IUnitOfWorkFactory, UnitOfWorkFactory>(new PerRequestLifetimeManager());
+            Container.RegisterType<IUnitOfWorkFactory, UnitOfWorkFactory>(new T());
 
-            Container.RegisterType<IUserPasswordStore<User, long>, UserStore>(new PerRequestLifetimeManager());
-            Container.RegisterType<IUserStore<User, long>, UserStore>(new PerRequestLifetimeManager());
+            Container.RegisterType<IUserPasswordStore<User, long>, UserStore>(new T());
+            Container.RegisterType<IUserStore<User, long>, UserStore>(new T());
 
-            Container.RegisterType<ISubmitRepository, SubmitRepository>(new PerRequestLifetimeManager());
-            Container.RegisterType<ISubmitResultRepository, SubmitResultRepository>(new PerRequestLifetimeManager());
-            Container.RegisterType<ILanguageRepository, LanguageRepository>(new PerRequestLifetimeManager());
+            Container.RegisterType<ISubmitRepository, SubmitRepository>(new T());
+            Container.RegisterType<ISubmitResultRepository, SubmitResultRepository>(new T());
+            Container.RegisterType<ILanguageRepository, LanguageRepository>(new T());
         }
     }
 }
