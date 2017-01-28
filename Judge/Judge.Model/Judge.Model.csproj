@@ -57,6 +57,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CheckSolution\ITaskRepository.cs" />
+    <Compile Include="CheckSolution\Task.cs" />
     <Compile Include="Configuration\ILanguageRepository.cs" />
     <Compile Include="Entities\Language.cs" />
     <Compile Include="Entities\Contests\Contest.cs" />
@@ -76,9 +78,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CheckSolution\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
