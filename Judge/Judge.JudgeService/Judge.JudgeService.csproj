@@ -61,6 +61,10 @@
       <Project>{C21CFD2F-64C7-47E8-A088-275D0340F9D8}</Project>
       <Name>Judge.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Judge.Runner\Judge.Runner.csproj">
+      <Project>{C4868306-472A-445F-945E-903DCBE8C373}</Project>
+      <Name>Judge.Runner</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

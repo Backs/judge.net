@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using Judge.Compiler;
 using Judge.Model.CheckSolution;
 using Judge.Model.Configuration;
 using Judge.Model.Entities;
 using Judge.Model.SubmitSolution;
+using Judge.Runner;
 
 namespace Judge.JudgeService
 {
@@ -15,6 +17,7 @@ namespace Judge.JudgeService
 
         private readonly string _workingDirectory = ConfigurationManager.AppSettings["WorkingDirectory"];
         private readonly string _storagePath = ConfigurationManager.AppSettings["StoragePath"];
+        private readonly string _runnerPath = ConfigurationManager.AppSettings["RunnnerPath"];
 
         protected JudgeServiceBase(ILanguageRepository languageRepository, ITaskRepository taskRepository)
         {
@@ -22,7 +25,7 @@ namespace Judge.JudgeService
             _taskRepository = taskRepository;
         }
 
-        private void Compile(Language language, string fileName, string sourceCode)
+        private CompileResult Compile(Language language, string fileName, string sourceCode)
         {
             var compiler = new Compiler.Compiler
             {
@@ -31,12 +34,12 @@ namespace Judge.JudgeService
                 OutputFileTemplate = language.OutputFileTemplate
             };
 
-            var compileSource = new Compiler.CompileSource
+            var compileSource = new CompileSource
             {
                 FileName = fileName,
                 SourceCode = sourceCode
             };
-            compiler.Compile(compileSource, _workingDirectory);
+            return compiler.Compile(compileSource, _workingDirectory);
         }
 
         public void Check(SubmitResult submitResult)
@@ -48,26 +51,31 @@ namespace Judge.JudgeService
 
             if (language.IsCompilable)
             {
-                Compile(language, submitResult.Submit.FileName, submitResult.Submit.SourceCode);
-            }
+                var result = Compile(language, submitResult.Submit.FileName, submitResult.Submit.SourceCode);
 
-            Run(task);
+                Run(task, result.FileName);
+            }
         }
 
-        private void Run(Task task)
+        private void Run(Task task, string fileName)
         {
             var inputFiles = GetInputFiles(task);
 
             foreach (var input in inputFiles)
             {
-                Run(input);
+                Run(task, input, fileName);
             }
 
         }
 
-        private void Run(string input)
+        private RunResult Run(Task task, string input, string fileName)
         {
-            throw new System.NotImplementedException();
+            var runService = new RunService(_runnerPath, _workingDirectory);
+            var configuration = new Runner.Configuration(fileName, _workingDirectory, task.TimeLimitMilliseconds, task.MemoryLimitBytes);
+            configuration.InputFile = input;
+            configuration.OutputFile = "output.txt"; //TODO
+
+            return runService.Run(configuration);
         }
 
         private IEnumerable<string> GetInputFiles(Task task)
