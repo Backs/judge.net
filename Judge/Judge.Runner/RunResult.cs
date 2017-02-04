@@ -89,6 +89,9 @@ namespace Judge.Runner
             if (textStatus == "Crash")
                 return RunStatus.RuntimeError;
 
+            if (textStatus == "Idleness limit exceeded")
+                return RunStatus.IdlenessLimitExceeded;
+
             if (textStatus.StartsWith("Security violation"))
                 return RunStatus.SecurityViolation;
 

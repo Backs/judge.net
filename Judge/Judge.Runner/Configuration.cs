@@ -54,6 +54,9 @@ namespace Judge.Runner
             arguments.Add("-m");
             arguments.Add(MemoryLimitBytes / 1024 + "K");
 
+            arguments.Add("-y");
+            arguments.Add("1s");
+
             if (!string.IsNullOrWhiteSpace(Directory))
             {
                 arguments.Add("-d");

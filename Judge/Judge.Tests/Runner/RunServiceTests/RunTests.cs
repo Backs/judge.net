@@ -34,6 +34,19 @@ namespace Judge.Tests.Runner.RunServiceTests
         }
 
         [Test]
+        public void IdleSolutionTest()
+        {
+            var service = new RunService(_runnerPath, _workingDirectory);
+
+            var fileName = Path.Combine(TestContext.CurrentContext.TestDirectory, @"TestSolutions\IdleTest.exe");
+            var configuration = new Configuration(fileName, _workingDirectory, 100, 10 * 1024 * 1024);
+
+            var result = service.Run(configuration);
+
+            Assert.That(result.RunStatus, Is.EqualTo(RunStatus.IdlenessLimitExceeded));
+        }
+
+        [Test]
         public void MemoryLimitTest()
         {
             var service = new RunService(_runnerPath, _workingDirectory);
