@@ -1,4 +1,5 @@
 ﻿using Judge.Data.Repository;
+using Judge.Model.CheckSolution;
 using Judge.Model.Configuration;
 using Judge.Model.Entities;
 using Judge.Model.SubmitSolution;
@@ -29,6 +30,7 @@ namespace Judge.Data
             Container.RegisterType<ISubmitRepository, SubmitRepository>(new T());
             Container.RegisterType<ISubmitResultRepository, SubmitResultRepository>(new T());
             Container.RegisterType<ILanguageRepository, LanguageRepository>(new T());
+            Container.RegisterType<ITaskRepository, TaskRepository>(new T());
         }
     }
 }

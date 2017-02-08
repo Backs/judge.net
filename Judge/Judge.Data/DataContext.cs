@@ -23,6 +23,7 @@ namespace Judge.Data
             modelBuilder.Configurations.Add(new SubmitMapping());
             modelBuilder.Configurations.Add(new CheckQueueMapping());
             modelBuilder.Configurations.Add(new SubmitResultMapping());
+            modelBuilder.Configurations.Add(new TaskMapping());
         }
 
         public CheckQueue DequeueSubmitCheck()

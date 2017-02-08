@@ -10,7 +10,7 @@ using Judge.Runner;
 
 namespace Judge.JudgeService
 {
-    internal abstract class JudgeServiceBase : IJudgeService
+    internal sealed class JudgeServiceImplementation : IJudgeService
     {
         private readonly ILanguageRepository _languageRepository;
         private readonly ITaskRepository _taskRepository;
@@ -19,7 +19,7 @@ namespace Judge.JudgeService
         private readonly string _storagePath = ConfigurationManager.AppSettings["StoragePath"];
         private readonly string _runnerPath = ConfigurationManager.AppSettings["RunnnerPath"];
 
-        protected JudgeServiceBase(ILanguageRepository languageRepository, ITaskRepository taskRepository)
+        public JudgeServiceImplementation(ILanguageRepository languageRepository, ITaskRepository taskRepository)
         {
             _languageRepository = languageRepository;
             _taskRepository = taskRepository;
@@ -65,7 +65,6 @@ namespace Judge.JudgeService
             {
                 Run(task, input, fileName);
             }
-
         }
 
         private RunResult Run(Task task, string input, string fileName)
