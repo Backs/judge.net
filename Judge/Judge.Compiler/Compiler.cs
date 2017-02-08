@@ -27,7 +27,8 @@ namespace Judge.Compiler
             {
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
-                WorkingDirectory = workingDirectory
+                WorkingDirectory = workingDirectory,
+                CreateNoWindow = true
             };
 
             string output;

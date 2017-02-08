@@ -32,7 +32,8 @@ namespace Judge.Checker
             {
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
-                WorkingDirectory = workingDirectory
+                WorkingDirectory = workingDirectory,
+                CreateNoWindow = true
             };
 
             CheckStatus exitCode;
