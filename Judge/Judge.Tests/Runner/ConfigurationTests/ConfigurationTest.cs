@@ -23,7 +23,7 @@ namespace Judge.Tests.Runner.ConfigurationTests
                 OutputFile = "output.txt"
             };
 
-            var expected = "-i \"input.txt\" -o \"output.txt\" -t 1500ms -m 1234K -d \"c:\\temp\" -q -w -1 -Xacp \"main.exe\"";
+            var expected = "-i \"input.txt\" -o \"output.txt\" -t 1500ms -m 1234K -y 1s -d \"c:\\temp\" -q -w -1 -Xacp \"main.exe\"";
             Assert.That(configuration.ToString(), Is.EqualTo(expected));
         }
     }
