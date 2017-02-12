@@ -1,7 +1,10 @@
 ﻿CREATE TABLE [dbo].[Tasks]
 (
-    [Id] BIGINT NOT NULL PRIMARY KEY, 
+    [Id] BIGINT NOT NULL IDENTITY(1,1), 
     [TestsFolder] NVARCHAR(512) NOT NULL, 
     [TimeLimitMilliseconds] INT NOT NULL, 
-    [MemoryLimitBytes] INT NOT NULL
+    [MemoryLimitBytes] INT NOT NULL, 
+    [Name] NVARCHAR(256) NOT NULL,
+    CONSTRAINT [PK_Tasks] PRIMARY KEY CLUSTERED ([Id] ASC)
 )
+

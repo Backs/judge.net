@@ -1,10 +1,24 @@
-﻿namespace Judge.Model.CheckSolution
+﻿using System;
+
+namespace Judge.Model.CheckSolution
 {
     public sealed class Task
     {
-        public long Id { get; set; }
+        private string _name;
+        public long Id { get; private set; }
         public string TestsFolder { get; set; }
         public int TimeLimitMilliseconds { get; set; }
         public int MemoryLimitBytes { get; set; }
+
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException(nameof(value));
+                _name = value;
+            }
+        }
     }
 }

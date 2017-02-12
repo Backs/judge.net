@@ -12,7 +12,11 @@ namespace Judge.JudgeService
             var connectionString = ConfigurationManager.ConnectionStrings["DataBaseConnection"].ConnectionString;
             container.AddExtension(new DataContainerExtension<HierarchicalLifetimeManager>(connectionString));
 
-            var service = container.Resolve<JudgeServiceImplementation>();
+            container.RegisterType<IJudgeService, JudgeServiceImplementation>(new HierarchicalLifetimeManager());
+
+            var service = container.Resolve<CheckService>();
+
+            service.Check();
         }
     }
 }
