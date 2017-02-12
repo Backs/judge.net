@@ -61,11 +61,182 @@ namespace Judge.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Выделено памяти.
+        /// </summary>
+        public static string AllocatedMemory {
+            get {
+                return ResourceManager.GetString("AllocatedMemory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Автор.
+        /// </summary>
+        public static string Author {
+            get {
+                return ResourceManager.GetString("Author", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Дата.
+        /// </summary>
+        public static string Date {
+            get {
+                return ResourceManager.GetString("Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Войдите.
+        /// </summary>
+        public static string Enter {
+            get {
+                return ResourceManager.GetString("Enter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Время выполнения.
+        /// </summary>
+        public static string ExecutionTime {
+            get {
+                return ResourceManager.GetString("ExecutionTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Файл.
+        /// </summary>
+        public static string File {
+            get {
+                return ResourceManager.GetString("File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Язык.
+        /// </summary>
+        public static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to мегабайт.
+        /// </summary>
+        public static string Megabytes {
+            get {
+                return ResourceManager.GetString("Megabytes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ограничение по памяти.
+        /// </summary>
+        public static string MemoryLimit {
+            get {
+                return ResourceManager.GetString("MemoryLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Тестов пройдено.
+        /// </summary>
+        public static string PassedTests {
+            get {
+                return ResourceManager.GetString("PassedTests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Список задач.
         /// </summary>
         public static string ProblemsList {
             get {
                 return ResourceManager.GetString("ProblemsList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Результат.
+        /// </summary>
+        public static string Result {
+            get {
+                return ResourceManager.GetString("Result", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to секунд.
+        /// </summary>
+        public static string Seconds {
+            get {
+                return ResourceManager.GetString("Seconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Решение отправлено.
+        /// </summary>
+        public static string SolutionSubmited {
+            get {
+                return ResourceManager.GetString("SolutionSubmited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Решено.
+        /// </summary>
+        public static string Solved {
+            get {
+                return ResourceManager.GetString("Solved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Отправить решение.
+        /// </summary>
+        public static string SubmitSolution {
+            get {
+                return ResourceManager.GetString("SubmitSolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Задача.
+        /// </summary>
+        public static string Task {
+            get {
+                return ResourceManager.GetString("Task", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Название.
+        /// </summary>
+        public static string TaskName {
+            get {
+                return ResourceManager.GetString("TaskName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ограничение по времени.
+        /// </summary>
+        public static string TimeLimit {
+            get {
+                return ResourceManager.GetString("TimeLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to что бы отправлять решения.
+        /// </summary>
+        public static string ToSubmitSolutions {
+            get {
+                return ResourceManager.GetString("ToSubmitSolutions", resourceCulture);
             }
         }
     }

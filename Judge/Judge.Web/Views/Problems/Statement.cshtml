@@ -7,8 +7,8 @@
 
 <h2>@Model.Name</h2>
 
-<p>Ограничение по времени: @Model.TimeLimitSeconds.ToString("F2") секунд</p>
-<p>Ограничение по памяти: @Model.MemoryLimitMegabytes.ToString("F2") мегабайт</p>
+<p>@Resources.TimeLimit: @Model.TimeLimitSeconds.ToString("F2") @Resources.Seconds</p>
+<p>@Resources.MemoryLimit: @Model.MemoryLimitMegabytes.ToString("F2") @Resources.Megabytes</p>
 
 <div class="well well-sm">
     @Html.Raw(Markdown.ToHtml(Model.Statement))
@@ -25,6 +25,6 @@
 else
 {
     <div>
-        @Html.ActionLink("Войдите", "Login", "Account"), что бы отправлять решения
+        @Html.ActionLink(Resources.Enter, "Login", "Account"), @Resources.ToSubmitSolutions
     </div>
 }

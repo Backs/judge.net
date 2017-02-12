@@ -117,7 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Megabytes" xml:space="preserve">
+    <value>мегабайт</value>
+  </data>
+  <data name="MemoryLimit" xml:space="preserve">
+    <value>Ограничение по памяти</value>
+  </data>
   <data name="ProblemsList" xml:space="preserve">
     <value>Список задач</value>
+  </data>
+  <data name="Seconds" xml:space="preserve">
+    <value>секунд</value>
+  </data>
+  <data name="TimeLimit" xml:space="preserve">
+    <value>Ограничение по времени</value>
+  </data>
+  <data name="Enter" xml:space="preserve">
+    <value>Войдите</value>
+  </data>
+  <data name="ToSubmitSolutions" xml:space="preserve">
+    <value>что бы отправлять решения</value>
+  </data>
+  <data name="AllocatedMemory" xml:space="preserve">
+    <value>Выделено памяти</value>
+  </data>
+  <data name="Author" xml:space="preserve">
+    <value>Автор</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="ExecutionTime" xml:space="preserve">
+    <value>Время выполнения</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Язык</value>
+  </data>
+  <data name="PassedTests" xml:space="preserve">
+    <value>Тестов пройдено</value>
+  </data>
+  <data name="Result" xml:space="preserve">
+    <value>Результат</value>
+  </data>
+  <data name="Task" xml:space="preserve">
+    <value>Задача</value>
+  </data>
+  <data name="SubmitSolution" xml:space="preserve">
+    <value>Отправить решение</value>
+  </data>
+  <data name="SolutionSubmited" xml:space="preserve">
+    <value>Решение отправлено</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>Файл</value>
+  </data>
+  <data name="Solved" xml:space="preserve">
+    <value>Решено</value>
+  </data>
+  <data name="TaskName" xml:space="preserve">
+    <value>Название</value>
   </data>
 </root>

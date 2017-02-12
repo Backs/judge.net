@@ -4,14 +4,14 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Дата</th>
-                <th>Автор</th>
-                <th>Задача</th>
-                <th>Язык</th>
-                <th>Результат</th>
-                <th>Тестов пройдено</th>
-                <th>Время работы</th>
-                <th>Тестов пройдено</th>
+                <th>@Resources.Date</th>
+                <th>@Resources.Author</th>
+                <th>@Resources.Task</th>
+                <th>@Resources.Language</th>
+                <th>@Resources.Result</th>
+                <th>@Resources.PassedTests</th>
+                <th>@Resources.ExecutionTime</th>
+                <th>@Resources.AllocatedMemory</th>
             </tr>
         </thead>
         <tbody>
@@ -34,13 +34,13 @@
                         @item.ResultDescription
                     </td>
                     <td>
+                        @item.PassedTests
+                    </td>
+                    <td>
                         @item.TotalMilliseconds
                     </td>
                     <td>
                         @item.TotalBytes
-                    </td>
-                    <td>
-                        @item.PassedTests
                     </td>
                 </tr>
             }

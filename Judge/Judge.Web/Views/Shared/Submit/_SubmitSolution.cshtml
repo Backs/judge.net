@@ -1,33 +1,33 @@
 ﻿@model Judge.Application.ViewModels.Submit.SubmitSolutionViewModel
 
 @using (Ajax.BeginForm("SubmitSolution",
-    "Problems",
-    null,
-    new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "submit-container", InsertionMode = InsertionMode.ReplaceWith },
-    new { enctype = "multipart/form-data" }))
+                "Problems",
+                null,
+                new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "submit-container", InsertionMode = InsertionMode.ReplaceWith },
+                new { enctype = "multipart/form-data" }))
 {
     @Html.HiddenFor(o => o.ProblemId)
     <div class="panel panel-default">
-        <div class="panel-heading">Отправить решение</div>
+        <div class="panel-heading">@Resources.SubmitSolution</div>
         <div class="panel-body">
             <p>
-                Язык: @Html.DropDownListFor(
+                @Resources.Language: @Html.DropDownListFor(
                     o => o.SelectedLanguage,
                     Model.Languages.Select(o => new SelectListItem { Text = o.Name, Value = o.Id.ToString() }),
                     new { @class = "form-control" }
                     )
             </p>
             <p>
-                Файл: <input type="file" name="File" id="File" class="form-control" />
+                @Resources.File: <input type="file" name="File" id="File" class="form-control" />
                 @Html.ValidationMessageFor(o => o.File)
             </p>
             <p>
-                <input type="submit" value="Отправить решение" class="btn btn-success" />
+                <input type="submit" value="@Resources.SubmitSolution" class="btn btn-success" />
             </p>
             <p>
                 @if (Model.Success)
                 {
-                    <text>Решение отправлено</text>
+                    @Resources.SolutionSubmited
                 }
             </p>
         </div>
