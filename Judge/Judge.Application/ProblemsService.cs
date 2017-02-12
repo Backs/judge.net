@@ -41,15 +41,21 @@ namespace Judge.Application
 
         public StatementViewModel GetStatement(long id)
         {
-            return new StatementViewModel
+            using (var unitOfWork = _factory.GetUnitOfWork(transactionRequired: false))
             {
-                Id = id,
-                CreationDate = DateTime.Now,
-                MemoryLimitBytes = 1024 * 10 * 10,
-                Name = "Test" + id,
-                Statement = "**Statement**",
-                TimeLimitMilliseconds = 1000
-            };
+                var taskRepository = unitOfWork.GetRepository<ITaskRepository>();
+                var task = taskRepository.Get(id);
+
+                return new StatementViewModel
+                {
+                    Id = task.Id,
+                    CreationDate = task.CreationDateUtc,
+                    MemoryLimitBytes = task.MemoryLimitBytes,
+                    Name = task.Name,
+                    Statement = task.Statement,
+                    TimeLimitMilliseconds = task.TimeLimitMilliseconds
+                };
+            }
         }
     }
 }

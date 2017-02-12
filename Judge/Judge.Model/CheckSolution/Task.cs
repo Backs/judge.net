@@ -20,5 +20,8 @@ namespace Judge.Model.CheckSolution
                 _name = value;
             }
         }
+
+        public DateTime CreationDateUtc { get; private set; }
+        public string Statement { get; set; }
     }
 }

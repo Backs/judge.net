@@ -5,6 +5,8 @@
     [TimeLimitMilliseconds] INT NOT NULL, 
     [MemoryLimitBytes] INT NOT NULL, 
     [Name] NVARCHAR(256) NOT NULL,
+    [CreationDateUtc] DATETIME NOT NULL DEFAULT(GETUTCDATE()),
+    [Statement] NVARCHAR(MAX) NOT NULL,
     CONSTRAINT [PK_Tasks] PRIMARY KEY CLUSTERED ([Id] ASC)
 )
 
