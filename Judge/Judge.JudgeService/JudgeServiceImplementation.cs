@@ -87,7 +87,7 @@ namespace Judge.JudgeService
         {
             if (Directory.Exists(_workingDirectory))
             {
-                Directory.Delete(_workingDirectory);
+                Directory.Delete(_workingDirectory, true);
             }
             Directory.CreateDirectory(_workingDirectory);
         }
