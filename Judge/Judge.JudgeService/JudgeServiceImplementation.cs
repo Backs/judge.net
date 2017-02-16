@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using Judge.Compiler;
 using Judge.Model.CheckSolution;
 using Judge.Model.Configuration;
@@ -42,29 +43,53 @@ namespace Judge.JudgeService
             return compiler.Compile(compileSource, _workingDirectory);
         }
 
-        public void Check(SubmitResult submitResult)
+        public JudgeResult Check(SubmitResult submitResult)
         {
             CreateWorkingDirectory();
 
             var language = _languageRepository.Get(submitResult.Submit.LanguageId);
             var task = _taskRepository.Get(submitResult.Submit.ProblemId);
 
+            CompileResult compileResult;
             if (language.IsCompilable)
             {
-                var result = Compile(language, submitResult.Submit.FileName, submitResult.Submit.SourceCode);
-
-                Run(task, result.FileName);
+                compileResult = Compile(language, submitResult.Submit.FileName, submitResult.Submit.SourceCode);
             }
+            else
+            {
+                compileResult = CompileResult.Empty;
+            }
+
+            var results = Run(task, compileResult.FileName);
+
+            var lastRunResult = results.Last();
+            return new JudgeResult
+            {
+                CompileResult = compileResult,
+                RunStatus = lastRunResult.RunStatus,
+                Description = lastRunResult.Description,
+                Output = lastRunResult.Output,
+                TextStatus = lastRunResult.TextStatus,
+                PeakMemoryBytes = results.Max(o => o.PeakMemoryBytes),
+                TimeConsumedMilliseconds = results.Max(o => o.TimeConsumedMilliseconds)
+            };
         }
 
-        private void Run(Task task, string fileName)
+        private ICollection<RunResult> Run(Task task, string fileName)
         {
             var inputFiles = GetInputFiles(task);
+            var results = new List<RunResult>(10);
 
             foreach (var input in inputFiles)
             {
-                Run(task, input, fileName);
+                var runResult = Run(task, input, fileName);
+                results.Add(runResult);
+                if (runResult.RunStatus != RunStatus.Success)
+                {
+                    break;
+                }
             }
+            return results;
         }
 
         private RunResult Run(Task task, string input, string fileName)

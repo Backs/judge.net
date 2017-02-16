@@ -24,7 +24,7 @@ namespace Judge.Runner
             Quiet = false;
             ShowWindow = false;
             SingleCore = true;
-            AllowCreateProcesses = false;
+            AllowCreateProcesses = true;
         }
 
         public Configuration()

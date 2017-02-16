@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="CheckService.cs" />
     <Compile Include="IJudgeService.cs" />
+    <Compile Include="JudgeResult.cs" />
     <Compile Include="JudgeServiceImplementation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
