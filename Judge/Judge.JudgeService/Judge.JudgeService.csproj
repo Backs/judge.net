@@ -75,6 +75,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Judge.Checker\Judge.Checker.csproj">
+      <Project>{43482D0A-64C8-44E5-9048-D8050ADDE2C7}</Project>
+      <Name>Judge.Checker</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Judge.Compiler\Judge.Compiler.csproj">
       <Project>{E268F774-14BA-4AA7-96FC-15912E89B36F}</Project>
       <Name>Judge.Compiler</Name>

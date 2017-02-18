@@ -21,7 +21,12 @@ namespace Judge.JudgeService
                 var repository = unitOfWork.GetRepository<ISubmitResultRepository>();
                 var submit = repository.DequeueUnchecked();
 
-                _service.Check(submit);
+                var result = _service.Check(submit);
+
+                submit.PassedTests = result.PassedTests;
+                submit.TotalBytes = result.PeakMemoryBytes;
+                submit.TotalMilliseconds = result.TimeConsumedMilliseconds;
+                submit.Status = result.GetStatus();
             }
         }
     }

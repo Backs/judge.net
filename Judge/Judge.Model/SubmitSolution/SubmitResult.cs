@@ -4,7 +4,7 @@
     {
         private SubmitResult()
         {
-            
+
         }
         public SubmitResult(Submit submit)
         {
@@ -14,7 +14,7 @@
         }
 
         public long Id { get; private set; }
-        public SubmitStatus Status { get; private set; }
+        public SubmitStatus Status { get; set; }
         public CheckQueue CheckQueue { get; private set; }
         public Submit Submit { get; private set; }
         public int? PassedTests { get; set; }

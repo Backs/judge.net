@@ -2,12 +2,14 @@
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using Judge.Checker;
 using Judge.Compiler;
 using Judge.Model.CheckSolution;
 using Judge.Model.Configuration;
 using Judge.Model.Entities;
 using Judge.Model.SubmitSolution;
 using Judge.Runner;
+using Configuration = Judge.Runner.Configuration;
 
 namespace Judge.JudgeService
 {
@@ -71,7 +73,8 @@ namespace Judge.JudgeService
                 Output = lastRunResult.Output,
                 TextStatus = lastRunResult.TextStatus,
                 PeakMemoryBytes = results.Max(o => o.PeakMemoryBytes),
-                TimeConsumedMilliseconds = results.Max(o => o.TimeConsumedMilliseconds)
+                TimeConsumedMilliseconds = results.Max(o => o.TimeConsumedMilliseconds),
+                PassedTests = results.Count(o => o.RunStatus == RunStatus.Success)
             };
         }
 
@@ -79,7 +82,6 @@ namespace Judge.JudgeService
         {
             var inputFiles = GetInputFiles(task);
             var results = new List<RunResult>(10);
-
             foreach (var input in inputFiles)
             {
                 var runResult = Run(task, input, fileName);
@@ -99,7 +101,21 @@ namespace Judge.JudgeService
             configuration.InputFile = input;
             configuration.OutputFile = "output.txt"; //TODO
 
-            return runService.Run(configuration);
+            var runResult = runService.Run(configuration);
+
+            if (runResult.RunStatus == RunStatus.Success)
+            {
+                var checkAnswerResult = CheckAnswer(configuration);
+            }
+
+            return runResult;
+        }
+
+        private CheckResult CheckAnswer(Configuration configuration)
+        {
+            var checker = new Checker.Checker();
+            string answerFileName = configuration.InputFile + ".a";
+            return checker.Check(_workingDirectory, configuration.InputFile, configuration.OutputFile, answerFileName);
         }
 
         private IEnumerable<string> GetInputFiles(Task task)
