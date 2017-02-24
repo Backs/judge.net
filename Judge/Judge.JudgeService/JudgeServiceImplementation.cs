@@ -74,19 +74,20 @@ namespace Judge.JudgeService
                 TextStatus = lastRunResult.TextStatus,
                 PeakMemoryBytes = results.Max(o => o.PeakMemoryBytes),
                 TimeConsumedMilliseconds = results.Max(o => o.TimeConsumedMilliseconds),
-                PassedTests = results.Count(o => o.RunStatus == RunStatus.Success)
+                TestRunsCount = results.Count(o => o.RunStatus == RunStatus.Success),
+                CheckStatus = lastRunResult.CheckStatus
             };
         }
 
-        private ICollection<RunResult> Run(Task task, string fileName)
+        private ICollection<SubmitRunResult> Run(Task task, string fileName)
         {
             var inputFiles = GetInputFiles(task);
-            var results = new List<RunResult>(10);
+            var results = new List<SubmitRunResult>(10);
             foreach (var input in inputFiles)
             {
                 var runResult = Run(task, input, fileName);
                 results.Add(runResult);
-                if (runResult.RunStatus != RunStatus.Success)
+                if (!runResult.RunSuccess)
                 {
                     break;
                 }
@@ -94,21 +95,35 @@ namespace Judge.JudgeService
             return results;
         }
 
-        private RunResult Run(Task task, string input, string fileName)
+        private SubmitRunResult Run(Task task, string input, string fileName)
         {
             var runService = new RunService(_runnerPath, _workingDirectory);
-            var configuration = new Runner.Configuration(fileName, _workingDirectory, task.TimeLimitMilliseconds, task.MemoryLimitBytes);
+            var configuration = new Configuration(fileName, _workingDirectory, task.TimeLimitMilliseconds,
+                task.MemoryLimitBytes);
             configuration.InputFile = input;
             configuration.OutputFile = "output.txt"; //TODO
 
             var runResult = runService.Run(configuration);
 
+            var result = new SubmitRunResult
+            {
+                Description = runResult.Description,
+                Output = runResult.Output,
+                PeakMemoryBytes = runResult.PeakMemoryBytes,
+                RunStatus = runResult.RunStatus,
+                TextStatus = runResult.TextStatus,
+                TimeConsumedMilliseconds = runResult.TimeConsumedMilliseconds,
+                TimePassedMilliseconds = runResult.TimePassedMilliseconds
+            };
+
             if (runResult.RunStatus == RunStatus.Success)
             {
                 var checkAnswerResult = CheckAnswer(configuration);
+                result.CheckMessage = checkAnswerResult.Message;
+                result.CheckStatus = checkAnswerResult.CheckStatus;
             }
 
-            return runResult;
+            return result;
         }
 
         private CheckResult CheckAnswer(Configuration configuration)

@@ -1,4 +1,6 @@
-﻿using Judge.Compiler;
+﻿using System;
+using Judge.Checker;
+using Judge.Compiler;
 using Judge.Model.SubmitSolution;
 using Judge.Runner;
 
@@ -13,7 +15,8 @@ namespace Judge.JudgeService
         public string TextStatus { get; set; }
         public string Description { get; set; }
         public string Output { get; set; }
-        public int PassedTests { get; set; }
+        public int TestRunsCount { get; set; }
+        public CheckStatus CheckStatus { get; set; }
 
         public SubmitStatus GetStatus()
         {
@@ -21,8 +24,38 @@ namespace Judge.JudgeService
             {
                 return SubmitStatus.CompilationError;
             }
+            switch (RunStatus)
+            {
+                case RunStatus.TimeLimitExceeded:
+                    return SubmitStatus.TimeLimitExceeded;
+                case RunStatus.MemoryLimitExceeded:
+                    return SubmitStatus.MemoryLimitExceeded;
+                case RunStatus.SecurityViolation:
+                    return SubmitStatus.RuntimeError;
+                case RunStatus.RuntimeError:
+                    return SubmitStatus.RuntimeError;
+                case RunStatus.InvocationFailed:
+                    return SubmitStatus.ServerError;
+                case RunStatus.IdlenessLimitExceeded:
+                    return SubmitStatus.TimeLimitExceeded;
+                case RunStatus.Success:
+                    return GetCheckStatus();
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
 
-            return SubmitStatus.WrongAnswer;
+        private SubmitStatus GetCheckStatus()
+        {
+            switch (CheckStatus)
+            {
+                case CheckStatus.OK:
+                    return SubmitStatus.Accepted;
+                case CheckStatus.Fail:
+                    return SubmitStatus.ServerError;
+                default:
+                    return SubmitStatus.WrongAnswer;
+            }
         }
     }
 }
