@@ -20,5 +20,8 @@
         public int? PassedTests { get; set; }
         public int? TotalBytes { get; set; }
         public int? TotalMilliseconds { get; set; }
+        public string CompileOutput { get; set; }
+        public string RunDescription { get; set; }
+        public string RunOutput { get; set; }
     }
 }

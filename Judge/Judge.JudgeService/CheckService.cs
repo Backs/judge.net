@@ -23,10 +23,14 @@ namespace Judge.JudgeService
 
                 var result = _service.Check(submit);
 
-                submit.PassedTests = result.TestRunsCount;
+                submit.PassedTests = result.TestsPassedCount;
                 submit.TotalBytes = result.PeakMemoryBytes;
                 submit.TotalMilliseconds = result.TimeConsumedMilliseconds;
                 submit.Status = result.GetStatus();
+                submit.CompileOutput = result.CompileResult.Output;
+                submit.RunDescription = result.Description;
+                submit.RunOutput = result.Output;
+
             }
         }
     }

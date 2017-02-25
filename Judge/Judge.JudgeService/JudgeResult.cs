@@ -16,6 +16,7 @@ namespace Judge.JudgeService
         public string Description { get; set; }
         public string Output { get; set; }
         public int TestRunsCount { get; set; }
+        public int TestsPassedCount => GetStatus() == SubmitStatus.Accepted ? TestRunsCount : TestRunsCount - 1;
         public CheckStatus CheckStatus { get; set; }
 
         public SubmitStatus GetStatus()
