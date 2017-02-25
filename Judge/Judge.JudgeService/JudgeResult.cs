@@ -18,6 +18,7 @@ namespace Judge.JudgeService
         public int TestRunsCount { get; set; }
         public int TestsPassedCount => GetStatus() == SubmitStatus.Accepted ? TestRunsCount : TestRunsCount - 1;
         public CheckStatus CheckStatus { get; set; }
+        public int TimePassedMilliseconds { get; set; }
 
         public SubmitStatus GetStatus()
         {

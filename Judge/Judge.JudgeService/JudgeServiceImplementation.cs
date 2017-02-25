@@ -76,6 +76,9 @@ namespace Judge.JudgeService
             var results = Run(task, compileResult.FileName);
 
             var lastRunResult = results.Last();
+
+            RemoveWorkingDirectory();
+
             return new JudgeResult
             {
                 CompileResult = compileResult,
@@ -85,9 +88,18 @@ namespace Judge.JudgeService
                 TextStatus = lastRunResult.TextStatus,
                 PeakMemoryBytes = results.Max(o => o.PeakMemoryBytes),
                 TimeConsumedMilliseconds = results.Max(o => o.TimeConsumedMilliseconds),
+                TimePassedMilliseconds = results.Max(o => o.TimePassedMilliseconds),
                 TestRunsCount = results.Count(o => o.RunStatus == RunStatus.Success),
                 CheckStatus = lastRunResult.CheckStatus
             };
+        }
+
+        private void RemoveWorkingDirectory()
+        {
+            if (Directory.Exists(_workingDirectory))
+            {
+                Directory.Delete(_workingDirectory, true);
+            }
         }
 
         private ICollection<SubmitRunResult> Run(Task task, string fileName)
@@ -152,10 +164,7 @@ namespace Judge.JudgeService
 
         private void CreateWorkingDirectory()
         {
-            if (Directory.Exists(_workingDirectory))
-            {
-                Directory.Delete(_workingDirectory, true);
-            }
+            RemoveWorkingDirectory();
             Directory.CreateDirectory(_workingDirectory);
         }
     }
