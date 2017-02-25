@@ -45,6 +45,15 @@ namespace Judge.JudgeService
             return compiler.Compile(compileSource, _workingDirectory);
         }
 
+        private void CopyChecker(Task task)
+        {
+            var path = Path.Combine(_storagePath, task.TestsFolder, "check.exe");
+            if (File.Exists(path))
+            {
+                File.Copy(path, Path.Combine(_workingDirectory, "check.exe"));
+            }
+        }
+
         public JudgeResult Check(SubmitResult submitResult)
         {
             CreateWorkingDirectory();
@@ -61,6 +70,8 @@ namespace Judge.JudgeService
             {
                 compileResult = CompileResult.Empty;
             }
+
+            CopyChecker(task);
 
             var results = Run(task, compileResult.FileName);
 

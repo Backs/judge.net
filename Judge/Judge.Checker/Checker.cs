@@ -43,8 +43,8 @@ namespace Judge.Checker
             {
                 p.Start();
 
-                message = p.StandardOutput.ReadToEnd();
                 p.WaitForExit(30 * 1000);
+                message = p.StandardOutput.ReadToEnd();
                 exitCode = (CheckStatus)p.ExitCode;
             }
 
