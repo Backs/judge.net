@@ -1,4 +1,6 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
+using System.Threading;
 using Judge.Data;
 using Microsoft.Practices.Unity;
 
@@ -16,7 +18,17 @@ namespace Judge.JudgeService
 
             var service = container.Resolve<CheckService>();
 
-            service.Check();
+            Console.WriteLine("Press any key to exit...");
+
+            while (true)
+            {
+                service.Check();
+
+                if (Console.KeyAvailable)
+                    break;
+
+                Thread.Sleep(TimeSpan.FromSeconds(1));
+            }
         }
     }
 }

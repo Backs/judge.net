@@ -20,6 +20,8 @@ namespace Judge.JudgeService
             {
                 var repository = unitOfWork.GetRepository<ISubmitResultRepository>();
                 var submit = repository.DequeueUnchecked();
+                if (submit == null)
+                    return;
 
                 var result = _service.Check(submit);
 
