@@ -140,6 +140,7 @@ publish/
 #*.pubxml
 
 *.publishproj
+!Judge.Database.publish.xml
 
 # NuGet Packages
 *.nupkg
