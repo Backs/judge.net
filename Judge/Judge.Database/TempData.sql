@@ -1,4 +1,5 @@
 ﻿USE [Judge]
+SET IDENTITY_INSERT [dbo].[Languages] ON
 GO
 INSERT [dbo].[Languages] ([Id], [Name], [Description], [IsCompilable], [CompilerPath], [CompilerOptionsTemplate], [OutputFileTemplate], [RunStringFormat], [IsHidden]) VALUES (1, N'C++', N'C++', 1, NULL, NULL, NULL, N'asd', 0)
 GO
