@@ -31,6 +31,7 @@ namespace Judge.JudgeService
                 submit.RunDescription = result.Description;
                 submit.RunOutput = result.Output;
 
+                unitOfWork.Commit();
             }
         }
     }

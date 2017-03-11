@@ -45,14 +45,13 @@ namespace Judge.Application
                 sourceCode = sr.ReadToEnd();
             }
 
-            var submit = new Submit
-            {
-                ProblemId = problemId,
-                LanguageId = selectedLanguage,
-                UserId = userId,
-                FileName = file.FileName,
-                SourceCode = sourceCode
-            };
+            var submit = Submit.Create();
+
+            submit.ProblemId = problemId;
+            submit.LanguageId = selectedLanguage;
+            submit.UserId = userId;
+            submit.FileName = file.FileName;
+            submit.SourceCode = sourceCode;
 
             using (var unitOfWork = _factory.GetUnitOfWork(true))
             {

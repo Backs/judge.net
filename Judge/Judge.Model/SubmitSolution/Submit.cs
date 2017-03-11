@@ -5,10 +5,16 @@ namespace Judge.Model.SubmitSolution
 {
     public sealed class Submit
     {
-        public Submit()
+        private Submit()
         {
             Results = new HashSet<SubmitResult>();
-            Results.Add(new SubmitResult(this));
+        }
+
+        public static Submit Create()
+        {
+            var submit = new Submit();
+            submit.Results.Add(new SubmitResult(submit));
+            return submit;
         }
 
         public long UserId { get; set; }

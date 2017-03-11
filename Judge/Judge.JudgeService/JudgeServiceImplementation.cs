@@ -121,8 +121,7 @@ namespace Judge.JudgeService
         private SubmitRunResult Run(Task task, string input, string fileName)
         {
             var runService = new RunService(_runnerPath, _workingDirectory);
-            var configuration = new Configuration(fileName, _workingDirectory, task.TimeLimitMilliseconds,
-                task.MemoryLimitBytes);
+            var configuration = new Configuration(fileName, _workingDirectory, task.TimeLimitMilliseconds, task.MemoryLimitBytes);
             configuration.InputFile = input;
             configuration.OutputFile = "output.txt"; //TODO
 
