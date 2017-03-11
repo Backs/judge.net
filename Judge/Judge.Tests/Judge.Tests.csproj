@@ -62,6 +62,10 @@
       <HintPath>..\packages\NUnit.3.6.0\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Rhino.Mocks, Version=3.6.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <HintPath>..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Transactions" />
@@ -75,6 +79,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Application\SubmitQueueServiceTests\GetSubmitQueueTests.cs" />
     <Compile Include="Checker\CheckerTests\CheckTests.cs" />
     <Compile Include="Compiler\CompilerTests\CompileTests.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -84,7 +89,9 @@
     <Compile Include="Runner\ConfigurationTests\ConfigurationTest.cs" />
     <Compile Include="Runner\RunResultTests\ParseTests.cs" />
     <Compile Include="Runner\RunServiceTests\RunTests.cs" />
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="TestSolutions\ABCE.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -94,6 +101,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Judge.Application\Judge.Application.csproj">
+      <Project>{8BF0D341-6664-43CA-A31E-7EDF6334E449}</Project>
+      <Name>Judge.Application</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Judge.Checker\Judge.Checker.csproj">
       <Project>{43482D0A-64C8-44E5-9048-D8050ADDE2C7}</Project>
       <Name>Judge.Checker</Name>

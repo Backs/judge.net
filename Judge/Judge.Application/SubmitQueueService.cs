@@ -30,7 +30,7 @@ namespace Judge.Application
                 var items = submits.Select(o => new SubmitQueueItem
                 {
                     Language = languages[o.Submit.LanguageId],
-                    PassedTests = o.PassedTests,
+                    PassedTests = o.Status == SubmitStatus.Accepted ? null : o.PassedTests,
                     ProblemId = o.Submit.ProblemId,
                     ProblemName = "problem name", //TODO
                     Status = o.Status,
