@@ -6,6 +6,8 @@ namespace Judge.Model.SubmitSolution
     {
         IEnumerable<SubmitResult> GetLastSubmits(long? userId, long? problemId, int count);
 
+        IEnumerable<long> GetSolvedProblems(IEnumerable<long> problems);
+
         SubmitResult DequeueUnchecked();
     }
 }

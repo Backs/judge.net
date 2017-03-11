@@ -18,5 +18,8 @@ namespace Judge.Application.ViewModels.Submit
         public int? PassedTests { get; set; }
 
         public string ResultDescription => $"{Status}";
+
+        public string ExecutionTime => (TotalMilliseconds / 1000f)?.ToString("F3");
+        public string AllocatedMemory => (TotalBytes / (1024f * 1024f))?.ToString("F3");
     }
 }

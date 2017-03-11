@@ -32,6 +32,17 @@ namespace Judge.Data.Repository
             return query.Include(o => o.Submit).AsEnumerable();
         }
 
+        //TODO: domain service method
+        public IEnumerable<long> GetSolvedProblems(IEnumerable<long> problems)
+        {
+            return _context.Set<SubmitResult>()
+                .Where(o => problems.Contains(o.Submit.ProblemId))
+                .Where(o => o.Status == SubmitStatus.Accepted)
+                .Select(o => o.Submit.ProblemId)
+                .Distinct()
+                .AsEnumerable();
+        }
+
         public SubmitResult DequeueUnchecked()
         {
             var check = _context.DequeueSubmitCheck();

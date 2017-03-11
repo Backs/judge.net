@@ -139,7 +139,7 @@
     <value>что бы отправлять решения</value>
   </data>
   <data name="AllocatedMemory" xml:space="preserve">
-    <value>Выделено памяти</value>
+    <value>Выделено памяти, МБ</value>
   </data>
   <data name="Author" xml:space="preserve">
     <value>Автор</value>
@@ -148,7 +148,7 @@
     <value>Дата</value>
   </data>
   <data name="ExecutionTime" xml:space="preserve">
-    <value>Время выполнения</value>
+    <value>Время выполнения, с</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Язык</value>

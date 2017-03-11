@@ -61,7 +61,7 @@ namespace Judge.Web {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Выделено памяти.
+        ///   Looks up a localized string similar to Выделено памяти, МБ.
         /// </summary>
         public static string AllocatedMemory {
             get {
@@ -97,7 +97,7 @@ namespace Judge.Web {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Время выполнения.
+        ///   Looks up a localized string similar to Время выполнения, с.
         /// </summary>
         public static string ExecutionTime {
             get {

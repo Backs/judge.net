@@ -7,8 +7,8 @@
 
 <h2>@Model.Name</h2>
 
-<p>@Resources.TimeLimit: @Model.TimeLimitSeconds.ToString("F2") @Resources.Seconds</p>
-<p>@Resources.MemoryLimit: @Model.MemoryLimitMegabytes.ToString("F2") @Resources.Megabytes</p>
+<p>@Resources.TimeLimit: @Model.TimeLimitSeconds.ToString("F3") @Resources.Seconds</p>
+<p>@Resources.MemoryLimit: @Model.MemoryLimitMegabytes.ToString("F3") @Resources.Megabytes</p>
 
 <div class="well well-sm">
     @Html.Raw(Markdown.ToHtml(Model.Statement))

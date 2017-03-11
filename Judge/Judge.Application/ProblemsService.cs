@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Judge.Application.Interfaces;
 using Judge.Application.ViewModels.Problems.ProblemsList;
 using Judge.Application.ViewModels.Problems.Statement;
 using Judge.Data;
 using Judge.Model.CheckSolution;
+using Judge.Model.SubmitSolution;
 
 namespace Judge.Application
 {
@@ -27,12 +29,21 @@ namespace Judge.Application
             using (var unitOfWork = _factory.GetUnitOfWork(transactionRequired: false))
             {
                 var taskRepository = unitOfWork.GetRepository<ITaskRepository>();
+                var submitResultRepository = unitOfWork.GetRepository<ISubmitResultRepository>();
+
                 var tasks = taskRepository.GetTaskList(page, pageSize)
                     .Select(o => new ProblemItem
                     {
                         Id = o.Id,
                         Name = o.Name
-                    });
+                    }).ToArray();
+
+                var statuses = new HashSet<long>(submitResultRepository.GetSolvedProblems(tasks.Select(o => o.Id)));
+
+                foreach (var item in tasks)
+                {
+                    item.Solved = statuses.Contains(item.Id);
+                }
 
                 return new ProblemsListViewModel(tasks);
 
