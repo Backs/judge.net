@@ -5,21 +5,31 @@ namespace Judge.Application.ViewModels.Submit
 {
     public sealed class SubmitQueueItem
     {
-        public DateTime SubmitTime { get; set; }
-        public long SubmitResultId { get; set; }
-        public SubmitStatus Status { get; set; }
-        public long ProblemId { get; set; }
-        public string ProblemName { get; set; }
-        public long UserId { get; set; }
-        public string UserName { get; set; }
-        public string Language { get; set; }
-        public int? TotalMilliseconds { get; set; }
-        public int? TotalBytes { get; set; }
-        public int? PassedTests { get; set; }
+        public SubmitQueueItem(SubmitResult submitResult, string language)
+        {
+            Language = language;
+            PassedTests = submitResult.PassedTests;
+            ProblemId = submitResult.Submit.ProblemId;
+            ProblemName = "problem name"; //TODO
+            ResultDescription = submitResult.Status.ToString();
+            SubmitResultId = submitResult.Id;
+            SubmitTime = submitResult.Submit.SubmitDateUtc;
+            AllocatedMemory = (submitResult.TotalBytes / (1024f * 1024f))?.ToString("F3");
+            ExecutionTime = (submitResult.TotalMilliseconds / 1000f)?.ToString("F3");
+            UserId = submitResult.Submit.UserId;
+            UserName = "user name"; //TODO
+        }
 
-        public string ResultDescription => $"{Status}";
-
-        public string ExecutionTime => (TotalMilliseconds / 1000f)?.ToString("F3");
-        public string AllocatedMemory => (TotalBytes / (1024f * 1024f))?.ToString("F3");
+        public DateTime SubmitTime { get; }
+        public long SubmitResultId { get; }
+        public long ProblemId { get; }
+        public string ProblemName { get; }
+        public long UserId { get; }
+        public string UserName { get; }
+        public string Language { get; }
+        public int? PassedTests { get; }
+        public string ResultDescription { get; }
+        public string ExecutionTime { get; }
+        public string AllocatedMemory { get; }
     }
 }

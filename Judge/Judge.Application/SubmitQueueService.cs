@@ -27,20 +27,7 @@ namespace Judge.Application
 
                 var submits = submitResultRepository.GetLastSubmits(userId, problemId, 10);
 
-                var items = submits.Select(o => new SubmitQueueItem
-                {
-                    Language = languages[o.Submit.LanguageId],
-                    PassedTests = o.Status == SubmitStatus.Accepted ? null : o.PassedTests,
-                    ProblemId = o.Submit.ProblemId,
-                    ProblemName = "problem name", //TODO
-                    Status = o.Status,
-                    SubmitResultId = o.Id,
-                    SubmitTime = o.Submit.SubmitDateUtc,
-                    TotalBytes = o.TotalBytes,
-                    TotalMilliseconds = o.TotalMilliseconds,
-                    UserId = o.Submit.UserId,
-                    UserName = "user name" //TODO
-                });
+                var items = submits.Select(o => new SubmitQueueItem(o, languages[o.Submit.LanguageId]));
 
                 var model = new SubmitQueueViewModel(items);
 
