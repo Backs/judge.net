@@ -25,6 +25,6 @@
 else
 {
     <div>
-        @Html.ActionLink(Resources.Enter, "Login", "Account"), @Resources.ToSubmitSolutions
+        @Html.ActionLink(Resources.Enter, "Login", "Account", new { returnUrl = Request.Url.ToString() }, null), @Resources.ToSubmitSolutions
     </div>
 }

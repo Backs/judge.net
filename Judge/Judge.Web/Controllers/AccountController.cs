@@ -14,8 +14,9 @@ namespace Judge.Web.Controllers
             _securityService = securityService;
         }
 
-        public ActionResult Login()
+        public ActionResult Login(string returnUrl)
         {
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
@@ -67,7 +68,7 @@ namespace Judge.Web.Controllers
 
         private ActionResult RedirectToLocal(string returnUrl)
         {
-            if (Url.IsLocalUrl(returnUrl))
+            if (returnUrl != null)
             {
                 return Redirect(returnUrl);
             }
