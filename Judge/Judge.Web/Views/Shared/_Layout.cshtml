@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Judge.NET</title>
+    <title>@(ViewBag.Title != null ? ViewBag.Title + " - " : null)Judge.NET</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -24,7 +24,7 @@
                     <li>@Html.ActionLink(Resources.ProblemsList, "Index", "Problems")</li>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink("LogOut", "Logout", "Account")</li>
+                        <li>@Html.ActionLink(Resources.LogOut, "Logout", "Account")</li>
                     }
                 </ul>
             </div>

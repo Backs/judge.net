@@ -1,9 +1,9 @@
 ﻿@model Judge.Application.ViewModels.Account.RegisterViewModel
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = Resources.Registration;
 }
 
-<h2>Регистрация</h2>
+<h2>@Resources.Registration</h2>
 
 <section>
     @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
@@ -26,7 +26,7 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Зарегистрироваться" class="btn btn-default" />
+                <input type="submit" value="@Resources.Register" class="btn btn-default" />
             </div>
         </div>
     }

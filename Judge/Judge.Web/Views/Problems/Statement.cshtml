@@ -18,7 +18,7 @@
     <div id="submit-container">
         @Html.Action("SubmitSolution", new { problemId = Model.Id })
     </div>
-    <div>
+    <div id="submit-queue">
         @Html.Action("UserSubmitQueue", "Submit", new { problemId = Model.Id })
     </div>
 }
@@ -27,4 +27,13 @@ else
     <div>
         @Html.ActionLink(Resources.Enter, "Login", "Account", new { returnUrl = Request.Url.ToString() }, null), @Resources.ToSubmitSolutions
     </div>
+}
+
+@section scripts{
+    <script type="text/javascript">
+        $(function() {
+            setInterval(function() {
+                $('#submit-queue').load('/Submit/UserSubmitQueue', {problemId : @Model.Id}); }, 3000); // every 3 sec
+        });
+    </script>
 }
