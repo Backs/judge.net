@@ -186,4 +186,7 @@
   <data name="Registration" xml:space="preserve">
     <value>Регистрация</value>
   </data>
+  <data name="Close" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
 </root>

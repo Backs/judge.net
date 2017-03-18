@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System.Security.Authentication;
+using System.Web;
+using System.Web.Mvc;
 using Judge.Application.Interfaces;
 using Judge.Application.ViewModels.Submit;
 using Microsoft.AspNet.Identity;
@@ -9,7 +11,7 @@ namespace Judge.Web.Controllers
     {
         private readonly IProblemsService _problemsService;
         private readonly ISubmitSolutionService _submitSolutionService;
-        
+
         public ProblemsController(IProblemsService problemsService, ISubmitSolutionService submitSolutionService)
         {
             _problemsService = problemsService;
@@ -53,6 +55,22 @@ namespace Judge.Web.Controllers
             model.Languages = _submitSolutionService.GetLanguages();
 
             return PartialView("Submit/_SubmitSolution", model);
+        }
+
+        [Authorize]
+        public ActionResult Solution(long submitId)
+        {
+            var userId = User.Identity.GetUserId<long>();
+
+            try
+            {
+                var model = _submitSolutionService.GetSolution(submitId, userId);
+                return View(model);
+            }
+            catch (AuthenticationException)
+            {
+                throw new HttpException(401, "AuthenticationException");
+            }
         }
     }
 }

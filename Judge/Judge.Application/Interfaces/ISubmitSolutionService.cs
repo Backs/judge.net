@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Web;
+using Judge.Application.ViewModels.Problems.Solution;
 using Judge.Application.ViewModels.Submit;
 
 namespace Judge.Application.Interfaces
@@ -8,5 +9,6 @@ namespace Judge.Application.Interfaces
     {
         IEnumerable<LanguageViewModel> GetLanguages();
         void SubmitSolution(long problemId, int selectedLanguage, HttpPostedFileBase file, long userId);
+        SolutionViewModel GetSolution(long submitId, long userId);
     }
 }

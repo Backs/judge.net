@@ -3,5 +3,6 @@
     public interface ISubmitRepository
     {
         void Add(Submit item);
+        Submit Get(long submitId);
     }
 }

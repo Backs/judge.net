@@ -144,6 +144,7 @@
     <Compile Include="ViewModels\PagingViewModel.cs" />
     <Compile Include="ViewModels\Problems\ProblemsList\ProblemItem.cs" />
     <Compile Include="ViewModels\Problems\ProblemsList\ProblemsListViewModel.cs" />
+    <Compile Include="ViewModels\Problems\Solution\SolutionViewModel.cs" />
     <Compile Include="ViewModels\Problems\Statement\StatementViewModel.cs" />
     <Compile Include="ViewModels\Submit\LanguageViewModel.cs" />
     <Compile Include="ViewModels\Submit\SubmitQueueItem.cs" />

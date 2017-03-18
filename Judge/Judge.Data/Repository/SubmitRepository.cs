@@ -1,4 +1,5 @@
-﻿using Judge.Model.SubmitSolution;
+﻿using System.Linq;
+using Judge.Model.SubmitSolution;
 
 namespace Judge.Data.Repository
 {
@@ -14,6 +15,11 @@ namespace Judge.Data.Repository
         public void Add(Submit item)
         {
             _context.Set<Submit>().Add(item);
+        }
+
+        public Submit Get(long submitId)
+        {
+            return _context.Set<Submit>().AsNoTracking().FirstOrDefault(o => o.Id == submitId);
         }
     }
 }

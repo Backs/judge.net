@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Authentication;
 using System.Web;
 using Judge.Application.Interfaces;
+using Judge.Application.ViewModels.Problems.Solution;
 using Judge.Application.ViewModels.Submit;
 using Judge.Data;
+using Judge.Model.CheckSolution;
 using Judge.Model.Configuration;
 using Judge.Model.SubmitSolution;
 
@@ -58,6 +61,30 @@ namespace Judge.Application
                 var submitRepository = unitOfWork.GetRepository<ISubmitRepository>();
                 submitRepository.Add(submit);
                 unitOfWork.Commit();
+            }
+        }
+
+        public SolutionViewModel GetSolution(long submitId, long userId)
+        {
+            using (var unitOfWork = _factory.GetUnitOfWork(false))
+            {
+                var submitRepository = unitOfWork.GetRepository<ISubmitRepository>();
+                var taskRepository = unitOfWork.GetRepository<ITaskRepository>();
+
+                var submit = submitRepository.Get(submitId);
+                if (submit.UserId != userId)
+                {
+                    throw new AuthenticationException();
+                }
+
+                var problem = taskRepository.Get(submit.ProblemId);
+
+                return new SolutionViewModel
+                {
+                    ProblemId = submit.ProblemId,
+                    SourceCode = submit.SourceCode,
+                    ProblemName = problem.Name
+                };
             }
         }
     }

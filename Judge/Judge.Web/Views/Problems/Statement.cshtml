@@ -10,9 +10,28 @@
 <p>@Resources.TimeLimit: @Model.TimeLimitSeconds.ToString("F3") @Resources.Seconds</p>
 <p>@Resources.MemoryLimit: @Model.MemoryLimitMegabytes.ToString("F3") @Resources.Megabytes</p>
 
+<!-- Modal -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">@Resources.Result</h4>
+            </div>
+            <div class="modal-body">
+                <pre></pre>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="well well-sm">
     @Html.Raw(Markdown.ToHtml(Model.Statement))
 </div>
+
 @if (User.Identity.IsAuthenticated)
 {
     <div id="submit-container">
@@ -32,8 +51,18 @@ else
 @section scripts{
     <script type="text/javascript">
         $(function() {
-            setInterval(function() {
-                $('#submit-queue').load('/Submit/UserSubmitQueue', {problemId : @Model.Id}); }, 3000); // every 3 sec
+            setInterval(function() { $('#submit-queue').load('/Submit/UserSubmitQueue', { problemId: @Model.Id }); }, 3000); // every 3 sec
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('#modal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var submitResult = button.data('submit-result');
+                var modal = $(this);
+                modal.find('.modal-body pre').text(submitResult);
+            });
         });
     </script>
 }
