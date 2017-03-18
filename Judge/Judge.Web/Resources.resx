@@ -189,4 +189,7 @@
   <data name="Close" xml:space="preserve">
     <value>Закрыть</value>
   </data>
+  <data name="Login" xml:space="preserve">
+    <value>Войти</value>
+  </data>
 </root>

@@ -11,7 +11,7 @@ namespace Judge.Application.ViewModels.Submit
             Language = language;
             ProblemId = submitResult.Submit.ProblemId;
             ProblemName = "problem name"; //TODO
-            ResultDescription = submitResult.Status.ToString();
+            ResultDescription = GetDescription(submitResult.Status);
             SubmitResultId = submitResult.Id;
             SubmitTime = submitResult.Submit.SubmitDateUtc;
             UserId = submitResult.Submit.UserId;
@@ -30,8 +30,32 @@ namespace Judge.Application.ViewModels.Submit
             }
         }
 
-        public long SubmitId { get;}
-        public SubmitStatus Status { get; }
+        private static string GetDescription(SubmitStatus submitStatus)
+        {
+            switch (submitStatus)
+            {
+                case SubmitStatus.Pending:
+                    return "Pending...";
+                case SubmitStatus.CompilationError:
+                    return "Compilation error";
+                case SubmitStatus.RuntimeError:
+                    return "Runtime error";
+                case SubmitStatus.TimeLimitExceeded:
+                    return "Time limit exceeded";
+                case SubmitStatus.MemoryLimitExceeded:
+                    return "Memory limit exceeded";
+                case SubmitStatus.WrongAnswer:
+                    return "Wrong answer";
+                case SubmitStatus.Accepted:
+                    return "Accepted";
+                case SubmitStatus.ServerError:
+                    return "Server error";
+            }
+            throw new ArgumentOutOfRangeException();
+        }
+
+        public long SubmitId { get; }
+        private SubmitStatus Status { get; }
         public DateTime SubmitTime { get; }
         public long SubmitResultId { get; }
         public long ProblemId { get; }

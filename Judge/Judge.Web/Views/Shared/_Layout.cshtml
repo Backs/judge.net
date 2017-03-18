@@ -26,6 +26,11 @@
                     {
                         <li>@Html.ActionLink(Resources.LogOut, "Logout", "Account")</li>
                     }
+                    else
+                    {
+                        <li>@Html.ActionLink(Resources.Login, "Login", "Account")</li>
+                        <li>@Html.ActionLink(Resources.Register, "Register", "Account")</li>
+                    }
                 </ul>
             </div>
         </div>
