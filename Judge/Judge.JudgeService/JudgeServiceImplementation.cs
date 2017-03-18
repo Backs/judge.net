@@ -71,26 +71,30 @@ namespace Judge.JudgeService
                 compileResult = CompileResult.Empty;
             }
 
-            CopyChecker(task);
+            ICollection<SubmitRunResult> results = null;
+            SubmitRunResult lastRunResult = null;
 
-            var results = Run(task, compileResult.FileName);
-
-            var lastRunResult = results.Last();
+            if (compileResult.CompileStatus == CompileStatus.Success)
+            {
+                CopyChecker(task);
+                results = Run(task, compileResult.FileName);
+                lastRunResult = results.Last();
+            }
 
             RemoveWorkingDirectory();
 
             return new JudgeResult
             {
                 CompileResult = compileResult,
-                RunStatus = lastRunResult.RunStatus,
-                Description = lastRunResult.Description,
-                Output = lastRunResult.Output,
-                TextStatus = lastRunResult.TextStatus,
-                PeakMemoryBytes = results.Max(o => o.PeakMemoryBytes),
-                TimeConsumedMilliseconds = results.Max(o => o.TimeConsumedMilliseconds),
-                TimePassedMilliseconds = results.Max(o => o.TimePassedMilliseconds),
-                TestRunsCount = results.Count(o => o.RunStatus == RunStatus.Success),
-                CheckStatus = lastRunResult.CheckStatus
+                RunStatus = lastRunResult?.RunStatus,
+                Description = lastRunResult?.Description,
+                Output = lastRunResult?.Output,
+                TextStatus = lastRunResult?.TextStatus,
+                PeakMemoryBytes = results?.Max(o => o.PeakMemoryBytes),
+                TimeConsumedMilliseconds = results?.Max(o => o.TimeConsumedMilliseconds),
+                TimePassedMilliseconds = results?.Max(o => o.TimePassedMilliseconds),
+                TestRunsCount = results?.Count(o => o.RunStatus == RunStatus.Success) ?? 0,
+                CheckStatus = lastRunResult?.CheckStatus
             };
         }
 

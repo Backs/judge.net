@@ -9,16 +9,16 @@ namespace Judge.JudgeService
     internal sealed class JudgeResult
     {
         public CompileResult CompileResult { get; set; }
-        public RunStatus RunStatus { get; set; }
-        public int TimeConsumedMilliseconds { get; set; }
-        public int PeakMemoryBytes { get; set; }
+        public RunStatus? RunStatus { get; set; }
+        public int? TimeConsumedMilliseconds { get; set; }
+        public int? PeakMemoryBytes { get; set; }
         public string TextStatus { get; set; }
         public string Description { get; set; }
         public string Output { get; set; }
         public int TestRunsCount { get; set; }
         public int TestsPassedCount => GetStatus() == SubmitStatus.Accepted ? TestRunsCount : TestRunsCount - 1;
-        public CheckStatus CheckStatus { get; set; }
-        public int TimePassedMilliseconds { get; set; }
+        public CheckStatus? CheckStatus { get; set; }
+        public int? TimePassedMilliseconds { get; set; }
 
         public SubmitStatus GetStatus()
         {
@@ -26,21 +26,24 @@ namespace Judge.JudgeService
             {
                 return SubmitStatus.CompilationError;
             }
-            switch (RunStatus)
+            if (RunStatus == null)
+                throw new InvalidOperationException();
+
+            switch (RunStatus.Value)
             {
-                case RunStatus.TimeLimitExceeded:
+                case Runner.RunStatus.TimeLimitExceeded:
                     return SubmitStatus.TimeLimitExceeded;
-                case RunStatus.MemoryLimitExceeded:
+                case Runner.RunStatus.MemoryLimitExceeded:
                     return SubmitStatus.MemoryLimitExceeded;
-                case RunStatus.SecurityViolation:
+                case Runner.RunStatus.SecurityViolation:
                     return SubmitStatus.RuntimeError;
-                case RunStatus.RuntimeError:
+                case Runner.RunStatus.RuntimeError:
                     return SubmitStatus.RuntimeError;
-                case RunStatus.InvocationFailed:
+                case Runner.RunStatus.InvocationFailed:
                     return SubmitStatus.ServerError;
-                case RunStatus.IdlenessLimitExceeded:
+                case Runner.RunStatus.IdlenessLimitExceeded:
                     return SubmitStatus.TimeLimitExceeded;
-                case RunStatus.Success:
+                case Runner.RunStatus.Success:
                     return GetCheckStatus();
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -49,11 +52,14 @@ namespace Judge.JudgeService
 
         private SubmitStatus GetCheckStatus()
         {
-            switch (CheckStatus)
+            if (CheckStatus == null)
+                throw new InvalidOperationException();
+
+            switch (CheckStatus.Value)
             {
-                case CheckStatus.OK:
+                case Checker.CheckStatus.OK:
                     return SubmitStatus.Accepted;
-                case CheckStatus.Fail:
+                case Checker.CheckStatus.Fail:
                     return SubmitStatus.ServerError;
                 default:
                     return SubmitStatus.WrongAnswer;
