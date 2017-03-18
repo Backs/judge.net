@@ -27,6 +27,7 @@ namespace Judge.Compiler
             {
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
+                RedirectStandardError = true,
                 WorkingDirectory = workingDirectory,
                 CreateNoWindow = true
             };
@@ -39,6 +40,10 @@ namespace Judge.Compiler
                 p.Start();
 
                 output = p.StandardOutput.ReadToEnd();
+                if (string.IsNullOrWhiteSpace(output))
+                {
+                    output = p.StandardError.ReadToEnd();
+                }
                 p.WaitForExit(30 * 1000);
                 exitCode = p.ExitCode;
             }
