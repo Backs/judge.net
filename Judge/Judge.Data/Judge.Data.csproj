@@ -52,6 +52,7 @@
     <Reference Include="System.Transactions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyReferencer.cs" />
     <Compile Include="DataContext.cs" />
     <Compile Include="DataContainerExtension.cs" />
     <Compile Include="IUnitOfWork.cs" />
