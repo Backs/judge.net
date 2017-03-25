@@ -67,6 +67,7 @@
     <Compile Include="Repository\LanguageRepository.cs" />
     <Compile Include="Repository\SubmitResultRepository.cs" />
     <Compile Include="Repository\SubmitRepository.cs" />
+    <Compile Include="Repository\TaskNameRepository.cs" />
     <Compile Include="Repository\TaskRepository.cs" />
     <Compile Include="UnitOfWork.cs" />
     <Compile Include="UnitOfWorkFactory.cs" />

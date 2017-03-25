@@ -31,6 +31,7 @@ namespace Judge.Data
             Container.RegisterType<ISubmitResultRepository, SubmitResultRepository>(new T());
             Container.RegisterType<ILanguageRepository, LanguageRepository>(new T());
             Container.RegisterType<ITaskRepository, TaskRepository>(new T());
+            Container.RegisterType<ITaskNameRepository, TaskNameRepository>(new T());
         }
     }
 }

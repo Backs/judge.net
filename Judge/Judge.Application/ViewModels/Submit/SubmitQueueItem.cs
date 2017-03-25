@@ -5,12 +5,12 @@ namespace Judge.Application.ViewModels.Submit
 {
     public sealed class SubmitQueueItem
     {
-        public SubmitQueueItem(SubmitResult submitResult, string language)
+        public SubmitQueueItem(SubmitResult submitResult, string language, string problemName)
         {
             SubmitId = submitResult.Submit.Id;
             Language = language;
             ProblemId = submitResult.Submit.ProblemId;
-            ProblemName = "problem name"; //TODO
+            ProblemName = problemName;
             ResultDescription = GetDescription(submitResult.Status);
             SubmitResultId = submitResult.Id;
             SubmitTime = submitResult.Submit.SubmitDateUtc;

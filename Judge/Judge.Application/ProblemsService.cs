@@ -28,10 +28,10 @@ namespace Judge.Application
 
             using (var unitOfWork = _factory.GetUnitOfWork(transactionRequired: false))
             {
-                var taskRepository = unitOfWork.GetRepository<ITaskRepository>();
+                var taskRepository = unitOfWork.GetRepository<ITaskNameRepository>();
                 var submitResultRepository = unitOfWork.GetRepository<ISubmitResultRepository>();
 
-                var tasks = taskRepository.GetTaskList(page, pageSize)
+                var tasks = taskRepository.GetTasks(page, pageSize)
                     .Select(o => new ProblemItem
                     {
                         Id = o.Id,

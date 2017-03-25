@@ -26,7 +26,7 @@
                         @item.UserName
                     </td>
                     <td>
-                        @item.ProblemName
+                        @Html.ActionLink(item.ProblemName, "Statement", "Problems", new { id = item.ProblemId }, null)
                     </td>
                     <td>
                         @item.Language

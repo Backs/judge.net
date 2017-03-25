@@ -2,6 +2,7 @@
 using Judge.Application.Interfaces;
 using Judge.Application.ViewModels.Submit;
 using Judge.Data;
+using Judge.Model.CheckSolution;
 using Judge.Model.Configuration;
 using Judge.Model.SubmitSolution;
 
@@ -21,13 +22,15 @@ namespace Judge.Application
             using (var uow = _unitOfWorkFactory.GetUnitOfWork(false))
             {
                 var submitResultRepository = uow.GetRepository<ISubmitResultRepository>();
-
                 var languageRepository = uow.GetRepository<ILanguageRepository>();
+                var taskRepository = uow.GetRepository<ITaskNameRepository>();
+
                 var languages = languageRepository.GetLanguages().ToDictionary(o => o.Id, o => o.Name);
-
                 var submits = submitResultRepository.GetLastSubmits(userId, problemId, 10);
+                var task = taskRepository.GetTasks(new[] { problemId }).First();
 
-                var items = submits.Select(o => new SubmitQueueItem(o, languages[o.Submit.LanguageId]));
+
+                var items = submits.Select(o => new SubmitQueueItem(o, languages[o.Submit.LanguageId], task.Name));
 
                 var model = new SubmitQueueViewModel(items);
 

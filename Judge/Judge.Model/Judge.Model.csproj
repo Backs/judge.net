@@ -22,8 +22,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CheckSolution\ITaskNameRepository.cs" />
     <Compile Include="CheckSolution\ITaskRepository.cs" />
     <Compile Include="CheckSolution\Task.cs" />
+    <Compile Include="CheckSolution\TaskName.cs" />
     <Compile Include="Configuration\ILanguageRepository.cs" />
     <Compile Include="Entities\Language.cs" />
     <Compile Include="SubmitSolution\ISubmitResultRepository.cs" />
