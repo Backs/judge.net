@@ -47,7 +47,7 @@ namespace Judge.Data
 
         public Task<User> FindByNameAsync(string userName)
         {
-            return _dbSet.SingleOrDefaultAsync(o => o.UserName == userName);
+            return _dbSet.SingleOrDefaultAsync(o => o.Email == userName);
         }
 
         public Task SetPasswordHashAsync(User user, string passwordHash)

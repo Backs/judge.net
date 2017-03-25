@@ -6,6 +6,7 @@ namespace Judge.Model.Entities
     {
         public long Id { get; private set; }
         public string UserName { get; set; }
+        public string Email { get; set; }
         public string PasswordHash { get; set; }
     }
 }

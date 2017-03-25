@@ -14,15 +14,15 @@ namespace Judge.Application
             _signInManager = signInManager;
         }
 
-        public SignInStatus SignIn(string userName, string password, bool isPersistent)
+        public SignInStatus SignIn(string email, string password, bool isPersistent)
         {
-            var status = _signInManager.PasswordSignIn(userName, password, isPersistent, shouldLockout: false);
+            var status = _signInManager.PasswordSignIn(email, password, isPersistent, shouldLockout: false);
             return status;
         }
 
         public void Register(RegisterViewModel model)
         {
-            _signInManager.UserManager.CreateAsync(new User { UserName = model.Email }, model.Password).Wait();
+            _signInManager.UserManager.CreateAsync(new User { UserName = model.UserName, Email = model.Email }, model.Password).Wait();
         }
 
         public void SignOut()

@@ -62,6 +62,8 @@
     <Folder Include="dbo\" />
     <Folder Include="dbo\Tables\" />
     <Folder Include="dbo\Stored Procedures" />
+    <Folder Include="dbo\Scripts" />
+    <Folder Include="dbo\Scripts\Post" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Languages.sql" />
@@ -71,6 +73,7 @@
     <Build Include="dbo\Tables\SubmitResults.sql" />
     <Build Include="dbo\Stored Procedures\DequeueSubmitCheck.sql" />
     <Build Include="dbo\Tables\Tasks.sql" />
+    <Build Include="dbo\Tables\DatabasePatches.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Judge.Database.refactorlog" />
@@ -78,5 +81,9 @@
   <ItemGroup>
     <None Include="Judge.Database.publish.xml" />
     <None Include="TempData.sql" />
+    <None Include="dbo\Scripts\Post\AddUserName.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="dbo\Scripts\Script.PostDeployment.sql" />
   </ItemGroup>
 </Project>
