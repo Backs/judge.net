@@ -21,7 +21,12 @@ namespace Judge.Web.Controllers
 
         public ActionResult Index()
         {
-            var model = _problemsService.GetProblemsList(1, 40);
+            long? userId = null;
+            if (User.Identity.IsAuthenticated)
+            {
+                userId = User.Identity.GetUserId<long>();
+            }
+            var model = _problemsService.GetProblemsList(1, 40, userId);
             return View(model);
         }
 

@@ -10,7 +10,8 @@ namespace Judge.Application.Interfaces
         /// </summary>
         /// <param name="page">Page number from 1 to N</param>
         /// <param name="pageSize">Page size from 1 to N</param>
-        ProblemsListViewModel GetProblemsList(int page, int pageSize);
+        /// <param name="userId"></param>
+        ProblemsListViewModel GetProblemsList(int page, int pageSize, long? userId);
 
         StatementViewModel GetStatement(long id);
     }

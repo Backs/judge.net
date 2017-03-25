@@ -32,11 +32,10 @@ namespace Judge.Data.Repository
             return query.Include(o => o.Submit).AsEnumerable();
         }
 
-        //TODO: domain service method
-        public IEnumerable<long> GetSolvedProblems(IEnumerable<long> problems)
+        public IEnumerable<long> GetSolvedProblems(long userId, IEnumerable<long> problems)
         {
             return _context.Set<SubmitResult>()
-                .Where(o => problems.Contains(o.Submit.ProblemId))
+                .Where(o => o.Submit.UserId == userId && problems.Contains(o.Submit.ProblemId))
                 .Where(o => o.Status == SubmitStatus.Accepted)
                 .Select(o => o.Submit.ProblemId)
                 .Distinct()

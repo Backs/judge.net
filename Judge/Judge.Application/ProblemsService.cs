@@ -19,7 +19,7 @@ namespace Judge.Application
             _factory = factory;
         }
 
-        public ProblemsListViewModel GetProblemsList(int page, int pageSize)
+        public ProblemsListViewModel GetProblemsList(int page, int pageSize, long? userId)
         {
             if (page <= 0)
                 throw new ArgumentOutOfRangeException(nameof(page));
@@ -38,7 +38,14 @@ namespace Judge.Application
                         Name = o.Name
                     }).ToArray();
 
-                var statuses = new HashSet<long>(submitResultRepository.GetSolvedProblems(tasks.Select(o => o.Id)));
+
+                var statuses = new HashSet<long>();
+
+                if (userId != null)
+                {
+                    statuses.UnionWith(submitResultRepository.GetSolvedProblems(userId.Value, tasks.Select(o => o.Id)));
+                }
+                
 
                 foreach (var item in tasks)
                 {
