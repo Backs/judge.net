@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = Model.Name;
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
 }
 
 <h2>@Model.Name</h2>
@@ -28,8 +29,8 @@
     </div>
 </div>
 
-<div class="well well-sm">
-    @Html.Raw(Markdown.ToHtml(Model.Statement))
+<div class="well well-sm" id="statement">
+    @Html.Raw(Markdown.ToHtml(Model.Statement, pipeline))
 </div>
 
 @if (User.Identity.IsAuthenticated)
@@ -56,13 +57,19 @@ else
     </script>
 
     <script type="text/javascript">
-        $(function () {
-            $('#modal').on('show.bs.modal', function (event) {
+        $(function() {
+            $('#modal').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget);
                 var submitResult = button.data('submit-result');
                 var modal = $(this);
                 modal.find('.modal-body pre').text(submitResult);
             });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#statement > table").addClass("table");
         });
     </script>
 }
