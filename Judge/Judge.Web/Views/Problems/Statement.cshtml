@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = Model.Name;
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+    var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().UseBootstrap().Build();
 }
 
 <h2>@Model.Name</h2>
@@ -64,12 +64,6 @@ else
                 var modal = $(this);
                 modal.find('.modal-body pre').text(submitResult);
             });
-        });
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            $("#statement > table").addClass("table");
         });
     </script>
 }
