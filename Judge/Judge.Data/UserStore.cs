@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
+using Judge.Model.Account;
 using Judge.Model.Entities;
 using Microsoft.AspNet.Identity;
 
 namespace Judge.Data
 {
-    internal sealed class UserStore : IUserPasswordStore<User, long>, IUserLockoutStore<User, long>, IUserTwoFactorStore<User, long>
+    internal sealed class UserStore : IUserPasswordStore<User, long>, IUserLockoutStore<User, long>, IUserTwoFactorStore<User, long>, IUserRepository
     {
         private readonly DataContext _context;
         private readonly DbSet<User> _dbSet;
@@ -108,6 +111,11 @@ namespace Judge.Data
         public Task<bool> GetTwoFactorEnabledAsync(User user)
         {
             return Task.FromResult(false);
+        }
+
+        public IEnumerable<User> GetUsers(long[] users)
+        {
+            return _dbSet.Where(o => users.Contains(o.Id)).OrderBy(o => o.Id).AsEnumerable();
         }
     }
 }

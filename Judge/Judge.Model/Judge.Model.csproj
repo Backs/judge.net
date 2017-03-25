@@ -22,6 +22,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account\IUserRepository.cs" />
     <Compile Include="CheckSolution\ITaskNameRepository.cs" />
     <Compile Include="CheckSolution\ITaskRepository.cs" />
     <Compile Include="CheckSolution\Task.cs" />

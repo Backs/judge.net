@@ -1,4 +1,5 @@
 ﻿using Judge.Data.Repository;
+using Judge.Model.Account;
 using Judge.Model.CheckSolution;
 using Judge.Model.Configuration;
 using Judge.Model.Entities;
@@ -26,6 +27,7 @@ namespace Judge.Data
 
             Container.RegisterType<IUserPasswordStore<User, long>, UserStore>(new T());
             Container.RegisterType<IUserStore<User, long>, UserStore>(new T());
+            Container.RegisterType<IUserRepository, UserStore>(new T());
 
             Container.RegisterType<ISubmitRepository, SubmitRepository>(new T());
             Container.RegisterType<ISubmitResultRepository, SubmitResultRepository>(new T());
