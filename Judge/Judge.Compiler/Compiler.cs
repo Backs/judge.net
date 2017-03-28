@@ -29,7 +29,8 @@ namespace Judge.Compiler
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 WorkingDirectory = workingDirectory,
-                CreateNoWindow = true
+                CreateNoWindow = true,
+                ErrorDialog = false
             };
 
             string output;

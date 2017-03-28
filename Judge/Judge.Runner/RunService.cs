@@ -20,8 +20,10 @@ namespace Judge.Runner
             {
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
+                RedirectStandardError = true,
                 WorkingDirectory = _workingDirectory,
-                CreateNoWindow = true
+                CreateNoWindow = true,
+                ErrorDialog = false
             };
 
             if (!Directory.Exists(_workingDirectory))
