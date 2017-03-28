@@ -26,6 +26,26 @@ namespace Judge.Tests.Compiler.CompilerTests
             }, _workingDirectory);
 
             Assert.That(result.CompileStatus, Is.EqualTo(CompileStatus.Success));
+            Assert.That(File.Exists(Path.Combine(_workingDirectory, result.FileName)));
+        }
+
+        [Test]
+        public void CompilationErrorTest()
+        {
+            var compiler = new Judge.Compiler.Compiler
+            {
+                CompilerPath = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe",
+                CompilerOptionsTemplate = TemplateKeys.FileName + "." + TemplateKeys.FileNameExtension,
+                OutputFileTemplate = TemplateKeys.FileName + ".exe"
+            };
+
+            var result = compiler.Compile(new CompileSource
+            {
+                FileName = "Program.cs",
+                SourceCode = LoadSourceCode(@"TestSolutions\ABCE.cs")
+            }, _workingDirectory);
+
+            Assert.That(result.CompileStatus, Is.EqualTo(CompileStatus.Error));
         }
 
         private static string LoadSourceCode(string fileName)
