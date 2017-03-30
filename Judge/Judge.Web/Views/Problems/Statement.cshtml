@@ -39,7 +39,7 @@
         @Html.Action("SubmitSolution", new { problemId = Model.Id })
     </div>
     <div id="submit-queue">
-        @Html.Action("UserSubmitQueue", "Submit", new { problemId = Model.Id })
+        @Html.Action("UserSubmitQueue", "Submits", new { problemId = Model.Id })
     </div>
 }
 else
@@ -52,7 +52,7 @@ else
 @section scripts{
     <script type="text/javascript">
         $(function() {
-            setInterval(function() { $('#submit-queue').load('/Submit/UserSubmitQueue', { problemId: @Model.Id }); }, 3000); // every 3 sec
+            setInterval(function() { $('#submit-queue').load('/Submits/UserSubmitQueue', { problemId: @Model.Id }); }, 3000); // every 3 sec
         });
     </script>
 

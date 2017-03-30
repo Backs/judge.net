@@ -113,7 +113,7 @@ namespace Judge.Data
             return Task.FromResult(false);
         }
 
-        public IEnumerable<User> GetUsers(long[] users)
+        public IEnumerable<User> GetUsers(IEnumerable<long> users)
         {
             return _dbSet.Where(o => users.Contains(o.Id)).OrderBy(o => o.Id).AsEnumerable();
         }

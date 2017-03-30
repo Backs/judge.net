@@ -20,7 +20,14 @@
             {
                 <tr>
                     <td>
-                        @Html.ActionLink(item.SubmitTime.ToString(CultureInfo.CurrentUICulture), "Solution", "Problems", new { submitId = item.SubmitId }, new { target = "_blank" })
+                        @if (item.ResultsEnabled)
+                        {
+                            @Html.ActionLink(item.SubmitTime.ToString(CultureInfo.CurrentUICulture), "Solution", "Problems", new {submitId = item.SubmitId}, new {target = "_blank"})
+                        }
+                        else
+                        {
+                            @item.SubmitTime.ToString(CultureInfo.CurrentUICulture)
+                        }
                     </td>
                     <td>
                         @item.UserName

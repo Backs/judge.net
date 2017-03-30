@@ -31,7 +31,7 @@ namespace Judge.Data.Repository
             return taskList.Take(pageSize).Select(o => new TaskName { Id = o.Id, Name = o.Name }).AsEnumerable();
         }
 
-        public IEnumerable<TaskName> GetTasks(long[] tasks)
+        public IEnumerable<TaskName> GetTasks(IEnumerable<long> tasks)
         {
             return _context.Set<Task>()
                 .Where(o => tasks.Contains(o.Id))

@@ -33,7 +33,33 @@ namespace Judge.Application
                 var task = taskRepository.GetTasks(new[] { problemId }).First();
                 var user = userRepository.GetUsers(new[] { userId }).First();
 
-                var items = submits.Select(o => new SubmitQueueItem(o, languages[o.Submit.LanguageId], task.Name, user.UserName));
+                var items = submits.Select(o => new SubmitQueueItem(o, languages[o.Submit.LanguageId], task.Name, user.UserName) { ResultsEnabled = true });
+
+                var model = new SubmitQueueViewModel(items);
+
+                return model;
+            }
+        }
+
+        public SubmitQueueViewModel GetSubmitQueue(long? userId)
+        {
+            using (var uow = _unitOfWorkFactory.GetUnitOfWork(false))
+            {
+                var submitResultRepository = uow.GetRepository<ISubmitResultRepository>();
+                var languageRepository = uow.GetRepository<ILanguageRepository>();
+                var taskRepository = uow.GetRepository<ITaskNameRepository>();
+                var userRepository = uow.GetRepository<IUserRepository>();
+
+                var languages = languageRepository.GetLanguages().ToDictionary(o => o.Id, o => o.Name);
+                var submits = submitResultRepository.GetLastSubmits(null, null, 100).ToArray();
+
+                var tasks = taskRepository.GetTasks(submits.Select(o => o.Submit.ProblemId)).ToDictionary(o => o.Id, o => o.Name);
+                var users = userRepository.GetUsers(submits.Select(o => o.Submit.UserId)).ToDictionary(o => o.Id, o => o.UserName);
+
+                var items = submits.Select(o => new SubmitQueueItem(o, languages[o.Submit.LanguageId], tasks[o.Submit.ProblemId], users[o.Submit.UserId])
+                {
+                    ResultsEnabled = userId == o.Submit.UserId
+                });
 
                 var model = new SubmitQueueViewModel(items);
 

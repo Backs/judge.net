@@ -54,6 +54,7 @@ namespace Judge.Application.ViewModels.Submit
             throw new ArgumentOutOfRangeException();
         }
 
+        public bool ResultsEnabled { get; set; }
         public long SubmitId { get; }
         private SubmitStatus Status { get; }
         public DateTime SubmitTime { get; }
@@ -68,6 +69,6 @@ namespace Judge.Application.ViewModels.Submit
         public string ExecutionTime { get; }
         public string AllocatedMemory { get; }
         public string CompileResult { get; }
-        public bool ShowAdditionalResults => Status == SubmitStatus.CompilationError;
+        public bool ShowAdditionalResults => ResultsEnabled && Status == SubmitStatus.CompilationError;
     }
 }

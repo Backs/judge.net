@@ -41,7 +41,7 @@ namespace Judge.Web.Controllers
         {
             var languages = _submitSolutionService.GetLanguages();
             var model = new SubmitSolutionViewModel { Languages = languages, ProblemId = problemId };
-            return PartialView("Submit/_SubmitSolution", model);
+            return PartialView("Submits/_SubmitSolution", model);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -59,7 +59,7 @@ namespace Judge.Web.Controllers
             }
             model.Languages = _submitSolutionService.GetLanguages();
 
-            return PartialView("Submit/_SubmitSolution", model);
+            return PartialView("Submits/_SubmitSolution", model);
         }
 
         [Authorize]

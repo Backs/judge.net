@@ -5,6 +5,6 @@ namespace Judge.Model.Account
 {
     public interface IUserRepository
     {
-        IEnumerable<User> GetUsers(long[] users);
+        IEnumerable<User> GetUsers(IEnumerable<long> users);
     }
 }

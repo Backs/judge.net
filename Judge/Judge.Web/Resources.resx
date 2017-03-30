@@ -192,4 +192,7 @@
   <data name="Login" xml:space="preserve">
     <value>Войти</value>
   </data>
+  <data name="Queue" xml:space="preserve">
+    <value>Очередь</value>
+  </data>
 </root>
