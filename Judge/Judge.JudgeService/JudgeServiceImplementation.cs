@@ -102,7 +102,15 @@ namespace Judge.JudgeService
         {
             if (Directory.Exists(_workingDirectory))
             {
-                Directory.Delete(_workingDirectory, true);
+                //TODO: remove directory with retry
+                try
+                {
+                    Directory.Delete(_workingDirectory, true);
+                }
+                catch
+                {
+                    // ignored
+                }
             }
         }
 
