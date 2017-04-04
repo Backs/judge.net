@@ -93,7 +93,7 @@ namespace Judge.JudgeService
                 PeakMemoryBytes = results?.Max(o => o.PeakMemoryBytes),
                 TimeConsumedMilliseconds = results?.Max(o => o.TimeConsumedMilliseconds),
                 TimePassedMilliseconds = results?.Max(o => o.TimePassedMilliseconds),
-                TestRunsCount = results?.Count(o => o.RunStatus == RunStatus.Success) ?? 0,
+                TestRunsCount = results?.Count ?? 0,
                 CheckStatus = lastRunResult?.CheckStatus
             };
         }
