@@ -6,5 +6,6 @@ namespace Judge.Model.CheckSolution
     {
         IEnumerable<TaskName> GetTasks(int page, int pageSize);
         IEnumerable<TaskName> GetTasks(IEnumerable<long> tasks);
+        int Count();
     }
 }

@@ -38,21 +38,25 @@ namespace Judge.Application
                         Name = o.Name
                     }).ToArray();
 
+                var count = taskRepository.Count();
 
-                var statuses = new HashSet<long>();
+                var solvedTasks = new HashSet<long>();
 
                 if (userId != null)
                 {
-                    statuses.UnionWith(submitResultRepository.GetSolvedProblems(userId.Value, tasks.Select(o => o.Id)));
+                    solvedTasks.UnionWith(submitResultRepository.GetSolvedProblems(userId.Value, tasks.Select(o => o.Id)));
                 }
-                
 
                 foreach (var item in tasks)
                 {
-                    item.Solved = statuses.Contains(item.Id);
+                    item.Solved = solvedTasks.Contains(item.Id);
                 }
 
-                return new ProblemsListViewModel(tasks);
+                return new ProblemsListViewModel(tasks)
+                {
+                    ProblemsCount = count,
+                    Paging = new ViewModels.PagingViewModel { CurrentPage = page, PageSize = pageSize, TotalPages = (count + pageSize - 1) / pageSize }
+                };
 
             }
         }

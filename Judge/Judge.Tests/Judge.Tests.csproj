@@ -60,6 +60,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Application\ProblemsServiceTests\GetProblemsListTests.cs" />
     <Compile Include="Application\SubmitQueueServiceTests\GetSubmitQueueTests.cs" />
     <Compile Include="Checker\CheckerTests\CheckTests.cs" />
     <Compile Include="Compiler\CompilerTests\CompileTests.cs">

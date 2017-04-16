@@ -38,5 +38,10 @@ namespace Judge.Data.Repository
                 .Select(o => new TaskName { Id = o.Id, Name = o.Name })
                 .AsEnumerable();
         }
+
+        public int Count()
+        {
+            return _context.Set<Task>().Count();
+        }
     }
 }
