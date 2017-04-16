@@ -4,10 +4,10 @@ namespace Judge.Web.Controllers
 {
     public class HelpController : Controller
     {
-        // GET: Help
         public ActionResult Index()
         {
-            return View();
+            var text = System.IO.File.ReadAllText(Server.MapPath("~/Content/Help/ru.md"));
+            return View((object)text);
         }
     }
 }

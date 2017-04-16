@@ -195,4 +195,7 @@
   <data name="Queue" xml:space="preserve">
     <value>Очередь</value>
   </data>
+  <data name="Manual" xml:space="preserve">
+    <value>Руководство</value>
+  </data>
 </root>

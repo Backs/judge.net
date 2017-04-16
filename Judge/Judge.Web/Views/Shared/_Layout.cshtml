@@ -23,6 +23,7 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink(Resources.ProblemsList, "Index", "Problems")</li>
                     <li>@Html.ActionLink(Resources.Queue, "Index", "Submits")</li>
+                    <li>@Html.ActionLink(Resources.Manual, "Index", "Help")</li>
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li>@Html.ActionLink(Resources.LogOut, "Logout", "Account")</li>
