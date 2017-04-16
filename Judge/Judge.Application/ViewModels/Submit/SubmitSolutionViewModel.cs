@@ -10,6 +10,7 @@ namespace Judge.Application.ViewModels.Submit
         public int SelectedLanguage { get; set; }
 
         [Required(ErrorMessage = "Выберите файл")]
+        [FileValidation]
         public HttpPostedFileBase File { get; set; }
 
         public bool Success { get; set; }
