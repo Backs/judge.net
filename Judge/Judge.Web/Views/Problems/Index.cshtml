@@ -34,4 +34,29 @@
             }
         </tbody>
     </table>
+    <nav>
+        <ul class="pagination">
+            <li>
+                @Html.ActionLink("«", "Index", "Problems", new { page = 1 }, null)
+            </li>
+            @for (var page = Model.Paging.FirstDisplayPage; page <= Model.Paging.LastDisplayPage; page++)
+            {
+                if (Model.Paging.IsCurrent(page))
+                {
+                    <li class="active">
+                        @Html.ActionLink(page.ToString(), "Index", "Problems", new { page = page }, null)
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        @Html.ActionLink(page.ToString(), "Index", "Problems", new { page = page }, null)
+                    </li>
+                }
+            }
+            <li>
+                @Html.ActionLink("»", "Index", "Problems", new { page = Model.Paging.TotalPages }, null)
+            </li>
+        </ul>
+    </nav>
 </div>

@@ -11,6 +11,7 @@ namespace Judge.Web.Controllers
     {
         private readonly IProblemsService _problemsService;
         private readonly ISubmitSolutionService _submitSolutionService;
+        private int _pageSize = 20;
 
         public ProblemsController(IProblemsService problemsService, ISubmitSolutionService submitSolutionService)
         {
@@ -19,14 +20,14 @@ namespace Judge.Web.Controllers
         }
 
 
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
             long? userId = null;
             if (User.Identity.IsAuthenticated)
             {
                 userId = User.Identity.GetUserId<long>();
             }
-            var model = _problemsService.GetProblemsList(1, 40, userId);
+            var model = _problemsService.GetProblemsList(page ?? 1, _pageSize, userId);
             return View(model);
         }
 
