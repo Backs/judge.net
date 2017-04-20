@@ -47,9 +47,9 @@ namespace Judge.Tests.Application.ProblemsServiceTests
             var model = _service.GetProblemsList(page, pageSize, null);
 
             Assert.That(model.ProblemsCount, Is.EqualTo(2));
-            Assert.That(model.Paging.PageSize, Is.EqualTo(pageSize));
-            Assert.That(model.Paging.CurrentPage, Is.EqualTo(page));
-            Assert.That(model.Paging.TotalPages, Is.EqualTo(1));
+            Assert.That(model.Pagination.PageSize, Is.EqualTo(pageSize));
+            Assert.That(model.Pagination.CurrentPage, Is.EqualTo(page));
+            Assert.That(model.Pagination.TotalPages, Is.EqualTo(1));
 
             CollectionAssert.AreEqual(tasks.Select(o => new { o.Id, o.Name }), model.Problems.Select(o => new { o.Id, o.Name }));
         }
@@ -68,8 +68,8 @@ namespace Judge.Tests.Application.ProblemsServiceTests
 
             var model = _service.GetProblemsList(1, 2, null);
 
-            Assert.That(model.Paging.CurrentPage, Is.EqualTo(1));
-            Assert.That(model.Paging.TotalPages, Is.EqualTo(2));
+            Assert.That(model.Pagination.CurrentPage, Is.EqualTo(1));
+            Assert.That(model.Pagination.TotalPages, Is.EqualTo(2));
         }
 
         [Test]
@@ -88,8 +88,8 @@ namespace Judge.Tests.Application.ProblemsServiceTests
 
             var model = _service.GetProblemsList(2, 2, null);
 
-            Assert.That(model.Paging.CurrentPage, Is.EqualTo(2));
-            Assert.That(model.Paging.TotalPages, Is.EqualTo(3));
+            Assert.That(model.Pagination.CurrentPage, Is.EqualTo(2));
+            Assert.That(model.Pagination.TotalPages, Is.EqualTo(3));
 
             CollectionAssert.AreEqual(tasks.Skip(2).Take(2).Select(o => new { o.Id, o.Name }), model.Problems.Select(o => new { o.Id, o.Name }));
         }

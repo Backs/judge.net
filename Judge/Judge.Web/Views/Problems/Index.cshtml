@@ -39,9 +39,9 @@
             <li>
                 @Html.ActionLink("«", "Index", "Problems", new { page = 1 }, null)
             </li>
-            @for (var page = Model.Paging.FirstDisplayPage; page <= Model.Paging.LastDisplayPage; page++)
+            @for (var page = Model.Pagination.FirstDisplayPage; page <= Model.Pagination.LastDisplayPage; page++)
             {
-                if (Model.Paging.IsCurrent(page))
+                if (Model.Pagination.IsCurrent(page))
                 {
                     <li class="active">
                         @Html.ActionLink(page.ToString(), "Index", "Problems", new { page = page }, null)
@@ -55,7 +55,7 @@
                 }
             }
             <li>
-                @Html.ActionLink("»", "Index", "Problems", new { page = Model.Paging.TotalPages }, null)
+                @Html.ActionLink("»", "Index", "Problems", new { page = Model.Pagination.TotalPages }, null)
             </li>
         </ul>
     </nav>

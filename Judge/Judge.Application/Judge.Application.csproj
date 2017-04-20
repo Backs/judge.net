@@ -119,7 +119,7 @@
     <Compile Include="SubmitSolutionService.cs" />
     <Compile Include="ViewModels\Account\LoginViewModel.cs" />
     <Compile Include="ViewModels\Account\RegisterViewModel.cs" />
-    <Compile Include="ViewModels\PagingViewModel.cs" />
+    <Compile Include="ViewModels\PaginationViewModel.cs" />
     <Compile Include="ViewModels\Problems\ProblemsList\ProblemItem.cs" />
     <Compile Include="ViewModels\Problems\ProblemsList\ProblemsListViewModel.cs" />
     <Compile Include="ViewModels\Problems\Solution\SolutionViewModel.cs" />

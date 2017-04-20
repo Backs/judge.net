@@ -30,18 +30,24 @@
 @section scripts{
     <script type="text/javascript">
         $(function () {
-            setInterval(function () { $('#submit-queue').load('/Submits/FullSubmitQueue'); }, 3000); // every 3 sec
+            var submits = $('#submit-queue');
+
+            submits.on('click', 'nav > ul > li > a', function (event) {
+                event.preventDefault();
+                submits.load('/Submits/FullSubmitQueue', { page: $(this).data('page') });
+            });
         });
     </script>
 
     <script type="text/javascript">
         $(function () {
-            $('#modal').on('show.bs.modal', function (event) {
-                var button = $(event.relatedTarget);
-                var submitResult = button.data('submit-result');
-                var modal = $(this);
-                modal.find('.modal-body pre').text(submitResult);
-            });
+            $('#modal').on('show.bs.modal',
+                function (event) {
+                    var button = $(event.relatedTarget);
+                    var submitResult = button.data('submit-result');
+                    var modal = $(this);
+                    modal.find('.modal-body pre').text(submitResult);
+                });
         });
     </script>
 }

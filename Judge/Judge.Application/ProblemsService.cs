@@ -55,7 +55,7 @@ namespace Judge.Application
                 return new ProblemsListViewModel(tasks)
                 {
                     ProblemsCount = count,
-                    Paging = new ViewModels.PagingViewModel { CurrentPage = page, PageSize = pageSize, TotalPages = (count + pageSize - 1) / pageSize }
+                    Pagination = new ViewModels.PaginationViewModel { CurrentPage = page, PageSize = pageSize, TotalPages = (count + pageSize - 1) / pageSize }
                 };
 
             }

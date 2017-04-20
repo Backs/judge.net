@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Judge.Model.SubmitSolution;
@@ -14,8 +15,13 @@ namespace Judge.Data.Repository
             _context = context;
         }
 
-        public IEnumerable<SubmitResult> GetLastSubmits(long? userId, long? problemId, int count)
+        public IEnumerable<SubmitResult> GetSubmits(long? userId, long? problemId, int page, int pageSize)
         {
+            if (page <= 0)
+                throw new ArgumentOutOfRangeException(nameof(page));
+            if (pageSize <= 0)
+                throw new ArgumentOutOfRangeException(nameof(pageSize));
+
             var query = _context.Set<SubmitResult>() as IQueryable<SubmitResult>;
             if (userId != null)
             {
@@ -27,7 +33,14 @@ namespace Judge.Data.Repository
             }
             query = query.OrderByDescending(o => o.Id);
 
-            query = query.Take(count);
+            var skip = (page - 1) * pageSize;
+
+            if (skip > 0)
+            {
+                query = query.Skip(skip);
+            }
+
+            query = query.Take(pageSize);
 
             return query.Include(o => o.Submit).AsEnumerable();
         }
@@ -50,6 +63,16 @@ namespace Judge.Data.Repository
 
             return _context.Set<SubmitResult>().Where(o => o.Id == check.SubmitResultId)
                 .Include(o => o.Submit).First();
+        }
+
+        public int Count(long? problemId)
+        {
+            var query = _context.Set<SubmitResult>() as IQueryable<SubmitResult>;
+            if (problemId != null)
+            {
+                query = query.Where(o => o.Submit.ProblemId == problemId);
+            }
+            return query.Count();
         }
     }
 }

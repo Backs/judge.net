@@ -1,6 +1,6 @@
 ﻿namespace Judge.Application.ViewModels
 {
-    public sealed class PagingViewModel
+    public sealed class PaginationViewModel
     {
         private const int Offset = 5;
         public int CurrentPage { get; set; }

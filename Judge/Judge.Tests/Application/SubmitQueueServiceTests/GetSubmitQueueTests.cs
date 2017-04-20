@@ -50,14 +50,14 @@ namespace Judge.Tests.Application.SubmitQueueServiceTests
             var submits = new[] { new SubmitResult(submit) { Status = SubmitStatus.Accepted, PassedTests = 10 } };
 
             _submitResultRepository.Stub(
-                o => o.GetLastSubmits(Arg<long?>.Is.Anything, Arg<long?>.Is.Anything, Arg<int>.Is.Anything))
+                o => o.GetSubmits(Arg<long?>.Is.Anything, Arg<long?>.Is.Anything, Arg<int>.Is.Anything, Arg<int>.Is.Anything))
                 .Return(submits);
 
             _taskRepository.Stub(o => o.GetTasks(Arg<long[]>.Is.Anything)).Return(new[] { new TaskName { Id = 1, Name = "A+B" } });
 
             _userRepository.Stub(o => o.GetUsers(Arg<long[]>.Is.Anything)).Return(new[] { new User { Id = 1 } });
 
-            var model = _service.GetSubmitQueue(1, 1);
+            var model = _service.GetSubmitQueue(1, 1, 1);
 
             Assert.That(model.Submits.Select(o => o.PassedTests), Is.All.Null);
         }

@@ -10,7 +10,7 @@ namespace Judge.Application.ViewModels.Problems.ProblemsList
         }
 
         public int ProblemsCount { get; set; }
-        public PagingViewModel Paging { get; set; }
+        public PaginationViewModel Pagination { get; set; }
 
         public IEnumerable<ProblemItem> Problems { get; }
     }

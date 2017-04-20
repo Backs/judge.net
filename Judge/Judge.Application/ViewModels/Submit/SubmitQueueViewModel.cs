@@ -10,5 +10,6 @@ namespace Judge.Application.ViewModels.Submit
         }
 
         public IEnumerable<SubmitQueueItem> Submits { get; private set; }
+        public PaginationViewModel Pagination { get; set; }
     }
 }

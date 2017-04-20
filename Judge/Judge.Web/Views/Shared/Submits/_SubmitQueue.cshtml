@@ -22,7 +22,7 @@
                     <td>
                         @if (item.ResultsEnabled)
                         {
-                            @Html.ActionLink(item.SubmitTime.ToString(CultureInfo.CurrentUICulture), "Solution", "Problems", new {submitId = item.SubmitId}, new {target = "_blank"})
+                            @Html.ActionLink(item.SubmitTime.ToString(CultureInfo.CurrentUICulture), "Solution", "Problems", new { submitId = item.SubmitId }, new { target = "_blank" })
                         }
                         else
                         {
@@ -62,3 +62,33 @@
         </tbody>
     </table>
 </div>
+<nav>
+    @Html.HiddenFor(o => o.Pagination.CurrentPage, new { id = "page" })
+    <ul class="pagination">
+        <li>
+            <a href="#" aria-label="Previous" data-page="1">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        @for (var page = Model.Pagination.FirstDisplayPage; page <= Model.Pagination.LastDisplayPage; page++)
+        {
+            if (Model.Pagination.IsCurrent(page))
+            {
+                <li class="active">
+                    <a href="#" data-page="@page">@page</a>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a href="#" data-page="@page">@page</a>
+                </li>
+            }
+        }
+        <li>
+            <a href="#" aria-label="Next" data-page="@Model.Pagination.TotalPages">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
