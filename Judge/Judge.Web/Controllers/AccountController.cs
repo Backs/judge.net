@@ -35,6 +35,11 @@ namespace Judge.Web.Controllers
             {
                 return View(model);
             }
+            if (!_securityService.UserExists(model.Email))
+            {
+                ModelState.AddModelError(string.Empty, Resources.UserNotFound);
+                return View(model);
+            }
 
             var result = _securityService.SignIn(model.Email, model.Password, model.RememberMe);
             if (result == SignInStatus.Success)
@@ -42,6 +47,7 @@ namespace Judge.Web.Controllers
                 return RedirectToLocal(returnUrl);
             }
 
+            ModelState.AddModelError(string.Empty, Resources.IncorrectPassword);
             return View(model);
         }
 
@@ -58,6 +64,11 @@ namespace Judge.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
+                return View(model);
+            }
+            if (_securityService.UserExists(model.Email))
+            {
+                ModelState.AddModelError(string.Empty, Resources.UserWithEmailIsAlreadyRegistered);
                 return View(model);
             }
 

@@ -8,5 +8,6 @@ namespace Judge.Application.Interfaces
         SignInStatus SignIn(string email, string password, bool isPersistent);
         void SignOut();
         void Register(RegisterViewModel model);
+        bool UserExists(string email);
     }
 }

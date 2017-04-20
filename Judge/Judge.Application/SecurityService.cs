@@ -30,5 +30,10 @@ namespace Judge.Application
             _signInManager.AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie,
                 DefaultAuthenticationTypes.TwoFactorCookie);
         }
+
+        public bool UserExists(string email)
+        {
+            return _signInManager.UserManager.FindByName(email) != null;
+        }
     }
 }

@@ -198,4 +198,13 @@
   <data name="Manual" xml:space="preserve">
     <value>Руководство</value>
   </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>Пользователь не найден</value>
+  </data>
+  <data name="IncorrectPassword" xml:space="preserve">
+    <value>Указан не верный пароль</value>
+  </data>
+  <data name="UserWithEmailIsAlreadyRegistered" xml:space="preserve">
+    <value>Пользователь с таким Email уже зарегистрирован</value>
+  </data>
 </root>

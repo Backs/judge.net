@@ -5,14 +5,14 @@ namespace Judge.Application.ViewModels.Account
     public class LoginViewModel
     {
         [Display(Name = "Email")]
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "EnterEmail")]
         public string Email { get; set; }
 
-        [Display(Name = "Пароль")]
-        [Required]
+        [Display(ResourceType = typeof(Resources), Name = "Password")]
+        [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "EnterPassword")]
         public string Password { get; set; }
 
-        [Display(Name = "Запомнить меня")]
+        [Display(ResourceType = typeof(Resources), Name = "RememberMe")]
         public bool RememberMe { get; set; }
     }
 }

@@ -124,6 +124,15 @@ namespace Judge.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Указан не верный пароль.
+        /// </summary>
+        public static string IncorrectPassword {
+            get {
+                return ResourceManager.GetString("IncorrectPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Язык.
         /// </summary>
         public static string Language {
@@ -300,6 +309,24 @@ namespace Judge.Web {
         public static string ToSubmitSolutions {
             get {
                 return ResourceManager.GetString("ToSubmitSolutions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пользователь не найден.
+        /// </summary>
+        public static string UserNotFound {
+            get {
+                return ResourceManager.GetString("UserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пользователь с таким Email уже зарегистрирован.
+        /// </summary>
+        public static string UserWithEmailIsAlreadyRegistered {
+            get {
+                return ResourceManager.GetString("UserWithEmailIsAlreadyRegistered", resourceCulture);
             }
         }
     }

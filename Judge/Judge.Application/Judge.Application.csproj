@@ -114,6 +114,11 @@
     <Compile Include="Interfaces\ISubmitSolutionService.cs" />
     <Compile Include="ProblemsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="SecurityService.cs" />
     <Compile Include="SubmitQueueService.cs" />
     <Compile Include="SubmitSolutionService.cs" />
@@ -145,6 +150,12 @@
       <Project>{C21CFD2F-64C7-47E8-A088-275D0340F9D8}</Project>
       <Name>Judge.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
