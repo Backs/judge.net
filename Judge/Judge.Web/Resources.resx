@@ -207,4 +207,16 @@
   <data name="UserWithEmailIsAlreadyRegistered" xml:space="preserve">
     <value>Пользователь с таким Email уже зарегистрирован</value>
   </data>
+  <data name="Contests" xml:space="preserve">
+    <value>Соревнования</value>
+  </data>
+  <data name="ContestDuration" xml:space="preserve">
+    <value>Продолжительность</value>
+  </data>
+  <data name="ContestName" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="ContestStart" xml:space="preserve">
+    <value>Начало</value>
+  </data>
 </root>

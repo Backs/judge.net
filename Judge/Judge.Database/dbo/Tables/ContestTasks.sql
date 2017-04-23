@@ -9,4 +9,4 @@
 )
 GO
 CREATE UNIQUE NONCLUSTERED INDEX [UIX_ContestTasks_ContestId_TaskName] 
-    ON [dbo].[ContestTasks] (ContestId, TaskName) WITH (FILLFACTOR = 80)
+    ON [dbo].[ContestTasks] (ContestId, TaskName)

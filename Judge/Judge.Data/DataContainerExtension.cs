@@ -2,6 +2,7 @@
 using Judge.Model.Account;
 using Judge.Model.CheckSolution;
 using Judge.Model.Configuration;
+using Judge.Model.Contests;
 using Judge.Model.Entities;
 using Judge.Model.SubmitSolution;
 using Microsoft.AspNet.Identity;
@@ -34,6 +35,7 @@ namespace Judge.Data
             Container.RegisterType<ILanguageRepository, LanguageRepository>(new T());
             Container.RegisterType<ITaskRepository, TaskRepository>(new T());
             Container.RegisterType<ITaskNameRepository, TaskNameRepository>(new T());
+            Container.RegisterType<IContestsRepository, ContestsRepository>(new T());
         }
     }
 }

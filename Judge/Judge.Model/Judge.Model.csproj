@@ -28,6 +28,8 @@
     <Compile Include="CheckSolution\Task.cs" />
     <Compile Include="CheckSolution\TaskName.cs" />
     <Compile Include="Configuration\ILanguageRepository.cs" />
+    <Compile Include="Contests\Contest.cs" />
+    <Compile Include="Contests\IContestsRepository.cs" />
     <Compile Include="Entities\Language.cs" />
     <Compile Include="SubmitSolution\ISubmitResultRepository.cs" />
     <Compile Include="SubmitSolution\SubmitStatus.cs" />

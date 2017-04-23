@@ -1,0 +1,29 @@
+﻿@model Judge.Application.ViewModels.Contests.ContestsList.ContestsListViewModel
+@{
+    ViewBag.Title = Resources.Contests;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>@Resources.ContestName</th>
+                <th>@Resources.ContestStart</th>
+                <th>@Resources.ContestDuration</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var contest in Model.Contests)
+            {
+                <tr>
+                    <td>@contest.Name</td>
+                    <td>@contest.StartTime</td>
+                    <td>@contest.Duration</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

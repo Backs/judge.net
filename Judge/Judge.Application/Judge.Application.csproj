@@ -108,6 +108,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationExtension.cs" />
+    <Compile Include="ContestsService.cs" />
+    <Compile Include="Interfaces\IContestsService.cs" />
     <Compile Include="Interfaces\IProblemsService.cs" />
     <Compile Include="Interfaces\ISecurityService.cs" />
     <Compile Include="Interfaces\ISubmitQueueService.cs" />
@@ -124,6 +126,8 @@
     <Compile Include="SubmitSolutionService.cs" />
     <Compile Include="ViewModels\Account\LoginViewModel.cs" />
     <Compile Include="ViewModels\Account\RegisterViewModel.cs" />
+    <Compile Include="ViewModels\Contests\ContestsList\ContestItem.cs" />
+    <Compile Include="ViewModels\Contests\ContestsList\ContestsListViewModel.cs" />
     <Compile Include="ViewModels\PaginationViewModel.cs" />
     <Compile Include="ViewModels\Problems\ProblemsList\ProblemItem.cs" />
     <Compile Include="ViewModels\Problems\ProblemsList\ProblemsListViewModel.cs" />

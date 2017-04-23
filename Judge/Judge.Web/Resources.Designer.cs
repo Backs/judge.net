@@ -88,6 +88,42 @@ namespace Judge.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Продолжительность.
+        /// </summary>
+        public static string ContestDuration {
+            get {
+                return ResourceManager.GetString("ContestDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Название.
+        /// </summary>
+        public static string ContestName {
+            get {
+                return ResourceManager.GetString("ContestName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Соревнования.
+        /// </summary>
+        public static string Contests {
+            get {
+                return ResourceManager.GetString("Contests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Начало.
+        /// </summary>
+        public static string ContestStart {
+            get {
+                return ResourceManager.GetString("ContestStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Дата.
         /// </summary>
         public static string Date {
