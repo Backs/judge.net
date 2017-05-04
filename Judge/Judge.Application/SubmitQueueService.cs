@@ -29,7 +29,7 @@ namespace Judge.Application
 
                 var languages = languageRepository.GetLanguages().ToDictionary(o => o.Id, o => o.Name);
                 var submits = submitResultRepository.GetSubmits(userId, problemId, page, pageSize);
-                var count = submitResultRepository.Count(userId);
+                var count = submitResultRepository.Count(problemId, userId);
 
                 var task = taskRepository.GetTasks(new[] { problemId }).First();
                 var user = userRepository.GetUsers(new[] { userId }).First();
@@ -70,7 +70,7 @@ namespace Judge.Application
                     ResultsEnabled = userId == o.Submit.UserId
                 });
 
-                var count = submitResultRepository.Count(null);
+                var count = submitResultRepository.Count(null, null);
 
                 var model = new SubmitQueueViewModel(items)
                 {

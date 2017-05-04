@@ -22,7 +22,6 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink(Resources.ProblemsList, "Index", "Problems", new { page = 1 }, null)</li>
-                    <li>@Html.ActionLink(Resources.Contests, "Index", "Contests")</li>
                     <li>@Html.ActionLink(Resources.Queue, "Index", "Submits")</li>
                     <li>@Html.ActionLink(Resources.Manual, "Index", "Help")</li>
                     @if (User.Identity.IsAuthenticated)

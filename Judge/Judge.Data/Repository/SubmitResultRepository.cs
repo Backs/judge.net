@@ -65,12 +65,16 @@ namespace Judge.Data.Repository
                 .Include(o => o.Submit).First();
         }
 
-        public int Count(long? problemId)
+        public int Count(long? problemId, long? userId)
         {
             var query = _context.Set<SubmitResult>() as IQueryable<SubmitResult>;
             if (problemId != null)
             {
                 query = query.Where(o => o.Submit.ProblemId == problemId);
+            }
+            if (userId != null)
+            {
+                query = query.Where(o => o.Submit.UserId == userId);
             }
             return query.Count();
         }

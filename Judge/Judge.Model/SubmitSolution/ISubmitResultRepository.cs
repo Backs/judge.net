@@ -9,6 +9,6 @@ namespace Judge.Model.SubmitSolution
         IEnumerable<long> GetSolvedProblems(long userId, IEnumerable<long> problems);
 
         SubmitResult DequeueUnchecked();
-        int Count(long? problemId);
+        int Count(long? problemId, long? userId);
     }
 }
