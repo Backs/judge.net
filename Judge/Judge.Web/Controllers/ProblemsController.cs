@@ -46,6 +46,7 @@ namespace Judge.Web.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize]
         public ActionResult SubmitSolution(SubmitSolutionViewModel model)
         {
             if (ModelState.IsValid)
@@ -53,13 +54,12 @@ namespace Judge.Web.Controllers
                 model.Success = true;
                 var userId = User.Identity.GetUserId<long>();
                 _submitSolutionService.SubmitSolution(model.ProblemId, model.SelectedLanguage, model.File, userId);
-            }
-            else
-            {
-                model.Success = false;
-            }
-            model.Languages = _submitSolutionService.GetLanguages();
 
+                return Redirect(Request.UrlReferrer.ToString());
+            }
+
+            model.Success = false;
+            model.Languages = _submitSolutionService.GetLanguages();
             return PartialView("Submits/_SubmitSolution", model);
         }
 

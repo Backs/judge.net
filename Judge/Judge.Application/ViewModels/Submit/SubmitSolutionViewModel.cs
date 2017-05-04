@@ -11,6 +11,7 @@ namespace Judge.Application.ViewModels.Submit
 
         [Required(ErrorMessage = "Выберите файл")]
         [FileValidation]
+        [MaxFileSize(100 * 1024)]
         public HttpPostedFileBase File { get; set; }
 
         public bool Success { get; set; }

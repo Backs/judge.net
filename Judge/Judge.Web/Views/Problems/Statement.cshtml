@@ -48,7 +48,6 @@ else
         @Html.ActionLink(Resources.Enter, "Login", "Account", new { returnUrl = Request.Url.ToString() }, null), @Resources.ToSubmitSolutions
     </div>
 }
-
 @section scripts{
     <script type="text/javascript">
         $(function() {
@@ -72,5 +71,33 @@ else
                 modal.find('.modal-body pre').text(submitResult);
             });
         });
+    </script>
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        jQuery.validator.unobtrusive.adapters.add(
+            'filesize', ['maxsize'], function (options) {
+                options.rules['filesize'] = options.params;
+                if (options.message) {
+                    options.messages['filesize'] = options.message;
+                }
+            }
+        );
+
+        jQuery.validator.addMethod('filesize', function (value, element, params) {
+            if (element.files.length < 1) {
+                // No files selected
+                return true;
+            }
+
+            if (!element.files || !element.files[0].size) {
+                // This browser doesn't support the HTML5 API
+                return true;
+            }
+
+            return element.files[0].size < params.maxsize;
+        }, '');
+
+
     </script>
 }

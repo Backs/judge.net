@@ -135,6 +135,7 @@
     <Compile Include="ViewModels\Problems\Statement\StatementViewModel.cs" />
     <Compile Include="ViewModels\Submit\FileValidationAttribute.cs" />
     <Compile Include="ViewModels\Submit\LanguageViewModel.cs" />
+    <Compile Include="ViewModels\Submit\MaxFileSizeAttribute.cs" />
     <Compile Include="ViewModels\Submit\SubmitQueueItem.cs" />
     <Compile Include="ViewModels\Submit\SubmitQueueViewModel.cs" />
     <Compile Include="ViewModels\Submit\SubmitSolutionViewModel.cs" />

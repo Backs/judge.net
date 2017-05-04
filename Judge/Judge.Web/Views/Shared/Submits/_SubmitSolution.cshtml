@@ -1,10 +1,6 @@
 ﻿@model Judge.Application.ViewModels.Submit.SubmitSolutionViewModel
 
-@using (Ajax.BeginForm("SubmitSolution",
-                "Problems",
-                null,
-                new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "submit-container", InsertionMode = InsertionMode.ReplaceWith },
-                new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("SubmitSolution", "Problems", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.HiddenFor(o => o.ProblemId)
     <div class="panel panel-default">
@@ -18,7 +14,8 @@
                     )
             </p>
             <p>
-                @Resources.File: <input type="file" name="File" id="File" class="form-control" />
+                @Resources.File:
+                @Html.TextBoxFor(x => x.File, new { type = "file", @class = "form-control", name = "File", id = "File" })
                 @Html.ValidationMessageFor(o => o.File)
             </p>
             <p>
@@ -33,27 +30,3 @@
         </div>
     </div>
 }
-<script type="text/javascript">
-    window.addEventListener("submit", function (e) {
-        var form = e.target;
-        if (form.getAttribute("enctype") === "multipart/form-data") {
-            if (form.dataset.ajax) {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                var xhr = new XMLHttpRequest();
-                xhr.open(form.method, form.action);
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        if (form.dataset.ajaxUpdate) {
-                            var updateTarget = document.querySelector(form.dataset.ajaxUpdate);
-                            if (updateTarget) {
-                                updateTarget.innerHTML = xhr.responseText;
-                            }
-                        }
-                    }
-                };
-                xhr.send(new FormData(form));
-            }
-        }
-    }, true);
-</script>
