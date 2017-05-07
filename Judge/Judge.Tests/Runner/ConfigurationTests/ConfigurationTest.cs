@@ -13,7 +13,7 @@ namespace Judge.Tests.Runner.ConfigurationTests
             {
                 AllowCreateProcesses = true,
                 Directory = @"c:\temp",
-                FileName = "main.exe",
+                RunString = "main.exe",
                 MemoryLimitBytes = 1234 * 1024,
                 Quiet = true,
                 ShowWindow = true,

@@ -76,8 +76,10 @@ namespace Judge.JudgeService
 
             if (compileResult.CompileStatus == CompileStatus.Success)
             {
+                var runString = GetRunString(language, compileResult.FileName);
+
                 CopyChecker(task);
-                results = Run(task, compileResult.FileName);
+                results = Run(task, runString);
                 lastRunResult = results.Last();
             }
 
@@ -98,6 +100,13 @@ namespace Judge.JudgeService
             };
         }
 
+        private static string GetRunString(Language language, string compileResultFileName)
+        {
+            var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(compileResultFileName);
+
+            return language.RunStringFormat.Replace(TemplateKeys.FileName, fileNameWithoutExtension);
+        }
+
         private void RemoveWorkingDirectory()
         {
             if (Directory.Exists(_workingDirectory))
@@ -114,13 +123,13 @@ namespace Judge.JudgeService
             }
         }
 
-        private ICollection<SubmitRunResult> Run(Task task, string fileName)
+        private ICollection<SubmitRunResult> Run(Task task, string runString)
         {
             var inputFiles = GetInputFiles(task);
             var results = new List<SubmitRunResult>(10);
             foreach (var input in inputFiles)
             {
-                var runResult = Run(task, input, fileName);
+                var runResult = Run(task, input, runString);
                 results.Add(runResult);
                 if (!runResult.RunSuccess)
                 {
@@ -130,10 +139,10 @@ namespace Judge.JudgeService
             return results;
         }
 
-        private SubmitRunResult Run(Task task, string input, string fileName)
+        private SubmitRunResult Run(Task task, string input, string runString)
         {
             var runService = new RunService(_runnerPath, _workingDirectory);
-            var configuration = new Configuration(fileName, _workingDirectory, task.TimeLimitMilliseconds, task.MemoryLimitBytes);
+            var configuration = new Configuration(runString, _workingDirectory, task.TimeLimitMilliseconds, task.MemoryLimitBytes);
             configuration.InputFile = input;
             configuration.OutputFile = "output.txt"; //TODO
 

@@ -4,7 +4,7 @@ namespace Judge.Runner
 {
     public sealed class Configuration
     {
-        public string FileName { get; set; }
+        public string RunString { get; set; }
         public int TimeLimitMilliseconds { get; set; }
         public int MemoryLimitBytes { get; set; }
         public string Directory { get; set; }
@@ -15,11 +15,11 @@ namespace Judge.Runner
         public string InputFile { get; set; }
         public string OutputFile { get; set; }
 
-        public Configuration(string fileName, string directory, int timeLimitMilliseconds, int memoryLimitBytes)
+        public Configuration(string runString, string directory, int timeLimitMilliseconds, int memoryLimitBytes)
         {
             TimeLimitMilliseconds = timeLimitMilliseconds;
             MemoryLimitBytes = memoryLimitBytes;
-            FileName = fileName;
+            RunString = runString;
             Directory = directory;
             Quiet = false;
             ShowWindow = false;
@@ -83,7 +83,7 @@ namespace Judge.Runner
                 arguments.Add("-Xacp");
             }
 
-            arguments.Add($"\"{FileName}\"");
+            arguments.Add($"\"{RunString}\"");
 
             return string.Join(" ", arguments);
         }
