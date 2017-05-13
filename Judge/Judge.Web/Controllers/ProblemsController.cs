@@ -41,8 +41,23 @@ namespace Judge.Web.Controllers
         public PartialViewResult SubmitSolution(long problemId)
         {
             var languages = _submitSolutionService.GetLanguages();
-            var model = new SubmitSolutionViewModel { Languages = languages, ProblemId = problemId };
+            var model = new SubmitSolutionViewModel
+            {
+                Languages = languages,
+                ProblemId = problemId,
+                SelectedLanguage = GetSelectedLanguage()
+            };
             return PartialView("Submits/_SubmitSolution", model);
+        }
+
+        private int GetSelectedLanguage()
+        {
+            var value = Session["SelectedLanguage"];
+            if (value != null)
+            {
+                return (value as int?) ?? 0;
+            }
+            return 0;
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -54,6 +69,8 @@ namespace Judge.Web.Controllers
                 model.Success = true;
                 var userId = User.Identity.GetUserId<long>();
                 _submitSolutionService.SubmitSolution(model.ProblemId, model.SelectedLanguage, model.File, userId);
+
+                Session["SelectedLanguage"] = model.SelectedLanguage;
 
                 return Redirect(Request.UrlReferrer.ToString());
             }
