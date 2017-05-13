@@ -26,8 +26,16 @@ namespace Judge.Data
 
         public void Commit()
         {
-            _context?.SaveChanges();
-            _transactionScope?.Complete();
+            if (_transactionScope == null)
+            {
+                throw new InvalidOperationException("Commit transaction called, but transaction wasn't opened");
+            }
+
+            if (_context != null)
+            {
+                _context.SaveChanges();
+                _transactionScope.Complete();
+            }
         }
 
         public T GetRepository<T>()
