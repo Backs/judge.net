@@ -20,7 +20,9 @@ namespace Judge.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.Configurations.Add(new LanguageMapping());
             modelBuilder.Configurations.Add(new UserMapping());
-            modelBuilder.Configurations.Add(new SubmitMapping());
+            modelBuilder.Configurations.Add(new SubmitBaseMapping());
+            modelBuilder.Configurations.Add(new ProblemSubmitMapping());
+            modelBuilder.Configurations.Add(new ContestTaskSubmitMapping());
             modelBuilder.Configurations.Add(new CheckQueueMapping());
             modelBuilder.Configurations.Add(new SubmitResultMapping());
             modelBuilder.Configurations.Add(new TaskMapping());

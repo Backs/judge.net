@@ -12,14 +12,14 @@ namespace Judge.Data.Repository
             _context = context;
         }
 
-        public void Add(Submit item)
+        public void Add(ProblemSubmit item)
         {
-            _context.Set<Submit>().Add(item);
+            _context.Set<ProblemSubmit>().Add(item);
         }
 
-        public Submit Get(long submitId)
+        public ProblemSubmit Get(long submitId)
         {
-            return _context.Set<Submit>().AsNoTracking().FirstOrDefault(o => o.Id == submitId);
+            return _context.Set<ProblemSubmit>().AsNoTracking().FirstOrDefault(o => o.Id == submitId);
         }
     }
 }

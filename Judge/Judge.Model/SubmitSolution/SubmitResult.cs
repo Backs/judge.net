@@ -6,7 +6,7 @@
         {
 
         }
-        public SubmitResult(Submit submit)
+        public SubmitResult(SubmitBase submit)
         {
             CheckQueue = new CheckQueue();
             Status = SubmitStatus.Pending;
@@ -16,7 +16,7 @@
         public long Id { get; private set; }
         public SubmitStatus Status { get; set; }
         public CheckQueue CheckQueue { get; private set; }
-        public Submit Submit { get; private set; }
+        public SubmitBase Submit { get; private set; }
         public int? PassedTests { get; set; }
         public int? TotalBytes { get; set; }
         public int? TotalMilliseconds { get; set; }

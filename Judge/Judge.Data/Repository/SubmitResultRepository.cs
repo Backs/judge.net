@@ -29,7 +29,7 @@ namespace Judge.Data.Repository
             }
             if (problemId != null)
             {
-                query = query.Where(o => o.Submit.ProblemId == problemId);
+                query = query.Where(o => (o.Submit as ProblemSubmit).ProblemId == problemId);
             }
             query = query.OrderByDescending(o => o.Id);
 
@@ -48,9 +48,9 @@ namespace Judge.Data.Repository
         public IEnumerable<long> GetSolvedProblems(long userId, IEnumerable<long> problems)
         {
             return _context.Set<SubmitResult>()
-                .Where(o => o.Submit.UserId == userId && problems.Contains(o.Submit.ProblemId))
+                .Where(o => o.Submit.UserId == userId && problems.Contains((o.Submit as ProblemSubmit).ProblemId))
                 .Where(o => o.Status == SubmitStatus.Accepted)
-                .Select(o => o.Submit.ProblemId)
+                .Select(o => (o.Submit as ProblemSubmit).ProblemId)
                 .Distinct()
                 .AsEnumerable();
         }
@@ -70,7 +70,7 @@ namespace Judge.Data.Repository
             var query = _context.Set<SubmitResult>() as IQueryable<SubmitResult>;
             if (problemId != null)
             {
-                query = query.Where(o => o.Submit.ProblemId == problemId);
+                query = query.Where(o => (o.Submit as ProblemSubmit).ProblemId == problemId);
             }
             if (userId != null)
             {
