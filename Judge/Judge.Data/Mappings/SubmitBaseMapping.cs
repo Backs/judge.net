@@ -4,9 +4,9 @@ using Judge.Model.SubmitSolution;
 
 namespace Judge.Data.Mappings
 {
-    internal sealed class SubmitMapping : EntityTypeConfiguration<Submit>
+    internal sealed class SubmitBaseMapping : EntityTypeConfiguration<SubmitBase>
     {
-        public SubmitMapping()
+        public SubmitBaseMapping()
         {
             HasKey(o => o.Id);
             Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);

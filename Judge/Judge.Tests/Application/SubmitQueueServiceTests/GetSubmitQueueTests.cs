@@ -44,7 +44,7 @@ namespace Judge.Tests.Application.SubmitQueueServiceTests
         [Test]
         public void HidePassedTestsForAcceptedTest()
         {
-            var submit = Submit.Create();
+            var submit = ProblemSubmit.Create();
             submit.ProblemId = 1;
             submit.UserId = 1;
             var submits = new[] { new SubmitResult(submit) { Status = SubmitStatus.Accepted, PassedTests = 10 } };

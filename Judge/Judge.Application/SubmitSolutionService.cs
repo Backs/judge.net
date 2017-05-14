@@ -48,7 +48,7 @@ namespace Judge.Application
                 sourceCode = sr.ReadToEnd();
             }
 
-            var submit = Submit.Create();
+            var submit = ProblemSubmit.Create();
 
             submit.ProblemId = problemId;
             submit.LanguageId = selectedLanguage;

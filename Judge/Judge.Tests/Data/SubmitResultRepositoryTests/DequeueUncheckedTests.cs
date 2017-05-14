@@ -38,7 +38,7 @@ namespace Judge.Tests.Data.SubmitResultRepositoryTests
             using (var uow = factory.GetUnitOfWork(true))
             {
                 var submitRepository = uow.GetRepository<ISubmitRepository>();
-                var submit = Submit.Create();
+                var submit = ProblemSubmit.Create();
                 submit.FileName = "main.cpp";
                 submit.LanguageId = 1;
                 submit.ProblemId = 1;

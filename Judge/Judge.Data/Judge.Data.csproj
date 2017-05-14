@@ -59,8 +59,10 @@
     <Compile Include="IUnitOfWorkFactory.cs" />
     <Compile Include="Mappings\CheckQueueMapping.cs" />
     <Compile Include="Mappings\ContestMapping.cs" />
+    <Compile Include="Mappings\ContestTaskSubmitMapping.cs" />
     <Compile Include="Mappings\LanguageMapping.cs" />
-    <Compile Include="Mappings\SubmitMapping.cs" />
+    <Compile Include="Mappings\ProblemSubmitMapping.cs" />
+    <Compile Include="Mappings\SubmitBaseMapping.cs" />
     <Compile Include="Mappings\SubmitResultMapping.cs" />
     <Compile Include="Mappings\TaskMapping.cs" />
     <Compile Include="Mappings\UserMapping.cs" />

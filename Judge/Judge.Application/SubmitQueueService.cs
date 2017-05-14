@@ -62,10 +62,10 @@ namespace Judge.Application
                 var languages = languageRepository.GetLanguages().ToDictionary(o => o.Id, o => o.Name);
                 var submits = submitResultRepository.GetSubmits(null, null, page, pageSize).ToArray();
 
-                var tasks = taskRepository.GetTasks(submits.Select(o => o.Submit.ProblemId).Distinct()).ToDictionary(o => o.Id, o => o.Name);
-                var users = userRepository.GetUsers(submits.Select(o => o.Submit.UserId).Distinct()).ToDictionary(o => o.Id, o => o.UserName);
+                var tasks = taskRepository.GetTasks(submits.Select(o => o.Submit.GetProblemId())).ToDictionary(o => o.Id, o => o.Name);
+                var users = userRepository.GetUsers(submits.Select(o => o.Submit.UserId)).ToDictionary(o => o.Id, o => o.UserName);
 
-                var items = submits.Select(o => new SubmitQueueItem(o, languages[o.Submit.LanguageId], tasks[o.Submit.ProblemId], users[o.Submit.UserId])
+                var items = submits.Select(o => new SubmitQueueItem(o, languages[o.Submit.LanguageId], tasks[o.Submit.GetProblemId()], users[o.Submit.UserId])
                 {
                     ResultsEnabled = userId == o.Submit.UserId
                 });
