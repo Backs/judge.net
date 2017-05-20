@@ -68,6 +68,11 @@ namespace Judge.Application
                 var taskRepository = unitOfWork.GetRepository<ITaskRepository>();
                 var task = taskRepository.Get(id);
 
+                if (!task.IsOpened)
+                {
+                    throw new InvalidOperationException();
+                }
+
                 return new StatementViewModel
                 {
                     Id = task.Id,
