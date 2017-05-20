@@ -23,7 +23,7 @@ namespace Judge.Data.Repository
 
             var skip = (page - 1) * pageSize;
 
-            IQueryable<Task> taskList = _context.Set<Task>().OrderBy(o => o.Id);
+            IQueryable<Task> taskList = _context.Set<Task>().Where(o => o.IsOpened).OrderBy(o => o.Id);
             if (skip > 0)
             {
                 taskList = taskList.Skip(skip);
@@ -34,6 +34,7 @@ namespace Judge.Data.Repository
         public IEnumerable<TaskName> GetTasks(IEnumerable<long> tasks)
         {
             return _context.Set<Task>()
+                .Where(o => o.IsOpened)
                 .Where(o => tasks.Contains(o.Id))
                 .Select(o => new TaskName { Id = o.Id, Name = o.Name })
                 .AsEnumerable();
@@ -41,7 +42,7 @@ namespace Judge.Data.Repository
 
         public int Count()
         {
-            return _context.Set<Task>().Count();
+            return _context.Set<Task>().Count(o => o.IsOpened);
         }
     }
 }
