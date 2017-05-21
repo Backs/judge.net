@@ -286,6 +286,15 @@ namespace Judge.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Время на сервере.
+        /// </summary>
+        public static string ServerTime {
+            get {
+                return ResourceManager.GetString("ServerTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Решение отправлено.
         /// </summary>
         public static string SolutionSubmited {

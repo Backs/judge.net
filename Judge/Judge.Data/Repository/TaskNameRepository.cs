@@ -34,8 +34,7 @@ namespace Judge.Data.Repository
         public IEnumerable<TaskName> GetTasks(IEnumerable<long> tasks)
         {
             return _context.Set<Task>()
-                .Where(o => o.IsOpened)
-                .Where(o => tasks.Contains(o.Id))
+                .Where(o => tasks.Distinct().Contains(o.Id))
                 .Select(o => new TaskName { Id = o.Id, Name = o.Name })
                 .AsEnumerable();
         }
