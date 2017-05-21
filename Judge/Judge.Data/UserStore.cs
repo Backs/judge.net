@@ -115,7 +115,7 @@ namespace Judge.Data
 
         public IEnumerable<User> GetUsers(IEnumerable<long> users)
         {
-            return _dbSet.Where(o => users.Contains(o.Id)).OrderBy(o => o.Id).AsEnumerable();
+            return _dbSet.Where(o => users.Distinct().Contains(o.Id)).OrderBy(o => o.Id).AsEnumerable();
         }
     }
 }

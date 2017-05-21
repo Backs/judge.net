@@ -219,4 +219,7 @@
   <data name="ContestStart" xml:space="preserve">
     <value>Начало</value>
   </data>
+  <data name="ServerTime" xml:space="preserve">
+    <value>Время на сервере</value>
+  </data>
 </root>

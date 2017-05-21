@@ -84,6 +84,7 @@
     <None Include="Judge.Database.publish.xml" />
     <None Include="TempData.sql" />
     <None Include="dbo\Scripts\Post\AddUserName.sql" />
+    <None Include="dbo\Scripts\Post\OpenTasks.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="dbo\Scripts\Script.PostDeployment.sql" />
