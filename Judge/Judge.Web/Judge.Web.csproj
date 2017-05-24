@@ -228,6 +228,8 @@
     <Content Include="Views\Submits\Index.cshtml" />
     <Content Include="Views\Help\Index.cshtml" />
     <Content Include="Views\Contests\Index.cshtml" />
+    <Content Include="Views\Contests\Tasks.cshtml" />
+    <Content Include="Views\Contests\Results.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

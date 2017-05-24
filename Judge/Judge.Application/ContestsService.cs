@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Judge.Application.Interfaces;
 using Judge.Application.ViewModels.Contests.ContestsList;
+using Judge.Application.ViewModels.Contests.ContestTasks;
 using Judge.Data;
 using Judge.Model.Contests;
 
@@ -30,6 +31,15 @@ namespace Judge.Application
                 });
                 return new ContestsListViewModel(items);
             }
+        }
+
+        public ContestTasksViewModel GetTasks(long contestId)
+        {
+            using (var unitOfWork = _factory.GetUnitOfWork(false))
+            {
+
+            }
+            return new ContestTasksViewModel();
         }
     }
 }

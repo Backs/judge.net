@@ -11,6 +11,8 @@
         <thead>
             <tr>
                 <th>@Resources.ContestName</th>
+                <th></th>
+                <th></th>
                 <th>@Resources.ContestStart</th>
                 <th>@Resources.ContestDuration</th>
             </tr>
@@ -20,6 +22,10 @@
             {
                 <tr>
                     <td>@contest.Name</td>
+                    <td>
+                        @Html.ActionLink("Задачи", "Tasks", new { id = contest.Id })
+                    </td>
+                    <td>@Html.ActionLink("Результаты", "Results", new { id = contest.Id })</td>
                     <td>@contest.StartTime</td>
                     <td>@contest.Duration</td>
                 </tr>
