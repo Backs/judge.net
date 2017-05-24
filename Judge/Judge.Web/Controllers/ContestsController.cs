@@ -17,5 +17,15 @@ namespace Judge.Web.Controllers
             var model = _contestsService.GetContests();
             return View(model);
         }
+
+        public ActionResult Tasks(long id)
+        {
+            return View();
+        }
+
+        public ActionResult Results(long id)
+        {
+            return View();
+        }
     }
 }

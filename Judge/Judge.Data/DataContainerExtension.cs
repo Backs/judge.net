@@ -36,6 +36,7 @@ namespace Judge.Data
             Container.RegisterType<ITaskRepository, TaskRepository>(new T());
             Container.RegisterType<ITaskNameRepository, TaskNameRepository>(new T());
             Container.RegisterType<IContestsRepository, ContestsRepository>(new T());
+            Container.RegisterType<IContestTaskRepository, ContestTaskRepository>(new T());
         }
     }
 }
