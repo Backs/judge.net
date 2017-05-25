@@ -46,7 +46,7 @@ namespace Judge.Tests.Application.SubmitQueueServiceTests
         {
             var submit = Submit.Create();
             submit.ProblemId = 1;
-            submit.UserId = 2;
+            submit.UserId = 1;
             var submits = new[] { new SubmitResult(submit) { Status = SubmitStatus.Accepted, PassedTests = 10 } };
 
             _submitResultRepository.Stub(
