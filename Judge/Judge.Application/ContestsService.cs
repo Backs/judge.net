@@ -37,9 +37,24 @@ namespace Judge.Application
         {
             using (var unitOfWork = _factory.GetUnitOfWork(false))
             {
+                var contestRepository = unitOfWork.GetRepository<IContestsRepository>();
+                var contest = contestRepository.Get(contestId);
+                var taskRepository = unitOfWork.GetRepository<IContestTaskRepository>();
+                var items = taskRepository.GetTasks(contestId).Select(o => new ContestTaskItem
+                {
+                    Label = o.TaskName,
+                    Name = o.Task.Name,
+                    ProblemId = o.Task.Id,
+                    Solved = false //TODO: change
+                })
+                .OrderBy(o => o.Label);
 
+                return new ContestTasksViewModel(items)
+                {
+                    ContestId = contest.Id,
+                    ContestName = contest.Name
+                };
             }
-            return new ContestTasksViewModel();
         }
     }
 }
