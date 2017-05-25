@@ -34,6 +34,9 @@ namespace Judge.Web.Controllers
         public ActionResult Statement(long id)
         {
             var model = _problemsService.GetStatement(id);
+            if (model == null)
+                return HttpNotFound();
+
             return View(model);
         }
 
