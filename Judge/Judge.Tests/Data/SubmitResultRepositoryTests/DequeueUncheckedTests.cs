@@ -8,6 +8,7 @@ using NUnit.Framework;
 namespace Judge.Tests.Data.SubmitResultRepositoryTests
 {
     [TestFixture]
+    [Category("Database")]
     public class DequeueUncheckedTests
     {
         private IUnityContainer _container;

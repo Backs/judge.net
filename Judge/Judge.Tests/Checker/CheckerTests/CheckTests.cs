@@ -5,6 +5,7 @@ using NUnit.Framework;
 namespace Judge.Tests.Checker.CheckerTests
 {
     [TestFixture]
+    [Category("Checker")]
     public class CheckTests
     {
         private readonly string _workingDirectory = Path.Combine(TestContext.CurrentContext.TestDirectory, "WorkingDirectory");
