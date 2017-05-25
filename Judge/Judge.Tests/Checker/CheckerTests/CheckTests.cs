@@ -34,6 +34,10 @@ namespace Judge.Tests.Checker.CheckerTests
 
         private void CreateFile(string fileName, string content)
         {
+            if (!Directory.Exists(_workingDirectory))
+            {
+                Directory.CreateDirectory(_workingDirectory);
+            }
             var file = Path.Combine(_workingDirectory, fileName);
 
             File.WriteAllText(file, content);
