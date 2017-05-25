@@ -4,6 +4,7 @@ namespace Judge.Model.Contests
 {
     public interface IContestTaskRepository
     {
-        IEnumerable<ContestTask> GetTasks(long contestId);
+        IEnumerable<ContestTask> GetTasks(int contestId);
+        ContestTask Get(int contestId, string label);
     }
 }

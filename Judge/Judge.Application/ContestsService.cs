@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Judge.Application.Interfaces;
+using Judge.Application.ViewModels.Contests;
 using Judge.Application.ViewModels.Contests.ContestsList;
 using Judge.Application.ViewModels.Contests.ContestTasks;
 using Judge.Data;
@@ -33,7 +34,7 @@ namespace Judge.Application
             }
         }
 
-        public ContestTasksViewModel GetTasks(long contestId)
+        public ContestTasksViewModel GetTasks(int contestId)
         {
             using (var unitOfWork = _factory.GetUnitOfWork(false))
             {
@@ -54,6 +55,28 @@ namespace Judge.Application
                     ContestId = contest.Id,
                     ContestName = contest.Name
                 };
+            }
+        }
+
+        public ContestStatementViewModel GetStatement(int contestId, string label)
+        {
+            using (var unitOfWork = _factory.GetUnitOfWork(false))
+            {
+                var repository = unitOfWork.GetRepository<IContestTaskRepository>();
+                var task = repository.Get(contestId, label);
+
+                return new ContestStatementViewModel
+                {
+                    Id = task.Task.Id,
+                    CreationDate = task.Task.CreationDateUtc,
+                    MemoryLimitBytes = task.Task.MemoryLimitBytes,
+                    Name = task.Task.Name,
+                    Statement = task.Task.Statement,
+                    TimeLimitMilliseconds = task.Task.TimeLimitMilliseconds,
+                    ContestId = task.ContestId,
+                    Label = task.TaskName
+                };
+
             }
         }
     }

@@ -18,7 +18,7 @@ namespace Judge.Data.Repository
             return _context.Set<Contest>().AsEnumerable();
         }
 
-        public Contest Get(long id)
+        public Contest Get(int id)
         {
             return _context.Set<Contest>().FirstOrDefault(o => o.Id == id);
         }

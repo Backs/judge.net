@@ -14,13 +14,20 @@ namespace Judge.Data.Repository
             _context = context;
         }
 
-        public IEnumerable<ContestTask> GetTasks(long contestId)
+        public IEnumerable<ContestTask> GetTasks(int contestId)
         {
             return _context.Set<ContestTask>()
                             .Where(o => o.ContestId == contestId)
                             .Include(o => o.Task)
                             .OrderBy(o => o.TaskName)
                             .AsEnumerable();
+        }
+
+        public ContestTask Get(int contestId, string label)
+        {
+            return _context.Set<ContestTask>()
+                    .Include(o => o.Task)
+                    .FirstOrDefault(o => o.ContestId == contestId && o.TaskName == label);
         }
     }
 }

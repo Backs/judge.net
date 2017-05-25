@@ -10,6 +10,12 @@ namespace Judge.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "ContestTask",
+                url: "Contests/{contestId}/Task/{label}",
+                defaults: new { controller = "Contests", Action = "Task", page = UrlParameter.Optional }
+                );
+
+            routes.MapRoute(
                 name: "ProblemsList",
                 url: "Problems/Page/{page}",
                 defaults: new { controller = "Problems", action = "Index", page = UrlParameter.Optional }

@@ -9,19 +9,19 @@
 <div class="container">
     <table class="table table-striped">
         <thead>
-        <tr>
-            <th>Label</th>
-            <th>Name</th>
-        </tr>
+            <tr>
+                <th>Label</th>
+                <th>Name</th>
+            </tr>
         </thead>
         <tbody>
-        @foreach (var task in Model.Tasks)
-        {
-            <tr>
-                <td>@task.Label</td>
-                <td>@task.Name</td>
-            </tr>
-        }
+            @foreach (var task in Model.Tasks)
+            {
+                <tr>
+                    <td>@Html.ActionLink(task.Label, "Task", new { contestId = Model.ContestId, label = task.Label })</td>
+                    <td>@Html.ActionLink(task.Name, "Task", new { contestId = Model.ContestId, label = task.Label })</td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>

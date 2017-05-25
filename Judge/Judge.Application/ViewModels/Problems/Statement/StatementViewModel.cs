@@ -2,7 +2,7 @@
 
 namespace Judge.Application.ViewModels.Problems.Statement
 {
-    public sealed class StatementViewModel
+    public class StatementViewModel
     {
         public long Id { get; set; }
         public string Name { get; set; }
