@@ -23,13 +23,7 @@ namespace Judge.Application
             {
                 var repository = unitOfWork.GetRepository<IContestsRepository>();
 
-                var items = repository.GetList().Select(o => new ContestItem
-                {
-                    Id = o.Id,
-                    Name = o.Name,
-                    StartTime = o.StartTime,
-                    Duration = o.FinishTime - o.StartTime
-                });
+                var items = repository.GetList().Select(o => new ContestItem(o));
                 return new ContestsListViewModel(items);
             }
         }
@@ -62,8 +56,14 @@ namespace Judge.Application
         {
             using (var unitOfWork = _factory.GetUnitOfWork(false))
             {
-                var repository = unitOfWork.GetRepository<IContestTaskRepository>();
-                var task = repository.Get(contestId, label);
+                var contestTaskRepository = unitOfWork.GetRepository<IContestTaskRepository>();
+
+                var task = contestTaskRepository.Get(contestId, label);
+                if (task == null)
+                    return null;
+
+                var contestRepository = unitOfWork.GetRepository<IContestsRepository>();
+                var contest = contestRepository.Get(contestId);
 
                 return new ContestStatementViewModel
                 {

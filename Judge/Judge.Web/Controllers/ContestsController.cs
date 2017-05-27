@@ -27,6 +27,9 @@ namespace Judge.Web.Controllers
         public ActionResult Task(int contestId, string label)
         {
             var model = _contestsService.GetStatement(contestId, label);
+            if (model == null)
+                return HttpNotFound();
+
             return View(model);
         }
 

@@ -222,4 +222,13 @@
   <data name="ServerTime" xml:space="preserve">
     <value>Время на сервере</value>
   </data>
+  <data name="ContestStatus" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="Tasks" xml:space="preserve">
+    <value>Задачи</value>
+  </data>
+  <data name="ContestResults" xml:space="preserve">
+    <value>Результаты</value>
+  </data>
 </root>

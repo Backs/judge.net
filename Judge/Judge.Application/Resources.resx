@@ -116,4 +116,13 @@
   <data name="EnterUserName" xml:space="preserve">
     <value>Введите имя пользователя</value>
   </data>
+  <data name="ContestStatusPlanned" xml:space="preserve">
+    <value>Запланирован</value>
+  </data>
+  <data name="ContestStatusStarted" xml:space="preserve">
+    <value>Идет...</value>
+  </data>
+  <data name="ContestStatusFinished" xml:space="preserve">
+    <value>Завершен</value>
+  </data>
 </root>

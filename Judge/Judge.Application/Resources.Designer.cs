@@ -61,6 +61,33 @@ namespace Judge.Application {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Завершен.
+        /// </summary>
+        public static string ContestStatusFinished {
+            get {
+                return ResourceManager.GetString("ContestStatusFinished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Запланирован.
+        /// </summary>
+        public static string ContestStatusPlanned {
+            get {
+                return ResourceManager.GetString("ContestStatusPlanned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Идет....
+        /// </summary>
+        public static string ContestStatusStarted {
+            get {
+                return ResourceManager.GetString("ContestStatusStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Введите Email.
         /// </summary>
         public static string EnterEmail {

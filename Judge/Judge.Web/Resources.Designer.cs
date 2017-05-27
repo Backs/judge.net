@@ -106,6 +106,15 @@ namespace Judge.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Результаты.
+        /// </summary>
+        public static string ContestResults {
+            get {
+                return ResourceManager.GetString("ContestResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Соревнования.
         /// </summary>
         public static string Contests {
@@ -120,6 +129,15 @@ namespace Judge.Web {
         public static string ContestStart {
             get {
                 return ResourceManager.GetString("ContestStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Статус.
+        /// </summary>
+        public static string ContestStatus {
+            get {
+                return ResourceManager.GetString("ContestStatus", resourceCulture);
             }
         }
         
@@ -336,6 +354,15 @@ namespace Judge.Web {
         public static string TaskName {
             get {
                 return ResourceManager.GetString("TaskName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Задачи.
+        /// </summary>
+        public static string Tasks {
+            get {
+                return ResourceManager.GetString("Tasks", resourceCulture);
             }
         }
         
