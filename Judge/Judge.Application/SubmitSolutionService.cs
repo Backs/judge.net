@@ -72,6 +72,9 @@ namespace Judge.Application
                 var taskRepository = unitOfWork.GetRepository<ITaskRepository>();
 
                 var submit = submitRepository.Get(submitId);
+                if (submit == null)
+                    return null;
+
                 if (submit.UserId != userId)
                 {
                     throw new AuthenticationException();

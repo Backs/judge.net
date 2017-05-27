@@ -91,6 +91,9 @@ namespace Judge.Web.Controllers
             try
             {
                 var model = _submitSolutionService.GetSolution(submitId, userId);
+                if (model == null)
+                    return HttpNotFound();
+
                 return View(model);
             }
             catch (AuthenticationException)
