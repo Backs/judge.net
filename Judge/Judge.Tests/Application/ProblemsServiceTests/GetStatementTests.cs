@@ -1,4 +1,5 @@
-﻿using Judge.Application;
+﻿using System;
+using Judge.Application;
 using Judge.Data;
 using Judge.Model.CheckSolution;
 using NUnit.Framework;
@@ -35,7 +36,7 @@ namespace Judge.Tests.Application.ProblemsServiceTests
         }
 
         [Test]
-        public void StatementTest()
+        public void OpenedTaskStatementTest()
         {
             var task = new Task
             {
@@ -43,7 +44,8 @@ namespace Judge.Tests.Application.ProblemsServiceTests
                 TimeLimitMilliseconds = 5000,
                 Name = "Task",
                 Statement = "*bb*",
-                TestsFolder = "Folder"
+                TestsFolder = "Folder",
+                IsOpened = true
             };
             _taskRepository.Stub(o => o.Get(1)).Return(task);
             var result = _service.GetStatement(1);
@@ -52,6 +54,22 @@ namespace Judge.Tests.Application.ProblemsServiceTests
             Assert.That(result.TimeLimitMilliseconds, Is.EqualTo(task.TimeLimitMilliseconds));
             Assert.That(result.Statement, Is.EqualTo(task.Statement));
             Assert.That(result.Name, Is.EqualTo(task.Name));
+        }
+
+        [Test]
+        public void ClosedTaskStatementTest()
+        {
+            var task = new Task
+            {
+                MemoryLimitBytes = 1024000,
+                TimeLimitMilliseconds = 5000,
+                Name = "Task",
+                Statement = "*bb*",
+                TestsFolder = "Folder",
+                IsOpened = false
+            };
+            _taskRepository.Stub(o => o.Get(1)).Return(task);
+            Assert.Throws<InvalidOperationException>(() => _service.GetStatement(1));
         }
     }
 }
