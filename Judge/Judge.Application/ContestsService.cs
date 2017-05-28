@@ -96,7 +96,17 @@ namespace Judge.Application
 
             using (var unitOfWork = _factory.GetUnitOfWork(true))
             {
+                var contest = unitOfWork.GetRepository<IContestsRepository>().Get(contestId);
+                if (DateTime.UtcNow < contest.StartTime)
+                    throw new InvalidOperationException("Contest not started");
+
+                if (DateTime.UtcNow >= contest.FinishTime)
+                    throw new InvalidOperationException("Contest finished");
+
                 var task = unitOfWork.GetRepository<IContestTaskRepository>().Get(contestId, label);
+
+                if (task == null)
+                    throw new InvalidOperationException("Task not found");
 
                 var submit = ContestTaskSubmit.Create();
 

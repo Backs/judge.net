@@ -50,6 +50,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -60,6 +61,8 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Application\ContestsServiceTests\SubmitSolutionTests.cs" />
+    <Compile Include="Application\FakeHttpPostedFileBase.cs" />
     <Compile Include="Application\ProblemsServiceTests\GetProblemsListTests.cs" />
     <Compile Include="Application\ProblemsServiceTests\GetStatementTests.cs" />
     <Compile Include="Application\SubmitQueueServiceTests\GetSubmitQueueTests.cs" />
