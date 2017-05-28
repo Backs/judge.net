@@ -192,6 +192,7 @@
     <Content Include="css\bootstrap-theme.min.css.map" />
     <Content Include="css\bootstrap-theme.css.map" />
     <Content Include="Content\Help\ru.md" />
+    <Content Include="Content\About\ru.md" />
     <None Include="Properties\PublishProfiles\Publish.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -229,6 +230,7 @@
     <Content Include="Views\Submits\Index.cshtml" />
     <Content Include="Views\Help\Index.cshtml" />
     <Content Include="Views\Contests\Index.cshtml" />
+    <Content Include="Views\Help\About.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

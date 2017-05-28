@@ -219,4 +219,7 @@
   <data name="ContestStart" xml:space="preserve">
     <value>Начало</value>
   </data>
+  <data name="About" xml:space="preserve">
+    <value>О системе</value>
+  </data>
 </root>
