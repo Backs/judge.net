@@ -61,6 +61,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Application\ContestsServiceTests\GetStatementTests.cs" />
     <Compile Include="Application\ContestsServiceTests\SubmitSolutionTests.cs" />
     <Compile Include="Application\FakeHttpPostedFileBase.cs" />
     <Compile Include="Application\ProblemsServiceTests\GetProblemsListTests.cs" />
