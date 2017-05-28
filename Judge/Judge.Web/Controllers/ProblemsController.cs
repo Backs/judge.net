@@ -3,6 +3,7 @@ using System.Web;
 using System.Web.Mvc;
 using Judge.Application.Interfaces;
 using Judge.Application.ViewModels.Submit;
+using Judge.Web.Services;
 using Microsoft.AspNet.Identity;
 
 namespace Judge.Web.Controllers
@@ -11,12 +12,14 @@ namespace Judge.Web.Controllers
     {
         private readonly IProblemsService _problemsService;
         private readonly ISubmitSolutionService _submitSolutionService;
+        private readonly ISessionService _sessionService;
         private int _pageSize = 20;
 
-        public ProblemsController(IProblemsService problemsService, ISubmitSolutionService submitSolutionService)
+        public ProblemsController(IProblemsService problemsService, ISubmitSolutionService submitSolutionService, ISessionService sessionService)
         {
             _problemsService = problemsService;
             _submitSolutionService = submitSolutionService;
+            _sessionService = sessionService;
         }
 
 
@@ -48,19 +51,9 @@ namespace Judge.Web.Controllers
             {
                 Languages = languages,
                 ProblemId = problemId,
-                SelectedLanguage = GetSelectedLanguage()
+                SelectedLanguage = _sessionService.GetSelectedLanguage()
             };
             return PartialView("Submits/_SubmitSolution", model);
-        }
-
-        private int GetSelectedLanguage()
-        {
-            var value = Session["SelectedLanguage"];
-            if (value != null)
-            {
-                return (value as int?) ?? 0;
-            }
-            return 0;
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -73,7 +66,7 @@ namespace Judge.Web.Controllers
                 var userId = User.Identity.GetUserId<long>();
                 _submitSolutionService.SubmitSolution(model.ProblemId, model.SelectedLanguage, model.File, userId);
 
-                Session["SelectedLanguage"] = model.SelectedLanguage;
+                _sessionService.SaveSelectedLanguage(model.SelectedLanguage);
 
                 return Redirect(Request.UrlReferrer.ToString());
             }

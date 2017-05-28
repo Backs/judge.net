@@ -8,11 +8,5 @@
             submit.Results.Add(new SubmitResult(submit));
             return submit;
         }
-
-        public long ProblemId { get; set; }
-        public override long GetProblemId()
-        {
-            return ProblemId;
-        }
     }
 }

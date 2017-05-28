@@ -133,6 +133,15 @@ namespace Judge.Application {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Выберите файл.
+        /// </summary>
+        public static string SelectFile {
+            get {
+                return ResourceManager.GetString("SelectFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Имя пользователя.
         /// </summary>
         public static string UserName {

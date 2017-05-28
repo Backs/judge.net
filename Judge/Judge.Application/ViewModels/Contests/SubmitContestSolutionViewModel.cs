@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
+using Judge.Application.ViewModels.Submit;
 
-namespace Judge.Application.ViewModels.Submit
+namespace Judge.Application.ViewModels.Contests
 {
-    public sealed class SubmitSolutionViewModel
+    public class SubmitContestSolutionViewModel
     {
         public IEnumerable<LanguageViewModel> Languages { get; set; }
         public int SelectedLanguage { get; set; }
@@ -15,6 +16,7 @@ namespace Judge.Application.ViewModels.Submit
         public HttpPostedFileBase File { get; set; }
 
         public bool Success { get; set; }
-        public long ProblemId { get; set; }
+        public string Label { get; set; }
+        public int ContestId { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace Judge.Application.ViewModels.Submit
         {
             SubmitId = submitResult.Submit.Id;
             Language = language;
-            ProblemId = submitResult.Submit.GetProblemId();
+            ProblemId = submitResult.Submit.ProblemId;
             ProblemName = problemName;
             ResultDescription = GetDescription(submitResult.Status);
             SubmitResultId = submitResult.Id;

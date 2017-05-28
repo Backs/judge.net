@@ -29,7 +29,8 @@ namespace Judge.Data.Repository
             }
             if (problemId != null)
             {
-                query = query.Where(o => (o.Submit as ProblemSubmit).ProblemId == problemId);
+                query = query.Where(o => o.Submit is ProblemSubmit);
+                query = query.Where(o => o.Submit.ProblemId == problemId);
             }
             query = query.OrderByDescending(o => o.Id);
 
@@ -70,7 +71,8 @@ namespace Judge.Data.Repository
             var query = _context.Set<SubmitResult>() as IQueryable<SubmitResult>;
             if (problemId != null)
             {
-                query = query.Where(o => (o.Submit as ProblemSubmit).ProblemId == problemId);
+                query = query.Where(o => o.Submit is ProblemSubmit);
+                query = query.Where(o => o.Submit.ProblemId == problemId);
             }
             if (userId != null)
             {

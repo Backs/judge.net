@@ -125,4 +125,7 @@
   <data name="ContestStatusFinished" xml:space="preserve">
     <value>Завершен</value>
   </data>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Выберите файл</value>
+  </data>
 </root>

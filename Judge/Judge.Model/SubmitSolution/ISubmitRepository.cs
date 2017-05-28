@@ -2,7 +2,7 @@
 {
     public interface ISubmitRepository
     {
-        void Add(ProblemSubmit item);
+        void Add(SubmitBase item);
         ProblemSubmit Get(long submitId);
     }
 }

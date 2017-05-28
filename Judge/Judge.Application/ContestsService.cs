@@ -1,10 +1,14 @@
-﻿using System.Linq;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Web;
 using Judge.Application.Interfaces;
 using Judge.Application.ViewModels.Contests;
 using Judge.Application.ViewModels.Contests.ContestsList;
 using Judge.Application.ViewModels.Contests.ContestTasks;
 using Judge.Data;
 using Judge.Model.Contests;
+using Judge.Model.SubmitSolution;
 
 namespace Judge.Application
 {
@@ -76,7 +80,36 @@ namespace Judge.Application
                     Label = task.TaskName,
                     Contest = new ContestItem(contest)
                 };
+            }
+        }
 
+        public void SubmitSolution(int contestId, string label, int selectedLanguage, HttpPostedFileBase file, long userId)
+        {
+            if (file == null)
+                throw new ArgumentNullException(nameof(file));
+
+            string sourceCode;
+            using (var sr = new StreamReader(file.InputStream))
+            {
+                sourceCode = sr.ReadToEnd();
+            }
+
+            using (var unitOfWork = _factory.GetUnitOfWork(true))
+            {
+                var task = unitOfWork.GetRepository<IContestTaskRepository>().Get(contestId, label);
+
+                var submit = ContestTaskSubmit.Create();
+
+                submit.ProblemId = task.Task.Id;
+                submit.ContestId = contestId;
+                submit.LanguageId = selectedLanguage;
+                submit.UserId = userId;
+                submit.FileName = file.FileName;
+                submit.SourceCode = sourceCode;
+
+                var submitRepository = unitOfWork.GetRepository<ISubmitRepository>();
+                submitRepository.Add(submit);
+                unitOfWork.Commit();
             }
         }
     }

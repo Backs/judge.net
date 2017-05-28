@@ -59,7 +59,7 @@ namespace Judge.JudgeService
             CreateWorkingDirectory();
 
             var language = _languageRepository.Get(submitResult.Submit.LanguageId);
-            var task = _taskRepository.Get(submitResult.Submit.GetProblemId());
+            var task = _taskRepository.Get(submitResult.Submit.ProblemId);
 
             CompileResult compileResult;
             if (language.IsCompilable)

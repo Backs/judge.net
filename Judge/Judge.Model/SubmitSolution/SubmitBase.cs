@@ -18,7 +18,6 @@ namespace Judge.Model.SubmitSolution
         public ICollection<SubmitResult> Results { get; }
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         public DateTime SubmitDateUtc { get; private set; }
-
-        public abstract long GetProblemId();
+        public long ProblemId { get; set; }
     }
 }

@@ -12,9 +12,9 @@ namespace Judge.Data.Repository
             _context = context;
         }
 
-        public void Add(ProblemSubmit item)
+        public void Add(SubmitBase item)
         {
-            _context.Set<ProblemSubmit>().Add(item);
+            _context.Set<SubmitBase>().Add(item);
         }
 
         public ProblemSubmit Get(long submitId)

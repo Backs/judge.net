@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Judge.Model.SubmitSolution
+﻿namespace Judge.Model.SubmitSolution
 {
     public sealed class ContestTaskSubmit : SubmitBase
     {
@@ -15,9 +9,6 @@ namespace Judge.Model.SubmitSolution
             return submit;
         }
 
-        public override long GetProblemId()
-        {
-            throw new NotImplementedException();
-        }
+        public int ContestId { get; set; }
     }
 }

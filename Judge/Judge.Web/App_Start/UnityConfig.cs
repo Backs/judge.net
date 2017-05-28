@@ -33,6 +33,7 @@ namespace Judge.Web
         /// change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
         public static void RegisterTypes(IUnityContainer container)
         {
+            container.RegisterType<Services.ISessionService, Services.SessionService>(new PerRequestLifetimeManager());
             var connectionString = ConfigurationManager.ConnectionStrings["DataBaseConnection"].ConnectionString;
             container.AddExtension(new ApplicationExtension(connectionString));
         }
