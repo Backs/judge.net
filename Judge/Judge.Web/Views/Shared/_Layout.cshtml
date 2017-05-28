@@ -25,6 +25,7 @@
                     <li>@Html.ActionLink(Resources.Contests, "Index", "Contests")</li>
                     <li>@Html.ActionLink(Resources.Queue, "Index", "Submits")</li>
                     <li>@Html.ActionLink(Resources.Manual, "Index", "Help")</li>
+                    <li>@Html.ActionLink(Resources.About, "About", "Help")</li>
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li>@Html.ActionLink(Resources.LogOut, "Logout", "Account")</li>

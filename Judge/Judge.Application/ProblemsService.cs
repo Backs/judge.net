@@ -67,6 +67,8 @@ namespace Judge.Application
             {
                 var taskRepository = unitOfWork.GetRepository<ITaskRepository>();
                 var task = taskRepository.Get(id);
+                if (task == null)
+                    return null;
 
                 if (!task.IsOpened)
                 {

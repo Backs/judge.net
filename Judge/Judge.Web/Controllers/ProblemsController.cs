@@ -34,6 +34,9 @@ namespace Judge.Web.Controllers
         public ActionResult Statement(long id)
         {
             var model = _problemsService.GetStatement(id);
+            if (model == null)
+                return HttpNotFound();
+
             return View(model);
         }
 
@@ -88,6 +91,9 @@ namespace Judge.Web.Controllers
             try
             {
                 var model = _submitSolutionService.GetSolution(submitId, userId);
+                if (model == null)
+                    return HttpNotFound();
+
                 return View(model);
             }
             catch (AuthenticationException)

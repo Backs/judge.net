@@ -9,5 +9,11 @@ namespace Judge.Web.Controllers
             var text = System.IO.File.ReadAllText(Server.MapPath("~/Content/Help/ru.md"));
             return View((object)text);
         }
+
+        public ActionResult About()
+        {
+            var text = System.IO.File.ReadAllText(Server.MapPath("~/Content/About/ru.md"));
+            return View((object)text);
+        }
     }
 }
