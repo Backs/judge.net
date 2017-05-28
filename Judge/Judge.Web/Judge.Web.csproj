@@ -231,6 +231,7 @@
     <Content Include="Views\Contests\Tasks.cshtml" />
     <Content Include="Views\Contests\Results.cshtml" />
     <Content Include="Views\Contests\Task.cshtml" />
+    <Content Include="Views\Contests\NotStartedContest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

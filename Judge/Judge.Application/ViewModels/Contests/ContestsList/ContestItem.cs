@@ -51,5 +51,7 @@ namespace Judge.Application.ViewModels.Contests.ContestsList
         public DateTime StartTime { get; }
         public TimeSpan Duration { get; }
         public ContestStatus Status { get; }
+        public bool IsFinished => Status == ContestStatus.Finished;
+        public bool IsNotStarted => Status == ContestStatus.Planned;
     }
 }

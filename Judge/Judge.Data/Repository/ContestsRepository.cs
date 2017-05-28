@@ -15,7 +15,7 @@ namespace Judge.Data.Repository
 
         public IEnumerable<Contest> GetList()
         {
-            return _context.Set<Contest>().AsEnumerable();
+            return _context.Set<Contest>().OrderByDescending(o => o.StartTime).AsEnumerable();
         }
 
         public Contest Get(int id)

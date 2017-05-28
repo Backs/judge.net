@@ -6,7 +6,7 @@
     var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().UseBootstrap().Build();
 }
 
-<h2>@ViewBag.Title</h2>
+<h2>@Html.ActionLink(Model.Contest.Name, "Tasks", new { id = Model.Contest.Id }): @ViewBag.Title</h2>
 
 <p>@Resources.TimeLimit: <b>@Model.TimeLimitSeconds.ToString("F3")</b> @Resources.Seconds</p>
 <p>@Resources.MemoryLimit: <b>@Model.MemoryLimitMegabytes.ToString("F3")</b> @Resources.Megabytes</p>
@@ -32,3 +32,26 @@
 <div class="well well-sm" id="statement">
     @Html.Raw(Markdown.ToHtml(Model.Statement, pipeline))
 </div>
+
+@if (User.Identity.IsAuthenticated)
+{
+    if (Model.Contest.IsFinished)
+    {
+        <div class="alert alert-danger" role="alert">@Resources.ContestFinishedNotification</div>
+    }
+    else
+    {
+        <div id="submit-container">
+            @Html.Action("SubmitSolution", new { contestId = Model.Contest.Id, problemId = Model.Id })
+        </div>
+    }
+    <div id="submit-queue">
+        @Html.Action("UserSubmitQueue", new { contestId = Model.Contest.Id, problemId = Model.Id, page = 1 })
+    </div>
+}
+else
+{
+    <div>
+        @Html.ActionLink(Resources.Enter, "Login", "Account", new { returnUrl = Request.Url.ToString() }, null), @Resources.ToSubmitSolutions
+    </div>
+}

@@ -30,12 +30,29 @@ namespace Judge.Web.Controllers
             if (model == null)
                 return HttpNotFound();
 
+            if (model.Contest.IsNotStarted)
+            {
+                return View("NotStartedContest");
+            }
+
             return View(model);
         }
 
         public ActionResult Results(long id)
         {
             return View();
+        }
+
+        [Authorize]
+        public ActionResult SubmitSolution(int contestId, long problemId)
+        {
+            return new EmptyResult();
+        }
+
+        [Authorize]
+        public ActionResult UserSubmitQueue(int contestId, long problemId, int page)
+        {
+            return new EmptyResult();
         }
     }
 }

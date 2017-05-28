@@ -231,4 +231,13 @@
   <data name="ContestResults" xml:space="preserve">
     <value>Результаты</value>
   </data>
+  <data name="ContestFinishedNotification" xml:space="preserve">
+    <value>Соревнование окончено. Вы не можете больше отправлять решения</value>
+  </data>
+  <data name="ContestNotStartedCaption" xml:space="preserve">
+    <value>Соревнование еще не началось</value>
+  </data>
+  <data name="ContestNotStartedNotification" xml:space="preserve">
+    <value>Вы не можете просматривать задачи и отправлять решения, до начала соревнования</value>
+  </data>
 </root>

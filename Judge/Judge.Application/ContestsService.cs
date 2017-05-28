@@ -73,8 +73,8 @@ namespace Judge.Application
                     Name = task.Task.Name,
                     Statement = task.Task.Statement,
                     TimeLimitMilliseconds = task.Task.TimeLimitMilliseconds,
-                    ContestId = task.ContestId,
-                    Label = task.TaskName
+                    Label = task.TaskName,
+                    Contest = new ContestItem(contest)
                 };
 
             }

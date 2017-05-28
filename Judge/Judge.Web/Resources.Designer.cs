@@ -97,11 +97,38 @@ namespace Judge.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Соревнование окончено. Вы не можете больше отправлять решения.
+        /// </summary>
+        public static string ContestFinishedNotification {
+            get {
+                return ResourceManager.GetString("ContestFinishedNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Название.
         /// </summary>
         public static string ContestName {
             get {
                 return ResourceManager.GetString("ContestName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Соревнование еще не началось.
+        /// </summary>
+        public static string ContestNotStartedCaption {
+            get {
+                return ResourceManager.GetString("ContestNotStartedCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Вы не можете просматривать задачи и отправлять решения, до начала соревнования.
+        /// </summary>
+        public static string ContestNotStartedNotification {
+            get {
+                return ResourceManager.GetString("ContestNotStartedNotification", resourceCulture);
             }
         }
         
