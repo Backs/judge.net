@@ -23,13 +23,15 @@ namespace Judge.Data.Repository
                 throw new ArgumentOutOfRangeException(nameof(pageSize));
 
             var query = _context.Set<SubmitResult>() as IQueryable<SubmitResult>;
+
+            query = query.Where(o => o.Submit is ProblemSubmit);
+
             if (userId != null)
             {
                 query = query.Where(o => o.Submit.UserId == userId);
             }
             if (problemId != null)
             {
-                query = query.Where(o => o.Submit is ProblemSubmit);
                 query = query.Where(o => o.Submit.ProblemId == problemId);
             }
             query = query.OrderByDescending(o => o.Id);
@@ -69,9 +71,11 @@ namespace Judge.Data.Repository
         public int Count(long? problemId, long? userId)
         {
             var query = _context.Set<SubmitResult>() as IQueryable<SubmitResult>;
+
+            query = query.Where(o => o.Submit is ProblemSubmit);
+
             if (problemId != null)
             {
-                query = query.Where(o => o.Submit is ProblemSubmit);
                 query = query.Where(o => o.Submit.ProblemId == problemId);
             }
             if (userId != null)
