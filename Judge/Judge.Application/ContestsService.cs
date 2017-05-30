@@ -8,6 +8,8 @@ using Judge.Application.ViewModels.Contests.ContestsList;
 using Judge.Application.ViewModels.Contests.ContestTasks;
 using Judge.Application.ViewModels.Submit;
 using Judge.Data;
+using Judge.Model.Account;
+using Judge.Model.Configuration;
 using Judge.Model.Contests;
 using Judge.Model.SubmitSolution;
 
@@ -126,7 +128,38 @@ namespace Judge.Application
 
         public SubmitQueueViewModel GetSubmitQueue(long userId, int contestId, string label, int page, int pageSize)
         {
-            throw new NotImplementedException();
+            using (var uow = _factory.GetUnitOfWork(false))
+            {
+                var submitResultRepository = uow.GetRepository<ISubmitResultRepository>();
+                var languageRepository = uow.GetRepository<ILanguageRepository>();
+                var userRepository = uow.GetRepository<IUserRepository>();
+                var contestTaskRepository = uow.GetRepository<IContestTaskRepository>();
+
+                var task = contestTaskRepository.Get(contestId, label);
+                
+                var languages = languageRepository.GetLanguages().ToDictionary(o => o.Id, o => o.Name);
+
+                var specification = new ContestTaskSpecification(contestId, task.Task.Id, userId);
+
+                var submits = submitResultRepository.GetSubmits(specification, page, pageSize);
+                var count = submitResultRepository.Count(specification);
+
+                var user = userRepository.GetUsers(new[] { userId }).First();
+
+                var items = submits.Select(o => new SubmitQueueItem(o, languages[o.Submit.LanguageId], task.Task.Name, user.UserName) { ResultsEnabled = true });
+
+                var model = new SubmitQueueViewModel(items)
+                {
+                    Pagination = new ViewModels.PaginationViewModel
+                    {
+                        CurrentPage = page,
+                        PageSize = pageSize,
+                        TotalPages = (count + pageSize - 1) / pageSize
+                    }
+                };
+
+                return model;
+            }
         }
     }
 }

@@ -35,6 +35,7 @@
     <Compile Include="Entities\Language.cs" />
     <Compile Include="ISpecification.cs" />
     <Compile Include="SubmitSolution\AllProblemsSpecification.cs" />
+    <Compile Include="SubmitSolution\ContestTaskSpecification.cs" />
     <Compile Include="SubmitSolution\ContestTaskSubmit.cs" />
     <Compile Include="SubmitSolution\ISubmitResultRepository.cs" />
     <Compile Include="SubmitSolution\SubmitBase.cs" />
