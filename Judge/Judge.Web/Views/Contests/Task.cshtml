@@ -46,7 +46,7 @@
         </div>
     }
     <div id="submit-queue">
-        @Html.Action("UserSubmitQueue", new { contestId = Model.Contest.Id, problemId = Model.Id, page = 1 })
+        @Html.Action("UserSubmitQueue", new { contestId = Model.Contest.Id, label = Model.Label, page = 1 })
     </div>
 }
 else

@@ -28,8 +28,11 @@ namespace Judge.Application
                 var userRepository = uow.GetRepository<IUserRepository>();
 
                 var languages = languageRepository.GetLanguages().ToDictionary(o => o.Id, o => o.Name);
-                var submits = submitResultRepository.GetSubmits(userId, problemId, page, pageSize);
-                var count = submitResultRepository.Count(problemId, userId);
+
+                var specification = new UserProblemSpecification(userId, problemId);
+
+                var submits = submitResultRepository.GetSubmits(specification, page, pageSize);
+                var count = submitResultRepository.Count(specification);
 
                 var task = taskRepository.GetTasks(new[] { problemId }).First();
                 var user = userRepository.GetUsers(new[] { userId }).First();
@@ -60,7 +63,7 @@ namespace Judge.Application
                 var userRepository = uow.GetRepository<IUserRepository>();
 
                 var languages = languageRepository.GetLanguages().ToDictionary(o => o.Id, o => o.Name);
-                var submits = submitResultRepository.GetSubmits(null, null, page, pageSize).ToArray();
+                var submits = submitResultRepository.GetSubmits(AllProblemsSpecification.Instance, page, pageSize).ToArray();
 
                 var tasks = taskRepository.GetTasks(submits.Select(o => o.Submit.ProblemId)).ToDictionary(o => o.Id, o => o.Name);
                 var users = userRepository.GetUsers(submits.Select(o => o.Submit.UserId)).ToDictionary(o => o.Id, o => o.UserName);
@@ -70,7 +73,7 @@ namespace Judge.Application
                     ResultsEnabled = userId == o.Submit.UserId
                 });
 
-                var count = submitResultRepository.Count(null, null);
+                var count = submitResultRepository.Count(AllProblemsSpecification.Instance);
 
                 var model = new SubmitQueueViewModel(items)
                 {

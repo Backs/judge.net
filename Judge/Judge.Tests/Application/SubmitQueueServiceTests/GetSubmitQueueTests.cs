@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Judge.Application;
 using Judge.Data;
+using Judge.Model;
 using Judge.Model.Account;
 using Judge.Model.CheckSolution;
 using Judge.Model.Configuration;
@@ -50,7 +51,7 @@ namespace Judge.Tests.Application.SubmitQueueServiceTests
             var submits = new[] { new SubmitResult(submit) { Status = SubmitStatus.Accepted, PassedTests = 10 } };
 
             _submitResultRepository.Stub(
-                o => o.GetSubmits(Arg<long?>.Is.Anything, Arg<long?>.Is.Anything, Arg<int>.Is.Anything, Arg<int>.Is.Anything))
+                o => o.GetSubmits(Arg<ISpecification<SubmitResult>>.Is.Anything, Arg<int>.Is.Anything, Arg<int>.Is.Anything))
                 .Return(submits);
 
             _taskRepository.Stub(o => o.GetTasks(Arg<long[]>.Is.Anything)).Return(new[] { new TaskName { Id = 1, Name = "A+B" } });

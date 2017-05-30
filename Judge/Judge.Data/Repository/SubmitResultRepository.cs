@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Judge.Model;
 using Judge.Model.SubmitSolution;
 
 namespace Judge.Data.Repository
@@ -15,7 +16,7 @@ namespace Judge.Data.Repository
             _context = context;
         }
 
-        public IEnumerable<SubmitResult> GetSubmits(long? userId, long? problemId, int page, int pageSize)
+        public IEnumerable<SubmitResult> GetSubmits(ISpecification<SubmitResult> specification, int page, int pageSize)
         {
             if (page <= 0)
                 throw new ArgumentOutOfRangeException(nameof(page));
@@ -24,16 +25,8 @@ namespace Judge.Data.Repository
 
             var query = _context.Set<SubmitResult>() as IQueryable<SubmitResult>;
 
-            query = query.Where(o => o.Submit is ProblemSubmit);
+            query = query.Where(specification.IsSatisfiedBy);
 
-            if (userId != null)
-            {
-                query = query.Where(o => o.Submit.UserId == userId);
-            }
-            if (problemId != null)
-            {
-                query = query.Where(o => o.Submit.ProblemId == problemId);
-            }
             query = query.OrderByDescending(o => o.Id);
 
             var skip = (page - 1) * pageSize;
@@ -68,20 +61,11 @@ namespace Judge.Data.Repository
                 .Include(o => o.Submit).First();
         }
 
-        public int Count(long? problemId, long? userId)
+        public int Count(ISpecification<SubmitResult> specification)
         {
-            var query = _context.Set<SubmitResult>() as IQueryable<SubmitResult>;
+            var query = _context.Set<SubmitResult>()
+                .Where(specification.IsSatisfiedBy);
 
-            query = query.Where(o => o.Submit is ProblemSubmit);
-
-            if (problemId != null)
-            {
-                query = query.Where(o => o.Submit.ProblemId == problemId);
-            }
-            if (userId != null)
-            {
-                query = query.Where(o => o.Submit.UserId == userId);
-            }
             return query.Count();
         }
     }

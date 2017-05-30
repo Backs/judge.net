@@ -85,9 +85,11 @@ namespace Judge.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult UserSubmitQueue(int contestId, long problemId, int page)
+        public ActionResult UserSubmitQueue(int contestId, string label, int? page)
         {
-            return new EmptyResult();
+            var userId = User.Identity.GetUserId<long>();
+            var model = _contestsService.GetSubmitQueue(userId, contestId, label, page ?? 1, 10);
+            return PartialView("Submits/_SubmitQueue", model);
         }
     }
 }

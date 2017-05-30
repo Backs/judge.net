@@ -6,6 +6,7 @@ using Judge.Application.Interfaces;
 using Judge.Application.ViewModels.Contests;
 using Judge.Application.ViewModels.Contests.ContestsList;
 using Judge.Application.ViewModels.Contests.ContestTasks;
+using Judge.Application.ViewModels.Submit;
 using Judge.Data;
 using Judge.Model.Contests;
 using Judge.Model.SubmitSolution;
@@ -121,6 +122,11 @@ namespace Judge.Application
                 submitRepository.Add(submit);
                 unitOfWork.Commit();
             }
+        }
+
+        public SubmitQueueViewModel GetSubmitQueue(long userId, int contestId, string label, int page, int pageSize)
+        {
+            throw new NotImplementedException();
         }
     }
 }
