@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Judge.Application.Interfaces;
 using Judge.Application.ViewModels.Contests;
+using Judge.Application.ViewModels.Contests.ContestResult;
 using Judge.Application.ViewModels.Contests.ContestsList;
 using Judge.Application.ViewModels.Contests.ContestTasks;
 using Judge.Application.ViewModels.Submit;
@@ -136,7 +137,7 @@ namespace Judge.Application
                 var contestTaskRepository = uow.GetRepository<IContestTaskRepository>();
 
                 var task = contestTaskRepository.Get(contestId, label);
-                
+
                 var languages = languageRepository.GetLanguages().ToDictionary(o => o.Id, o => o.Name);
 
                 var specification = new ContestTaskSpecification(contestId, task.Task.Id, userId);
@@ -159,6 +160,33 @@ namespace Judge.Application
                 };
 
                 return model;
+            }
+        }
+
+        public ContestResultViewModel GetResults(int id)
+        {
+            using (var unitOfWork = _factory.GetUnitOfWork(false))
+            {
+                var contestResultRepository = unitOfWork.GetRepository<IContestResultRepository>();
+                var contestTaskRepository = unitOfWork.GetRepository<IContestTaskRepository>();
+
+                var tasks = contestTaskRepository.GetTasks(id);
+                var results = contestResultRepository.Get(id);
+
+                return new ContestResultViewModel
+                {
+                    ContestId = id,
+                    Tasks = tasks.Select(o => new TaskViewModel { Label = o.TaskName, ProblemId = o.Task.Id }).ToArray(),
+                    Users = results.Select(o => new ContestUserResultViewModel
+                    {
+                        UserId = o.UserId,
+                        Tasks = o.TaskResults.Select(t => new ContestTaskResultViewModel
+                        {
+                            Solved = t.Solved,
+                            ProblemId = t.ProblemId
+                        }).ToList().AsReadOnly()
+                    })
+                };
             }
         }
     }

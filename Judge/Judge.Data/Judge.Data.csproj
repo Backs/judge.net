@@ -68,6 +68,7 @@
     <Compile Include="Mappings\TaskMapping.cs" />
     <Compile Include="Mappings\UserMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\ContestResultRepository.cs" />
     <Compile Include="Repository\ContestsRepository.cs" />
     <Compile Include="Repository\ContestTaskRepository.cs" />
     <Compile Include="Repository\LanguageRepository.cs" />

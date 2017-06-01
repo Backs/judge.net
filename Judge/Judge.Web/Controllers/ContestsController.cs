@@ -45,9 +45,10 @@ namespace Judge.Web.Controllers
             return View(model);
         }
 
-        public ActionResult Results(long id)
+        public ActionResult Results(int id)
         {
-            return View();
+            var model = _contestsService.GetResults(id);
+            return View(model);
         }
 
         [Authorize]

@@ -1,8 +1,40 @@
-﻿
+﻿@model Judge.Application.ViewModels.Contests.ContestResult.ContestResultViewModel
 @{
-    ViewBag.Title = "Results";
+    ViewBag.Title = "Результаты";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Results</h2>
+<h2>@ViewBag.Title</h2>
 
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Участник</th>
+                @foreach (var task in Model.Tasks)
+                {
+                    <th>
+                        @Html.ActionLink(task.Label, "Task", new { contestId = Model.ContestId, label = task.Label })
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Users)
+            {
+                <tr>
+                    <td>@user.UserId</td>
+                    @foreach (var task in Model.Tasks)
+                    {
+                        <td>
+                            @if (user.Tasks.Any(o => o.ProblemId == task.ProblemId && o.Solved))
+                            {
+                                @Html.Raw("+")
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

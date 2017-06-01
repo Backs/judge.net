@@ -29,7 +29,10 @@
     <Compile Include="CheckSolution\TaskName.cs" />
     <Compile Include="Configuration\ILanguageRepository.cs" />
     <Compile Include="Contests\Contest.cs" />
+    <Compile Include="Contests\ContestResult.cs" />
     <Compile Include="Contests\ContestTask.cs" />
+    <Compile Include="Contests\ContestTaskResult.cs" />
+    <Compile Include="Contests\IContestResultRepository.cs" />
     <Compile Include="Contests\IContestsRepository.cs" />
     <Compile Include="Contests\IContestTaskRepository.cs" />
     <Compile Include="Entities\Language.cs" />

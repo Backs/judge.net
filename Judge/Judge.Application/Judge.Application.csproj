@@ -109,6 +109,10 @@
   <ItemGroup>
     <Compile Include="ApplicationExtension.cs" />
     <Compile Include="ContestsService.cs" />
+    <Compile Include="ViewModels\Contests\ContestResult\ContestResultViewModel.cs" />
+    <Compile Include="ViewModels\Contests\ContestResult\ContestTaskResultViewModel.cs" />
+    <Compile Include="ViewModels\Contests\ContestResult\ContestUserResultViewModel.cs" />
+    <Compile Include="ViewModels\Contests\ContestResult\TaskViewModel.cs" />
     <Compile Include="ViewModels\Contests\ContestsList\ContestStatus.cs" />
     <Compile Include="ViewModels\Contests\ContestStatementViewModel.cs" />
     <Compile Include="Interfaces\IContestsService.cs" />
