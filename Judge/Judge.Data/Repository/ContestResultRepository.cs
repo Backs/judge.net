@@ -16,29 +16,47 @@ namespace Judge.Data.Repository
 
         public IEnumerable<ContestResult> Get(long contestId)
         {
-            var result = _context.Set<SubmitResult>()
-                .Where(o => o.Submit is ContestTaskSubmit)
-                .Where(o => (o.Submit as ContestTaskSubmit).ContestId == contestId)
-                .GroupBy(o => o.Submit.UserId)
+            var result = _context.Set<ContestTaskSubmit>()
+                .Where(o => o.ContestId == contestId)
+                .GroupBy(o => o.UserId)
                 .Select(o => new
                 {
                     UserId = o.Key,
-                    Tasks = o.GroupBy(p => p.Submit.ProblemId).Select(p => new
+                    TaskResults = o.GroupBy(p => p.ProblemId).Select(p => new
                     {
                         ProblemId = p.Key,
-                        Solved = p.Any(t => t.Status == SubmitStatus.Accepted)
+                        SubmitResults = p.Select(s => s.Results.OrderByDescending(t => t.Id).FirstOrDefault()) //only last judge result
+                                        .Select(s => new
+                                        {
+                                            s.Status,
+                                            s.Submit.SubmitDateUtc,
+                                            s.Id
+                                        }).OrderBy(s => s.Id)
+                    })
+                })
+                .AsEnumerable()
+                .Select(o => new
+                {
+                    UserId = o.UserId,
+                    TaskResults = o.TaskResults.Select(t => new
+                    {
+                        Solved = t.SubmitResults.Any(s => s.Status == SubmitStatus.Accepted),
+                        ProblemId = t.ProblemId,
+                        SubmitResults = t.SubmitResults.Where(s => s.Status != SubmitStatus.CompilationError),
+                        FirstSuccess = t.SubmitResults.FirstOrDefault(s => s.Status == SubmitStatus.Accepted)
                     })
                 })
                 .Select(o => new ContestResult
                 {
                     UserId = o.UserId,
-                    TaskResults = o.Tasks.Select(t => new ContestTaskResult
+                    TaskResults = o.TaskResults.Select(t => new ContestTaskResult
                     {
                         Solved = t.Solved,
-                        ProblemId = t.ProblemId
+                        ProblemId = t.ProblemId,
+                        Attempts = t.FirstSuccess == null ? t.SubmitResults.Count() : t.SubmitResults.Count(s => s.Id <= t.FirstSuccess.Id),
+                        SubmitDateUtc = t.FirstSuccess == null ? t.SubmitResults.Last().SubmitDateUtc : t.FirstSuccess.SubmitDateUtc
                     })
                 });
-
             return result.AsEnumerable();
         }
     }

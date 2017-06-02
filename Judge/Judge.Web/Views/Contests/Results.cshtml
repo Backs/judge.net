@@ -27,14 +27,17 @@
                     @foreach (var task in Model.Tasks)
                     {
                         <td>
-                            @if (user.Tasks.Any(o => o.ProblemId == task.ProblemId && o.Solved))
+                            @{
+                                var s = user.Tasks.FirstOrDefault(o => o.ProblemId == task.ProblemId);
+                            }
+                            @if (s != null)
                             {
-                                @Html.Raw("+")
+                                @s.ToString()
                             }
                         </td>
-                    }
+                                }
                 </tr>
-            }
+                                }
         </tbody>
     </table>
 </div>
