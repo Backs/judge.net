@@ -15,7 +15,7 @@
             <th>Участник</th>
             @foreach (var task in Model.Tasks)
             {
-                <th>
+                <th class="task">
                     @Html.ActionLink(task.Label, "Task", new {contestId = Model.ContestId, label = task.Label})
                 </th>
             }
@@ -24,27 +24,44 @@
         </tr>
         </thead>
         <tbody>
-            @foreach (var user in Model.Users)
-            {
-                <tr>
-                    <td>@(++index)</td>
-                    <td>@user.UserName</td>
-                    @foreach (var task in Model.Tasks)
-                    {
-                        <td>
-                            @{
-                                var s = user.Tasks.FirstOrDefault(o => o.ProblemId == task.ProblemId);
-                            }
-                            @if (s != null)
-                            {
-                                @s.ToString()
-                            }
-                        </td>
-                    }
-                    <td>@user.SolvedCount</td>
-                    <td>@user.Time</td>
-                </tr>
-            }
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@(++index)</td>
+                <td>@user.UserName</td>
+                @foreach (var task in Model.Tasks)
+                {
+                    <td class="task">
+                        @{
+                            var s = user.Tasks.FirstOrDefault(o => o.ProblemId == task.ProblemId);
+                            var css = s?.Solved == true ? "green" : "red";
+                        }
+                        @if (s != null)
+                        {
+                            <span class="@css">@s.GetAttempts()</span>
+                            <br />
+                            <small class="@css">@s.GetElapsedTimeString()</small>
+                        }
+                    </td>
+                }
+                <td>@user.SolvedCount</td>
+                <td>@user.Time</td>
+            </tr>
+        }
         </tbody>
     </table>
 </div>
+
+@section css{
+    <style>
+        .green {
+            color: green;
+        }
+        .red {
+            color: red;
+        }
+        .table .task {
+            text-align: center;   
+        }
+    </style>
+}
