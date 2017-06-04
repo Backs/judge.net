@@ -42,7 +42,7 @@ namespace Judge.Data.Repository
                     {
                         Solved = t.SubmitResults.Any(s => s.Status == SubmitStatus.Accepted),
                         ProblemId = t.ProblemId,
-                        SubmitResults = t.SubmitResults.Where(s => s.Status != SubmitStatus.CompilationError),
+                        SubmitResults = t.SubmitResults.Where(s => s.Status != SubmitStatus.ServerError && s.Status != SubmitStatus.Pending && s.Status != SubmitStatus.CompilationError),
                         FirstSuccess = t.SubmitResults.FirstOrDefault(s => s.Status == SubmitStatus.Accepted)
                     })
                 })

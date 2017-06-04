@@ -170,10 +170,13 @@ namespace Judge.Application
                 var contestResultRepository = unitOfWork.GetRepository<IContestResultRepository>();
                 var contestTaskRepository = unitOfWork.GetRepository<IContestTaskRepository>();
                 var contestRepository = unitOfWork.GetRepository<IContestsRepository>();
+                var userRepository = unitOfWork.GetRepository<IUserRepository>();
 
                 var contest = contestRepository.Get(id);
                 var tasks = contestTaskRepository.GetTasks(id);
-                var results = contestResultRepository.Get(id);
+                var results = contestResultRepository.Get(id).ToArray();
+
+                var users = userRepository.GetUsers(results.Select(o => o.UserId).Distinct()).ToDictionary(o => o.Id, o => o.UserName);
 
                 return new ContestResultViewModel
                 {
@@ -182,6 +185,7 @@ namespace Judge.Application
                     Users = results.Select(o => new ContestUserResultViewModel
                     {
                         UserId = o.UserId,
+                        UserName = users[o.UserId],
                         Tasks = o.TaskResults.Select(t => new ContestTaskResultViewModel(contest.StartTime, t.SubmitDateUtc)
                         {
                             Solved = t.Solved,
