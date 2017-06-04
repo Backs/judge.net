@@ -17,11 +17,19 @@ namespace Judge.Application.ViewModels.Contests.ContestResult
 
         private TimeSpan _elapsedTime;
 
-        private string GetElapsedTime()
+        private string GetElapsedTimeString()
         {
             var minutes = (int)_elapsedTime.TotalMinutes;
             var seconds = _elapsedTime.Seconds;
             return $"{minutes}:{seconds:00}";
+        }
+
+        public int GetTime()
+        {
+            if (!Solved)
+                return 0;
+
+            return (Attempts - 1) * 20 + (int)_elapsedTime.TotalMinutes;
         }
 
         public override string ToString()
@@ -45,7 +53,7 @@ namespace Judge.Application.ViewModels.Contests.ContestResult
                 result = "-" + Attempts;
             }
 
-            result = result + $"({GetElapsedTime()})";
+            result = result + $"({GetElapsedTimeString()})";
 
             return result;
         }

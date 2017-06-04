@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Результаты";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var index = 0;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -9,20 +10,24 @@
 <div class="container">
     <table class="table table-striped">
         <thead>
-            <tr>
-                <th>Участник</th>
-                @foreach (var task in Model.Tasks)
-                {
-                    <th>
-                        @Html.ActionLink(task.Label, "Task", new { contestId = Model.ContestId, label = task.Label })
-                    </th>
-                }
-            </tr>
+        <tr>
+            <th>Место</th>
+            <th>Участник</th>
+            @foreach (var task in Model.Tasks)
+            {
+                <th>
+                    @Html.ActionLink(task.Label, "Task", new {contestId = Model.ContestId, label = task.Label})
+                </th>
+            }
+            <th>Решено</th>
+            <th>Время</th>
+        </tr>
         </thead>
         <tbody>
             @foreach (var user in Model.Users)
             {
                 <tr>
+                    <td>@(++index)</td>
                     <td>@user.UserName</td>
                     @foreach (var task in Model.Tasks)
                     {
@@ -35,9 +40,11 @@
                                 @s.ToString()
                             }
                         </td>
-                                }
+                    }
+                    <td>@user.SolvedCount</td>
+                    <td>@user.Time</td>
                 </tr>
-                                }
+            }
         </tbody>
     </table>
 </div>

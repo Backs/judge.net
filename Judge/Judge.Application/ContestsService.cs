@@ -192,7 +192,7 @@ namespace Judge.Application
                             ProblemId = t.ProblemId,
                             Attempts = t.Attempts
                         }).ToList().AsReadOnly()
-                    })
+                    }).OrderByDescending(o => o.SolvedCount).ThenBy(o => o.Time)
                 };
             }
         }
