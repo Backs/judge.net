@@ -26,6 +26,7 @@ namespace Judge.Data.Repository
                     {
                         ProblemId = p.Key,
                         SubmitResults = p.Select(s => s.Results.OrderByDescending(t => t.Id).FirstOrDefault()) //only last judge result
+                                        .Where(s => s.Status != SubmitStatus.ServerError && s.Status != SubmitStatus.Pending && s.Status != SubmitStatus.CompilationError)
                                         .Select(s => new
                                         {
                                             s.Status,
@@ -42,21 +43,22 @@ namespace Judge.Data.Repository
                     {
                         Solved = t.SubmitResults.Any(s => s.Status == SubmitStatus.Accepted),
                         ProblemId = t.ProblemId,
-                        SubmitResults = t.SubmitResults.Where(s => s.Status != SubmitStatus.ServerError && s.Status != SubmitStatus.Pending && s.Status != SubmitStatus.CompilationError),
+                        SubmitResults = t.SubmitResults,
                         FirstSuccess = t.SubmitResults.FirstOrDefault(s => s.Status == SubmitStatus.Accepted)
                     })
                 })
                 .Select(o => new ContestResult
                 {
                     UserId = o.UserId,
-                    TaskResults = o.TaskResults.Select(t => new ContestTaskResult
+                    TaskResults = o.TaskResults.Where(t => t.SubmitResults.Any()).Select(t => new ContestTaskResult
                     {
                         Solved = t.Solved,
                         ProblemId = t.ProblemId,
                         Attempts = t.FirstSuccess == null ? t.SubmitResults.Count() : t.SubmitResults.Count(s => s.Id <= t.FirstSuccess.Id),
                         SubmitDateUtc = t.FirstSuccess == null ? t.SubmitResults.Last().SubmitDateUtc : t.FirstSuccess.SubmitDateUtc
                     })
-                });
+                })
+                .Where(t => t.TaskResults.Any());
             return result.AsEnumerable();
         }
     }
