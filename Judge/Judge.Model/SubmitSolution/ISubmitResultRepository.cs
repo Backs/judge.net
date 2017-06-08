@@ -6,7 +6,7 @@ namespace Judge.Model.SubmitSolution
     {
         IEnumerable<SubmitResult> GetSubmits(ISpecification<SubmitResult> specification, int page, int pageSize);
 
-        IEnumerable<long> GetSolvedProblems(long userId, IEnumerable<long> problems);
+        IEnumerable<long> GetSolvedProblems(ISpecification<SubmitResult> specification);
 
         SubmitResult DequeueUnchecked();
         int Count(ISpecification<SubmitResult> specification);

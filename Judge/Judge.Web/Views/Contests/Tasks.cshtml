@@ -12,8 +12,9 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Label</th>
-                <th>Name</th>
+                <th>N</th>
+                <th>@Resources.TaskName</th>
+                <th>@Resources.Solved</th>
             </tr>
         </thead>
         <tbody>
@@ -22,6 +23,12 @@
                 <tr>
                     <td>@Html.ActionLink(task.Label, "Task", new { contestId = Model.Contest.Id, label = task.Label })</td>
                     <td>@Html.ActionLink(task.Name, "Task", new { contestId = Model.Contest.Id, label = task.Label })</td>
+                    <td>
+                        @if (task.Solved)
+                        {
+                            <span class="glyphicon glyphicon-ok"></span>
+                        }
+                    </td>
                 </tr>
             }
         </tbody>

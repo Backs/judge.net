@@ -41,12 +41,12 @@ namespace Judge.Data.Repository
             return query.Include(o => o.Submit).AsEnumerable();
         }
 
-        public IEnumerable<long> GetSolvedProblems(long userId, IEnumerable<long> problems)
+        public IEnumerable<long> GetSolvedProblems(ISpecification<SubmitResult> specification)
         {
             return _context.Set<SubmitResult>()
-                .Where(o => o.Submit.UserId == userId && problems.Contains((o.Submit as ProblemSubmit).ProblemId))
+                .Where(specification.IsSatisfiedBy)
                 .Where(o => o.Status == SubmitStatus.Accepted)
-                .Select(o => (o.Submit as ProblemSubmit).ProblemId)
+                .Select(o => o.Submit.ProblemId)
                 .Distinct()
                 .AsEnumerable();
         }

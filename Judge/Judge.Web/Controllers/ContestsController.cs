@@ -27,7 +27,12 @@ namespace Judge.Web.Controllers
 
         public ActionResult Tasks(int id)
         {
-            var model = _contestsService.GetTasks(id);
+            long? userId = null;
+            if (User.Identity.IsAuthenticated)
+            {
+                userId = User.Identity.GetUserId<long>();
+            }
+            var model = _contestsService.GetTasks(id, userId);
             return View(model);
         }
 

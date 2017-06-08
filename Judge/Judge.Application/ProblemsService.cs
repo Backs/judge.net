@@ -44,7 +44,7 @@ namespace Judge.Application
 
                 if (userId != null)
                 {
-                    solvedTasks.UnionWith(submitResultRepository.GetSolvedProblems(userId.Value, tasks.Select(o => o.Id)));
+                    solvedTasks.UnionWith(submitResultRepository.GetSolvedProblems(new UserSolvedProblemsSpecification(userId.Value, tasks.Select(o => o.Id))));
                 }
 
                 foreach (var item in tasks)

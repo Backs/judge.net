@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Judge.Application;
+﻿using Judge.Application;
 using Judge.Application.Interfaces;
 using Judge.Data;
 using Judge.Model.CheckSolution;
@@ -7,6 +6,7 @@ using Judge.Model.SubmitSolution;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Linq;
+using Judge.Model;
 
 namespace Judge.Tests.Application.ProblemsServiceTests
 {
@@ -110,7 +110,7 @@ namespace Judge.Tests.Application.ProblemsServiceTests
             _taskRepository.Stub(o => o.GetTasks(1, 2)).Return(tasks);
             _taskRepository.Stub(o => o.Count()).Return(tasks.Length);
 
-            _submitResultRepository.Stub(o => o.GetSolvedProblems(Arg<long>.Is.Anything, Arg<IEnumerable<long>>.Is.Anything)).Return(new[] { solvedTaskId });
+            _submitResultRepository.Stub(o => o.GetSolvedProblems(Arg<ISpecification<SubmitResult>>.Is.Anything)).Return(new[] { solvedTaskId });
 
             var model = _service.GetProblemsList(1, 2, userId);
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -36,19 +37,30 @@ namespace Judge.Application
             }
         }
 
-        public ContestTasksViewModel GetTasks(int contestId)
+        public ContestTasksViewModel GetTasks(int contestId, long? userId)
         {
             using (var unitOfWork = _factory.GetUnitOfWork(false))
             {
                 var contestRepository = unitOfWork.GetRepository<IContestsRepository>();
                 var contest = contestRepository.Get(contestId);
                 var taskRepository = unitOfWork.GetRepository<IContestTaskRepository>();
-                var items = taskRepository.GetTasks(contestId).Select(o => new ContestTaskItem
+                var submitResultRepository = unitOfWork.GetRepository<ISubmitResultRepository>();
+
+                var contestTasks = taskRepository.GetTasks(contestId).ToArray();
+
+                var solvedTasks = new HashSet<long>();
+
+                if (userId != null)
+                {
+                    solvedTasks.UnionWith(submitResultRepository.GetSolvedProblems(new UserContestSolvedProblemsSpecification(contestId, userId.Value, contestTasks.Select(o => o.Task.Id))));
+                }
+
+                var items = contestTasks.Select(o => new ContestTaskItem
                 {
                     Label = o.TaskName,
                     Name = o.Task.Name,
                     ProblemId = o.Task.Id,
-                    Solved = false //TODO: change
+                    Solved = solvedTasks.Contains(o.Task.Id)
                 })
                 .OrderBy(o => o.Label);
 

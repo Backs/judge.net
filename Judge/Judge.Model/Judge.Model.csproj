@@ -35,6 +35,7 @@
     <Compile Include="Contests\IContestResultRepository.cs" />
     <Compile Include="Contests\IContestsRepository.cs" />
     <Compile Include="Contests\IContestTaskRepository.cs" />
+    <Compile Include="Contests\UserContestSolvedProblemsSpecification.cs" />
     <Compile Include="Entities\Language.cs" />
     <Compile Include="ISpecification.cs" />
     <Compile Include="SubmitSolution\AllProblemsSpecification.cs" />
@@ -50,6 +51,7 @@
     <Compile Include="SubmitSolution\ProblemSubmit.cs" />
     <Compile Include="SubmitSolution\SubmitResult.cs" />
     <Compile Include="SubmitSolution\UserProblemSpecification.cs" />
+    <Compile Include="SubmitSolution\UserSolvedProblemsSpecification.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
