@@ -115,6 +115,15 @@ namespace Judge.Application {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Осталось.
+        /// </summary>
+        public static string Left {
+            get {
+                return ResourceManager.GetString("Left", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Пароль.
         /// </summary>
         public static string Password {

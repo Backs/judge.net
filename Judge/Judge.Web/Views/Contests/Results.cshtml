@@ -1,11 +1,13 @@
 ﻿@model Judge.Application.ViewModels.Contests.ContestResult.ContestResultViewModel
 @{
-    ViewBag.Title = "Результаты";
+    ViewBag.Title = Model.Contest.Name;
     Layout = "~/Views/Shared/_Layout.cshtml";
     var index = 0;
 }
 
 <h2>@ViewBag.Title</h2>
+
+@Html.Partial("Contests/_ContestHeader", Model.Contest)
 
 <div class="container">
     <table class="table table-striped">
@@ -16,7 +18,7 @@
             @foreach (var task in Model.Tasks)
             {
                 <th class="task">
-                    @Html.ActionLink(task.Label, "Task", new {contestId = Model.ContestId, label = task.Label})
+                    @Html.ActionLink(task.Label, "Task", new {contestId = Model.Contest.Id, label = task.Label})
                 </th>
             }
             <th>Решено</th>

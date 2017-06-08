@@ -54,8 +54,7 @@ namespace Judge.Application
 
                 return new ContestTasksViewModel(items)
                 {
-                    ContestId = contest.Id,
-                    ContestName = contest.Name
+                    Contest = new ContestItem(contest)
                 };
             }
         }
@@ -180,7 +179,7 @@ namespace Judge.Application
 
                 return new ContestResultViewModel
                 {
-                    ContestId = id,
+                    Contest = new ContestItem(contest),
                     Tasks = tasks.Select(o => new TaskViewModel { Label = o.TaskName, ProblemId = o.Task.Id }).ToArray(),
                     Users = results.Select(o => new ContestUserResultViewModel
                     {

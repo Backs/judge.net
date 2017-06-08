@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Judge.Application.ViewModels.Contests.ContestsList;
 
 namespace Judge.Application.ViewModels.Contests.ContestTasks
 {
@@ -9,8 +10,7 @@ namespace Judge.Application.ViewModels.Contests.ContestTasks
             Tasks = tasks;
         }
 
-        public string ContestName { get; set; }
-        public long ContestId { get; set; }
+        public ContestItem Contest { get; set; }
 
         public IEnumerable<ContestTaskItem> Tasks { get; }
     }
