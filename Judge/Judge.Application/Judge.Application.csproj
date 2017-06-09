@@ -134,6 +134,7 @@
     <Compile Include="ViewModels\Account\RegisterViewModel.cs" />
     <Compile Include="ViewModels\Contests\ContestsList\ContestItem.cs" />
     <Compile Include="ViewModels\Contests\ContestsList\ContestsListViewModel.cs" />
+    <Compile Include="ViewModels\Contests\ContestSubmitQueueViewModel.cs" />
     <Compile Include="ViewModels\Contests\ContestTasks\ContestTaskItem.cs" />
     <Compile Include="ViewModels\Contests\ContestTasks\ContestTasksViewModel.cs" />
     <Compile Include="ViewModels\Contests\SubmitContestSolutionViewModel.cs" />

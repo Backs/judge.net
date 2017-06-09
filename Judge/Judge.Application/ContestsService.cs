@@ -160,7 +160,7 @@ namespace Judge.Application
 
                 var items = submits.Select(o => new SubmitQueueItem(o, languages[o.Submit.LanguageId], task.Task.Name, user.UserName) { ResultsEnabled = true });
 
-                var model = new SubmitQueueViewModel(items)
+                var model = new ContestSubmitQueueViewModel(items)
                 {
                     Pagination = new ViewModels.PaginationViewModel
                     {
