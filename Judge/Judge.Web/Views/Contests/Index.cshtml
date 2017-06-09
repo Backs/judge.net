@@ -28,7 +28,7 @@
                     </td>
                     <td>@Html.ActionLink(Resources.ContestResults, "Results", new { id = contest.Id })</td>
                     <td>@contest.StartTime</td>
-                    <td>@contest.Duration</td>
+                    <td>@contest.GetDurationTimeString()</td>
                     <td>@contest.TextStatus</td>
                 </tr>
             }

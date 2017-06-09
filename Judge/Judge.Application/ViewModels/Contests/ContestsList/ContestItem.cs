@@ -61,6 +61,13 @@ namespace Judge.Application.ViewModels.Contests.ContestsList
             return string.Empty;
         }
 
+        public string GetDurationTimeString()
+        {
+            var hours = (int)Duration.TotalHours;
+            var minutes = Duration.Minutes;
+            return $"{hours}:{minutes:00}";
+        }
+
         public int Id { get; }
         public string Name { get; }
         public DateTime StartTime { get; }
