@@ -72,7 +72,7 @@ namespace Judge.Application
 
                 if (!task.IsOpened)
                 {
-                    throw new InvalidOperationException();
+                    return null;
                 }
 
                 return new StatementViewModel

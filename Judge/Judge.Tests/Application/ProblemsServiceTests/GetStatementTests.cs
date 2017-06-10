@@ -1,5 +1,4 @@
-﻿using System;
-using Judge.Application;
+﻿using Judge.Application;
 using Judge.Data;
 using Judge.Model.CheckSolution;
 using NUnit.Framework;
@@ -69,7 +68,8 @@ namespace Judge.Tests.Application.ProblemsServiceTests
                 IsOpened = false
             };
             _taskRepository.Stub(o => o.Get(1)).Return(task);
-            Assert.Throws<InvalidOperationException>(() => _service.GetStatement(1));
+            var statement = _service.GetStatement(1);
+            Assert.IsNull(statement);
         }
     }
 }
