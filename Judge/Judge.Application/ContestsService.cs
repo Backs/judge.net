@@ -32,7 +32,7 @@ namespace Judge.Application
             {
                 var repository = unitOfWork.GetRepository<IContestsRepository>();
 
-                var items = repository.GetList().Select(o => new ContestItem(o));
+                var items = repository.GetList().Where(o => o.IsOpened).Select(o => new ContestItem(o));
                 return new ContestsListViewModel(items);
             }
         }
