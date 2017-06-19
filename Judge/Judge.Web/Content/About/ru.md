@@ -1,8 +1,8 @@
 ﻿### О системе
-Judge.NET - архив задач по программированию и автоматическая проверающая система.
+Judge.NET - архив задач по программированию и автоматическая проверяющая система.
 
 Исходный код Judge.NET открыт и доступен в репозитории на [GitHub](https://github.com/Backs/judge.net),
-распростроняется по лицензии [MIT](https://github.com/Backs/judge.net/blob/master/LICENSE).
+распространяется по лицензии [MIT](https://github.com/Backs/judge.net/blob/master/LICENSE).
 
 ### Используемые технологии
 1. ASP.NET MVC, jQuery, Bootstrap
