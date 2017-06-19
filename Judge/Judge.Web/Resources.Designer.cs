@@ -133,7 +133,7 @@ namespace Judge.Web {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Вы не можете просматривать задачи и отправлять решения, до начала соревнования.
+        ///   Looks up a localized string similar to Вы не можете просматривать задачи и отправлять решения до начала соревнования.
         /// </summary>
         public static string ContestNotStartedNotification {
             get {

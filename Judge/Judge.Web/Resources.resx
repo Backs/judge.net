@@ -238,7 +238,7 @@
     <value>Соревнование еще не началось</value>
   </data>
   <data name="ContestNotStartedNotification" xml:space="preserve">
-    <value>Вы не можете просматривать задачи и отправлять решения, до начала соревнования</value>
+    <value>Вы не можете просматривать задачи и отправлять решения до начала соревнования</value>
   </data>
   <data name="About" xml:space="preserve">
     <value>О системе</value>
