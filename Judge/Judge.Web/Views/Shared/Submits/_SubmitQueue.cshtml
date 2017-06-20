@@ -38,7 +38,7 @@
                     @if (Model.ShowProblem)
                     {
                         <td>
-                            @Html.ActionLink(item.ProblemName, "Statement", "Problems", new {id = item.ProblemId}, null)
+                            @Html.ActionLink(item.ProblemName, "Statement", "Problems", new { id = item.ProblemId }, null)
                         </td>
                     }
                     <td>
@@ -51,7 +51,8 @@
                         }
                         else
                         {
-                            @item.ResultDescription
+                            var css = item.Pending ? string.Empty : item.Solved ? "green" : "red";
+                            <span class="@css">@item.ResultDescription</span>
                         }
                     </td>
                     <td>

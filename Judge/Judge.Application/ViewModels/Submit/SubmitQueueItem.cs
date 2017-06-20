@@ -54,6 +54,9 @@ namespace Judge.Application.ViewModels.Submit
             throw new ArgumentOutOfRangeException();
         }
 
+        public bool Solved => Status == SubmitStatus.Accepted;
+        public bool Pending => Status == SubmitStatus.Pending;
+
         public bool ResultsEnabled { get; set; }
         public long SubmitId { get; }
         private SubmitStatus Status { get; }

@@ -22,3 +22,13 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.green {
+    color: green;
+}
+.red {
+    color: red;
+}
+.table .task {
+    text-align: center;   
+}
