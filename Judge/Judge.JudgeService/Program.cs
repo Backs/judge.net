@@ -22,8 +22,16 @@ namespace Judge.JudgeService
 
             while (true)
             {
-                service.Check();
-
+                try
+                {
+                    service.Check();
+                }
+                catch (Exception ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(ex);
+                    Console.ResetColor();
+                }
                 if (Console.KeyAvailable)
                     break;
 
