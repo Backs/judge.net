@@ -68,7 +68,7 @@ namespace Judge.JudgeService
             }
             else
             {
-                compileResult = CompileResult.Empty;
+                compileResult = CompileResult.GetEmpty(submitResult.Submit.FileName);
             }
 
             ICollection<SubmitRunResult> results = null;

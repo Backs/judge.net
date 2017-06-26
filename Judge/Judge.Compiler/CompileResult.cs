@@ -23,6 +23,9 @@
             return new CompileResult(CompileStatus.Error, output, null);
         }
 
-        public static CompileResult Empty { get; } = new CompileResult(CompileStatus.Success, null, null);
+        public static CompileResult GetEmpty(string fileName)
+        {
+            return new CompileResult(CompileStatus.Success, null, fileName);
+        }
     }
 }
