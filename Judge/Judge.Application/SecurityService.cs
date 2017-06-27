@@ -12,6 +12,10 @@ namespace Judge.Application
         public SecurityService(SignInManager<User, long> signInManager)
         {
             _signInManager = signInManager;
+            _signInManager.UserManager.UserValidator = new UserValidator<User, long>(_signInManager.UserManager)
+            {
+                AllowOnlyAlphanumericUserNames = false
+            };
         }
 
         public SignInStatus SignIn(string email, string password, bool isPersistent)
