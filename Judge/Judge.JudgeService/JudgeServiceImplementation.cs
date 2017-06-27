@@ -68,6 +68,7 @@ namespace Judge.JudgeService
             }
             else
             {
+                File.WriteAllText(Path.Combine(_workingDirectory, submitResult.Submit.FileName), submitResult.Submit.SourceCode);
                 compileResult = CompileResult.GetEmpty(submitResult.Submit.FileName);
             }
 
