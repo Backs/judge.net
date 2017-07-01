@@ -2,7 +2,7 @@
 
 namespace Judge.Model.Entities
 {
-    public class User : IUser<long>
+    public sealed class User : IUser<long>
     {
         public long Id { get; internal set; }
         public string UserName { get; set; }

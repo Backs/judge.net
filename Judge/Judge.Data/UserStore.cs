@@ -9,15 +9,17 @@ using Microsoft.AspNet.Identity;
 
 namespace Judge.Data
 {
-    internal sealed class UserStore : IUserPasswordStore<User, long>, IUserLockoutStore<User, long>, IUserTwoFactorStore<User, long>, IUserRepository
+    internal sealed class UserStore : IUserPasswordStore<User, long>, IUserLockoutStore<User, long>, IUserTwoFactorStore<User, long>, IUserRoleStore<User, long>, IUserRepository
     {
         private readonly DataContext _context;
-        private readonly DbSet<User> _dbSet;
+        private readonly DbSet<User> _usersSet;
+        private readonly DbSet<UserRole> _userRolesSet;
 
         public UserStore(DataContext context)
         {
             _context = context;
-            _dbSet = _context.Set<User>();
+            _usersSet = _context.Set<User>();
+            _userRolesSet = _context.Set<UserRole>();
         }
 
         public void Dispose()
@@ -27,7 +29,7 @@ namespace Judge.Data
 
         public Task CreateAsync(User user)
         {
-            _dbSet.Add(user);
+            _usersSet.Add(user);
             return _context.SaveChangesAsync();
         }
 
@@ -39,18 +41,18 @@ namespace Judge.Data
 
         public Task DeleteAsync(User user)
         {
-            _dbSet.Remove(user);
+            _usersSet.Remove(user);
             return _context.SaveChangesAsync();
         }
 
         public Task<User> FindByIdAsync(long userId)
         {
-            return _dbSet.SingleOrDefaultAsync(o => o.Id == userId);
+            return _usersSet.SingleOrDefaultAsync(o => o.Id == userId);
         }
 
         public Task<User> FindByNameAsync(string userName)
         {
-            return _dbSet.SingleOrDefaultAsync(o => o.Email == userName);
+            return _usersSet.SingleOrDefaultAsync(o => o.Email == userName);
         }
 
         public Task SetPasswordHashAsync(User user, string passwordHash)
@@ -115,7 +117,27 @@ namespace Judge.Data
 
         public IEnumerable<User> GetUsers(IEnumerable<long> users)
         {
-            return _dbSet.Where(o => users.Contains(o.Id)).OrderBy(o => o.Id).AsEnumerable();
+            return _usersSet.Where(o => users.Contains(o.Id)).OrderBy(o => o.Id).AsEnumerable();
+        }
+
+        public Task AddToRoleAsync(User user, string roleName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RemoveFromRoleAsync(User user, string roleName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IList<string>> GetRolesAsync(User user)
+        {
+            return Task.FromResult(_userRolesSet.Where(o => o.User.Id == user.Id).Select(o => o.RoleName).ToArray() as IList<string>);
+        }
+
+        public Task<bool> IsInRoleAsync(User user, string roleName)
+        {
+            return _userRolesSet.AnyAsync(o => o.User.Id == user.Id && o.RoleName == roleName);
         }
     }
 }

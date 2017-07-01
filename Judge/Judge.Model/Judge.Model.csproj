@@ -37,6 +37,7 @@
     <Compile Include="Contests\IContestTaskRepository.cs" />
     <Compile Include="Contests\UserContestSolvedProblemsSpecification.cs" />
     <Compile Include="Entities\Language.cs" />
+    <Compile Include="Entities\UserRole.cs" />
     <Compile Include="ISpecification.cs" />
     <Compile Include="SubmitSolution\AllProblemsSpecification.cs" />
     <Compile Include="SubmitSolution\ContestTaskSpecification.cs" />
