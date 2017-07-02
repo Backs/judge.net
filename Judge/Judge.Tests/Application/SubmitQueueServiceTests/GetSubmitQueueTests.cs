@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Security.Principal;
 using Judge.Application;
 using Judge.Data;
 using Judge.Model;
@@ -39,7 +40,9 @@ namespace Judge.Tests.Application.SubmitQueueServiceTests
 
             unitOfWorkFactory.Stub(o => o.GetUnitOfWork(Arg<bool>.Is.Anything)).Return(unitOfWork);
 
-            _service = new SubmitQueueService(unitOfWorkFactory);
+            var principal = MockRepository.GenerateMock<IPrincipal>();
+
+            _service = new SubmitQueueService(unitOfWorkFactory, principal);
         }
 
         [Test]

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Authentication;
+using System.Security.Principal;
 using System.Web;
 using Judge.Application.Interfaces;
 using Judge.Application.ViewModels.Problems.Solution;
@@ -17,10 +18,12 @@ namespace Judge.Application
     internal sealed class SubmitSolutionService : ISubmitSolutionService
     {
         private readonly IUnitOfWorkFactory _factory;
+        private readonly IPrincipal _principal;
 
-        public SubmitSolutionService(IUnitOfWorkFactory factory)
+        public SubmitSolutionService(IUnitOfWorkFactory factory, IPrincipal principal)
         {
             _factory = factory;
+            _principal = principal;
         }
 
         public IEnumerable<LanguageViewModel> GetLanguages()
@@ -75,7 +78,9 @@ namespace Judge.Application
                 if (submit == null)
                     return null;
 
-                if (submit.UserId != userId)
+                var hasPermission = _principal.IsInRole("admin");
+
+                if (!hasPermission && submit.UserId != userId)
                 {
                     throw new AuthenticationException();
                 }

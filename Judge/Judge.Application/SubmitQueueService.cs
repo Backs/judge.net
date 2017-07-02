@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Security.Principal;
 using Judge.Application.Interfaces;
 using Judge.Application.ViewModels.Submit;
 using Judge.Data;
@@ -12,10 +13,12 @@ namespace Judge.Application
     internal sealed class SubmitQueueService : ISubmitQueueService
     {
         private readonly IUnitOfWorkFactory _unitOfWorkFactory;
+        private readonly IPrincipal _principal;
 
-        public SubmitQueueService(IUnitOfWorkFactory unitOfWorkFactory)
+        public SubmitQueueService(IUnitOfWorkFactory unitOfWorkFactory, IPrincipal principal)
         {
             _unitOfWorkFactory = unitOfWorkFactory;
+            _principal = principal;
         }
 
         public SubmitQueueViewModel GetSubmitQueue(long userId, long problemId, int page, int pageSize)
@@ -68,9 +71,11 @@ namespace Judge.Application
                 var tasks = taskRepository.GetTasks(submits.Select(o => o.Submit.ProblemId).Distinct()).ToDictionary(o => o.Id, o => o.Name);
                 var users = userRepository.GetUsers(submits.Select(o => o.Submit.UserId).Distinct()).ToDictionary(o => o.Id, o => o.UserName);
 
+                var hasPermission = _principal.IsInRole("admin");
+
                 var items = submits.Select(o => new SubmitQueueItem(o, languages[o.Submit.LanguageId], tasks[o.Submit.ProblemId], users[o.Submit.UserId])
                 {
-                    ResultsEnabled = userId == o.Submit.UserId
+                    ResultsEnabled = userId == o.Submit.UserId || hasPermission
                 });
 
                 var count = submitResultRepository.Count(AllProblemsSpecification.Instance);

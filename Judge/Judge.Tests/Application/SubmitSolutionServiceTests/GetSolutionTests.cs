@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Authentication;
+using System.Security.Principal;
 using Judge.Application;
 using Judge.Application.Interfaces;
 using Judge.Data;
@@ -29,7 +30,8 @@ namespace Judge.Tests.Application.SubmitSolutionServiceTests
             unitOfWork.Stub(o => o.GetRepository<ITaskRepository>()).Return(_taskRepository);
             unitOfWork.Stub(o => o.GetRepository<ISubmitRepository>()).Return(_submitRepository);
 
-            _service = new SubmitSolutionService(factory);
+            var principal = MockRepository.GenerateMock<IPrincipal>();
+            _service = new SubmitSolutionService(factory, principal);
         }
 
         [Test]

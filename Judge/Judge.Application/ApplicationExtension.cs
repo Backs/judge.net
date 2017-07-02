@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.Security.Principal;
+using System.Web;
 using Judge.Application.Interfaces;
 using Judge.Data;
 using Microsoft.Owin.Security;
@@ -20,6 +21,7 @@ namespace Judge.Application
             Container.AddExtension(new DataContainerExtension<PerRequestLifetimeManager>(_connectionString));
 
             Container.RegisterType<IAuthenticationManager>(new InjectionFactory(c => HttpContext.Current.GetOwinContext().Authentication));
+            Container.RegisterType<IPrincipal>(new InjectionFactory(c => HttpContext.Current.User));
             Container.RegisterType<ISecurityService, SecurityService>(new PerRequestLifetimeManager());
 
             Container.RegisterType<IProblemsService, ProblemsService>(new PerRequestLifetimeManager());
