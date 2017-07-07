@@ -148,7 +148,7 @@
     <value>Дата</value>
   </data>
   <data name="ExecutionTime" xml:space="preserve">
-    <value>Время выполнения, с</value>
+    <value>Время работы, с</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Язык</value>

@@ -196,7 +196,7 @@ namespace Judge.Web {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Время выполнения, с.
+        ///   Looks up a localized string similar to Время работы, с.
         /// </summary>
         public static string ExecutionTime {
             get {
