@@ -48,6 +48,9 @@
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="BeginCollectionItem, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BeginCollectionItem.1.2.1.0\lib\net35\BeginCollectionItem.dll</HintPath>
+    </Reference>
     <Reference Include="Markdig, Version=0.12.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Markdig.0.12.1\lib\net40\Markdig.dll</HintPath>
     </Reference>
@@ -255,6 +258,9 @@
     <Content Include="Views\Shared\Contests\_SubmitSolution.cshtml" />
     <Content Include="Views\Shared\Contests\_ContestHeader.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\Languages.cshtml" />
+    <Content Include="Views\Shared\Admin\Languages\_LanguageEditView.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Collection.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

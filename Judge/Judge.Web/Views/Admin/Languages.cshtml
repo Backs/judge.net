@@ -1,0 +1,39 @@
+﻿@using HtmlHelpers.BeginCollectionItem
+@model List<Judge.Application.ViewModels.Admin.Languages.LanguageEditViewModel>
+@{
+    ViewBag.Title = "Языки";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginForm())
+{
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Компилируемый</th>
+                <th>Путь до компилятора</th>
+                <th>Опции компилятора</th>
+                <th>Исполняемый файл</th>
+                <th>Опции запуска</th>
+                <th>Доступен</th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            using (Html.BeginCollectionItem("languages"))
+            {
+                @Html.Partial("Admin/Languages/_LanguageEditView", item)
+            }
+        }
+
+    </table>
+    <input type="submit" value="Сохранить" class="btn btn-success" />
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+}

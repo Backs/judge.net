@@ -23,5 +23,21 @@ namespace Judge.Data.Repository
         {
             return _context.Set<Language>().AsNoTracking().FirstOrDefault(o => o.Id == id);
         }
+
+        public void Save(Language language)
+        {
+            _context.Set<Language>().Attach(language);
+            if (language.Id == 0)
+                _context.Entry(language).State = System.Data.Entity.EntityState.Added;
+            else
+                _context.Entry(language).State = System.Data.Entity.EntityState.Modified;
+
+        }
+
+        public void Delete(Language language)
+        {
+            _context.Set<Language>().Attach(language);
+            _context.Entry(language).State = System.Data.Entity.EntityState.Deleted;
+        }
     }
 }

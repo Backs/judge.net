@@ -7,5 +7,7 @@ namespace Judge.Model.Configuration
     {
         IEnumerable<Language> GetLanguages();
         Language Get(int id);
+        void Save(Language language);
+        void Delete(Language language);
     }
 }

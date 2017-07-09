@@ -1,0 +1,29 @@
+﻿@model Judge.Application.ViewModels.Admin.Languages.LanguageEditViewModel
+
+<tr>
+    <td>
+        @Html.HiddenFor(o => o.Id)
+        @Html.EditorFor(o => o.Name)
+    </td>
+    <td>
+        @Html.EditorFor(o => o.Description)
+    </td>
+    <td>
+        @Html.EditorFor(o => o.IsCompilable)
+    </td>
+    <td>
+        @Html.EditorFor(o => o.CompilerPath)
+    </td>
+    <td>
+        @Html.EditorFor(o => o.CompilerOptionsTemplate)
+    </td>
+    <td>
+        @Html.EditorFor(o => o.OutputFileTemplate)
+    </td>
+    <td>
+        @Html.EditorFor(o => o.RunStringFormat)
+    </td>
+    <td>
+        @Html.EditorFor(o => o.IsHidden)
+    </td>
+</tr>
