@@ -10,6 +10,7 @@
     <table class="table table-condensed" id="languages">
         <thead>
             <tr>
+                <th></th>
                 <th>Название</th>
                 <th>Описание</th>
                 <th>Компилируемый</th>
@@ -39,9 +40,14 @@
     <script type="text/javascript">
         $(function() {
             $("#add").click(function() {
-                $.get('@Url.Action("Language")', function (data) {
-                    $("#languages > tbody").append('<tr>'+data+'</tr>');
-                });
+                $.get('@Url.Action("Language")',
+                    function(data) {
+                        $("#languages > tbody").append('<tr>' + data + '</tr>');
+                    });
+            });
+
+            $("#languages").on("click", "td > button", function(){
+                $(this).parents("tr").remove();
             });
         });
     </script>
