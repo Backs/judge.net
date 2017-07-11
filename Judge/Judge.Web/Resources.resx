@@ -243,4 +243,37 @@
   <data name="About" xml:space="preserve">
     <value>О системе</value>
   </data>
+  <data name="LanguageCompilable" xml:space="preserve">
+    <value>Компилируемый</value>
+  </data>
+  <data name="LanguageCompilerOptions" xml:space="preserve">
+    <value>Опции компилятора</value>
+  </data>
+  <data name="LanguageCompilerPath" xml:space="preserve">
+    <value>Путь до компилятора</value>
+  </data>
+  <data name="LanguageDescription" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="LanguageEnabled" xml:space="preserve">
+    <value>Доступен</value>
+  </data>
+  <data name="LanguageExecutionFile" xml:space="preserve">
+    <value>Исполняемый файл</value>
+  </data>
+  <data name="LanguageName" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="LanguageRunOptions" xml:space="preserve">
+    <value>Опции запуска</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Добавить</value>
+  </data>
+  <data name="Languages" xml:space="preserve">
+    <value>Языки</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
 </root>

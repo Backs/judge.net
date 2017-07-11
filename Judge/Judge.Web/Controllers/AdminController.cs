@@ -31,6 +31,7 @@ namespace Judge.Web.Controllers
         [HttpPost]
         public ActionResult Languages(List<LanguageEditViewModel> languages)
         {
+            languages.ForEach(o => TryValidateModel(o));
             if (!ModelState.IsValid)
             {
                 return View(languages);

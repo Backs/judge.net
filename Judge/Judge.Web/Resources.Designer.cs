@@ -70,6 +70,15 @@ namespace Judge.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Добавить.
+        /// </summary>
+        public static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Выделено памяти, МБ.
         /// </summary>
         public static string AllocatedMemory {
@@ -232,6 +241,87 @@ namespace Judge.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Компилируемый.
+        /// </summary>
+        public static string LanguageCompilable {
+            get {
+                return ResourceManager.GetString("LanguageCompilable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Опции компилятора.
+        /// </summary>
+        public static string LanguageCompilerOptions {
+            get {
+                return ResourceManager.GetString("LanguageCompilerOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Путь до компилятора.
+        /// </summary>
+        public static string LanguageCompilerPath {
+            get {
+                return ResourceManager.GetString("LanguageCompilerPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Описание.
+        /// </summary>
+        public static string LanguageDescription {
+            get {
+                return ResourceManager.GetString("LanguageDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Доступен.
+        /// </summary>
+        public static string LanguageEnabled {
+            get {
+                return ResourceManager.GetString("LanguageEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Исполняемый файл.
+        /// </summary>
+        public static string LanguageExecutionFile {
+            get {
+                return ResourceManager.GetString("LanguageExecutionFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Название.
+        /// </summary>
+        public static string LanguageName {
+            get {
+                return ResourceManager.GetString("LanguageName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Опции запуска.
+        /// </summary>
+        public static string LanguageRunOptions {
+            get {
+                return ResourceManager.GetString("LanguageRunOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Языки.
+        /// </summary>
+        public static string Languages {
+            get {
+                return ResourceManager.GetString("Languages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Войти.
         /// </summary>
         public static string Login {
@@ -327,6 +417,15 @@ namespace Judge.Web {
         public static string Result {
             get {
                 return ResourceManager.GetString("Result", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сохранить.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
             }
         }
         

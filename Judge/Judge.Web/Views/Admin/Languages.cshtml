@@ -1,6 +1,6 @@
 ﻿@model List<Judge.Application.ViewModels.Admin.Languages.LanguageEditViewModel>
 @{
-    ViewBag.Title = "Языки";
+    ViewBag.Title = Resources.Languages;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -11,14 +11,14 @@
         <thead>
             <tr>
                 <th></th>
-                <th>Название</th>
-                <th>Описание</th>
-                <th>Компилируемый</th>
-                <th>Путь до компилятора</th>
-                <th>Опции компилятора</th>
-                <th>Исполняемый файл</th>
-                <th>Опции запуска</th>
-                <th>Доступен</th>
+                <th>@Resources.LanguageName</th>
+                <th>@Resources.LanguageDescription</th>
+                <th>@Resources.LanguageCompilable</th>
+                <th>@Resources.LanguageCompilerPath</th>
+                <th>@Resources.LanguageCompilerOptions</th>
+                <th>@Resources.LanguageExecutionFile</th>
+                <th>@Resources.LanguageRunOptions</th>
+                <th>@Resources.LanguageEnabled</th>
             </tr>
         </thead>
 
@@ -30,8 +30,9 @@
         }
 
     </table>
-    <input type="button" value="Добавить" class="btn btn-info" id="add" />
-    <input type="submit" value="Сохранить" class="btn btn-success" />
+    <input type="button" value="@Resources.Add" class="btn btn-info" id="add" />
+    <input type="submit" value="@Resources.Save" class="btn btn-success" />
+    @Html.ValidationSummary()
 }
 
 @section scripts{
