@@ -39,5 +39,10 @@ namespace Judge.Web.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public PartialViewResult Language()
+        {
+            return PartialView("Admin/Languages/_LanguageEditView", new LanguageEditViewModel());
+        }
     }
 }

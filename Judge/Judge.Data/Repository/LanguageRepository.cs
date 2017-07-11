@@ -16,28 +16,22 @@ namespace Judge.Data.Repository
 
         public IEnumerable<Language> GetLanguages()
         {
-            return _context.Set<Language>().AsNoTracking().OrderBy(o => o.Id).AsEnumerable();
+            return _context.Set<Language>().OrderBy(o => o.Id).AsEnumerable();
         }
 
         public Language Get(int id)
         {
-            return _context.Set<Language>().AsNoTracking().FirstOrDefault(o => o.Id == id);
+            return _context.Set<Language>().FirstOrDefault(o => o.Id == id);
         }
 
-        public void Save(Language language)
+        public void Add(Language language)
         {
-            _context.Set<Language>().Attach(language);
-            if (language.Id == 0)
-                _context.Entry(language).State = System.Data.Entity.EntityState.Added;
-            else
-                _context.Entry(language).State = System.Data.Entity.EntityState.Modified;
-
+            _context.Set<Language>().Add(language);
         }
 
         public void Delete(Language language)
         {
-            _context.Set<Language>().Attach(language);
-            _context.Entry(language).State = System.Data.Entity.EntityState.Deleted;
+            _context.Set<Language>().Remove(language);
         }
     }
 }

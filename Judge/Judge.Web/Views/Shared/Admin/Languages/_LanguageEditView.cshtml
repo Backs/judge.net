@@ -1,6 +1,6 @@
 ﻿@model Judge.Application.ViewModels.Admin.Languages.LanguageEditViewModel
-
-<tr>
+@using (Html.BeginCollectionItem("languages"))
+{
     <td>
         @Html.HiddenFor(o => o.Id)
         @Html.EditorFor(o => o.Name)
@@ -26,4 +26,4 @@
     <td>
         @Html.EditorFor(o => o.IsHidden)
     </td>
-</tr>
+}

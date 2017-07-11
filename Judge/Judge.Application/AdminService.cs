@@ -60,10 +60,8 @@ namespace Judge.Application
                     databaseLanguage.IsCompilable = language.IsCompilable;
                     databaseLanguage.IsHidden = language.IsHidden;
                     databaseLanguage.Name = language.Name;
-                    databaseLanguage.OutputFileTemplate = language.Name;
+                    databaseLanguage.OutputFileTemplate = language.OutputFileTemplate;
                     databaseLanguage.RunStringFormat = language.RunStringFormat;
-
-                    repository.Save(databaseLanguage);
                 }
 
                 foreach (var language in languages.Where(o => o.Id == 0))
@@ -80,7 +78,7 @@ namespace Judge.Application
                         RunStringFormat = language.RunStringFormat
                     };
 
-                    repository.Save(databaseLanguage);
+                    repository.Add(databaseLanguage);
                 }
                 uow.Commit();
             }
