@@ -45,5 +45,11 @@ namespace Judge.Web.Controllers
         {
             return PartialView("Admin/Languages/_LanguageEditView", new LanguageEditViewModel());
         }
+
+        public ActionResult Submits()
+        {
+            var model = _adminService.GetSubmitQueue();
+            return View(model);
+        }
     }
 }

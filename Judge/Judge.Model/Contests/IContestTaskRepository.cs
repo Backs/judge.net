@@ -6,5 +6,6 @@ namespace Judge.Model.Contests
     {
         IEnumerable<ContestTask> GetTasks(int contestId);
         ContestTask Get(int contestId, string label);
+        IEnumerable<ContestTask> GetTasks();
     }
 }

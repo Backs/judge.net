@@ -6,4 +6,11 @@
 
 <h2>@ViewBag.Title</h2>
 
-@Html.ActionLink("Языки", "Languages")
+<ul>
+    <li>
+        @Html.ActionLink(Resources.Languages, "Languages")
+    </li>
+    <li>
+        @Html.ActionLink(Resources.Queue, "Submits")
+    </li>
+</ul>

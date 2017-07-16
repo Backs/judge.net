@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Judge.Application.ViewModels.Admin.Languages;
+using Judge.Application.ViewModels.Admin.Submits;
 
 namespace Judge.Application.Interfaces
 {
@@ -7,5 +8,6 @@ namespace Judge.Application.Interfaces
     {
         List<LanguageEditViewModel> GetLanguages();
         void SaveLanguages(ICollection<LanguageEditViewModel> languages);
+        IEnumerable<SubmitQueueItem> GetSubmitQueue();
     }
 }

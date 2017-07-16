@@ -29,5 +29,13 @@ namespace Judge.Data.Repository
                     .Include(o => o.Task)
                     .FirstOrDefault(o => o.ContestId == contestId && o.TaskName == label);
         }
+
+        public IEnumerable<ContestTask> GetTasks()
+        {
+            return _context.Set<ContestTask>()
+                .Include(o => o.Task)
+                .OrderBy(o => o.TaskName)
+                .AsEnumerable();
+        }
     }
 }

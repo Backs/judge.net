@@ -1,0 +1,104 @@
+﻿@using System.Globalization
+@model IEnumerable<Judge.Application.ViewModels.Admin.Submits.SubmitQueueItem>
+@{
+    ViewBag.Title = Resources.Queue;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="panel panel-default">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>@Resources.Date</th>
+                <th>@Resources.Author</th>
+
+                <th>@Resources.Task</th>
+
+                <th>@Resources.Language</th>
+                <th>@Resources.Result</th>
+                <th>@Resources.PassedTests</th>
+                <th>@Resources.ExecutionTime</th>
+                <th>@Resources.AllocatedMemory</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(item.SubmitTime.ToString(CultureInfo.CurrentUICulture), "Solution", "Problems", new { submitId = item.SubmitId }, new { target = "_blank" })
+                    </td>
+                    <td>
+                        @item.UserName
+                    </td>
+                    <td>
+                        @if (item.TaskLabel == null)
+                        {
+                            @Html.ActionLink(item.ProblemName, "Statement", "Problems", new { id = item.ProblemId }, null)
+                        }
+                        else
+                        {
+                            @Html.ActionLink(item.ProblemName, "Task", "Contests", new { contestId = item.ContestId, label = item.TaskLabel }, null)
+                        }
+                    </td>
+                    <td>
+                        @item.Language
+                    </td>
+                    <td>
+                        @if (item.ShowAdditionalResults)
+                        {
+                            <a href="#" data-toggle="modal" data-target="#modal" data-submit-result="@item.CompileResult">@item.ResultDescription</a>
+                        }
+                        else
+                        {
+                            var css = item.Pending ? string.Empty : item.Solved ? "green" : "red";
+                            <span class="@css">@item.ResultDescription</span>
+                        }
+                    </td>
+                    <td>
+                        @item.PassedTests
+                    </td>
+                    <td>
+                        @item.ExecutionTime
+                    </td>
+                    <td>
+                        @item.AllocatedMemory
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">@Resources.Result</h4>
+            </div>
+            <div class="modal-body">
+                <pre></pre>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            $('#modal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var submitResult = button.data('submit-result');
+                var modal = $(this);
+                modal.find('.modal-body pre').text(submitResult);
+            });
+        });
+    </script>
+}

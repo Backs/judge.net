@@ -3,8 +3,13 @@ using System.Linq;
 using Judge.Application.Interfaces;
 using Judge.Application.ViewModels.Admin.Languages;
 using Judge.Data;
+using Judge.Model.Account;
+using Judge.Model.CheckSolution;
 using Judge.Model.Configuration;
+using Judge.Model.Contests;
 using Judge.Model.Entities;
+using Judge.Model.SubmitSolution;
+using SubmitQueueItem = Judge.Application.ViewModels.Admin.Submits.SubmitQueueItem;
 
 namespace Judge.Application
 {
@@ -82,6 +87,55 @@ namespace Judge.Application
                 }
                 uow.Commit();
             }
+        }
+
+        public IEnumerable<SubmitQueueItem> GetSubmitQueue()
+        {
+            using (var uow = _factory.GetUnitOfWork(false))
+            {
+                var submitResultRepository = uow.GetRepository<ISubmitResultRepository>();
+                var languageRepository = uow.GetRepository<ILanguageRepository>();
+                var taskRepository = uow.GetRepository<ITaskNameRepository>();
+                var userRepository = uow.GetRepository<IUserRepository>();
+                var contestTaskRepository = uow.GetRepository<IContestTaskRepository>();
+
+                var languages = languageRepository.GetLanguages().ToDictionary(o => o.Id, o => o.Name);
+                var submits = submitResultRepository.GetSubmits(AllSubmitsSpecification.Instance, 1, 100).ToArray();
+
+                var tasks = taskRepository.GetTasks(submits.Select(o => o.Submit.ProblemId).Distinct()).ToDictionary(o => o.Id, o => o.Name);
+                var users = userRepository.GetUsers(submits.Select(o => o.Submit.UserId).Distinct()).ToDictionary(o => o.Id, o => o.UserName);
+
+                var contestTasks = contestTaskRepository.GetTasks().ToArray();
+                var items = submits.Select(o => GetSubmitQueueItem(o, languages, users, tasks, contestTasks));
+
+                return items;
+            }
+        }
+
+        private static SubmitQueueItem GetSubmitQueueItem
+        (
+            SubmitResult submitResult,
+            IReadOnlyDictionary<int, string> languages,
+            IReadOnlyDictionary<long, string> users,
+            IReadOnlyDictionary<long, string> tasks,
+            ContestTask[] contestTasks
+        )
+        {
+            string taskLabel = null;
+            int? contestId = null;
+
+            var contestTaskSubmit = submitResult.Submit as ContestTaskSubmit;
+            if (contestTaskSubmit != null)
+            {
+                taskLabel = contestTasks.First(o => o.ContestId == contestTaskSubmit.ContestId &&
+                                                 o.Task.Id == contestTaskSubmit.ProblemId).TaskName;
+                contestId = contestTaskSubmit.ContestId;
+            }
+            var language = languages[submitResult.Submit.LanguageId];
+            var problemName = tasks[submitResult.Submit.ProblemId];
+            var userName = users[submitResult.Submit.UserId];
+
+            return new SubmitQueueItem(submitResult, language, problemName, taskLabel, contestId, userName);
         }
     }
 }

@@ -17,9 +17,9 @@ namespace Judge.Data.Repository
             _context.Set<SubmitBase>().Add(item);
         }
 
-        public ProblemSubmit Get(long submitId)
+        public SubmitBase Get(long submitId)
         {
-            return _context.Set<ProblemSubmit>().AsNoTracking().FirstOrDefault(o => o.Id == submitId);
+            return _context.Set<SubmitBase>().AsNoTracking().FirstOrDefault(o => o.Id == submitId);
         }
     }
 }

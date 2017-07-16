@@ -3,7 +3,7 @@ using Judge.Model.SubmitSolution;
 
 namespace Judge.Application.ViewModels.Submit
 {
-    public sealed class SubmitQueueItem
+    public class SubmitQueueItem
     {
         public SubmitQueueItem(SubmitResult submitResult, string language, string problemName, string userName)
         {
