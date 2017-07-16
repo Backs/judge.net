@@ -35,3 +35,83 @@ int main()
 3. работа с элементами графического интерфейса (окнами, диалогами и т.д.);
 4. работа с внешними устройствами (принтером, звуковой картой и т.д.);
 5. использование сетевых средств.
+
+### 3. Как писать решения на определенном языке?
+
+#### C++
+
+```
+#include <iostream>
+int main()
+{
+   int a, b;
+   std::cin >> a >> b;
+   std::cout << a + b << std::endl;
+   return 0;
+}
+```
+
+#### C#
+```
+using System;
+
+namespace Judge.Tests.TestSolutions
+{
+    class AB
+    {
+        public static void Main(string[] args)
+        {
+            var rows = Console.ReadLine().Split(' ');
+            Console.WriteLine(int.Parse(rows[0]) + int.Parse(rows[1]));
+        }
+    }
+}
+
+```
+
+#### Java
+
+Основной класс должен иметь такое же название, как и файл. Например, следующий код содержится в файле `yield.java`
+
+```
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class yield {
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(in.readLine());
+        int a = Integer.parseInt(st.nextToken());
+        int b = Integer.parseInt(st.nextToken());
+        PrintWriter out = new PrintWriter(System.out);
+        out.println(a + b);
+        out.close();
+    }
+}
+```
+
+#### Pascal
+```
+var
+   a, b: integer;
+begin
+   readln(a, b);
+   writeln(a + b);
+end.
+```
+
+#### JavaScript
+
+```
+var readline = require('readline');
+var rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+rl.on('line', function(data){
+    var line = data.split(' ');
+    console.log(parseInt(line[0]) + parseInt(line[1]));
+});
+```
