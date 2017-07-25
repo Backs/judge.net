@@ -180,7 +180,8 @@ namespace Judge.JudgeService
         private IEnumerable<string> GetInputFiles(Task task)
         {
             var path = Path.Combine(_storagePath, task.TestsFolder);
-            return Directory.EnumerateFiles(path, "*.", SearchOption.AllDirectories);
+            return Directory.EnumerateFiles(path, "*.", SearchOption.AllDirectories)
+                .OrderBy(Path.GetFileName, FileNameComparer.Instance);
         }
 
         private void CreateWorkingDirectory()
@@ -188,5 +189,19 @@ namespace Judge.JudgeService
             RemoveWorkingDirectory();
             Directory.CreateDirectory(_workingDirectory);
         }
+
+        private sealed class FileNameComparer : IComparer<string>
+        {
+            public static FileNameComparer Instance { get; } = new FileNameComparer();
+
+            public int Compare(string x, string y)
+            {
+                int.TryParse(x, out int ax);
+                int.TryParse(y, out int ay);
+
+                return ax.CompareTo(ay);
+            }
+        }
+
     }
 }
