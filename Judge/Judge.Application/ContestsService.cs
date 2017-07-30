@@ -98,7 +98,7 @@ namespace Judge.Application
             }
         }
 
-        public void SubmitSolution(int contestId, string label, int selectedLanguage, HttpPostedFileBase file, long userId)
+        public void SubmitSolution(int contestId, string label, int selectedLanguage, HttpPostedFileBase file, long userId, string userHost)
         {
             if (file == null)
                 throw new ArgumentNullException(nameof(file));
@@ -131,6 +131,7 @@ namespace Judge.Application
                 submit.UserId = userId;
                 submit.FileName = file.FileName;
                 submit.SourceCode = sourceCode;
+                submit.UserHost = userHost;
 
                 var submitRepository = unitOfWork.GetRepository<ISubmitRepository>();
                 submitRepository.Add(submit);

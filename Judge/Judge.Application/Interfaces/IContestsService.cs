@@ -12,7 +12,7 @@ namespace Judge.Application.Interfaces
         ContestsListViewModel GetContests();
         ContestTasksViewModel GetTasks(int contestId, long? userId);
         ContestStatementViewModel GetStatement(int contestId, string label);
-        void SubmitSolution(int contestId, string label, int selectedLanguage, HttpPostedFileBase file, long userId);
+        void SubmitSolution(int contestId, string label, int selectedLanguage, HttpPostedFileBase file, long userId, string userHost);
         SubmitQueueViewModel GetSubmitQueue(long userId, int contestId, string label, int page, int pageSize);
         ContestResultViewModel GetResults(int id);
     }

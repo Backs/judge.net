@@ -64,7 +64,8 @@ namespace Judge.Web.Controllers
             {
                 model.Success = true;
                 var userId = User.Identity.GetUserId<long>();
-                _submitSolutionService.SubmitSolution(model.ProblemId, model.SelectedLanguage, model.File, userId);
+                var userHost = Request.UserHostAddress;
+                _submitSolutionService.SubmitSolution(model.ProblemId, model.SelectedLanguage, model.File, userId, userHost);
 
                 _sessionService.SaveSelectedLanguage(model.SelectedLanguage);
 

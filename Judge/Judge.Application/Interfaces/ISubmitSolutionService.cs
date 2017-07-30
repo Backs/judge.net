@@ -8,7 +8,7 @@ namespace Judge.Application.Interfaces
     public interface ISubmitSolutionService
     {
         IEnumerable<LanguageViewModel> GetLanguages();
-        void SubmitSolution(long problemId, int selectedLanguage, HttpPostedFileBase file, long userId);
+        void SubmitSolution(long problemId, int selectedLanguage, HttpPostedFileBase file, long userId, string userHost);
         SolutionViewModel GetSolution(long submitId, long userId);
     }
 }
