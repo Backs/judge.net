@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using Judge.Application.Interfaces;
+using Judge.Application.ViewModels;
 using Judge.Application.ViewModels.Contests;
 using Judge.Application.ViewModels.Contests.ContestResult;
 using Judge.Application.ViewModels.Contests.ContestsList;
@@ -98,7 +99,7 @@ namespace Judge.Application
             }
         }
 
-        public void SubmitSolution(int contestId, string label, int selectedLanguage, HttpPostedFileBase file, long userId, string userHost)
+        public void SubmitSolution(int contestId, string label, int selectedLanguage, HttpPostedFileBase file, UserInfo userInfo)
         {
             if (file == null)
                 throw new ArgumentNullException(nameof(file));
@@ -128,10 +129,11 @@ namespace Judge.Application
                 submit.ProblemId = task.Task.Id;
                 submit.ContestId = contestId;
                 submit.LanguageId = selectedLanguage;
-                submit.UserId = userId;
-                submit.FileName = file.FileName;
+                submit.UserId = userInfo.UserId;
+                submit.FileName = Path.GetFileName(file.FileName);
                 submit.SourceCode = sourceCode;
-                submit.UserHost = userHost;
+                submit.UserHost = userInfo.Host;
+                submit.SessionId = userInfo.SessionId;
 
                 var submitRepository = unitOfWork.GetRepository<ISubmitRepository>();
                 submitRepository.Add(submit);

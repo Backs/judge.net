@@ -20,5 +20,6 @@ namespace Judge.Model.SubmitSolution
         public DateTime SubmitDateUtc { get; private set; }
         public long ProblemId { get; set; }
         public string UserHost { get; set; }
+        public string SessionId { get; set; }
     }
 }

@@ -149,6 +149,7 @@
     <Compile Include="ViewModels\Submit\SubmitQueueItem.cs" />
     <Compile Include="ViewModels\Submit\SubmitQueueViewModel.cs" />
     <Compile Include="ViewModels\Submit\SubmitSolutionViewModel.cs" />
+    <Compile Include="ViewModels\UserInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">

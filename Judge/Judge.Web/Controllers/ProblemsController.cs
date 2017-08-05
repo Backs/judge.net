@@ -2,6 +2,7 @@
 using System.Web;
 using System.Web.Mvc;
 using Judge.Application.Interfaces;
+using Judge.Application.ViewModels;
 using Judge.Application.ViewModels.Submit;
 using Judge.Web.Services;
 using Microsoft.AspNet.Identity;
@@ -65,7 +66,9 @@ namespace Judge.Web.Controllers
                 model.Success = true;
                 var userId = User.Identity.GetUserId<long>();
                 var userHost = Request.UserHostAddress;
-                _submitSolutionService.SubmitSolution(model.ProblemId, model.SelectedLanguage, model.File, userId, userHost);
+                var sessionId = Session.SessionID;
+                var userInfo = new UserInfo(userId, userHost, sessionId);
+                _submitSolutionService.SubmitSolution(model.ProblemId, model.SelectedLanguage, model.File, userInfo);
 
                 _sessionService.SaveSelectedLanguage(model.SelectedLanguage);
 

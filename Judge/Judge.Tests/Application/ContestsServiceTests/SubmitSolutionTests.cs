@@ -1,6 +1,7 @@
 ﻿using System;
 using Judge.Application;
 using Judge.Application.Interfaces;
+using Judge.Application.ViewModels;
 using Judge.Data;
 using Judge.Model.Contests;
 using Judge.Model.SubmitSolution;
@@ -44,7 +45,8 @@ namespace Judge.Tests.Application.ContestsServiceTests
                 FinishTime = DateTime.Now.AddDays(1)
             };
             _contestsRepository.Stub(o => o.Get(1)).Return(contest);
-            var ex = Assert.Throws<InvalidOperationException>(() => _service.SubmitSolution(1, "A", 2, new FakeHttpPostedFileBase(), 9, null));
+            var userInfo = new UserInfo(9, null, null);
+            var ex = Assert.Throws<InvalidOperationException>(() => _service.SubmitSolution(1, "A", 2, new FakeHttpPostedFileBase(), userInfo));
 
             Assert.That(ex.Message, Is.EqualTo("Task not found"));
         }
@@ -59,7 +61,8 @@ namespace Judge.Tests.Application.ContestsServiceTests
             };
             _contestsRepository.Stub(o => o.Get(1)).Return(contest);
 
-            var ex = Assert.Throws<InvalidOperationException>(() => _service.SubmitSolution(1, "A", 2, new FakeHttpPostedFileBase(), 9, null));
+            var userInfo = new UserInfo(9, null, null);
+            var ex = Assert.Throws<InvalidOperationException>(() => _service.SubmitSolution(1, "A", 2, new FakeHttpPostedFileBase(), userInfo));
 
             Assert.That(ex.Message, Is.EqualTo("Contest not started"));
         }
@@ -74,7 +77,8 @@ namespace Judge.Tests.Application.ContestsServiceTests
             };
             _contestsRepository.Stub(o => o.Get(1)).Return(contest);
 
-            var ex = Assert.Throws<InvalidOperationException>(() => _service.SubmitSolution(1, "A", 2, new FakeHttpPostedFileBase(), 9, null));
+            var userInfo = new UserInfo(9, null, null);
+            var ex = Assert.Throws<InvalidOperationException>(() => _service.SubmitSolution(1, "A", 2, new FakeHttpPostedFileBase(), userInfo));
 
             Assert.That(ex.Message, Is.EqualTo("Contest finished"));
         }
@@ -94,7 +98,8 @@ namespace Judge.Tests.Application.ContestsServiceTests
             };
             _contestTaskRepository.Stub(o => o.Get(1, "A")).Return(contestTask);
 
-            _service.SubmitSolution(1, "A", 2, new FakeHttpPostedFileBase(), 9, null);
+            var userInfo = new UserInfo(9, null, null);
+            _service.SubmitSolution(1, "A", 2, new FakeHttpPostedFileBase(), userInfo);
 
             _submitRepository.AssertWasCalled(o => o.Add(Arg<ContestTaskSubmit>.Is.Anything));
         }

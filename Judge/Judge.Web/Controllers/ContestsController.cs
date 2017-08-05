@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using Judge.Application.Interfaces;
+using Judge.Application.ViewModels;
 using Judge.Application.ViewModels.Contests;
 using Judge.Web.Services;
 using Microsoft.AspNet.Identity;
@@ -79,7 +80,9 @@ namespace Judge.Web.Controllers
                 model.Success = true;
                 var userId = User.Identity.GetUserId<long>();
                 var userHost = Request.UserHostAddress;
-                _contestsService.SubmitSolution(model.ContestId, model.Label, model.SelectedLanguage, model.File, userId, userHost);
+                var sessionId = Session.SessionID;
+                var userInfo = new UserInfo(userId, userHost, sessionId);
+                _contestsService.SubmitSolution(model.ContestId, model.Label, model.SelectedLanguage, model.File, userInfo);
 
                 _sessionService.SaveSelectedLanguage(model.SelectedLanguage);
 

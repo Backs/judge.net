@@ -10,6 +10,7 @@
     [SubmitDateUtc] DATETIME NOT NULL DEFAULT (GETUTCDATE()),
     [SubmitType] TINYINT NOT NULL DEFAULT(1),
     [UserHost] NVARCHAR(64) NULL, 
+    [SessionId] NVARCHAR(32) NULL, 
     CONSTRAINT [PK_Submits] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_Submits_Users] FOREIGN KEY (UserId) REFERENCES dbo.Users(Id),
     CONSTRAINT [FK_Submits_Languages] FOREIGN KEY (LanguageId) REFERENCES dbo.Languages(Id),

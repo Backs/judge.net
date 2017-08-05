@@ -6,6 +6,7 @@ using System.Security.Authentication;
 using System.Security.Principal;
 using System.Web;
 using Judge.Application.Interfaces;
+using Judge.Application.ViewModels;
 using Judge.Application.ViewModels.Problems.Solution;
 using Judge.Application.ViewModels.Submit;
 using Judge.Data;
@@ -40,7 +41,7 @@ namespace Judge.Application
             }
         }
 
-        public void SubmitSolution(long problemId, int selectedLanguage, HttpPostedFileBase file, long userId, string userHost)
+        public void SubmitSolution(long problemId, int selectedLanguage, HttpPostedFileBase file, UserInfo userInfo)
         {
             if (file == null)
                 throw new ArgumentNullException(nameof(file));
@@ -55,10 +56,11 @@ namespace Judge.Application
 
             submit.ProblemId = problemId;
             submit.LanguageId = selectedLanguage;
-            submit.UserId = userId;
-            submit.FileName = file.FileName;
+            submit.UserId = userInfo.UserId;
+            submit.FileName = Path.GetFileName(file.FileName);
             submit.SourceCode = sourceCode;
-            submit.UserHost = userHost;
+            submit.UserHost = userInfo.Host;
+            submit.SessionId = userInfo.SessionId;
 
             using (var unitOfWork = _factory.GetUnitOfWork(true))
             {
