@@ -276,4 +276,7 @@
   <data name="Save" xml:space="preserve">
     <value>Сохранить</value>
   </data>
+  <data name="EnterTitle" xml:space="preserve">
+    <value>Войти</value>
+  </data>
 </root>

@@ -150,4 +150,7 @@
   <data name="Left" xml:space="preserve">
     <value>Осталось</value>
   </data>
+  <data name="EnterValidEmail" xml:space="preserve">
+    <value>Введите корреткный Email</value>
+  </data>
 </root>

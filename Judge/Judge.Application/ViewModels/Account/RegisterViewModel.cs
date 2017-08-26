@@ -8,6 +8,7 @@ namespace Judge.Application.ViewModels.Account
         [Display(Name = "Email")]
         [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "EnterEmail")]
         [MaxLength(256)]
+        [EmailAddress(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "EnterValidEmail")]
         public string Email { get; set; }
 
         [Display(ResourceType = typeof(Resources), Name = "UserName")]
