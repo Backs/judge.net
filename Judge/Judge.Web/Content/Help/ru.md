@@ -115,3 +115,15 @@ rl.on('line', function(data){
     console.log(parseInt(line[0]) + parseInt(line[1]));
 });
 ```
+
+#### F#
+```
+open System
+
+[<EntryPoint>]
+let main argv = 
+    let result = Console.ReadLine().Split(' ') |> Seq.map System.Int32.Parse |> Seq.sum
+    printfn "%d" result
+    0
+
+```
