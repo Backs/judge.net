@@ -266,6 +266,7 @@
     <Content Include="Views\Shared\Admin\Languages\_LanguageEditView.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Collection.cshtml" />
     <Content Include="Views\Admin\Submits.cshtml" />
+    <Content Include="Views\Admin\Problems.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

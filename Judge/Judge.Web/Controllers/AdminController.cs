@@ -9,10 +9,12 @@ namespace Judge.Web.Controllers
     public class AdminController : Controller
     {
         private readonly IAdminService _adminService;
+        private readonly IProblemsService _problemsService;
 
-        public AdminController(IAdminService adminService)
+        public AdminController(IAdminService adminService, IProblemsService problemsService)
         {
             _adminService = adminService;
+            _problemsService = problemsService;
         }
 
         public ActionResult Index()
@@ -49,6 +51,17 @@ namespace Judge.Web.Controllers
         public ActionResult Submits()
         {
             var model = _adminService.GetSubmitQueue();
+            return View(model);
+        }
+
+        public ActionResult EditProblem(long id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ActionResult Problems(int? page)
+        {
+            var model = _problemsService.GetProblemsList(page ?? 1, 20, null);
             return View(model);
         }
     }

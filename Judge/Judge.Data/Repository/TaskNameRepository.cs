@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Judge.Model;
 using Judge.Model.CheckSolution;
 
 namespace Judge.Data.Repository
@@ -14,7 +15,7 @@ namespace Judge.Data.Repository
             _context = context;
         }
 
-        public IEnumerable<TaskName> GetTasks(int page, int pageSize)
+        public IEnumerable<TaskName> GetTasks(ISpecification<Task> specification, int page, int pageSize)
         {
             if (page <= 0)
                 throw new ArgumentOutOfRangeException(nameof(page));
@@ -23,7 +24,7 @@ namespace Judge.Data.Repository
 
             var skip = (page - 1) * pageSize;
 
-            IQueryable<Task> taskList = _context.Set<Task>().Where(o => o.IsOpened).OrderBy(o => o.Id);
+            IQueryable<Task> taskList = _context.Set<Task>().Where(specification.IsSatisfiedBy).OrderBy(o => o.Id);
             if (skip > 0)
             {
                 taskList = taskList.Skip(skip);

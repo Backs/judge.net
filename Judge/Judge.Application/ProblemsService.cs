@@ -31,7 +31,7 @@ namespace Judge.Application
                 var taskRepository = unitOfWork.GetRepository<ITaskNameRepository>();
                 var submitResultRepository = unitOfWork.GetRepository<ISubmitResultRepository>();
 
-                var tasks = taskRepository.GetTasks(page, pageSize)
+                var tasks = taskRepository.GetTasks(OpenedTasksSpecification.Instance, page, pageSize)
                     .Select(o => new ProblemItem
                     {
                         Id = o.Id,

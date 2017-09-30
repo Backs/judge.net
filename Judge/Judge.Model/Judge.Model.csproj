@@ -23,8 +23,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account\IUserRepository.cs" />
+    <Compile Include="CheckSolution\AllTasksSpecification.cs" />
     <Compile Include="CheckSolution\ITaskNameRepository.cs" />
     <Compile Include="CheckSolution\ITaskRepository.cs" />
+    <Compile Include="CheckSolution\OpenedTasksSpecification.cs" />
     <Compile Include="CheckSolution\Task.cs" />
     <Compile Include="CheckSolution\TaskName.cs" />
     <Compile Include="Configuration\ILanguageRepository.cs" />
