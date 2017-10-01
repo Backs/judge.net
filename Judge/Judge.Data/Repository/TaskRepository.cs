@@ -17,5 +17,10 @@ namespace Judge.Data.Repository
         {
             return _context.Set<Task>().FirstOrDefault(o => o.Id == problemId);
         }
+
+        public void Add(Task problem)
+        {
+            _context.Set<Task>().Add(problem);
+        }
     }
 }

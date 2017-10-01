@@ -2,6 +2,7 @@
 using System.Linq;
 using Judge.Application.Interfaces;
 using Judge.Application.ViewModels.Admin.Languages;
+using Judge.Application.ViewModels.Admin.Problems;
 using Judge.Data;
 using Judge.Model.Account;
 using Judge.Model.CheckSolution;
@@ -109,6 +110,52 @@ namespace Judge.Application
                 var items = submits.Select(o => GetSubmitQueueItem(o, languages, users, tasks, contestTasks));
 
                 return items;
+            }
+        }
+
+        public EditProblemViewModel GetProblem(long id)
+        {
+            using (var uow = _factory.GetUnitOfWork(false))
+            {
+                var taskRepository = uow.GetRepository<ITaskRepository>();
+                var task = taskRepository.Get(id);
+                return new EditProblemViewModel
+                {
+                    Id = task.Id,
+                    IsOpened = task.IsOpened,
+                    MemoryLimitBytes = task.MemoryLimitBytes,
+                    Name = task.Name,
+                    Statement = task.Statement,
+                    TestsFolder = task.TestsFolder,
+                    TimeLimitMilliseconds = task.TimeLimitMilliseconds
+                };
+            }
+        }
+
+        public void SaveProblem(EditProblemViewModel model)
+        {
+            using (var uow = _factory.GetUnitOfWork(true))
+            {
+                var taskRepository = uow.GetRepository<ITaskRepository>();
+
+                Task task = null;
+                if (model.Id != null)
+                {
+                    task = taskRepository.Get(model.Id.Value);
+                }
+                else
+                {
+                    task = new Task();
+                    taskRepository.Add(task);
+                }
+                task.IsOpened = model.IsOpened;
+                task.MemoryLimitBytes = model.MemoryLimitBytes;
+                task.Name = model.Name;
+                task.Statement = model.Statement;
+                task.TestsFolder = model.TestsFolder;
+                task.TimeLimitMilliseconds = model.TimeLimitMilliseconds;
+
+                uow.Commit();
             }
         }
 

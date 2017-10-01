@@ -62,13 +62,18 @@ namespace Judge.Web.Controllers
             {
                 return View(new EditProblemViewModel());
             }
-            throw new System.NotImplementedException();
+            var model = _adminService.GetProblem(id.Value);
+            return View(model);
         }
 
         [HttpPost]
         public ActionResult EditProblem(EditProblemViewModel model)
         {
-            throw new System.NotImplementedException();
+            if (ModelState.IsValid)
+            {
+                _adminService.SaveProblem(model);
+            }
+            return View(model);
         }
 
         public ActionResult Problems(int? page)

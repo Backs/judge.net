@@ -23,6 +23,6 @@ namespace Judge.Model.CheckSolution
 
         public DateTime CreationDateUtc { get; private set; }
         public string Statement { get; set; }
-        public bool IsOpened { get; internal set; }
+        public bool IsOpened { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace Judge.Application.ViewModels.Admin.Problems
 {
@@ -10,7 +11,7 @@ namespace Judge.Application.ViewModels.Admin.Problems
         [Required]
         [MaxLength(512)]
         [Display(Name = "Папка с тестами")]
-        public string TestFolder { get; set; }
+        public string TestsFolder { get; set; }
 
         [Range(1, 10 * 60 * 1000)]
         [Display(Name = "Ограничение по времени в мс.")]
@@ -27,6 +28,7 @@ namespace Judge.Application.ViewModels.Admin.Problems
 
         [Required]
         [Display(Name = "Описание задачи")]
+        [AllowHtml]
         public string Statement { get; set; }
 
         [Display(Name = "Доступна в общем списке задач")]
