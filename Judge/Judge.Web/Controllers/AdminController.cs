@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using Judge.Application.Interfaces;
 using Judge.Application.ViewModels.Admin.Languages;
+using Judge.Application.ViewModels.Admin.Problems;
 
 namespace Judge.Web.Controllers
 {
@@ -54,7 +55,18 @@ namespace Judge.Web.Controllers
             return View(model);
         }
 
-        public ActionResult EditProblem(long id)
+        [HttpGet]
+        public ActionResult EditProblem(long? id)
+        {
+            if (id == null)
+            {
+                return View(new EditProblemViewModel());
+            }
+            throw new System.NotImplementedException();
+        }
+
+        [HttpPost]
+        public ActionResult EditProblem(EditProblemViewModel model)
         {
             throw new System.NotImplementedException();
         }

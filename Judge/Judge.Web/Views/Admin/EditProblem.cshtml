@@ -1,0 +1,60 @@
+﻿@model Judge.Application.ViewModels.Admin.Problems.EditProblemViewModel
+
+@{
+    ViewBag.Title = Model.IsNewTask ? "Новая задача" : "Редактирование задачи";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>@ViewBag.Title</h2>
+
+<div class="container">
+    <section id="loginForm">
+        @using (Html.BeginForm("EditProblem", "Admin", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(o => o.Id)
+            <div class="form-group">
+                @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.EditorFor(m => m.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.TimeLimitMilliseconds, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.EditorFor(m => m.TimeLimitMilliseconds, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.TimeLimitMilliseconds, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.MemoryLimitBytes, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.EditorFor(m => m.MemoryLimitBytes, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.MemoryLimitBytes, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.TestFolder, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.EditorFor(m => m.TestFolder, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.TestFolder, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.IsOpened, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.EditorFor(m => m.IsOpened, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.IsOpened, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Statement, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(m => m.Statement, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Statement, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        }
+    </section>
+</div>

@@ -106,6 +106,7 @@
     <Compile Include="ContestsService.cs" />
     <Compile Include="Interfaces\IAdminService.cs" />
     <Compile Include="ViewModels\Admin\Languages\LanguageEditViewModel.cs" />
+    <Compile Include="ViewModels\Admin\Problems\EditProblemViewModel.cs" />
     <Compile Include="ViewModels\Admin\Submits\SubmitQueueItem.cs" />
     <Compile Include="ViewModels\Contests\ContestResult\ContestResultViewModel.cs" />
     <Compile Include="ViewModels\Contests\ContestResult\ContestTaskResultViewModel.cs" />
