@@ -10,28 +10,28 @@ namespace Judge.Application.ViewModels.Admin.Problems
 
         [Required]
         [MaxLength(512)]
-        [Display(Name = "Папка с тестами")]
+        [Display(ResourceType = typeof(Resources), Name = "TestsFolder")]
         public string TestsFolder { get; set; }
 
         [Range(1, 10 * 60 * 1000)]
-        [Display(Name = "Ограничение по времени в мс.")]
+        [Display(ResourceType = typeof(Resources), Name = "TimeLimitMilliseconds")]
         public int TimeLimitMilliseconds { get; set; } = 1000;
 
         [Range(1, 10485760000)]
-        [Display(Name = "Ограничение по памяти в байтах")]
+        [Display(ResourceType = typeof(Resources), Name = "MemoryLimitBytes")]
         public int MemoryLimitBytes { get; set; } = 104857600;
 
         [Required]
         [MaxLength(256)]
-        [Display(Name = "Название")]
+        [Display(ResourceType = typeof(Resources), Name = "TaskName")]
         public string Name { get; set; }
 
         [Required]
-        [Display(Name = "Описание задачи")]
+        [Display(ResourceType = typeof(Resources), Name = "TaskStatement")]
         [AllowHtml]
         public string Statement { get; set; }
 
-        [Display(Name = "Доступна в общем списке задач")]
+        [Display(ResourceType = typeof(Resources), Name = "TaskIsOpened")]
         public bool IsOpened { get; set; }
     }
 }

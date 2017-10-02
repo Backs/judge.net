@@ -1,7 +1,7 @@
 ﻿@model Judge.Application.ViewModels.Admin.Problems.EditProblemViewModel
 
 @{
-    ViewBag.Title = Model.IsNewTask ? "Новая задача" : "Редактирование задачи";
+    ViewBag.Title = Model.IsNewTask ? Resources.NewTask : Resources.TaskEditing;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h2>@ViewBag.Title</h2>

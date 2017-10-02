@@ -279,4 +279,13 @@
   <data name="EnterTitle" xml:space="preserve">
     <value>Войти</value>
   </data>
+  <data name="CreateNewTask" xml:space="preserve">
+    <value>Создать новую</value>
+  </data>
+  <data name="NewTask" xml:space="preserve">
+    <value>Новая задача</value>
+  </data>
+  <data name="TaskEditing" xml:space="preserve">
+    <value>Редактирование задачи</value>
+  </data>
 </root>

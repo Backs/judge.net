@@ -187,6 +187,15 @@ namespace Judge.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Создать новую.
+        /// </summary>
+        public static string CreateNewTask {
+            get {
+                return ResourceManager.GetString("CreateNewTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Дата.
         /// </summary>
         public static string Date {
@@ -376,6 +385,15 @@ namespace Judge.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Новая задача.
+        /// </summary>
+        public static string NewTask {
+            get {
+                return ResourceManager.GetString("NewTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Тестов пройдено.
         /// </summary>
         public static string PassedTests {
@@ -489,6 +507,15 @@ namespace Judge.Web {
         public static string Task {
             get {
                 return ResourceManager.GetString("Task", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Редактирование задачи.
+        /// </summary>
+        public static string TaskEditing {
+            get {
+                return ResourceManager.GetString("TaskEditing", resourceCulture);
             }
         }
         

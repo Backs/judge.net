@@ -133,6 +133,15 @@ namespace Judge.Application {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ограничение по памяти в байтах.
+        /// </summary>
+        public static string MemoryLimitBytes {
+            get {
+                return ResourceManager.GetString("MemoryLimitBytes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Пароль.
         /// </summary>
         public static string Password {
@@ -156,6 +165,51 @@ namespace Judge.Application {
         public static string SelectFile {
             get {
                 return ResourceManager.GetString("SelectFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Доступна в общем списке задач.
+        /// </summary>
+        public static string TaskIsOpened {
+            get {
+                return ResourceManager.GetString("TaskIsOpened", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Название.
+        /// </summary>
+        public static string TaskName {
+            get {
+                return ResourceManager.GetString("TaskName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Описание задачи.
+        /// </summary>
+        public static string TaskStatement {
+            get {
+                return ResourceManager.GetString("TaskStatement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Папка с тестами.
+        /// </summary>
+        public static string TestsFolder {
+            get {
+                return ResourceManager.GetString("TestsFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ограничение по времени в мс..
+        /// </summary>
+        public static string TimeLimitMilliseconds {
+            get {
+                return ResourceManager.GetString("TimeLimitMilliseconds", resourceCulture);
             }
         }
         

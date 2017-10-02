@@ -153,4 +153,22 @@
   <data name="EnterValidEmail" xml:space="preserve">
     <value>Введите корреткный Email</value>
   </data>
+  <data name="TestsFolder" xml:space="preserve">
+    <value>Папка с тестами</value>
+  </data>
+  <data name="TimeLimitMilliseconds" xml:space="preserve">
+    <value>Ограничение по времени в мс.</value>
+  </data>
+  <data name="MemoryLimitBytes" xml:space="preserve">
+    <value>Ограничение по памяти в байтах</value>
+  </data>
+  <data name="TaskName" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="TaskStatement" xml:space="preserve">
+    <value>Описание задачи</value>
+  </data>
+  <data name="TaskIsOpened" xml:space="preserve">
+    <value>Доступна в общем списке задач</value>
+  </data>
 </root>
