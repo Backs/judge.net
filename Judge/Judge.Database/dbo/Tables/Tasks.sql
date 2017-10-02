@@ -11,3 +11,5 @@
     CONSTRAINT [PK_Tasks] PRIMARY KEY CLUSTERED ([Id] ASC)
 )
 
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [UIX_Tasks_Name] ON [dbo].[Tasks] ([Name])
