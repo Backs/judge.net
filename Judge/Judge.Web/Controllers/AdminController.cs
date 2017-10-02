@@ -71,7 +71,8 @@ namespace Judge.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _adminService.SaveProblem(model);
+                var id = _adminService.SaveProblem(model);
+                return RedirectToAction("EditProblem", new { id });
             }
             return View(model);
         }

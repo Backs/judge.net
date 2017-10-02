@@ -132,7 +132,7 @@ namespace Judge.Application
             }
         }
 
-        public void SaveProblem(EditProblemViewModel model)
+        public long SaveProblem(EditProblemViewModel model)
         {
             using (var uow = _factory.GetUnitOfWork(true))
             {
@@ -156,6 +156,7 @@ namespace Judge.Application
                 task.TimeLimitMilliseconds = model.TimeLimitMilliseconds;
 
                 uow.Commit();
+                return task.Id;
             }
         }
 

@@ -11,6 +11,6 @@ namespace Judge.Application.Interfaces
         void SaveLanguages(ICollection<LanguageEditViewModel> languages);
         IEnumerable<SubmitQueueItem> GetSubmitQueue();
         EditProblemViewModel GetProblem(long id);
-        void SaveProblem(EditProblemViewModel model);
+        long SaveProblem(EditProblemViewModel model);
     }
 }
