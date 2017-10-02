@@ -288,4 +288,7 @@
   <data name="TaskEditing" xml:space="preserve">
     <value>Редактирование задачи</value>
   </data>
+  <data name="Administration" xml:space="preserve">
+    <value>Администрирование</value>
+  </data>
 </root>
