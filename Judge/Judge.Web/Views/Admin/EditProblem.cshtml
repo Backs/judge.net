@@ -51,7 +51,7 @@
             <div class="form-group">
                 @Html.LabelFor(m => m.Statement, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
-                    @Html.TextAreaFor(m => m.Statement, new { @class = "form-control", rows = "20" })
+                    @Html.TextAreaFor(m => m.Statement, new { @class = "form-control", rows = "20", style = "font-family:monospace;" })
                     @Html.ValidationMessageFor(m => m.Statement, "", new { @class = "text-danger" })
                 </div>
             </div>
