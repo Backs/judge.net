@@ -1,4 +1,4 @@
-version: 1.1
+version: 1.1.{build}
 image: Visual Studio 2017
 configuration: Release
 before_build:
@@ -14,7 +14,8 @@ test:
     - Checker
 deploy:
 - provider: GitHub
-  tag: $(version)
   release: v$(appveyor_build_version)
   auth_token:
     secure: Gg/D4oFtmyEjhqq9AD3dMXpkvuzv4vcY+RS5H/5a2wGNo4ryI+yF8kikK+95Wdsr
+  on:
+    appveyor_repo_tag: true
