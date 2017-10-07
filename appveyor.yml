@@ -14,7 +14,7 @@ test:
     - Checker
 deploy:
 - provider: GitHub
-  tag: release
+  tag: $(version)
   release: v$(appveyor_build_version)
   auth_token:
     secure: Gg/D4oFtmyEjhqq9AD3dMXpkvuzv4vcY+RS5H/5a2wGNo4ryI+yF8kikK+95Wdsr
