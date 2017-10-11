@@ -26,13 +26,19 @@
                     <li>@Html.ActionLink(Resources.Queue, "Index", "Submits")</li>
                     <li>@Html.ActionLink(Resources.Manual, "Index", "Help")</li>
                     <li>@Html.ActionLink(Resources.About, "About", "Help")</li>
-                    @if (User.IsInRole("admin"))
-                    {
-                        <li>@Html.ActionLink(Resources.Administration, "Index", "Admin")</li>
-                    }
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink(Resources.LogOut, "Logout", "Account")</li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@User.Identity.Name <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                @if (User.IsInRole("admin"))
+                                {
+                                    <li>@Html.ActionLink(Resources.Administration, "Index", "Admin")</li>
+                                }
+                                <li role="separator" class="divider"></li>
+                                <li>@Html.ActionLink(Resources.LogOut, "Logout", "Account")</li>
+                            </ul>
+                        </li>
                     }
                     else
                     {
