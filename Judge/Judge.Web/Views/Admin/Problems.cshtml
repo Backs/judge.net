@@ -14,6 +14,7 @@
             <tr>
                 <th>Id</th>
                 <th>@Resources.TaskName</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -23,6 +24,9 @@
                     <td>@problem.Id</td>
                     <td>
                         @Html.ActionLink(problem.Name, "EditProblem", new { id = problem.Id }, null)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Просмотр", "Statement", "Problems", new { id = problem.Id }, new { target = "_blank" })
                     </td>
                 </tr>
             }
