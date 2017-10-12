@@ -5,6 +5,17 @@
 }
 
 <h2>@ViewBag.Title</h2>
+
+<h5>@Resources.Templates:</h5>
+<ul>
+    <li>
+        {FileName} - @Resources.FileName
+    </li>
+    <li>
+        {Ext} - @Resources.FileExtensions
+    </li>
+</ul>
+
 @using (Html.BeginForm())
 {
     <table class="table table-condensed" id="languages">

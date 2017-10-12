@@ -250,6 +250,24 @@ namespace Judge.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to расширение файла.
+        /// </summary>
+        public static string FileExtensions {
+            get {
+                return ResourceManager.GetString("FileExtensions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to имя файла.
+        /// </summary>
+        public static string FileName {
+            get {
+                return ResourceManager.GetString("FileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Указан не верный пароль.
         /// </summary>
         public static string IncorrectPassword {
@@ -448,6 +466,15 @@ namespace Judge.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Удалить.
+        /// </summary>
+        public static string Remove {
+            get {
+                return ResourceManager.GetString("Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Результат.
         /// </summary>
         public static string Result {
@@ -543,6 +570,15 @@ namespace Judge.Web {
         public static string Tasks {
             get {
                 return ResourceManager.GetString("Tasks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Шаблоны.
+        /// </summary>
+        public static string Templates {
+            get {
+                return ResourceManager.GetString("Templates", resourceCulture);
             }
         }
         
