@@ -79,7 +79,7 @@ namespace Judge.Web.Controllers
 
         public ActionResult Problems(int? page)
         {
-            var model = _problemsService.GetProblemsList(page ?? 1, 20, null);
+            var model = _problemsService.GetProblemsList(page ?? 1, 20, null, true);
             return View(model);
         }
     }

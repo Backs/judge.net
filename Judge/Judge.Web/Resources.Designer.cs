@@ -565,6 +565,15 @@ namespace Judge.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Недоступна в общем списке.
+        /// </summary>
+        public static string UnavailableInTaskList {
+            get {
+                return ResourceManager.GetString("UnavailableInTaskList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Пользователь не найден.
         /// </summary>
         public static string UserNotFound {
@@ -579,6 +588,15 @@ namespace Judge.Web {
         public static string UserWithEmailIsAlreadyRegistered {
             get {
                 return ResourceManager.GetString("UserWithEmailIsAlreadyRegistered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Просмотр.
+        /// </summary>
+        public static string View {
+            get {
+                return ResourceManager.GetString("View", resourceCulture);
             }
         }
     }

@@ -291,4 +291,10 @@
   <data name="Administration" xml:space="preserve">
     <value>Администрирование</value>
   </data>
+  <data name="View" xml:space="preserve">
+    <value>Просмотр</value>
+  </data>
+  <data name="UnavailableInTaskList" xml:space="preserve">
+    <value>Недоступна в общем списке</value>
+  </data>
 </root>

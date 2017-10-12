@@ -31,7 +31,7 @@ namespace Judge.Web.Controllers
             {
                 userId = User.Identity.GetUserId<long>();
             }
-            var model = _problemsService.GetProblemsList(page ?? 1, _pageSize, userId);
+            var model = _problemsService.GetProblemsList(page ?? 1, _pageSize, userId, false);
             return View(model);
         }
 

@@ -41,10 +41,10 @@ namespace Judge.Tests.Application.ProblemsServiceTests
             const int page = 1;
 
             var tasks = new[] { new TaskName { Id = 1, Name = "A" }, new TaskName { Id = 2, Name = "B" } };
-            _taskRepository.Stub(o => o.GetTasks(OpenedTasksSpecification.Instance, page, pageSize)).Return(tasks);
+            _taskRepository.Stub(o => o.GetTasks(AllTasksSpecification.Instance, page, pageSize)).Return(tasks);
             _taskRepository.Stub(o => o.Count()).Return(tasks.Length);
 
-            var model = _service.GetProblemsList(page, pageSize, null);
+            var model = _service.GetProblemsList(page, pageSize, null, true);
 
             Assert.That(model.ProblemsCount, Is.EqualTo(2));
             Assert.That(model.Pagination.PageSize, Is.EqualTo(pageSize));
@@ -63,10 +63,10 @@ namespace Judge.Tests.Application.ProblemsServiceTests
                 new TaskName { Id = 2, Name = "B" },
                 new TaskName { Id = 3, Name = "C" }
             };
-            _taskRepository.Stub(o => o.GetTasks(OpenedTasksSpecification.Instance, 1, 2)).Return(tasks.Take(2));
+            _taskRepository.Stub(o => o.GetTasks(AllTasksSpecification.Instance, 1, 2)).Return(tasks.Take(2));
             _taskRepository.Stub(o => o.Count()).Return(tasks.Length);
 
-            var model = _service.GetProblemsList(1, 2, null);
+            var model = _service.GetProblemsList(1, 2, null, true);
 
             Assert.That(model.Pagination.CurrentPage, Is.EqualTo(1));
             Assert.That(model.Pagination.TotalPages, Is.EqualTo(2));
@@ -83,10 +83,10 @@ namespace Judge.Tests.Application.ProblemsServiceTests
                 new TaskName { Id = 4, Name = "D" },
                 new TaskName { Id = 5, Name = "E" },
             };
-            _taskRepository.Stub(o => o.GetTasks(OpenedTasksSpecification.Instance, 2, 2)).Return(tasks.Skip(2).Take(2));
+            _taskRepository.Stub(o => o.GetTasks(AllTasksSpecification.Instance, 2, 2)).Return(tasks.Skip(2).Take(2));
             _taskRepository.Stub(o => o.Count()).Return(tasks.Length);
 
-            var model = _service.GetProblemsList(2, 2, null);
+            var model = _service.GetProblemsList(2, 2, null, true);
 
             Assert.That(model.Pagination.CurrentPage, Is.EqualTo(2));
             Assert.That(model.Pagination.TotalPages, Is.EqualTo(3));
@@ -107,12 +107,12 @@ namespace Judge.Tests.Application.ProblemsServiceTests
                 new TaskName { Id = 3, Name = "C" }
             };
 
-            _taskRepository.Stub(o => o.GetTasks(OpenedTasksSpecification.Instance, 1, 2)).Return(tasks);
+            _taskRepository.Stub(o => o.GetTasks(AllTasksSpecification.Instance, 1, 2)).Return(tasks);
             _taskRepository.Stub(o => o.Count()).Return(tasks.Length);
 
             _submitResultRepository.Stub(o => o.GetSolvedProblems(Arg<ISpecification<SubmitResult>>.Is.Anything)).Return(new[] { solvedTaskId });
 
-            var model = _service.GetProblemsList(1, 2, userId);
+            var model = _service.GetProblemsList(1, 2, userId, true);
 
             CollectionAssert.AreEqual(tasks.Select(o => new { o.Id, o.Name, Solved = o.Id == solvedTaskId }), model.Problems.Select(o => new { o.Id, o.Name, o.Solved }));
         }

@@ -5,6 +5,7 @@ using Judge.Application.Interfaces;
 using Judge.Application.ViewModels.Problems.ProblemsList;
 using Judge.Application.ViewModels.Problems.Statement;
 using Judge.Data;
+using Judge.Model;
 using Judge.Model.CheckSolution;
 using Judge.Model.SubmitSolution;
 
@@ -19,7 +20,7 @@ namespace Judge.Application
             _factory = factory;
         }
 
-        public ProblemsListViewModel GetProblemsList(int page, int pageSize, long? userId)
+        public ProblemsListViewModel GetProblemsList(int page, int pageSize, long? userId, bool showClosed)
         {
             if (page <= 0)
                 throw new ArgumentOutOfRangeException(nameof(page));
@@ -31,12 +32,7 @@ namespace Judge.Application
                 var taskRepository = unitOfWork.GetRepository<ITaskNameRepository>();
                 var submitResultRepository = unitOfWork.GetRepository<ISubmitResultRepository>();
 
-                var tasks = taskRepository.GetTasks(OpenedTasksSpecification.Instance, page, pageSize)
-                    .Select(o => new ProblemItem
-                    {
-                        Id = o.Id,
-                        Name = o.Name
-                    }).ToArray();
+                var tasks = GetProblems(page, pageSize, taskRepository, showClosed);
 
                 var count = taskRepository.Count();
 
@@ -59,6 +55,19 @@ namespace Judge.Application
                 };
 
             }
+        }
+
+        private static ProblemItem[] GetProblems(int page, int pageSize, ITaskNameRepository taskRepository, bool showClosed)
+        {
+            var specification = showClosed ? (ISpecification<Task>)AllTasksSpecification.Instance : OpenedTasksSpecification.Instance;
+            var tasks = taskRepository.GetTasks(specification, page, pageSize)
+                .Select(o => new ProblemItem
+                {
+                    Id = o.Id,
+                    Name = o.Name,
+                    IsOpened = o.IsOpened
+                }).ToArray();
+            return tasks;
         }
 
         public StatementViewModel GetStatement(long id)

@@ -171,4 +171,7 @@
   <data name="TaskIsOpened" xml:space="preserve">
     <value>Доступна в общем списке задач</value>
   </data>
+  <data name="View" xml:space="preserve">
+    <value>Просмотр</value>
+  </data>
 </root>

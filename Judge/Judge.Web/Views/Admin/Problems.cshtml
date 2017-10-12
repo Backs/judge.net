@@ -15,6 +15,7 @@
                 <th>Id</th>
                 <th>@Resources.TaskName</th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -26,7 +27,13 @@
                         @Html.ActionLink(problem.Name, "EditProblem", new { id = problem.Id }, null)
                     </td>
                     <td>
-                        @Html.ActionLink("Просмотр", "Statement", "Problems", new { id = problem.Id }, new { target = "_blank" })
+                        @Html.ActionLink(Resources.View, "Statement", "Problems", new { id = problem.Id }, new { target = "_blank" })
+                    </td>
+                    <td>
+                        @if (!problem.IsOpened)
+                        {
+                            <span class="glyphicon glyphicon-ban-circle" title="@Resources.UnavailableInTaskList"></span>
+                        }
                     </td>
                 </tr>
             }

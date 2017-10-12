@@ -29,14 +29,14 @@ namespace Judge.Data.Repository
             {
                 taskList = taskList.Skip(skip);
             }
-            return taskList.Take(pageSize).Select(o => new TaskName { Id = o.Id, Name = o.Name }).AsEnumerable();
+            return taskList.Take(pageSize).Select(o => new TaskName { Id = o.Id, Name = o.Name, IsOpened = o.IsOpened }).AsEnumerable();
         }
 
         public IEnumerable<TaskName> GetTasks(IEnumerable<long> tasks)
         {
             return _context.Set<Task>()
                 .Where(o => tasks.Contains(o.Id))
-                .Select(o => new TaskName { Id = o.Id, Name = o.Name })
+                .Select(o => new TaskName { Id = o.Id, Name = o.Name, IsOpened = o.IsOpened })
                 .AsEnumerable();
         }
 

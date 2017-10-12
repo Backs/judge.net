@@ -5,5 +5,6 @@
         public long Id { get; set; }
         public string Name { get; set; }
         public bool Solved { get; set; }
+        public bool IsOpened { get; set; }
     }
 }
