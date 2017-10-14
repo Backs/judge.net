@@ -196,6 +196,15 @@ namespace Judge.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Создать новое соревнование.
+        /// </summary>
+        public static string CreateNewContest {
+            get {
+                return ResourceManager.GetString("CreateNewContest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Создать новую.
         /// </summary>
         public static string CreateNewTask {
@@ -210,6 +219,15 @@ namespace Judge.Web {
         public static string Date {
             get {
                 return ResourceManager.GetString("Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Редактировать соревнование.
+        /// </summary>
+        public static string EditContest {
+            get {
+                return ResourceManager.GetString("EditContest", resourceCulture);
             }
         }
         

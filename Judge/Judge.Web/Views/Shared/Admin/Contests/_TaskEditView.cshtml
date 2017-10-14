@@ -1,0 +1,19 @@
+﻿@using Judge.Application.ViewModels.Problems.ProblemsList
+@model Judge.Application.ViewModels.Admin.Contests.TaskEditViewModel
+@{
+    var problems = (IEnumerable<ProblemItem>)ViewBag.Problems;
+}
+@using (Html.BeginCollectionItem("tasks"))
+{
+    <td>
+        <button type="button" class="btn btn-default btn-xs" title="@Resources.Remove">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        </button>
+    </td>
+    <td>
+        @Html.DropDownListFor(o => o.ProblemId, problems.Select(o => new SelectListItem { Text = o.Name, Value = o.Id.ToString() }))
+    </td>
+    <td>
+        @Html.EditorFor(o => o.Label)
+    </td>
+}

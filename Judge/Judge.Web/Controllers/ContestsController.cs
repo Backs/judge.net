@@ -22,7 +22,7 @@ namespace Judge.Web.Controllers
 
         public ActionResult Index()
         {
-            var model = _contestsService.GetContests();
+            var model = _contestsService.GetContests(false);
             return View(model);
         }
 

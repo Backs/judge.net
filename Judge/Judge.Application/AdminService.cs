@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Judge.Application.Interfaces;
+using Judge.Application.ViewModels.Admin.Contests;
 using Judge.Application.ViewModels.Admin.Languages;
 using Judge.Application.ViewModels.Admin.Problems;
 using Judge.Data;
@@ -157,6 +158,28 @@ namespace Judge.Application
 
                 uow.Commit();
                 return task.Id;
+            }
+        }
+
+        public EditContestViewModel GetContest(int id)
+        {
+            using (var uow = _factory.GetUnitOfWork(false))
+            {
+                var contestRepository = uow.GetRepository<IContestsRepository>();
+                var contestTaskRepository = uow.GetRepository<IContestTaskRepository>();
+
+                var contest = contestRepository.Get(id);
+                var tasks = contestTaskRepository.GetTasks(id);
+
+                return new EditContestViewModel
+                {
+                    Id = contest.Id,
+                    FinishTime = contest.FinishTime,
+                    IsOpened = contest.IsOpened,
+                    Name = contest.Name,
+                    StartTime = contest.StartTime,
+                    Tasks = tasks.Select(o => new TaskEditViewModel(o)).ToList()
+                };
             }
         }
 

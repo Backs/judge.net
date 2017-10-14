@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using Judge.Application.Interfaces;
+using Judge.Application.ViewModels.Admin.Contests;
 using Judge.Application.ViewModels.Admin.Languages;
 using Judge.Application.ViewModels.Admin.Problems;
 
@@ -11,11 +12,13 @@ namespace Judge.Web.Controllers
     {
         private readonly IAdminService _adminService;
         private readonly IProblemsService _problemsService;
+        private readonly IContestsService _contestsService;
 
-        public AdminController(IAdminService adminService, IProblemsService problemsService)
+        public AdminController(IAdminService adminService, IProblemsService problemsService, IContestsService contestsService)
         {
             _adminService = adminService;
             _problemsService = problemsService;
+            _contestsService = contestsService;
         }
 
         public ActionResult Index()
@@ -81,6 +84,34 @@ namespace Judge.Web.Controllers
         {
             var model = _problemsService.GetProblemsList(page ?? 1, 20, null, true);
             return View(model);
+        }
+
+        public ActionResult Contests()
+        {
+            var contests = _contestsService.GetContests(true);
+            return View(contests);
+        }
+
+        public ActionResult EditContest(int? id)
+        {
+            var problems = _problemsService.GetAllProblems();
+            ViewBag.Problems = problems;
+
+            var model = id != null ? _adminService.GetContest(id.Value) : new EditContestViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult EditContest(EditContestViewModel model)
+        {
+            return View(model);
+        }
+
+        public PartialViewResult Task()
+        {
+            var problems = _problemsService.GetAllProblems();
+            ViewBag.Problems = problems;
+            return PartialView("Admin/Contests/_TaskEditView", new TaskEditViewModel());
         }
     }
 }

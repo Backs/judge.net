@@ -264,6 +264,9 @@
     <Content Include="Views\Admin\Submits.cshtml" />
     <Content Include="Views\Admin\Problems.cshtml" />
     <Content Include="Views\Admin\EditProblem.cshtml" />
+    <Content Include="Views\Admin\Contests.cshtml" />
+    <Content Include="Views\Admin\EditContest.cshtml" />
+    <Content Include="Views\Shared\Admin\Contests\_TaskEditView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -174,4 +174,16 @@
   <data name="View" xml:space="preserve">
     <value>Просмотр</value>
   </data>
+  <data name="ContestName" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="ContestStart" xml:space="preserve">
+    <value>Время начала</value>
+  </data>
+  <data name="ContestFinish" xml:space="preserve">
+    <value>Время окончания</value>
+  </data>
+  <data name="ContestIsOpened" xml:space="preserve">
+    <value>Открыт</value>
+  </data>
 </root>

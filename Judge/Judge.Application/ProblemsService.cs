@@ -95,5 +95,20 @@ namespace Judge.Application
                 };
             }
         }
+
+        public IReadOnlyCollection<ProblemItem> GetAllProblems()
+        {
+            using (var uow = _factory.GetUnitOfWork(transactionRequired: false))
+            {
+                var taskRepository = uow.GetRepository<ITaskNameRepository>();
+                return taskRepository.GetTasks(AllTasksSpecification.Instance, 1, int.MaxValue)
+                    .Select(o => new ProblemItem
+                    {
+                        Id = o.Id,
+                        Name = o.Name,
+                        IsOpened = o.IsOpened
+                    }).ToArray();
+            }
+        }
     }
 }

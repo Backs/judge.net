@@ -11,6 +11,7 @@ using Judge.Application.ViewModels.Contests.ContestsList;
 using Judge.Application.ViewModels.Contests.ContestTasks;
 using Judge.Application.ViewModels.Submit;
 using Judge.Data;
+using Judge.Model;
 using Judge.Model.Account;
 using Judge.Model.Configuration;
 using Judge.Model.Contests;
@@ -27,13 +28,14 @@ namespace Judge.Application
             _factory = factory;
         }
 
-        public ContestsListViewModel GetContests()
+        public ContestsListViewModel GetContests(bool showAll)
         {
             using (var unitOfWork = _factory.GetUnitOfWork(false))
             {
                 var repository = unitOfWork.GetRepository<IContestsRepository>();
 
-                var items = repository.GetList().Where(o => o.IsOpened).Select(o => new ContestItem(o));
+                var specification = showAll ? (ISpecification<Contest>)AllContestsSpecification.Instance : OpenedContestsSpecification.Instance;
+                var items = repository.GetList(specification).Select(o => new ContestItem(o));
                 return new ContestsListViewModel(items);
             }
         }

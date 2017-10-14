@@ -4,7 +4,7 @@ namespace Judge.Model.Contests
 {
     public interface IContestsRepository
     {
-        IEnumerable<Contest> GetList();
+        IEnumerable<Contest> GetList(ISpecification<Contest> specification);
         Contest Get(int id);
     }
 }

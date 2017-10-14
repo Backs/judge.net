@@ -30,6 +30,7 @@
     <Compile Include="CheckSolution\Task.cs" />
     <Compile Include="CheckSolution\TaskName.cs" />
     <Compile Include="Configuration\ILanguageRepository.cs" />
+    <Compile Include="Contests\AllContestsSpecification.cs" />
     <Compile Include="Contests\Contest.cs" />
     <Compile Include="Contests\ContestResult.cs" />
     <Compile Include="Contests\ContestTask.cs" />
@@ -37,6 +38,7 @@
     <Compile Include="Contests\IContestResultRepository.cs" />
     <Compile Include="Contests\IContestsRepository.cs" />
     <Compile Include="Contests\IContestTaskRepository.cs" />
+    <Compile Include="Contests\OpenedContestsSpecification.cs" />
     <Compile Include="Contests\UserContestSolvedProblemsSpecification.cs" />
     <Compile Include="Entities\Language.cs" />
     <Compile Include="Entities\UserRole.cs" />

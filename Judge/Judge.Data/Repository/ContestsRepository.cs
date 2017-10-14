@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Judge.Model;
 using Judge.Model.Contests;
 
 namespace Judge.Data.Repository
@@ -13,9 +14,9 @@ namespace Judge.Data.Repository
             _context = context;
         }
 
-        public IEnumerable<Contest> GetList()
+        public IEnumerable<Contest> GetList(ISpecification<Contest> specification)
         {
-            return _context.Set<Contest>().OrderByDescending(o => o.StartTime).AsEnumerable();
+            return _context.Set<Contest>().Where(specification.IsSatisfiedBy).OrderByDescending(o => o.StartTime).AsEnumerable();
         }
 
         public Contest Get(int id)
