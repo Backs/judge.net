@@ -14,5 +14,6 @@ namespace Judge.Application.Interfaces
         EditProblemViewModel GetProblem(long id);
         long SaveProblem(EditProblemViewModel model);
         EditContestViewModel GetContest(int id);
+        int SaveContest(EditContestViewModel model);
     }
 }

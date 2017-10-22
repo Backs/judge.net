@@ -7,11 +7,15 @@ namespace Judge.Data.Mappings
     {
         public ContestTaskMapping()
         {
-            HasKey(o => new { o.TaskName, o.ContestId });
+            HasKey(o => new { o.TaskName });
 
             HasRequired(o => o.Task)
                 .WithMany()
-                .Map(map => map.MapKey("TaskId"));
+                .HasForeignKey(o => o.TaskId);
+
+            HasRequired(o => o.Contest)
+                .WithMany()
+                .Map(map => map.MapKey("ContestId"));
 
             ToTable("ContestTasks");
         }

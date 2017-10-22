@@ -6,5 +6,6 @@ namespace Judge.Model.Contests
     {
         IEnumerable<Contest> GetList(ISpecification<Contest> specification);
         Contest Get(int id);
+        void Add(Contest contest);
     }
 }

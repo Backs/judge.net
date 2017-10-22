@@ -205,6 +205,15 @@ namespace Judge.Application {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Не указан лейбл задачи.
+        /// </summary>
+        public static string TaskHaveNoLabel {
+            get {
+                return ResourceManager.GetString("TaskHaveNoLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Доступна в общем списке задач.
         /// </summary>
         public static string TaskIsOpened {
@@ -214,11 +223,29 @@ namespace Judge.Application {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Лейблы задач повторяются.
+        /// </summary>
+        public static string TaskLabelsHaveDuplicates {
+            get {
+                return ResourceManager.GetString("TaskLabelsHaveDuplicates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Название.
         /// </summary>
         public static string TaskName {
             get {
                 return ResourceManager.GetString("TaskName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Задачи повторяются.
+        /// </summary>
+        public static string TasksHaveDuplicates {
+            get {
+                return ResourceManager.GetString("TasksHaveDuplicates", resourceCulture);
             }
         }
         

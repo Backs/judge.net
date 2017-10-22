@@ -14,10 +14,20 @@ namespace Judge.Data.Repository
             _context = context;
         }
 
+        public void Add(ContestTask task)
+        {
+            _context.Set<ContestTask>().Add(task);
+        }
+
+        public void Delete(ContestTask task)
+        {
+            _context.Set<ContestTask>().Remove(task);
+        }
+
         public IEnumerable<ContestTask> GetTasks(int contestId)
         {
             return _context.Set<ContestTask>()
-                            .Where(o => o.ContestId == contestId)
+                            .Where(o => o.Contest.Id == contestId)
                             .Include(o => o.Task)
                             .OrderBy(o => o.TaskName)
                             .AsEnumerable();
@@ -27,7 +37,7 @@ namespace Judge.Data.Repository
         {
             return _context.Set<ContestTask>()
                     .Include(o => o.Task)
-                    .FirstOrDefault(o => o.ContestId == contestId && o.TaskName == label);
+                    .FirstOrDefault(o => o.Contest.Id == contestId && o.TaskName == label);
         }
 
         public IEnumerable<ContestTask> GetTasks()

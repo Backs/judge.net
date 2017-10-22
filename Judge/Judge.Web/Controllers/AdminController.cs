@@ -104,6 +104,13 @@ namespace Judge.Web.Controllers
         [HttpPost]
         public ActionResult EditContest(EditContestViewModel model)
         {
+            if (ModelState.IsValid)
+            {
+                model.Id = _adminService.SaveContest(model);
+                return RedirectToAction("EditContest", new { id = model.Id });
+            }
+            var problems = _problemsService.GetAllProblems();
+            ViewBag.Problems = problems;
             return View(model);
         }
 

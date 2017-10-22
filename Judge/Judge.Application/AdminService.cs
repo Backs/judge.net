@@ -139,7 +139,7 @@ namespace Judge.Application
             {
                 var taskRepository = uow.GetRepository<ITaskRepository>();
 
-                Task task = null;
+                Task task;
                 if (model.Id != null)
                 {
                     task = taskRepository.Get(model.Id.Value);
@@ -183,6 +183,60 @@ namespace Judge.Application
             }
         }
 
+        public int SaveContest(EditContestViewModel model)
+        {
+            using (var uow = _factory.GetUnitOfWork(transactionRequired: true))
+            {
+                var contestRepository = uow.GetRepository<IContestsRepository>();
+                var contestTaskRepository = uow.GetRepository<IContestTaskRepository>();
+
+                var contest = model.Id != null ? contestRepository.Get(model.Id.Value) : new Contest();
+                contest.FinishTime = model.FinishTime;
+                contest.IsOpened = model.IsOpened;
+                contest.Name = model.Name;
+                contest.StartTime = model.StartTime;
+
+                if (model.Id == null)
+                {
+                    contestRepository.Add(contest);
+                }
+
+                var databaseTasks = model.Id != null
+                    ? contestTaskRepository.GetTasks(model.Id.Value).ToArray()
+                    : new ContestTask[0];
+
+                foreach (var databaseTask in databaseTasks)
+                {
+                    var task = model.Tasks.FirstOrDefault(o => o.ProblemId == databaseTask.Task.Id);
+                    if (task == null)
+                    {
+                        contestTaskRepository.Delete(databaseTask);
+                        continue;
+                    }
+
+                    databaseTask.TaskName = task.Label;
+                }
+
+                foreach (var task in model.Tasks)
+                {
+                    var databaseTask = databaseTasks.FirstOrDefault(o => o.Task?.Id == task.ProblemId);
+                    if (databaseTask == null)
+                    {
+                        databaseTask = new ContestTask
+                        {
+                            Contest = contest,
+                            TaskId = task.ProblemId.Value
+                        };
+                        contestTaskRepository.Add(databaseTask);
+                    }
+                    databaseTask.TaskName = task.Label;
+                }
+
+                uow.Commit();
+                return contest.Id;
+            }
+        }
+
         private static SubmitQueueItem GetSubmitQueueItem
         (
             SubmitResult submitResult,
@@ -198,7 +252,7 @@ namespace Judge.Application
             var contestTaskSubmit = submitResult.Submit as ContestTaskSubmit;
             if (contestTaskSubmit != null)
             {
-                taskLabel = contestTasks.First(o => o.ContestId == contestTaskSubmit.ContestId &&
+                taskLabel = contestTasks.First(o => o.Contest.Id == contestTaskSubmit.ContestId &&
                                                  o.Task.Id == contestTaskSubmit.ProblemId).TaskName;
                 contestId = contestTaskSubmit.ContestId;
             }

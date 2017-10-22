@@ -186,4 +186,13 @@
   <data name="ContestIsOpened" xml:space="preserve">
     <value>Открыт</value>
   </data>
+  <data name="TaskLabelsHaveDuplicates" xml:space="preserve">
+    <value>Лейблы задач повторяются</value>
+  </data>
+  <data name="TasksHaveDuplicates" xml:space="preserve">
+    <value>Задачи повторяются</value>
+  </data>
+  <data name="TaskHaveNoLabel" xml:space="preserve">
+    <value>Не указан лейбл задачи</value>
+  </data>
 </root>

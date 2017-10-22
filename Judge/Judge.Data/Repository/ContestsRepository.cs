@@ -23,5 +23,10 @@ namespace Judge.Data.Repository
         {
             return _context.Set<Contest>().FirstOrDefault(o => o.Id == id);
         }
+
+        public void Add(Contest contest)
+        {
+            _context.Set<Contest>().Add(contest);
+        }
     }
 }

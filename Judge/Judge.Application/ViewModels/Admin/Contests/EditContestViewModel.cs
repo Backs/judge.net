@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Judge.Application.ViewModels.Problems.ProblemsList;
+using System.Linq;
 
 namespace Judge.Application.ViewModels.Admin.Contests
 {
-    public sealed class EditContestViewModel
+    public sealed class EditContestViewModel : IValidatableObject
     {
+        public EditContestViewModel()
+        {
+            Tasks = new List<TaskEditViewModel>();
+        }
         public bool IsNewContest => Id == null;
 
         [Required]
@@ -27,5 +31,23 @@ namespace Judge.Application.ViewModels.Admin.Contests
         public bool IsOpened { get; set; }
         public int? Id { get; set; }
         public List<TaskEditViewModel> Tasks { get; set; }
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (Tasks.Any(o => string.IsNullOrWhiteSpace(o.Label)))
+            {
+                yield return new ValidationResult(Resources.TaskHaveNoLabel);
+                yield break;
+            }
+
+            if (Tasks.GroupBy(o => o.ProblemId).Any(o => o.Count() > 1))
+            {
+                yield return new ValidationResult(Resources.TasksHaveDuplicates);
+            }
+
+            if (Tasks.GroupBy(o => o.Label).Any(o => o.Count() > 1))
+            {
+                yield return new ValidationResult(Resources.TaskLabelsHaveDuplicates);
+            }
+        }
     }
 }

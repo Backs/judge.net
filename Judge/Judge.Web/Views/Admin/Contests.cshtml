@@ -6,6 +6,8 @@
 
 <h2>@ViewBag.Title</h2>
 
+@Html.ActionLink(Resources.CreateNewContest, "EditContest")
+
 <div class="container">
     <table class="table table-striped">
         <thead>
@@ -21,10 +23,10 @@
             {
                 <tr>
                     <td>@Html.ActionLink(contest.Name, "EditContest", new { id = contest.Id }, new { target = "_blank" })</td>
-                <td>@contest.StartTime</td>
-                <td>@contest.GetDurationTimeString()</td>
-                <td>@contest.TextStatus</td>
-            </tr>
+                    <td>@contest.StartTime</td>
+                    <td>@contest.GetDurationTimeString()</td>
+                    <td>@contest.TextStatus</td>
+                </tr>
             }
         </tbody>
     </table>
