@@ -252,8 +252,8 @@ namespace Judge.Application
             var contestTaskSubmit = submitResult.Submit as ContestTaskSubmit;
             if (contestTaskSubmit != null)
             {
-                taskLabel = contestTasks.First(o => o.Contest.Id == contestTaskSubmit.ContestId &&
-                                                 o.Task.Id == contestTaskSubmit.ProblemId).TaskName;
+                taskLabel = contestTasks.FirstOrDefault(o => o.Contest.Id == contestTaskSubmit.ContestId &&
+                                                 o.Task.Id == contestTaskSubmit.ProblemId)?.TaskName ?? "deleted";
                 contestId = contestTaskSubmit.ContestId;
             }
             var language = languages[submitResult.Submit.LanguageId];
