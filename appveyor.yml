@@ -1,7 +1,6 @@
 version: 1.2.{build}
 image: Visual Studio 2017
 configuration: Release
-skip_tags: true
 before_build:
 - cmd: nuget restore Judge\Judge.sln
 build:
