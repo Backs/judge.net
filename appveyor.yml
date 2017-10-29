@@ -14,7 +14,7 @@ test:
     - Database
     - Checker
 artifacts:
-- path: '*Judge.Web.zip'
+- path: '*.zip'
 deploy:
 - provider: GitHub
   tag: $(appveyor_build_version)
