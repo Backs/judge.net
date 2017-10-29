@@ -13,8 +13,6 @@ test:
     except:
     - Database
     - Checker
-artifacts:
-- path: '*.zip'
 deploy:
 - provider: GitHub
   tag: $(appveyor_build_version)
