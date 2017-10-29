@@ -1,6 +1,7 @@
 version: 1.2.{build}
 image: Visual Studio 2017
 configuration: Release
+skip_tags: true
 before_build:
 - cmd: nuget restore Judge\Judge.sln
 build:
@@ -12,3 +13,13 @@ test:
     except:
     - Database
     - Checker
+artifacts:
+- path: 'Judge.Web.zip'
+deploy:
+- provider: GitHub
+  tag: $(appveyor_build_version)
+  release: v$(appveyor_build_version)
+  auth_token:
+    secure: Gg/D4oFtmyEjhqq9AD3dMXpkvuzv4vcY+RS5H/5a2wGNo4ryI+yF8kikK+95Wdsr
+  on:
+    appveyor_repo_tag: true
