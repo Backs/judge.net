@@ -1,1 +1,1 @@
-msbuild %APPVEYOR_BUILD_FOLDER%\Judge\Judge.Web\Judge.Web.csproj /t:Package /p:PackageAsSingleFile=True /p:_PackageTempDir=WebApplication;
+msbuild %APPVEYOR_BUILD_FOLDER%\Judge\Judge.Web\Judge.Web.csproj /t:Package /p:PackageAsSingleFile=True /p:_PackageTempDir=WebApplication
