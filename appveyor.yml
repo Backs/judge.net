@@ -4,7 +4,6 @@ configuration: Release
 before_build:
 - cmd: nuget restore Judge\Judge.sln
 build:
-  publish_wap: true
   parallel: true
   verbosity: minimal
 test:
@@ -12,6 +11,8 @@ test:
     except:
     - Database
     - Checker
+after_build:
+- Judge\after_build.bat
 deploy:
 - provider: GitHub
   tag: $(APPVEYOR_REPO_TAG_NAME)
