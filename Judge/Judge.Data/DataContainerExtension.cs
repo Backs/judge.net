@@ -6,7 +6,10 @@ using Judge.Model.Contests;
 using Judge.Model.Entities;
 using Judge.Model.SubmitSolution;
 using Microsoft.AspNet.Identity;
-using Microsoft.Practices.Unity;
+using Unity;
+using Unity.Extension;
+using Unity.Injection;
+using Unity.Lifetime;
 
 namespace Judge.Data
 {

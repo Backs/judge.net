@@ -2,7 +2,7 @@
 using System.Transactions;
 using NUnit.Framework;
 using Judge.Data;
-using Microsoft.Practices.Unity;
+using Unity;
 
 namespace Judge.Tests.Data.UnitOfWorkTests
 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Transactions;
-using Microsoft.Practices.Unity;
+using Unity;
+using Unity.Resolution;
 
 namespace Judge.Data
 {

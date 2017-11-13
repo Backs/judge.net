@@ -2,8 +2,9 @@
 using System.Transactions;
 using Judge.Data;
 using Judge.Model.SubmitSolution;
-using Microsoft.Practices.Unity;
 using NUnit.Framework;
+using Unity;
+using Unity.Lifetime;
 
 namespace Judge.Tests.Data.SubmitResultRepositoryTests
 {

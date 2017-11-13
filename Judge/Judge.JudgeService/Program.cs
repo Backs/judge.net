@@ -2,7 +2,8 @@
 using System.Configuration;
 using System.Threading;
 using Judge.Data;
-using Microsoft.Practices.Unity;
+using Unity;
+using Unity.Lifetime;
 
 namespace Judge.JudgeService
 {

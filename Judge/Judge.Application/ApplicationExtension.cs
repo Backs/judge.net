@@ -3,7 +3,10 @@ using System.Web;
 using Judge.Application.Interfaces;
 using Judge.Data;
 using Microsoft.Owin.Security;
-using Microsoft.Practices.Unity;
+using Unity;
+using Unity.AspNet.Mvc;
+using Unity.Extension;
+using Unity.Injection;
 
 namespace Judge.Application
 {
