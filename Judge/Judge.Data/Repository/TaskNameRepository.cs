@@ -44,5 +44,13 @@ namespace Judge.Data.Repository
         {
             return _context.Set<Task>().Count(o => o.IsOpened);
         }
+
+        public TaskName Get(long id)
+        {
+            return _context.Set<Task>()
+                .Where(o => o.Id == id)
+                .Select(o => new TaskName { Id = o.Id, Name = o.Name, IsOpened = o.IsOpened })
+                .FirstOrDefault();
+        }
     }
 }

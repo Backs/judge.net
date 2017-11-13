@@ -75,7 +75,7 @@ namespace Judge.Application
             using (var unitOfWork = _factory.GetUnitOfWork(false))
             {
                 var submitRepository = unitOfWork.GetRepository<ISubmitRepository>();
-                var taskRepository = unitOfWork.GetRepository<ITaskRepository>();
+                var taskRepository = unitOfWork.GetRepository<ITaskNameRepository>();
 
                 var submit = submitRepository.Get(submitId);
                 if (submit == null)
