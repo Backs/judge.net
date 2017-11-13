@@ -90,11 +90,6 @@ namespace Judge.Application
 
                 var problem = taskRepository.Get(submit.ProblemId);
 
-                if (!problem.IsOpened)
-                {
-                    throw new InvalidOperationException();
-                }
-
                 return new SolutionViewModel
                 {
                     ProblemId = submit.ProblemId,
