@@ -70,18 +70,20 @@ namespace Judge.Application
             }
         }
 
-        public SolutionViewModel GetSolution(long submitId, long userId)
+        public SolutionViewModel GetSolution(long submitResultId, long userId)
         {
             using (var unitOfWork = _factory.GetUnitOfWork(false))
             {
-                var submitRepository = unitOfWork.GetRepository<ISubmitRepository>();
+                var submitRepository = unitOfWork.GetRepository<ISubmitResultRepository>();
                 var taskRepository = unitOfWork.GetRepository<ITaskNameRepository>();
 
-                var submit = submitRepository.Get(submitId);
-                if (submit == null)
+                var result = submitRepository.Get(submitResultId);
+                if (result == null)
                     return null;
 
                 var hasPermission = _principal.IsInRole("admin");
+
+                var submit = result.Submit;
 
                 if (!hasPermission && submit.UserId != userId)
                 {

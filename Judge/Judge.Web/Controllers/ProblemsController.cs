@@ -81,13 +81,13 @@ namespace Judge.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult Solution(long submitId)
+        public ActionResult Solution(long submitResultId)
         {
             var userId = User.Identity.GetUserId<long>();
 
             try
             {
-                var model = _submitSolutionService.GetSolution(submitId, userId);
+                var model = _submitSolutionService.GetSolution(submitResultId, userId);
                 if (model == null)
                     return HttpNotFound();
 

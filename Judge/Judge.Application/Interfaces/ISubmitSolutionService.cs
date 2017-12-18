@@ -10,6 +10,6 @@ namespace Judge.Application.Interfaces
     {
         IEnumerable<LanguageViewModel> GetLanguages();
         void SubmitSolution(long problemId, int selectedLanguage, HttpPostedFileBase file, UserInfo userInfo);
-        SolutionViewModel GetSolution(long submitId, long userId);
+        SolutionViewModel GetSolution(long submitResultId, long userId);
     }
 }

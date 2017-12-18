@@ -11,7 +11,7 @@ namespace Judge.Web
 
             routes.MapRoute(
                 name: "SolutionSubmit",
-                url: "Problems/Solution/{submitId}",
+                url: "Problems/Solution/{submitResultId}",
                 defaults: new { controller = "Problems", Action = "Solution", page = UrlParameter.Optional }
             );
 

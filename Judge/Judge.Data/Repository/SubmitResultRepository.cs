@@ -16,6 +16,11 @@ namespace Judge.Data.Repository
             _context = context;
         }
 
+        public SubmitResult Get(long id)
+        {
+            return _context.Set<SubmitResult>().Where(o => o.Id == id).Include(o => o.Submit).FirstOrDefault();
+        }
+
         public IEnumerable<SubmitResult> GetSubmits(ISpecification<SubmitResult> specification, int page, int pageSize)
         {
             if (page <= 0)
