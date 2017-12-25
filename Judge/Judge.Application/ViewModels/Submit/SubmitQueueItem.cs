@@ -11,7 +11,7 @@ namespace Judge.Application.ViewModels.Submit
             Language = language;
             ProblemId = submitResult.Submit.ProblemId;
             ProblemName = problemName;
-            ResultDescription = GetDescription(submitResult.Status);
+            ResultDescription = submitResult.Status.GetDescription();
             SubmitResultId = submitResult.Id;
             SubmitTime = submitResult.Submit.SubmitDateUtc;
             UserId = submitResult.Submit.UserId;
@@ -28,30 +28,6 @@ namespace Judge.Application.ViewModels.Submit
                     PassedTests = submitResult.PassedTests;
                 }
             }
-        }
-
-        private static string GetDescription(SubmitStatus submitStatus)
-        {
-            switch (submitStatus)
-            {
-                case SubmitStatus.Pending:
-                    return "Pending...";
-                case SubmitStatus.CompilationError:
-                    return "Compilation error";
-                case SubmitStatus.RuntimeError:
-                    return "Runtime error";
-                case SubmitStatus.TimeLimitExceeded:
-                    return "Time limit exceeded";
-                case SubmitStatus.MemoryLimitExceeded:
-                    return "Memory limit exceeded";
-                case SubmitStatus.WrongAnswer:
-                    return "Wrong answer";
-                case SubmitStatus.Accepted:
-                    return "Accepted";
-                case SubmitStatus.ServerError:
-                    return "Server error";
-            }
-            throw new ArgumentOutOfRangeException();
         }
 
         public bool Solved => Status == SubmitStatus.Accepted;

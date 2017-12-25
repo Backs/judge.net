@@ -5,6 +5,10 @@
 }
 
 <h2>@Html.ActionLink(Model.ProblemName, "Statement", "Problems", new { id = Model.ProblemId }, null)</h2>
+@if (Model.SubmitResults != null)
+{
+    @Html.Partial("Submits/_SubmitView", Model.SubmitResults)
+}
 <pre>
 <code>
 @Model.SourceCode

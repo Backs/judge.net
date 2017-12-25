@@ -63,6 +63,7 @@
     <Compile Include="SubmitSolution\ISubmitRepository.cs" />
     <Compile Include="SubmitSolution\ProblemSubmit.cs" />
     <Compile Include="SubmitSolution\SubmitResult.cs" />
+    <Compile Include="SubmitSolution\SubmitStatusExtensions.cs" />
     <Compile Include="SubmitSolution\UserProblemSpecification.cs" />
     <Compile Include="SubmitSolution\UserSolvedProblemsSpecification.cs" />
   </ItemGroup>

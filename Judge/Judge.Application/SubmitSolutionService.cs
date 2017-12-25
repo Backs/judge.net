@@ -92,11 +92,23 @@ namespace Judge.Application
 
                 var problem = taskRepository.Get(submit.ProblemId);
 
+
+                var submitViewModel = hasPermission ? new SubmitViewModel(result.TotalBytes, result.TotalMilliseconds)
+                {
+                    PassedTests = result.PassedTests,
+                    Status = result.Status,
+                    CompileOutput = result.CompileOutput,
+                    RunDescription = result.RunDescription,
+                    RunOutput = result.RunOutput,
+                    UserHost = submit.UserHost,
+                    SessionId = submit.SessionId
+                } : null;
                 return new SolutionViewModel
                 {
                     ProblemId = submit.ProblemId,
                     SourceCode = submit.SourceCode,
-                    ProblemName = problem.Name
+                    ProblemName = problem.Name,
+                    SubmitResults = submitViewModel
                 };
             }
         }
