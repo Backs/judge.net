@@ -13,7 +13,7 @@
             Submit = submit;
         }
 
-        public long Id { get; private set; }
+        public long Id { get; internal set; }
         public SubmitStatus Status { get; set; }
         public CheckQueue CheckQueue { get; private set; }
         public SubmitBase Submit { get; private set; }
