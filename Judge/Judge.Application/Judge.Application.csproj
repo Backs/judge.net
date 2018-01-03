@@ -113,6 +113,8 @@
     <Compile Include="ApplicationExtension.cs" />
     <Compile Include="ContestsService.cs" />
     <Compile Include="Interfaces\IAdminService.cs" />
+    <Compile Include="Interfaces\IUserService.cs" />
+    <Compile Include="UserService.cs" />
     <Compile Include="ViewModels\Admin\Contests\EditContestViewModel.cs" />
     <Compile Include="ViewModels\Admin\Contests\TaskEditViewModel.cs" />
     <Compile Include="ViewModels\Admin\Languages\LanguageEditViewModel.cs" />
@@ -160,6 +162,8 @@
     <Compile Include="ViewModels\Submit\SubmitQueueViewModel.cs" />
     <Compile Include="ViewModels\Submit\SubmitSolutionViewModel.cs" />
     <Compile Include="ViewModels\UserInfo.cs" />
+    <Compile Include="ViewModels\User\UserProblem.cs" />
+    <Compile Include="ViewModels\User\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">

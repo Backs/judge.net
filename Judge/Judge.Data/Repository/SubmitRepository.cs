@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Judge.Model;
 using Judge.Model.SubmitSolution;
 
 namespace Judge.Data.Repository
@@ -20,6 +22,11 @@ namespace Judge.Data.Repository
         public SubmitBase Get(long submitId)
         {
             return _context.Set<SubmitBase>().AsNoTracking().FirstOrDefault(o => o.Id == submitId);
+        }
+
+        public IEnumerable<SubmitBase> Get(ISpecification<SubmitBase> specification)
+        {
+            return _context.Set<SubmitBase>().AsNoTracking().Where(specification.IsSatisfiedBy).AsEnumerable();
         }
     }
 }

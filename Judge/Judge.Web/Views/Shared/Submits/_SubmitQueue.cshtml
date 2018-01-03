@@ -33,7 +33,7 @@
                         }
                     </td>
                     <td>
-                        @item.UserName
+                        @Html.ActionLink(item.UserName, "Statistics", "User", new { id = item.UserId }, null)
                     </td>
                     @if (Model.ShowProblem)
                     {

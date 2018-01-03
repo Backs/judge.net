@@ -32,6 +32,7 @@ namespace Judge.Application
             Container.RegisterType<ISubmitQueueService, SubmitQueueService>(new PerRequestLifetimeManager());
             Container.RegisterType<IContestsService, ContestsService>(new PerRequestLifetimeManager());
             Container.RegisterType<IAdminService, AdminService>(new PerRequestLifetimeManager());
+            Container.RegisterType<IUserService, UserService>(new PerRequestLifetimeManager());
         }
     }
 }

@@ -49,6 +49,8 @@
     <Compile Include="Contests\UserContestSolvedProblemsSpecification.cs" />
     <Compile Include="Entities\Language.cs" />
     <Compile Include="Entities\UserRole.cs" />
+    <Compile Include="Entities\UserSolvedSpecification.cs" />
+    <Compile Include="Entities\UserUnsolvedSpecification.cs" />
     <Compile Include="ISpecification.cs" />
     <Compile Include="SubmitSolution\AllProblemsSpecification.cs" />
     <Compile Include="SubmitSolution\AllSubmitsSpecification.cs" />

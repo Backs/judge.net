@@ -198,6 +198,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProblemsController.cs" />
     <Compile Include="Controllers\SubmitsController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -287,6 +288,7 @@
     <Content Include="Views\Admin\EditContest.cshtml" />
     <Content Include="Views\Shared\Admin\Contests\_TaskEditView.cshtml" />
     <Content Include="Views\Shared\Submits\_SubmitView.cshtml" />
+    <Content Include="Views\User\Statistics.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

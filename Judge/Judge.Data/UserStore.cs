@@ -120,6 +120,11 @@ namespace Judge.Data
             return _usersSet.Where(o => users.Contains(o.Id)).OrderBy(o => o.Id).AsEnumerable();
         }
 
+        public User GetUser(long id)
+        {
+            return _usersSet.FirstOrDefault(o => o.Id == id);
+        }
+
         public Task AddToRoleAsync(User user, string roleName)
         {
             throw new NotImplementedException();
