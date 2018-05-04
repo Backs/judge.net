@@ -1,16 +1,14 @@
-﻿using System.Security.Principal;
-using System.Web;
+﻿using System;
 using Judge.Application.Interfaces;
 using Judge.Data;
-using Microsoft.Owin.Security;
-using Unity;
-using Unity.AspNet.Mvc;
-using Unity.Extension;
-using Unity.Injection;
+using Judge.Model.Entities;
+using Microsoft.AspNet.Identity;
+using SimpleInjector;
+using SimpleInjector.Integration.Web;
 
 namespace Judge.Application
 {
-    public sealed class ApplicationExtension : UnityContainerExtension
+    public sealed class ApplicationExtension
     {
         private readonly string _connectionString;
 
@@ -19,20 +17,19 @@ namespace Judge.Application
             _connectionString = connectionString;
         }
 
-        protected override void Initialize()
+        public void Configure(Container container)
         {
-            Container.AddExtension(new DataContainerExtension<PerRequestLifetimeManager>(_connectionString));
+            new DataContainerExtension(_connectionString, new WebRequestLifestyle()).Configure(container);
 
-            Container.RegisterType<IAuthenticationManager>(new InjectionFactory(c => HttpContext.Current.GetOwinContext().Authentication));
-            Container.RegisterType<IPrincipal>(new InjectionFactory(c => HttpContext.Current.User));
-            Container.RegisterType<ISecurityService, SecurityService>(new PerRequestLifetimeManager());
+            container.Register<ISecurityService, SecurityService>(new WebRequestLifestyle());
 
-            Container.RegisterType<IProblemsService, ProblemsService>(new PerRequestLifetimeManager());
-            Container.RegisterType<ISubmitSolutionService, SubmitSolutionService>(new PerRequestLifetimeManager());
-            Container.RegisterType<ISubmitQueueService, SubmitQueueService>(new PerRequestLifetimeManager());
-            Container.RegisterType<IContestsService, ContestsService>(new PerRequestLifetimeManager());
-            Container.RegisterType<IAdminService, AdminService>(new PerRequestLifetimeManager());
-            Container.RegisterType<IUserService, UserService>(new PerRequestLifetimeManager());
+            container.Register<IProblemsService, ProblemsService>(new WebRequestLifestyle());
+            container.Register<ISubmitSolutionService, SubmitSolutionService>(new WebRequestLifestyle());
+            container.Register<ISubmitQueueService, SubmitQueueService>(new WebRequestLifestyle());
+            container.Register<IContestsService, ContestsService>(new WebRequestLifestyle());
+            container.Register<IAdminService, AdminService>(new WebRequestLifestyle());
+            container.Register<IUserService, UserService>(new WebRequestLifestyle());
+            container.Register<UserManager<User, Int64>>(new WebRequestLifestyle());
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using Judge.Data.Repository;
+﻿using System;
+using System.Linq;
+using System.Linq.Expressions;
+using Judge.Data.Repository;
 using Judge.Model.Account;
 using Judge.Model.CheckSolution;
 using Judge.Model.Configuration;
@@ -6,41 +9,39 @@ using Judge.Model.Contests;
 using Judge.Model.Entities;
 using Judge.Model.SubmitSolution;
 using Microsoft.AspNet.Identity;
-using Unity;
-using Unity.Extension;
-using Unity.Injection;
-using Unity.Lifetime;
+using SimpleInjector;
 
 namespace Judge.Data
 {
-    public sealed class DataContainerExtension<T> : UnityContainerExtension
-        where T : LifetimeManager, new()
+    public sealed class DataContainerExtension
     {
         private readonly string _connectionString;
+        private readonly Lifestyle _lifestyle;
 
-        public DataContainerExtension(string connectionString)
+        public DataContainerExtension(string connectionString, Lifestyle lifestyle)
         {
             _connectionString = connectionString;
+            this._lifestyle = lifestyle;
         }
 
-        protected override void Initialize()
+        public void Configure(Container container)
         {
-            Container.RegisterType<DataContext>(new T(), new InjectionConstructor(_connectionString));
+            container.Register<DataContext>(() => new DataContext(_connectionString), _lifestyle);
 
-            Container.RegisterType<IUnitOfWorkFactory, UnitOfWorkFactory>(new T());
+            container.Register<IUnitOfWorkFactory, UnitOfWorkFactory>(_lifestyle);
 
-            Container.RegisterType<IUserPasswordStore<User, long>, UserStore>(new T());
-            Container.RegisterType<IUserStore<User, long>, UserStore>(new T());
-            Container.RegisterType<IUserRepository, UserStore>(new T());
+            container.Register<IUserPasswordStore<User, long>, UserStore>(_lifestyle);
+            container.Register<IUserStore<User, long>, UserStore>(_lifestyle);
+            container.Register<IUserRepository, UserStore>(_lifestyle);
 
-            Container.RegisterType<ISubmitRepository, SubmitRepository>(new T());
-            Container.RegisterType<ISubmitResultRepository, SubmitResultRepository>(new T());
-            Container.RegisterType<ILanguageRepository, LanguageRepository>(new T());
-            Container.RegisterType<ITaskRepository, TaskRepository>(new T());
-            Container.RegisterType<ITaskNameRepository, TaskNameRepository>(new T());
-            Container.RegisterType<IContestsRepository, ContestsRepository>(new T());
-            Container.RegisterType<IContestTaskRepository, ContestTaskRepository>(new T());
-            Container.RegisterType<IContestResultRepository, ContestResultRepository>(new T());
+            container.Register<ISubmitRepository, SubmitRepository>(_lifestyle);
+            container.Register<ISubmitResultRepository, SubmitResultRepository>(_lifestyle);
+            container.Register<ILanguageRepository, LanguageRepository>(_lifestyle);
+            container.Register<ITaskRepository, TaskRepository>(_lifestyle);
+            container.Register<ITaskNameRepository, TaskNameRepository>(_lifestyle);
+            container.Register<IContestsRepository, ContestsRepository>(_lifestyle);
+            container.Register<IContestTaskRepository, ContestTaskRepository>(_lifestyle);
+            container.Register<IContestResultRepository, ContestResultRepository>(_lifestyle);
         }
     }
 }

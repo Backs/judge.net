@@ -9,6 +9,7 @@ namespace Judge.Web
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+            ConfigureContainer(app);
         }
     }
 }

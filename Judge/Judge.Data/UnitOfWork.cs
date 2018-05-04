@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Transactions;
-using Unity;
-using Unity.Resolution;
+using SimpleInjector;
 
 namespace Judge.Data
 {
     internal sealed class UnitOfWork : IUnitOfWork
     {
         private readonly TransactionScope _transactionScope;
-        private readonly IUnityContainer _container;
-        private readonly Func<DataContext> _contextCreator;
-        private DataContext _context;
-        public UnitOfWork(bool transactionRequired, IUnityContainer container, Func<DataContext> contextCreator)
+        private readonly Container _container;
+        private readonly DataContext _context;
+
+        public UnitOfWork(bool transactionRequired, Container container, DataContext context)
         {
             _container = container;
-            _contextCreator = contextCreator;
+            _context = context;
             if (transactionRequired)
             {
                 _transactionScope = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted });
@@ -39,11 +38,9 @@ namespace Judge.Data
             }
         }
 
-        public T GetRepository<T>()
+        public T GetRepository<T>() where T : class
         {
-            _context = _context ?? _contextCreator();
-
-            return _container.Resolve<T>(new DependencyOverride<DataContext>(_context));
+            return _container.GetInstance<T>();
         }
     }
 }

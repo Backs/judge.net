@@ -5,6 +5,6 @@ namespace Judge.Data
     public interface IUnitOfWork : IDisposable
     {
         void Commit();
-        T GetRepository<T>();
+        T GetRepository<T>() where T : class;
     }
 }

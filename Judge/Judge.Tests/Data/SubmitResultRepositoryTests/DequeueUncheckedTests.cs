@@ -3,8 +3,7 @@ using System.Transactions;
 using Judge.Data;
 using Judge.Model.SubmitSolution;
 using NUnit.Framework;
-using Unity;
-using Unity.Lifetime;
+using SimpleInjector;
 
 namespace Judge.Tests.Data.SubmitResultRepositoryTests
 {
@@ -12,15 +11,16 @@ namespace Judge.Tests.Data.SubmitResultRepositoryTests
     [Category("Database")]
     public class DequeueUncheckedTests
     {
-        private IUnityContainer _container;
+        private Container _container;
         private TransactionScope _transaction;
 
         [SetUp]
         public void SetUp()
         {
-            _container = new UnityContainer();
+            _container = new Container();
             var connectionString = ConfigurationManager.ConnectionStrings["DataBaseConnection"].ConnectionString;
-            _container.AddExtension(new DataContainerExtension<HierarchicalLifetimeManager>(connectionString));
+
+            new DataContainerExtension(connectionString, Lifestyle.Singleton).Configure(_container);
             _transaction = new TransactionScope(TransactionScopeOption.RequiresNew, new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted });
         }
 
@@ -34,7 +34,7 @@ namespace Judge.Tests.Data.SubmitResultRepositoryTests
         [Test]
         public void DequeueTest()
         {
-            var factory = _container.Resolve<IUnitOfWorkFactory>();
+            var factory = _container.GetInstance<IUnitOfWorkFactory>();
             long submitId;
             using (var uow = factory.GetUnitOfWork(true))
             {
