@@ -1,5 +1,5 @@
-﻿using System.Data.Entity.ModelConfiguration;
-using Judge.Model.Contests;
+﻿using Judge.Model.Contests;
+using System.Data.Entity.ModelConfiguration;
 
 namespace Judge.Data.Mappings
 {
@@ -15,7 +15,7 @@ namespace Judge.Data.Mappings
 
             HasRequired(o => o.Contest)
                 .WithMany()
-                .Map(map => map.MapKey("ContestId"));
+                .HasForeignKey(o => o.ContestId);
 
             ToTable("ContestTasks");
         }

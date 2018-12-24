@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Judge.Application.Interfaces;
+﻿using Judge.Application.Interfaces;
 using Judge.Application.ViewModels.Admin.Contests;
 using Judge.Application.ViewModels.Admin.Languages;
 using Judge.Application.ViewModels.Admin.Problems;
@@ -11,6 +9,8 @@ using Judge.Model.Configuration;
 using Judge.Model.Contests;
 using Judge.Model.Entities;
 using Judge.Model.SubmitSolution;
+using System.Collections.Generic;
+using System.Linq;
 using SubmitQueueItem = Judge.Application.ViewModels.Admin.Submits.SubmitQueueItem;
 
 namespace Judge.Application
@@ -252,7 +252,7 @@ namespace Judge.Application
             var contestTaskSubmit = submitResult.Submit as ContestTaskSubmit;
             if (contestTaskSubmit != null)
             {
-                taskLabel = contestTasks.FirstOrDefault(o => o.Contest.Id == contestTaskSubmit.ContestId &&
+                taskLabel = contestTasks.FirstOrDefault(o => o.ContestId == contestTaskSubmit.ContestId &&
                                                  o.Task.Id == contestTaskSubmit.ProblemId)?.TaskName ?? "deleted";
                 contestId = contestTaskSubmit.ContestId;
             }

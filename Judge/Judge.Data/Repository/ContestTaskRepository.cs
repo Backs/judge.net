@@ -46,7 +46,6 @@ namespace Judge.Data.Repository
         {
             return _context.Set<ContestTask>()
                 .Include(o => o.Task)
-                .Include(o => o.Contest)
                 .OrderBy(o => o.TaskName)
                 .AsEnumerable();
         }
