@@ -1,58 +1,80 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using Judge.Data;
 using Judge.Model.Account;
 using Judge.Model.Entities;
 using Microsoft.AspNet.Identity;
 
-namespace Judge.Data
+namespace Judge.Application
 {
-    internal sealed class UserStore : IUserPasswordStore<User, long>, IUserLockoutStore<User, long>, IUserTwoFactorStore<User, long>, IUserRoleStore<User, long>, IUserRepository
+    internal sealed class UserStore : IUserPasswordStore<User, long>, IUserLockoutStore<User, long>, IUserTwoFactorStore<User, long>, IUserRoleStore<User, long>
     {
-        private readonly DataContext _context;
-        private readonly DbSet<User> _usersSet;
-        private readonly DbSet<UserRole> _userRolesSet;
-
-        public UserStore(DataContext context)
+        private readonly IUnitOfWorkFactory _unitOfWorkFactory;
+        public UserStore(IUnitOfWorkFactory unitOfWorkFactory)
         {
-            _context = context;
-            _usersSet = _context.Set<User>();
-            _userRolesSet = _context.Set<UserRole>();
+            _unitOfWorkFactory = unitOfWorkFactory;
         }
 
         public void Dispose()
         {
-            _context.Dispose();
+
         }
 
         public Task CreateAsync(User user)
         {
-            _usersSet.Add(user);
-            return _context.SaveChangesAsync();
+            using (var uow = _unitOfWorkFactory.GetUnitOfWork(true))
+            {
+                var userRepository = uow.GetRepository<IUserRepository>();
+                userRepository.Add(user);
+            }
+
+            return Task.CompletedTask;
         }
 
         public Task UpdateAsync(User user)
         {
-            _context.Entry(user).State = EntityState.Modified;
-            return _context.SaveChangesAsync();
+            using (var uow = _unitOfWorkFactory.GetUnitOfWork(true))
+            {
+                var userRepository = uow.GetRepository<IUserRepository>();
+                userRepository.Update(user);
+            }
+
+            return Task.CompletedTask;
         }
 
         public Task DeleteAsync(User user)
         {
-            _usersSet.Remove(user);
-            return _context.SaveChangesAsync();
+            using (var uow = _unitOfWorkFactory.GetUnitOfWork(true))
+            {
+                var userRepository = uow.GetRepository<IUserRepository>();
+                userRepository.Delete(user);
+            }
+
+            return Task.CompletedTask;
         }
 
         public Task<User> FindByIdAsync(long userId)
         {
-            return _usersSet.SingleOrDefaultAsync(o => o.Id == userId);
+            using (var uow = _unitOfWorkFactory.GetUnitOfWork(false))
+            {
+                var userRepository = uow.GetRepository<IUserRepository>();
+                var result = userRepository.GetUser(userId);
+
+                return Task.FromResult(result);
+            }
         }
 
         public Task<User> FindByNameAsync(string userName)
         {
-            return _usersSet.SingleOrDefaultAsync(o => o.Email == userName);
+            using (var uow = _unitOfWorkFactory.GetUnitOfWork(false))
+            {
+                var userRepository = uow.GetRepository<IUserRepository>();
+                var result = userRepository.GetUser(userName);
+
+                return Task.FromResult(result);
+            }
         }
 
         public Task SetPasswordHashAsync(User user, string passwordHash)
@@ -115,16 +137,6 @@ namespace Judge.Data
             return Task.FromResult(false);
         }
 
-        public IEnumerable<User> GetUsers(IEnumerable<long> users)
-        {
-            return _usersSet.Where(o => users.Contains(o.Id)).OrderBy(o => o.Id).AsEnumerable();
-        }
-
-        public User GetUser(long id)
-        {
-            return _usersSet.FirstOrDefault(o => o.Id == id);
-        }
-
         public Task AddToRoleAsync(User user, string roleName)
         {
             throw new NotImplementedException();
@@ -137,12 +149,12 @@ namespace Judge.Data
 
         public Task<IList<string>> GetRolesAsync(User user)
         {
-            return Task.FromResult(_userRolesSet.Where(o => o.User.Id == user.Id).Select(o => o.RoleName).ToArray() as IList<string>);
+            return Task.FromResult<IList<string>>(user.UserRoles.Select(o => o.RoleName).ToList());
         }
 
         public Task<bool> IsInRoleAsync(User user, string roleName)
         {
-            return _userRolesSet.AnyAsync(o => o.User.Id == user.Id && o.RoleName == roleName);
+            return Task.FromResult(user.UserRoles.Any(o => o.RoleName == roleName));
         }
     }
 }

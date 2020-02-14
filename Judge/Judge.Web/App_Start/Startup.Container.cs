@@ -16,17 +16,16 @@ namespace Judge.Web
         public void ConfigureContainer(IAppBuilder app)
         {
             var container = new Container();
+            container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
 
             app.Use(async (context, next) =>
             {
-                using (AsyncScopedLifestyle.BeginScope(container))
+                //using (AsyncScopedLifestyle.BeginScope(container))
                 {
                     CallContextOwinContextAccessor.OwinContext = context;
                     await next();
                 }
             });
-
-            container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
 
             container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
 
@@ -34,7 +33,7 @@ namespace Judge.Web
 
             container.RegisterInstance<IPrincipal>(new HttpContextPrinciple());
 
-            container.Register<Services.ISessionService, Services.SessionService>(new WebRequestLifestyle());
+            container.Register<Services.ISessionService, Services.SessionService>(Lifestyle.Scoped);
             var connectionString = ConfigurationManager.ConnectionStrings["DataBaseConnection"].ConnectionString;
             new ApplicationExtension(connectionString).Configure(container);
             DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));

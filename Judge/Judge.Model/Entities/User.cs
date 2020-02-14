@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using System.Collections.Generic;
+using Microsoft.AspNet.Identity;
 
 namespace Judge.Model.Entities
 {
@@ -8,5 +9,7 @@ namespace Judge.Model.Entities
         public string UserName { get; set; }
         public string Email { get; set; }
         public string PasswordHash { get; set; }
+
+        public ICollection<UserRole> UserRoles { get; set; }
     }
 }

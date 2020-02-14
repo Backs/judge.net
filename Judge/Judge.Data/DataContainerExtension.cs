@@ -30,9 +30,7 @@ namespace Judge.Data
 
             container.Register<IUnitOfWorkFactory, UnitOfWorkFactory>(_lifestyle);
 
-            container.Register<IUserPasswordStore<User, long>, UserStore>(_lifestyle);
-            container.Register<IUserStore<User, long>, UserStore>(_lifestyle);
-            container.Register<IUserRepository, UserStore>(_lifestyle);
+            container.Register<IUserRepository, UserRepository>(_lifestyle);
 
             container.Register<ISubmitRepository, SubmitRepository>(_lifestyle);
             container.Register<ISubmitResultRepository, SubmitResultRepository>(_lifestyle);

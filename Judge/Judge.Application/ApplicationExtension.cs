@@ -19,17 +19,20 @@ namespace Judge.Application
 
         public void Configure(Container container)
         {
-            new DataContainerExtension(_connectionString, new WebRequestLifestyle()).Configure(container);
+            new DataContainerExtension(_connectionString, Lifestyle.Scoped).Configure(container);
 
-            container.Register<ISecurityService, SecurityService>(new WebRequestLifestyle());
+            container.Register<ISecurityService, SecurityService>(Lifestyle.Scoped);
 
-            container.Register<IProblemsService, ProblemsService>(new WebRequestLifestyle());
-            container.Register<ISubmitSolutionService, SubmitSolutionService>(new WebRequestLifestyle());
-            container.Register<ISubmitQueueService, SubmitQueueService>(new WebRequestLifestyle());
-            container.Register<IContestsService, ContestsService>(new WebRequestLifestyle());
-            container.Register<IAdminService, AdminService>(new WebRequestLifestyle());
-            container.Register<IUserService, UserService>(new WebRequestLifestyle());
-            container.Register<UserManager<User, Int64>>(new WebRequestLifestyle());
+            container.Register<IProblemsService, ProblemsService>(Lifestyle.Scoped);
+            container.Register<ISubmitSolutionService, SubmitSolutionService>(Lifestyle.Scoped);
+            container.Register<ISubmitQueueService, SubmitQueueService>(Lifestyle.Scoped);
+            container.Register<IContestsService, ContestsService>(Lifestyle.Scoped);
+            container.Register<IAdminService, AdminService>(Lifestyle.Scoped);
+            container.Register<IUserService, UserService>(Lifestyle.Scoped);
+            container.Register<UserManager<User, long>>(Lifestyle.Scoped);
+            container.Register<IUserPasswordStore<User, long>, UserStore>(Lifestyle.Scoped);
+            container.Register<IUserStore<User, long>, UserStore>(Lifestyle.Scoped);
+
         }
     }
 }

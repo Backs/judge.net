@@ -8,9 +8,6 @@ namespace Judge.Data.Mappings
         public UserRoleMapping()
         {
             HasKey(o => o.Id);
-            HasRequired(o => o.User)
-                .WithMany()
-                .Map(map => map.MapKey("UserId"));
 
             ToTable("UserRoles");
         }
