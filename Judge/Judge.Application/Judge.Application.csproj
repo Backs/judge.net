@@ -1,138 +1,47 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{8BF0D341-6664-43CA-A31E-7EDF6334E449}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Judge.Application</RootNamespace>
-    <AssemblyName>Judge.Application</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>net48</TargetFramework>
+    <AssemblyTitle>Judge.Application</AssemblyTitle>
+    <Product>Judge.Application</Product>
+    <Copyright>Copyright ©  2015</Copyright>
+    <AssemblyTitle>Judge.Application</AssemblyTitle>
+    <Product>Judge.Application</Product>
+    <Copyright>Copyright ©  2015</Copyright>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <Import Project="..\Configurations.targets" />
   <ItemGroup>
     <Reference Include="Microsoft.Owin.Host.SystemWeb">
       <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdminService.cs" />
-    <Compile Include="CallContextOwinContextAccessor.cs" />
-    <Compile Include="ApplicationExtension.cs" />
-    <Compile Include="ContestsService.cs" />
-    <Compile Include="HttpContextPrinciple.cs" />
-    <Compile Include="Interfaces\IAdminService.cs" />
-    <Compile Include="Interfaces\IUserService.cs" />
-    <Compile Include="IOwinContextAccessor.cs" />
-    <Compile Include="UserService.cs" />
-    <Compile Include="ViewModels\Admin\Contests\EditContestViewModel.cs" />
-    <Compile Include="ViewModels\Admin\Contests\TaskEditViewModel.cs" />
-    <Compile Include="ViewModels\Admin\Languages\LanguageEditViewModel.cs" />
-    <Compile Include="ViewModels\Admin\Problems\EditProblemViewModel.cs" />
-    <Compile Include="ViewModels\Admin\Submits\SubmitQueueItem.cs" />
-    <Compile Include="ViewModels\Contests\ContestResult\ContestResultViewModel.cs" />
-    <Compile Include="ViewModels\Contests\ContestResult\ContestTaskResultViewModel.cs" />
-    <Compile Include="ViewModels\Contests\ContestResult\ContestUserResultViewModel.cs" />
-    <Compile Include="ViewModels\Contests\ContestResult\TaskViewModel.cs" />
-    <Compile Include="ViewModels\Contests\ContestsList\ContestStatus.cs" />
-    <Compile Include="ViewModels\Contests\ContestStatementViewModel.cs" />
-    <Compile Include="Interfaces\IContestsService.cs" />
-    <Compile Include="Interfaces\IProblemsService.cs" />
-    <Compile Include="Interfaces\ISecurityService.cs" />
-    <Compile Include="Interfaces\ISubmitQueueService.cs" />
-    <Compile Include="Interfaces\ISubmitSolutionService.cs" />
-    <Compile Include="ProblemsService.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources.Designer.cs">
+    <Compile Update="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SecurityService.cs" />
-    <Compile Include="SubmitQueueService.cs" />
-    <Compile Include="SubmitSolutionService.cs" />
-    <Compile Include="ViewModels\Account\LoginViewModel.cs" />
-    <Compile Include="ViewModels\Account\RegisterViewModel.cs" />
-    <Compile Include="ViewModels\Contests\ContestsList\ContestItem.cs" />
-    <Compile Include="ViewModels\Contests\ContestsList\ContestsListViewModel.cs" />
-    <Compile Include="ViewModels\Contests\ContestSubmitQueueViewModel.cs" />
-    <Compile Include="ViewModels\Contests\ContestTasks\ContestTaskItem.cs" />
-    <Compile Include="ViewModels\Contests\ContestTasks\ContestTasksViewModel.cs" />
-    <Compile Include="ViewModels\Contests\SubmitContestSolutionViewModel.cs" />
-    <Compile Include="ViewModels\PaginationViewModel.cs" />
-    <Compile Include="ViewModels\Problems\ProblemsList\ProblemItem.cs" />
-    <Compile Include="ViewModels\Problems\ProblemsList\ProblemsListViewModel.cs" />
-    <Compile Include="ViewModels\Problems\Solution\SolutionViewModel.cs" />
-    <Compile Include="ViewModels\Problems\Solution\SubmitViewModel.cs" />
-    <Compile Include="ViewModels\Problems\Statement\StatementViewModel.cs" />
-    <Compile Include="ViewModels\Submit\FileValidationAttribute.cs" />
-    <Compile Include="ViewModels\Submit\LanguageViewModel.cs" />
-    <Compile Include="ViewModels\Submit\MaxFileSizeAttribute.cs" />
-    <Compile Include="ViewModels\Submit\SubmitQueueItem.cs" />
-    <Compile Include="ViewModels\Submit\SubmitQueueViewModel.cs" />
-    <Compile Include="ViewModels\Submit\SubmitSolutionViewModel.cs" />
-    <Compile Include="ViewModels\UserInfo.cs" />
-    <Compile Include="ViewModels\User\UserProblem.cs" />
-    <Compile Include="ViewModels\User\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
+    <ProjectReference Include="..\Judge.Data\Judge.Data.csproj" />
+    <ProjectReference Include="..\Judge.Model\Judge.Model.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Judge.Data\Judge.Data.csproj">
-      <Project>{8D356F93-E347-46A4-93EB-1E3D581D5C59}</Project>
-      <Name>Judge.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Judge.Model\Judge.Model.csproj">
-      <Project>{C21CFD2F-64C7-47E8-A088-275D0340F9D8}</Project>
-      <Name>Judge.Model</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources.resx">
+    <EmbeddedResource Update="Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNet.Identity.Owin">
-      <Version>2.2.1</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.AspNet.Mvc">
-      <Version>5.2.5</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Owin.Security.Cookies">
-      <Version>3.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Owin.Security.OAuth">
-      <Version>3.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>10.0.3</Version>
-    </PackageReference>
-    <PackageReference Include="SimpleInjector.Integration.Web">
-      <Version>4.2.2</Version>
-    </PackageReference>
-    <PackageReference Include="WebActivatorEx">
-      <Version>2.2.0</Version>
-    </PackageReference>
+    <PackageReference Include="Microsoft.AspNet.Identity.Owin" Version="2.2.1" />
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.5" />
+    <PackageReference Include="Microsoft.Owin.Security.Cookies" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Owin.Security.OAuth" Version="3.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="SimpleInjector.Integration.Web" Version="4.2.2" />
+    <PackageReference Include="WebActivatorEx" Version="2.2.0" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

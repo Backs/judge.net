@@ -1,61 +1,36 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{C008CCFE-2DE1-42C0-9D32-B1965BCE14C7}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Judge.Tests</RootNamespace>
-    <AssemblyName>Judge.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>net48</TargetFramework>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <AssemblyTitle>Judge.Tests</AssemblyTitle>
+    <Product>Judge.Tests</Product>
+    <Copyright>Copyright ©  2017</Copyright>
+    <AssemblyTitle>Judge.Tests</AssemblyTitle>
+    <Product>Judge.Tests</Product>
+    <Copyright>Copyright ©  2017</Copyright>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <Import Project="..\Configurations.targets" />
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <ItemGroup>
-    <Reference Include="System" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.Configuration" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
   </ItemGroup>
-  <Choose>
-    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-      </ItemGroup>
-    </When>
-    <Otherwise />
-  </Choose>
   <ItemGroup>
-    <Compile Include="Application\ContestsServiceTests\GetStatementTests.cs" />
-    <Compile Include="Application\ContestsServiceTests\SubmitSolutionTests.cs" />
-    <Compile Include="Application\FakeHttpPostedFileBase.cs" />
-    <Compile Include="Application\ProblemsServiceTests\GetProblemsListTests.cs" />
-    <Compile Include="Application\ProblemsServiceTests\GetStatementTests.cs" />
-    <Compile Include="Application\SubmitQueueServiceTests\GetSubmitQueueTests.cs" />
-    <Compile Include="Application\SubmitSolutionServiceTests\GetSolutionTests.cs" />
-    <Compile Include="Checker\CheckerTests\CheckTests.cs" />
-    <Compile Include="Compiler\CompilerTests\CompileTests.cs">
+    <Compile Update="Compiler\CompilerTests\CompileTests.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="Data\SubmitResultRepositoryTests\DequeueUncheckedTests.cs" />
-    <Compile Include="Data\UnitOfWorkTests\CommitTests.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Runner\ConfigurationTests\ConfigurationTest.cs" />
-    <Compile Include="Runner\RunResultTests\ParseTests.cs" />
-    <Compile Include="Runner\RunServiceTests\RunTests.cs" />
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="TestSolutions\ABCE.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -64,33 +39,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Judge.Application\Judge.Application.csproj">
-      <Project>{8BF0D341-6664-43CA-A31E-7EDF6334E449}</Project>
-      <Name>Judge.Application</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Judge.Checker\Judge.Checker.csproj">
-      <Project>{43482D0A-64C8-44E5-9048-D8050ADDE2C7}</Project>
-      <Name>Judge.Checker</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Judge.Compiler\Judge.Compiler.csproj">
-      <Project>{e268f774-14ba-4aa7-96fc-15912e89b36f}</Project>
-      <Name>Judge.Compiler</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Judge.Data\Judge.Data.csproj">
-      <Project>{8D356F93-E347-46A4-93EB-1E3D581D5C59}</Project>
-      <Name>Judge.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Judge.Model\Judge.Model.csproj">
-      <Project>{C21CFD2F-64C7-47E8-A088-275D0340F9D8}</Project>
-      <Name>Judge.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Judge.Runner\Judge.Runner.csproj">
-      <Project>{C4868306-472A-445F-945E-903DCBE8C373}</Project>
-      <Name>Judge.Runner</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="WorkingDirectory\" />
+    <ProjectReference Include="..\Judge.Application\Judge.Application.csproj" />
+    <ProjectReference Include="..\Judge.Checker\Judge.Checker.csproj" />
+    <ProjectReference Include="..\Judge.Compiler\Judge.Compiler.csproj" />
+    <ProjectReference Include="..\Judge.Data\Judge.Data.csproj" />
+    <ProjectReference Include="..\Judge.Model\Judge.Model.csproj" />
+    <ProjectReference Include="..\Judge.Runner\Judge.Runner.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestCheckers\icmp.exe">
@@ -113,44 +67,17 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNet.Identity.Core">
-      <Version>2.2.1</Version>
-    </PackageReference>
-    <PackageReference Include="NUnit">
-      <Version>3.10.1</Version>
-    </PackageReference>
-    <PackageReference Include="RhinoMocks">
-      <Version>3.6.1</Version>
-    </PackageReference>
-    <PackageReference Include="SimpleInjector">
-      <Version>4.2.2</Version>
-    </PackageReference>
+    <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.1" />
+    <PackageReference Include="NUnit" Version="3.10.1" />
+    <PackageReference Include="RhinoMocks" Version="3.6.1" />
+    <PackageReference Include="SimpleInjector" Version="4.2.2" />
   </ItemGroup>
-  <Choose>
-    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <ItemGroup>
+    <Compile Remove="TestSolutions\ABCE.cs" />
+    <Compile Remove="TestSolutions\AB.cs" />
+    <Compile Remove="bin\Debug\TestSolutions\AB.cs" />
+    <Compile Remove="bin\Debug\TestSolutions\ABCE.cs" />
+    <Compile Remove="bin\Debug\WorkingDirectory\Program.cs" />
+    <Compile Remove="bin\Debug\Compiler\CompilerTests\CompileTests.cs" />
+  </ItemGroup>
 </Project>

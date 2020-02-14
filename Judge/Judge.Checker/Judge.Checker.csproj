@@ -1,29 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{43482D0A-64C8-44E5-9048-D8050ADDE2C7}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Judge.Checker</RootNamespace>
-    <AssemblyName>Judge.Checker</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>net48</TargetFramework>
+    <AssemblyTitle>Judge.Checker</AssemblyTitle>
+    <Product>Judge.Checker</Product>
+    <Copyright>Copyright ©  2017</Copyright>
+    <AssemblyTitle>Judge.Checker</AssemblyTitle>
+    <Product>Judge.Checker</Product>
+    <Copyright>Copyright ©  2017</Copyright>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <Import Project="..\Configurations.targets" />
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Checker.cs" />
-    <Compile Include="CheckResult.cs" />
-    <Compile Include="CheckStatus.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
   <ItemGroup>
     <Content Include="Checkers\acmp.exe" />
     <Content Include="Checkers\caseicmp.exe" />
@@ -45,12 +32,4 @@
     <Content Include="Checkers\wcmp.exe" />
     <Content Include="Checkers\yesno.exe" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
