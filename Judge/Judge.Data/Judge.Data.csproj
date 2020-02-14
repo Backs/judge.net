@@ -14,7 +14,6 @@
   <ItemGroup>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Transactions" />
-    <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Judge.Model\Judge.Model.csproj" />
@@ -22,8 +21,6 @@
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.0" />
     <PackageReference Include="Microsoft.AspNet.Identity.EntityFramework" Version="2.2.1" />
-    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.5" />
     <PackageReference Include="SimpleInjector" Version="4.2.2" />
-    <PackageReference Include="WebActivatorEx" Version="2.2.0" />
   </ItemGroup>
 </Project>
