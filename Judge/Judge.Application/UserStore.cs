@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Judge.Data;
-using Judge.Model.Entities;
 using Microsoft.AspNet.Identity;
 
 namespace Judge.Application
 {
-    internal sealed class UserStore : IUserPasswordStore<User, long>, IUserLockoutStore<User, long>, IUserTwoFactorStore<User, long>, IUserRoleStore<User, long>
+    internal sealed class UserStore : IUserPasswordStore<ApplicationUser, long>, IUserLockoutStore<ApplicationUser, long>, IUserTwoFactorStore<ApplicationUser, long>, IUserRoleStore<ApplicationUser, long>
     {
         private readonly IUnitOfWorkFactory _unitOfWorkFactory;
         public UserStore(IUnitOfWorkFactory unitOfWorkFactory)
@@ -21,142 +20,142 @@ namespace Judge.Application
 
         }
 
-        public Task CreateAsync(User user)
+        public Task CreateAsync(ApplicationUser user)
         {
             using (var uow = _unitOfWorkFactory.GetUnitOfWork())
             {
                 var userRepository = uow.UserRepository;
-                userRepository.Add(user);
+                userRepository.Add(user.User);
                 uow.Commit();
             }
 
             return Task.CompletedTask;
         }
 
-        public Task UpdateAsync(User user)
+        public Task UpdateAsync(ApplicationUser user)
         {
             using (var uow = _unitOfWorkFactory.GetUnitOfWork())
             {
                 var userRepository = uow.UserRepository;
-                userRepository.Update(user);
+                userRepository.Update(user.User);
                 uow.Commit();
             }
 
             return Task.CompletedTask;
         }
 
-        public Task DeleteAsync(User user)
+        public Task DeleteAsync(ApplicationUser user)
         {
             using (var uow = _unitOfWorkFactory.GetUnitOfWork())
             {
                 var userRepository = uow.UserRepository;
-                userRepository.Delete(user);
+                userRepository.Delete(user.User);
                 uow.Commit();
             }
 
             return Task.CompletedTask;
         }
 
-        public Task<User> FindByIdAsync(long userId)
+        public Task<ApplicationUser> FindByIdAsync(long userId)
         {
             using (var uow = _unitOfWorkFactory.GetUnitOfWork())
             {
                 var userRepository = uow.UserRepository;
                 var result = userRepository.GetUser(userId);
 
-                return Task.FromResult(result);
+                return Task.FromResult(new ApplicationUser(result));
             }
         }
 
-        public Task<User> FindByNameAsync(string userName)
+        public Task<ApplicationUser> FindByNameAsync(string userName)
         {
             using (var uow = _unitOfWorkFactory.GetUnitOfWork())
             {
                 var userRepository = uow.UserRepository;
                 var result = userRepository.GetUser(userName);
 
-                return Task.FromResult(result);
+                return Task.FromResult(result == null ? null : new ApplicationUser(result));
             }
         }
 
-        public Task SetPasswordHashAsync(User user, string passwordHash)
+        public Task SetPasswordHashAsync(ApplicationUser user, string passwordHash)
         {
             return Task.FromResult(user.PasswordHash = passwordHash);
         }
 
-        public Task<string> GetPasswordHashAsync(User user)
+        public Task<string> GetPasswordHashAsync(ApplicationUser user)
         {
             return Task.FromResult(user.PasswordHash);
         }
 
-        public Task<bool> HasPasswordAsync(User user)
+        public Task<bool> HasPasswordAsync(ApplicationUser user)
         {
             return Task.FromResult(!string.IsNullOrWhiteSpace(user.PasswordHash));
         }
 
-        public Task<DateTimeOffset> GetLockoutEndDateAsync(User user)
+        public Task<DateTimeOffset> GetLockoutEndDateAsync(ApplicationUser user)
         {
             throw new NotImplementedException();
         }
 
-        public Task SetLockoutEndDateAsync(User user, DateTimeOffset lockoutEnd)
+        public Task SetLockoutEndDateAsync(ApplicationUser user, DateTimeOffset lockoutEnd)
         {
             throw new NotImplementedException();
         }
 
-        public Task<int> IncrementAccessFailedCountAsync(User user)
+        public Task<int> IncrementAccessFailedCountAsync(ApplicationUser user)
         {
             throw new NotImplementedException();
         }
 
-        public Task ResetAccessFailedCountAsync(User user)
+        public Task ResetAccessFailedCountAsync(ApplicationUser user)
         {
             throw new NotImplementedException();
         }
 
-        public Task<int> GetAccessFailedCountAsync(User user)
+        public Task<int> GetAccessFailedCountAsync(ApplicationUser user)
         {
             return Task.FromResult(0);
         }
 
-        public Task<bool> GetLockoutEnabledAsync(User user)
+        public Task<bool> GetLockoutEnabledAsync(ApplicationUser user)
         {
             return Task.FromResult(false);
         }
 
-        public Task SetLockoutEnabledAsync(User user, bool enabled)
+        public Task SetLockoutEnabledAsync(ApplicationUser user, bool enabled)
         {
             throw new NotImplementedException();
         }
 
-        public Task SetTwoFactorEnabledAsync(User user, bool enabled)
+        public Task SetTwoFactorEnabledAsync(ApplicationUser user, bool enabled)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> GetTwoFactorEnabledAsync(User user)
+        public Task<bool> GetTwoFactorEnabledAsync(ApplicationUser user)
         {
             return Task.FromResult(false);
         }
 
-        public Task AddToRoleAsync(User user, string roleName)
+        public Task AddToRoleAsync(ApplicationUser user, string roleName)
         {
             throw new NotImplementedException();
         }
 
-        public Task RemoveFromRoleAsync(User user, string roleName)
+        public Task RemoveFromRoleAsync(ApplicationUser user, string roleName)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IList<string>> GetRolesAsync(User user)
+        public Task<IList<string>> GetRolesAsync(ApplicationUser user)
         {
-            return Task.FromResult<IList<string>>(user.UserRoles.Select(o => o.RoleName).ToList());
+            return Task.FromResult<IList<string>>(user.UserRoles.ToList());
         }
 
-        public Task<bool> IsInRoleAsync(User user, string roleName)
+        public Task<bool> IsInRoleAsync(ApplicationUser user, string roleName)
         {
-            return Task.FromResult(user.UserRoles.Any(o => o.RoleName == roleName));
+            return Task.FromResult(user.UserRoles.Any(o => o == roleName));
         }
     }
 }

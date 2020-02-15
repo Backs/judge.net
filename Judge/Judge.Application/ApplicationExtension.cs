@@ -29,9 +29,9 @@ namespace Judge.Application
             container.Register<IContestsService, ContestsService>(Lifestyle.Scoped);
             container.Register<IAdminService, AdminService>(Lifestyle.Scoped);
             container.Register<IUserService, UserService>(Lifestyle.Scoped);
-            container.Register<UserManager<User, long>>(Lifestyle.Scoped);
-            container.Register<IUserPasswordStore<User, long>, UserStore>(Lifestyle.Scoped);
-            container.Register<IUserStore<User, long>, UserStore>(Lifestyle.Scoped);
+            container.Register<UserManager<ApplicationUser, long>>(Lifestyle.Scoped);
+            container.Register<IUserPasswordStore<ApplicationUser, long>, UserStore>(Lifestyle.Scoped);
+            container.Register<IUserStore<ApplicationUser, long>, UserStore>(Lifestyle.Scoped);
 
         }
     }

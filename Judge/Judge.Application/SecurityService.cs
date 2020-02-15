@@ -1,7 +1,6 @@
 ﻿using System;
 using Judge.Application.Interfaces;
 using Judge.Application.ViewModels.Account;
-using Judge.Model.Entities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
@@ -9,17 +8,17 @@ namespace Judge.Application
 {
     internal sealed class SecurityService : ISecurityService
     {
-        private readonly Lazy<SignInManager<User, long>> _signInManager;
+        private readonly Lazy<SignInManager<ApplicationUser, long>> _signInManager;
 
-        private SignInManager<User, long> SignInManager => _signInManager.Value;
+        private SignInManager<ApplicationUser, long> SignInManager => _signInManager.Value;
 
-        public SecurityService(IOwinContextAccessor owinContextAccessor, UserManager<User, long> userManager)
+        public SecurityService(IOwinContextAccessor owinContextAccessor, UserManager<ApplicationUser, long> userManager)
         {
-            _signInManager = new Lazy<SignInManager<User, long>>(() =>
+            _signInManager = new Lazy<SignInManager<ApplicationUser, long>>(() =>
             {
-                var manager = new SignInManager<User, long>(userManager, owinContextAccessor.CurrentContext.Authentication);
+                var manager = new SignInManager<ApplicationUser, long>(userManager, owinContextAccessor.CurrentContext.Authentication);
 
-                manager.UserManager.UserValidator = new UserValidator<User, long>(manager.UserManager)
+                manager.UserManager.UserValidator = new UserValidator<ApplicationUser, long>(manager.UserManager)
                 {
                     AllowOnlyAlphanumericUserNames = false
                 };
@@ -35,7 +34,7 @@ namespace Judge.Application
 
         public void Register(RegisterViewModel model)
         {
-            SignInManager.UserManager.CreateAsync(new User { UserName = model.UserName, Email = model.Email }, model.Password).Wait();
+            SignInManager.UserManager.CreateAsync(new ApplicationUser { UserName = model.UserName, Email = model.Email }, model.Password).Wait();
         }
 
         public void SignOut()
