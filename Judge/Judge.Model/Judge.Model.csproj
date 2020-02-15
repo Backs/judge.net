@@ -11,7 +11,4 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <Import Project="..\Configurations.targets" />
-  <ItemGroup>
-    <PackageReference Include="EntityFramework" Version="6.4.0" />
-  </ItemGroup>
 </Project>
