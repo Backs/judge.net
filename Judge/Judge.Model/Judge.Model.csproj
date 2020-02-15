@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectGuid>{C21CFD2F-64C7-47E8-A088-275D0340F9D8}</ProjectGuid>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyTitle>Judge.Model</AssemblyTitle>
     <Product>Judge.Model</Product>
     <Copyright>Copyright ©  2015</Copyright>
@@ -10,5 +9,4 @@
     <Copyright>Copyright ©  2015</Copyright>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  <Import Project="..\Configurations.targets" />
 </Project>

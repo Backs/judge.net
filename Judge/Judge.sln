@@ -1,37 +1,37 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{ABB66446-CF10-4940-83DD-4ADB05DD654B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Judge.Application", "Judge.Application\Judge.Application.csproj", "{8BF0D341-6664-43CA-A31E-7EDF6334E449}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Judge.Application", "Judge.Application\Judge.Application.csproj", "{8BF0D341-6664-43CA-A31E-7EDF6334E449}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{BED24073-A608-4E11-AE67-B82AADD56691}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Judge.Database", "Judge.Database\Judge.Database.sqlproj", "{17261885-7D3D-4724-AD4A-EDA4EE1BEE97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Judge.Data", "Judge.Data\Judge.Data.csproj", "{8D356F93-E347-46A4-93EB-1E3D581D5C59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Judge.Data", "Judge.Data\Judge.Data.csproj", "{8D356F93-E347-46A4-93EB-1E3D581D5C59}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Model", "Model", "{948F357F-7B0E-4134-B74F-56C5FCFE04DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Judge.Model", "Judge.Model\Judge.Model.csproj", "{C21CFD2F-64C7-47E8-A088-275D0340F9D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Judge.Model", "Judge.Model\Judge.Model.csproj", "{C21CFD2F-64C7-47E8-A088-275D0340F9D8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Judge.Web", "Judge.Web\Judge.Web.csproj", "{24ED9197-C31B-47DE-B0E3-31024243A0DA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Runner", "Runner", "{01A29FDA-FEA1-4138-8B3C-12CF0AB4114C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Judge.Runner", "Judge.Runner\Judge.Runner.csproj", "{C4868306-472A-445F-945E-903DCBE8C373}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Judge.Runner", "Judge.Runner\Judge.Runner.csproj", "{C4868306-472A-445F-945E-903DCBE8C373}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{96AF6C73-8C99-4D91-B652-B754F3527F62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Judge.Tests", "Judge.Tests\Judge.Tests.csproj", "{C008CCFE-2DE1-42C0-9D32-B1965BCE14C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Judge.Tests", "Judge.Tests\Judge.Tests.csproj", "{C008CCFE-2DE1-42C0-9D32-B1965BCE14C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Judge.Compiler", "Judge.Compiler\Judge.Compiler.csproj", "{E268F774-14BA-4AA7-96FC-15912E89B36F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Judge.Compiler", "Judge.Compiler\Judge.Compiler.csproj", "{E268F774-14BA-4AA7-96FC-15912E89B36F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Judge.Checker", "Judge.Checker\Judge.Checker.csproj", "{43482D0A-64C8-44E5-9048-D8050ADDE2C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Judge.Checker", "Judge.Checker\Judge.Checker.csproj", "{43482D0A-64C8-44E5-9048-D8050ADDE2C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Judge.JudgeService", "Judge.JudgeService\Judge.JudgeService.csproj", "{2E820D4C-9D10-452B-A284-A1E01B311199}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Judge.JudgeService", "Judge.JudgeService\Judge.JudgeService.csproj", "{2E820D4C-9D10-452B-A284-A1E01B311199}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3770FD50-9C18-4A61-B009-802D14E03ECE}"
 	ProjectSection(SolutionItems) = preProject
@@ -101,5 +101,8 @@ Global
 		{E268F774-14BA-4AA7-96FC-15912E89B36F} = {01A29FDA-FEA1-4138-8B3C-12CF0AB4114C}
 		{43482D0A-64C8-44E5-9048-D8050ADDE2C7} = {01A29FDA-FEA1-4138-8B3C-12CF0AB4114C}
 		{2E820D4C-9D10-452B-A284-A1E01B311199} = {01A29FDA-FEA1-4138-8B3C-12CF0AB4114C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F196467E-334C-44B2-9868-52EB32D2B811}
 	EndGlobalSection
 EndGlobal
