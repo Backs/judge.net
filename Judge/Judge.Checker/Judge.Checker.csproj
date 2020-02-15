@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectGuid>{43482D0A-64C8-44E5-9048-D8050ADDE2C7}</ProjectGuid>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyTitle>Judge.Checker</AssemblyTitle>
     <Product>Judge.Checker</Product>
     <Copyright>Copyright ©  2017</Copyright>
@@ -10,7 +9,6 @@
     <Copyright>Copyright ©  2017</Copyright>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  <Import Project="..\Configurations.targets" />
   <ItemGroup>
     <Content Include="Checkers\acmp.exe" />
     <Content Include="Checkers\caseicmp.exe" />

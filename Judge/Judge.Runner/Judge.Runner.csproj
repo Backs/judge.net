@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectGuid>{C4868306-472A-445F-945E-903DCBE8C373}</ProjectGuid>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyTitle>Judge.Runner</AssemblyTitle>
     <Product>Judge.Runner</Product>
     <Copyright>Copyright ©  2017</Copyright>
@@ -10,7 +9,6 @@
     <Copyright>Copyright ©  2017</Copyright>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  <Import Project="..\Configurations.targets" />
   <ItemGroup>
     <Content Include="run-x64\invoke2.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
