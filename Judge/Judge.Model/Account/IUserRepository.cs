@@ -5,11 +5,11 @@ namespace Judge.Model.Account
 {
     public interface IUserRepository
     {
-        IEnumerable<User> GetUsers(IEnumerable<long> users);
-        User GetUser(long id);
+        User Get(long id);
         void Add(User user);
         void Update(User user);
         void Delete(User user);
-        User GetUser(string userName);
+        User Get(string userName);
+        IEnumerable<User> Find(ISpecification<User> specification);
     }
 }

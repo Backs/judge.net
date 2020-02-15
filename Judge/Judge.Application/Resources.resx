@@ -195,4 +195,13 @@
   <data name="TaskHaveNoLabel" xml:space="preserve">
     <value>Не указан лейбл задачи</value>
   </data>
+  <data name="Users" xml:space="preserve">
+    <value>Пользователи</value>
+  </data>
+  <data name="UserEmail" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>Новый пароль</value>
+  </data>
 </root>

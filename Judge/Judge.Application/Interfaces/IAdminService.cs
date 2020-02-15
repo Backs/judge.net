@@ -3,6 +3,7 @@ using Judge.Application.ViewModels.Admin.Contests;
 using Judge.Application.ViewModels.Admin.Languages;
 using Judge.Application.ViewModels.Admin.Problems;
 using Judge.Application.ViewModels.Admin.Submits;
+using Judge.Application.ViewModels.Admin.Users;
 
 namespace Judge.Application.Interfaces
 {
@@ -21,5 +22,8 @@ namespace Judge.Application.Interfaces
         EditContestViewModel GetContest(int id);
 
         int SaveContest(EditContestViewModel model);
+
+        UserListViewModel GetUsers();
+        UserEditViewModel GetUser(long id);
     }
 }

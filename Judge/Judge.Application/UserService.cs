@@ -24,7 +24,7 @@ namespace Judge.Application
             {
                 var userRepository = uow.UserRepository;
 
-                var user = userRepository.GetUser(id);
+                var user = userRepository.Get(id);
 
                 if (user == null)
                 {

@@ -4,6 +4,7 @@ using Judge.Application.Interfaces;
 using Judge.Application.ViewModels.Admin.Contests;
 using Judge.Application.ViewModels.Admin.Languages;
 using Judge.Application.ViewModels.Admin.Problems;
+using Judge.Application.ViewModels.Admin.Users;
 
 namespace Judge.Web.Controllers
 {
@@ -13,12 +14,14 @@ namespace Judge.Web.Controllers
         private readonly IAdminService _adminService;
         private readonly IProblemsService _problemsService;
         private readonly IContestsService _contestsService;
+        private readonly ISecurityService securityService;
 
-        public AdminController(IAdminService adminService, IProblemsService problemsService, IContestsService contestsService)
+        public AdminController(IAdminService adminService, IProblemsService problemsService, IContestsService contestsService, ISecurityService securityService)
         {
             _adminService = adminService;
             _problemsService = problemsService;
             _contestsService = contestsService;
+            this.securityService = securityService;
         }
 
         public ActionResult Index()
@@ -111,6 +114,37 @@ namespace Judge.Web.Controllers
             }
             var problems = _problemsService.GetAllProblems();
             ViewBag.Problems = problems;
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult Users()
+        {
+            var model = _adminService.GetUsers();
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult EditUser(long id)
+        {
+            var model = _adminService.GetUser(id);
+
+            if (model == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(model);
+        }
+
+        public ActionResult Edituser(UserEditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                securityService.UpdateUser(model);
+                return RedirectToAction("Users");
+            }
+
             return View(model);
         }
 

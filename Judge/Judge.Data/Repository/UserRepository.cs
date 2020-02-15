@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Judge.Model;
 using Judge.Model.Account;
 using Judge.Model.Entities;
 
@@ -15,12 +16,7 @@ namespace Judge.Data.Repository
             _context = context;
         }
 
-        public IEnumerable<User> GetUsers(IEnumerable<long> users)
-        {
-            return _context.Set<User>().Include(o => o.UserRoles).Where(o => users.Contains(o.Id)).OrderBy(o => o.Id).AsEnumerable();
-        }
-
-        public User GetUser(long id)
+        public User Get(long id)
         {
             return _context.Set<User>().Include(o => o.UserRoles).FirstOrDefault(o => o.Id == id);
         }
@@ -40,9 +36,14 @@ namespace Judge.Data.Repository
             _context.Set<User>().Remove(user);
         }
 
-        public User GetUser(string userName)
+        public User Get(string userName)
         {
             return _context.Set<User>().Include(o => o.UserRoles).FirstOrDefault(o => o.Email == userName);
+        }
+
+        public IEnumerable<User> Find(ISpecification<User> specification)
+        {
+            return _context.Set<User>().Include(o => o.UserRoles).Where(specification.IsSatisfiedBy);
         }
     }
 }

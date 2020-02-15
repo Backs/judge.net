@@ -3,6 +3,7 @@ using System.Security.Principal;
 using Judge.Application.Interfaces;
 using Judge.Application.ViewModels.Submit;
 using Judge.Data;
+using Judge.Model.Account;
 using Judge.Model.SubmitSolution;
 
 namespace Judge.Application
@@ -34,8 +35,8 @@ namespace Judge.Application
                 var submits = submitResultRepository.GetSubmits(specification, page, pageSize);
                 var count = submitResultRepository.Count(specification);
 
-                var task = taskRepository.GetTasks(new[] { problemId }).First();
-                var user = userRepository.GetUsers(new[] { userId }).First();
+                var task = taskRepository.Get(problemId);
+                var user = userRepository.Get(userId);
 
                 var items = submits.Select(o => new SubmitQueueItem(o, languages[o.Submit.LanguageId], task.Name, user.UserName) { ResultsEnabled = true })
                     .ToArray();
@@ -66,8 +67,9 @@ namespace Judge.Application
                 var languages = languageRepository.GetLanguages().ToDictionary(o => o.Id, o => o.Name);
                 var submits = submitResultRepository.GetSubmits(AllProblemsSpecification.Instance, page, pageSize).ToArray();
 
+                var userSpecification = new UserListSpecification(submits.Select(o => o.Submit.UserId).Distinct());
                 var tasks = taskRepository.GetTasks(submits.Select(o => o.Submit.ProblemId).Distinct()).ToDictionary(o => o.Id, o => o.Name);
-                var users = userRepository.GetUsers(submits.Select(o => o.Submit.UserId).Distinct()).ToDictionary(o => o.Id, o => o.UserName);
+                var users = userRepository.Find(userSpecification).ToDictionary(o => o.Id, o => o.UserName);
 
                 var hasPermission = _principal.IsInRole("admin");
 

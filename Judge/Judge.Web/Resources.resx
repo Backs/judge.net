@@ -315,4 +315,16 @@
   <data name="EditContest" xml:space="preserve">
     <value>Редактировать соревнование</value>
   </data>
+  <data name="Users" xml:space="preserve">
+    <value>Пользователи</value>
+  </data>
+  <data name="UserEmail" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="UserId" xml:space="preserve">
+    <value>Id пользователя</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>Имя пользователя</value>
+  </data>
 </root>

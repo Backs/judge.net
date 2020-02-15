@@ -9,6 +9,8 @@ using Judge.Model.Entities;
 using Judge.Model.SubmitSolution;
 using System.Collections.Generic;
 using System.Linq;
+using Judge.Application.ViewModels.Admin.Users;
+using Judge.Model.Account;
 using SubmitQueueItem = Judge.Application.ViewModels.Admin.Submits.SubmitQueueItem;
 
 namespace Judge.Application
@@ -102,8 +104,9 @@ namespace Judge.Application
                 var languages = languageRepository.GetLanguages().ToDictionary(o => o.Id, o => o.Name);
                 var submits = submitResultRepository.GetSubmits(AllSubmitsSpecification.Instance, 1, 100).ToArray();
 
+                var userSpecification = new UserListSpecification(submits.Select(o => o.Submit.UserId).Distinct());
                 var tasks = taskRepository.GetTasks(submits.Select(o => o.Submit.ProblemId).Distinct()).ToDictionary(o => o.Id, o => o.Name);
-                var users = userRepository.GetUsers(submits.Select(o => o.Submit.UserId).Distinct()).ToDictionary(o => o.Id, o => o.UserName);
+                var users = userRepository.Find(userSpecification).ToDictionary(o => o.Id, o => o.UserName);
 
                 var contestTasks = contestTaskRepository.GetTasks().ToArray();
                 var items = submits.Select(o => GetSubmitQueueItem(o, languages, users, tasks, contestTasks));
@@ -232,6 +235,36 @@ namespace Judge.Application
 
                 uow.Commit();
                 return contest.Id;
+            }
+        }
+
+        public UserListViewModel GetUsers()
+        {
+            using (var uow = this._factory.GetUnitOfWork())
+            {
+                var users = uow.UserRepository.Find(AllUsersSpecification.Instance);
+
+                var result = new UserListViewModel
+                {
+                    Users = users.Select(o => new UserListItem { Id = o.Id, Email = o.Email, UserName = o.UserName }).ToArray()
+                };
+
+                return result;
+            }
+        }
+
+        public UserEditViewModel GetUser(long id)
+        {
+            using (var uow = _factory.GetUnitOfWork())
+            {
+                var user = uow.UserRepository.Get(id);
+
+                if (user == null)
+                {
+                    return null;
+                }
+
+                return new UserEditViewModel { Id = user.Id, Email = user.Email, UserName = user.UserName };
             }
         }
 

@@ -59,7 +59,7 @@ namespace Judge.Tests.Application.SubmitQueueServiceTests
 
             _taskRepository.Stub(o => o.GetTasks(Arg<long[]>.Is.Anything)).Return(new[] { new TaskName { Id = 1, Name = "A+B" } });
 
-            _userRepository.Stub(o => o.GetUsers(Arg<long[]>.Is.Anything)).Return(new[] { new User { Id = 1 } });
+            _userRepository.Stub(o => o.Find(Arg<ISpecification<User>>.Is.Anything)).Return(new[] { new User { Id = 1 } });
 
             var model = _service.GetSubmitQueue(1, 1, 1);
 

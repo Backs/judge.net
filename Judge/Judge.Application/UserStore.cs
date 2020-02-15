@@ -61,7 +61,7 @@ namespace Judge.Application
             using (var uow = _unitOfWorkFactory.GetUnitOfWork())
             {
                 var userRepository = uow.UserRepository;
-                var result = userRepository.GetUser(userId);
+                var result = userRepository.Get(userId);
 
                 return Task.FromResult(new ApplicationUser(result));
             }
@@ -72,7 +72,7 @@ namespace Judge.Application
             using (var uow = _unitOfWorkFactory.GetUnitOfWork())
             {
                 var userRepository = uow.UserRepository;
-                var result = userRepository.GetUser(userName);
+                var result = userRepository.Get(userName);
 
                 return Task.FromResult(result == null ? null : new ApplicationUser(result));
             }

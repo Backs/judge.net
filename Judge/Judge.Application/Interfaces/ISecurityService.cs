@@ -1,4 +1,5 @@
 ﻿using Judge.Application.ViewModels.Account;
+using Judge.Application.ViewModels.Admin.Users;
 using Microsoft.AspNet.Identity.Owin;
 
 namespace Judge.Application.Interfaces
@@ -9,5 +10,6 @@ namespace Judge.Application.Interfaces
         void SignOut();
         void Register(RegisterViewModel model);
         bool UserExists(string email);
+        void UpdateUser(UserEditViewModel model);
     }
 }

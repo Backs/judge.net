@@ -1,0 +1,33 @@
+﻿@model Judge.Application.ViewModels.Admin.Users.UserListViewModel
+@{
+    ViewBag.Title = Resources.Users;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table table-condensed" id="languages">
+    <thead>
+        <tr>
+            <th>@Resources.UserId</th>
+            <th>@Resources.UserEmail</th>
+            <th>@Resources.UserName</th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model.Users)
+    {
+        <tr>
+            <td>
+                @item.Id
+            </td>
+            <td>
+                @Html.ActionLink(item.Email, "EditUser", "Admin", new { id = item.Id }, null)
+            </td>
+            <td>
+                @item.UserName
+            </td>
+        </tr>
+    }
+
+</table>

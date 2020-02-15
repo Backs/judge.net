@@ -12,6 +12,7 @@ using Judge.Application.ViewModels.Contests.ContestTasks;
 using Judge.Application.ViewModels.Submit;
 using Judge.Data;
 using Judge.Model;
+using Judge.Model.Account;
 using Judge.Model.Contests;
 using Judge.Model.SubmitSolution;
 
@@ -160,7 +161,7 @@ namespace Judge.Application
                 var submits = submitResultRepository.GetSubmits(specification, page, pageSize);
                 var count = submitResultRepository.Count(specification);
 
-                var user = userRepository.GetUsers(new[] { userId }).First();
+                var user = userRepository.Get(userId);
 
                 var items = submits.Select(o => new SubmitQueueItem(o, languages[o.Submit.LanguageId], task.Task.Name, user.UserName) { ResultsEnabled = true })
                     .ToArray();
@@ -192,7 +193,8 @@ namespace Judge.Application
                 var tasks = contestTaskRepository.GetTasks(id);
                 var results = contestResultRepository.Get(id).ToArray();
 
-                var users = userRepository.GetUsers(results.Select(o => o.UserId).Distinct()).ToDictionary(o => o.Id, o => o.UserName);
+                var userSpecification = new UserListSpecification(results.Select(o => o.UserId).Distinct());
+                var users = userRepository.Find(userSpecification).ToDictionary(o => o.Id, o => o.UserName);
 
                 return new ContestResultViewModel
                 {
