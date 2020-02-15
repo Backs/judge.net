@@ -36,9 +36,9 @@ namespace Judge.Tests.Data.SubmitResultRepositoryTests
         {
             var factory = _container.GetInstance<IUnitOfWorkFactory>();
             long submitId;
-            using (var uow = factory.GetUnitOfWork(true))
+            using (var uow = factory.GetUnitOfWork())
             {
-                var submitRepository = uow.GetRepository<ISubmitRepository>();
+                var submitRepository = uow.SubmitRepository;
                 var submit = ProblemSubmit.Create();
                 submit.FileName = "main.cpp";
                 submit.LanguageId = 1;
@@ -50,9 +50,9 @@ namespace Judge.Tests.Data.SubmitResultRepositoryTests
                 submitId = submit.Id;
             }
 
-            using (var uow = factory.GetUnitOfWork(true))
+            using (var uow = factory.GetUnitOfWork())
             {
-                var submitResultRepository = uow.GetRepository<ISubmitResultRepository>();
+                var submitResultRepository = uow.SubmitResultRepository;
                 var submit = submitResultRepository.DequeueUnchecked();
 
                 Assert.NotNull(submit);

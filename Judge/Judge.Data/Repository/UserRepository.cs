@@ -17,12 +17,12 @@ namespace Judge.Data.Repository
 
         public IEnumerable<User> GetUsers(IEnumerable<long> users)
         {
-            return _context.Set<User>().Where(o => users.Contains(o.Id)).OrderBy(o => o.Id).AsEnumerable();
+            return _context.Set<User>().Include(o => o.UserRoles).Where(o => users.Contains(o.Id)).OrderBy(o => o.Id).AsEnumerable();
         }
 
         public User GetUser(long id)
         {
-            return _context.Set<User>().FirstOrDefault(o => o.Id == id);
+            return _context.Set<User>().Include(o => o.UserRoles).FirstOrDefault(o => o.Id == id);
         }
 
         public void Add(User user)
@@ -42,7 +42,7 @@ namespace Judge.Data.Repository
 
         public User GetUser(string userName)
         {
-            return _context.Set<User>().FirstOrDefault(o => o.Email == userName);
+            return _context.Set<User>().Include(o => o.UserRoles).FirstOrDefault(o => o.Email == userName);
         }
     }
 }

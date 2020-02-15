@@ -1,46 +1,63 @@
-﻿using System;
-using System.Transactions;
-using SimpleInjector;
+﻿using System.Data.Entity;
+using Judge.Data.Repository;
+using Judge.Model.Account;
+using Judge.Model.CheckSolution;
+using Judge.Model.Configuration;
+using Judge.Model.Contests;
+using Judge.Model.SubmitSolution;
 
 namespace Judge.Data
 {
     internal sealed class UnitOfWork : IUnitOfWork
     {
-        private readonly TransactionScope _transactionScope;
-        private readonly Container _container;
         private readonly DataContext _context;
+        private IContestResultRepository _contestResultRepository;
+        private IContestsRepository _contestsRepository;
+        private IContestTaskRepository _contestTaskRepository;
+        private ILanguageRepository _languageRepository;
+        private ISubmitRepository _submitRepository;
+        private ISubmitResultRepository _submitResultRepository;
+        private ITaskNameRepository _taskNameRepository;
+        private ITaskRepository _taskRepository;
+        private IUserRepository _userRepository;
+        private DbContextTransaction _transaction;
 
-        public UnitOfWork(bool transactionRequired, Container container, DataContext context)
+        public UnitOfWork(DataContext context, bool startTransaction)
         {
-            _container = container;
-            _context = context;
-            if (transactionRequired)
+            this._context = context;
+            if (startTransaction)
             {
-                _transactionScope = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted });
+                this._transaction = this._context.Database.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
             }
         }
         public void Dispose()
         {
-            _transactionScope?.Dispose();
+            _transaction?.Dispose();
+            _context?.Dispose();
         }
 
         public void Commit()
         {
-            if (_transactionScope == null)
-            {
-                throw new InvalidOperationException("Commit transaction called, but transaction wasn't opened");
-            }
-
-            if (_context != null)
-            {
-                _context.SaveChanges();
-                _transactionScope.Complete();
-            }
+            _transaction?.Commit();
+            _context?.SaveChanges();
         }
 
-        public T GetRepository<T>() where T : class
-        {
-            return _container.GetInstance<T>();
-        }
+        public IContestResultRepository ContestResultRepository => _contestResultRepository ?? (_contestResultRepository = new ContestResultRepository(_context));
+
+        public IContestsRepository ContestsRepository => _contestsRepository ?? (_contestsRepository = new ContestsRepository(_context));
+
+        public IContestTaskRepository ContestTaskRepository => _contestTaskRepository ?? (_contestTaskRepository = new ContestTaskRepository(_context));
+
+        public ILanguageRepository LanguageRepository => _languageRepository ?? (_languageRepository = new LanguageRepository(_context));
+
+        public ISubmitRepository SubmitRepository => _submitRepository ?? (_submitRepository = new SubmitRepository(_context));
+
+        public ISubmitResultRepository SubmitResultRepository => _submitResultRepository ?? (_submitResultRepository = new SubmitResultRepository(_context));
+
+        public ITaskNameRepository TaskNameRepository => _taskNameRepository ?? (_taskNameRepository = new TaskNameRepository(_context));
+
+        public ITaskRepository TaskRepository => _taskRepository ?? (_taskRepository = new TaskRepository(_context));
+
+        public IUserRepository UserRepository => _userRepository ?? (_userRepository = new UserRepository(_context));
     }
 }

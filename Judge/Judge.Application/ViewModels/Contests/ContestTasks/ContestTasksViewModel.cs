@@ -5,13 +5,13 @@ namespace Judge.Application.ViewModels.Contests.ContestTasks
 {
     public sealed class ContestTasksViewModel
     {
-        public ContestTasksViewModel(IEnumerable<ContestTaskItem> tasks)
+        public ContestTasksViewModel(ICollection<ContestTaskItem> tasks)
         {
             Tasks = tasks;
         }
 
         public ContestItem Contest { get; set; }
 
-        public IEnumerable<ContestTaskItem> Tasks { get; }
+        public ICollection<ContestTaskItem> Tasks { get; }
     }
 }

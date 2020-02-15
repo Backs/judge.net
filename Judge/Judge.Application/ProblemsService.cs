@@ -27,10 +27,10 @@ namespace Judge.Application
             if (pageSize <= 0)
                 throw new ArgumentOutOfRangeException(nameof(pageSize));
 
-            using (var unitOfWork = _factory.GetUnitOfWork(transactionRequired: false))
+            using (var unitOfWork = _factory.GetUnitOfWork())
             {
-                var taskRepository = unitOfWork.GetRepository<ITaskNameRepository>();
-                var submitResultRepository = unitOfWork.GetRepository<ISubmitResultRepository>();
+                var taskRepository = unitOfWork.TaskNameRepository;
+                var submitResultRepository = unitOfWork.SubmitResultRepository;
 
                 var tasks = GetProblems(page, pageSize, taskRepository, showClosed);
 
@@ -72,9 +72,9 @@ namespace Judge.Application
 
         public StatementViewModel GetStatement(long id)
         {
-            using (var unitOfWork = _factory.GetUnitOfWork(transactionRequired: false))
+            using (var unitOfWork = _factory.GetUnitOfWork())
             {
-                var taskRepository = unitOfWork.GetRepository<ITaskRepository>();
+                var taskRepository = unitOfWork.TaskRepository;
                 var task = taskRepository.Get(id);
                 if (task == null)
                     return null;
@@ -98,9 +98,9 @@ namespace Judge.Application
 
         public IReadOnlyCollection<ProblemItem> GetAllProblems()
         {
-            using (var uow = _factory.GetUnitOfWork(transactionRequired: false))
+            using (var uow = _factory.GetUnitOfWork())
             {
-                var taskRepository = uow.GetRepository<ITaskNameRepository>();
+                var taskRepository = uow.TaskNameRepository;
                 return taskRepository.GetTasks(AllTasksSpecification.Instance, 1, int.MaxValue)
                     .Select(o => new ProblemItem
                     {

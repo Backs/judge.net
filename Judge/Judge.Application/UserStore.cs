@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Judge.Data;
-using Judge.Model.Account;
 using Judge.Model.Entities;
 using Microsoft.AspNet.Identity;
 
@@ -24,10 +23,11 @@ namespace Judge.Application
 
         public Task CreateAsync(User user)
         {
-            using (var uow = _unitOfWorkFactory.GetUnitOfWork(true))
+            using (var uow = _unitOfWorkFactory.GetUnitOfWork())
             {
-                var userRepository = uow.GetRepository<IUserRepository>();
+                var userRepository = uow.UserRepository;
                 userRepository.Add(user);
+                uow.Commit();
             }
 
             return Task.CompletedTask;
@@ -35,10 +35,11 @@ namespace Judge.Application
 
         public Task UpdateAsync(User user)
         {
-            using (var uow = _unitOfWorkFactory.GetUnitOfWork(true))
+            using (var uow = _unitOfWorkFactory.GetUnitOfWork())
             {
-                var userRepository = uow.GetRepository<IUserRepository>();
+                var userRepository = uow.UserRepository;
                 userRepository.Update(user);
+                uow.Commit();
             }
 
             return Task.CompletedTask;
@@ -46,10 +47,11 @@ namespace Judge.Application
 
         public Task DeleteAsync(User user)
         {
-            using (var uow = _unitOfWorkFactory.GetUnitOfWork(true))
+            using (var uow = _unitOfWorkFactory.GetUnitOfWork())
             {
-                var userRepository = uow.GetRepository<IUserRepository>();
+                var userRepository = uow.UserRepository;
                 userRepository.Delete(user);
+                uow.Commit();
             }
 
             return Task.CompletedTask;
@@ -57,9 +59,9 @@ namespace Judge.Application
 
         public Task<User> FindByIdAsync(long userId)
         {
-            using (var uow = _unitOfWorkFactory.GetUnitOfWork(false))
+            using (var uow = _unitOfWorkFactory.GetUnitOfWork())
             {
-                var userRepository = uow.GetRepository<IUserRepository>();
+                var userRepository = uow.UserRepository;
                 var result = userRepository.GetUser(userId);
 
                 return Task.FromResult(result);
@@ -68,9 +70,9 @@ namespace Judge.Application
 
         public Task<User> FindByNameAsync(string userName)
         {
-            using (var uow = _unitOfWorkFactory.GetUnitOfWork(false))
+            using (var uow = _unitOfWorkFactory.GetUnitOfWork())
             {
-                var userRepository = uow.GetRepository<IUserRepository>();
+                var userRepository = uow.UserRepository;
                 var result = userRepository.GetUser(userName);
 
                 return Task.FromResult(result);

@@ -27,11 +27,11 @@ namespace Judge.Tests.Application.ContestsServiceTests
             _contestTaskRepository = MockRepository.GenerateMock<IContestTaskRepository>();
             _submitRepository = MockRepository.GenerateMock<ISubmitRepository>();
             _contestsRepository = MockRepository.GenerateMock<IContestsRepository>();
-            unitOfWork.Stub(o => o.GetRepository<IContestTaskRepository>()).Return(_contestTaskRepository);
-            unitOfWork.Stub(o => o.GetRepository<ISubmitRepository>()).Return(_submitRepository);
-            unitOfWork.Stub(o => o.GetRepository<IContestsRepository>()).Return(_contestsRepository);
+            unitOfWork.Stub(o => o.ContestTaskRepository).Return(_contestTaskRepository);
+            unitOfWork.Stub(o => o.SubmitRepository).Return(_submitRepository);
+            unitOfWork.Stub(o => o.ContestsRepository).Return(_contestsRepository);
 
-            factory.Stub(o => o.GetUnitOfWork(Arg<bool>.Is.Anything)).Return(unitOfWork);
+            factory.Stub(o => o.GetUnitOfWork()).Return(unitOfWork);
 
             _service = new ContestsService(factory);
         }

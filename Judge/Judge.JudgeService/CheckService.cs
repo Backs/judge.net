@@ -16,9 +16,9 @@ namespace Judge.JudgeService
 
         public void Check()
         {
-            using (var unitOfWork = _unitOfWorkFactory.GetUnitOfWork(transactionRequired: true))
+            using (var unitOfWork = _unitOfWorkFactory.GetUnitOfWork(true))
             {
-                var repository = unitOfWork.GetRepository<ISubmitResultRepository>();
+                var repository = unitOfWork.SubmitResultRepository;
                 var submit = repository.DequeueUnchecked();
                 if (submit == null)
                     return;

@@ -22,12 +22,12 @@ namespace Judge.Tests.Application.SubmitSolutionServiceTests
         {
             var factory = MockRepository.GenerateMock<IUnitOfWorkFactory>();
             var unitOfWork = MockRepository.GenerateMock<IUnitOfWork>();
-            factory.Stub(o => o.GetUnitOfWork(Arg<bool>.Is.Anything)).Return(unitOfWork);
+            factory.Stub(o => o.GetUnitOfWork()).Return(unitOfWork);
 
             _taskRepository = MockRepository.GenerateMock<ITaskNameRepository>();
             _submitResultRepository = MockRepository.GenerateMock<ISubmitResultRepository>();
-            unitOfWork.Stub(o => o.GetRepository<ITaskNameRepository>()).Return(_taskRepository);
-            unitOfWork.Stub(o => o.GetRepository<ISubmitResultRepository>()).Return(_submitResultRepository);
+            unitOfWork.Stub(o => o.TaskNameRepository).Return(_taskRepository);
+            unitOfWork.Stub(o => o.SubmitResultRepository).Return(_submitResultRepository);
 
             var principal = MockRepository.GenerateMock<IPrincipal>();
             _service = new SubmitSolutionService(factory, principal);

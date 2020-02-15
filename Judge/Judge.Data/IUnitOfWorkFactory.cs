@@ -2,6 +2,8 @@
 {
     public interface IUnitOfWorkFactory
     {
-        IUnitOfWork GetUnitOfWork(bool transactionRequired);
+        IUnitOfWork GetUnitOfWork();
+
+        IUnitOfWork GetUnitOfWork(bool startTransaction);
     }
 }

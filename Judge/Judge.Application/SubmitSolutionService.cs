@@ -29,15 +29,15 @@ namespace Judge.Application
 
         public IEnumerable<LanguageViewModel> GetLanguages()
         {
-            using (var uow = _factory.GetUnitOfWork(false))
+            using (var uow = _factory.GetUnitOfWork())
             {
-                var languageRepository = uow.GetRepository<ILanguageRepository>();
+                var languageRepository = uow.LanguageRepository;
 
                 return languageRepository.GetLanguages().Select(o => new LanguageViewModel
                 {
                     Id = o.Id,
                     Name = o.Name
-                }).AsEnumerable();
+                }).ToArray();
             }
         }
 
@@ -62,9 +62,9 @@ namespace Judge.Application
             submit.UserHost = userInfo.Host;
             submit.SessionId = userInfo.SessionId;
 
-            using (var unitOfWork = _factory.GetUnitOfWork(true))
+            using (var unitOfWork = _factory.GetUnitOfWork())
             {
-                var submitRepository = unitOfWork.GetRepository<ISubmitRepository>();
+                var submitRepository = unitOfWork.SubmitRepository;
                 submitRepository.Add(submit);
                 unitOfWork.Commit();
             }
@@ -72,10 +72,10 @@ namespace Judge.Application
 
         public SolutionViewModel GetSolution(long submitResultId, long userId)
         {
-            using (var unitOfWork = _factory.GetUnitOfWork(false))
+            using (var unitOfWork = _factory.GetUnitOfWork())
             {
-                var submitResultRepository = unitOfWork.GetRepository<ISubmitResultRepository>();
-                var taskRepository = unitOfWork.GetRepository<ITaskNameRepository>();
+                var submitResultRepository = unitOfWork.SubmitResultRepository;
+                var taskRepository = unitOfWork.TaskNameRepository;
 
                 var result = submitResultRepository.Get(submitResultId);
                 if (result == null)

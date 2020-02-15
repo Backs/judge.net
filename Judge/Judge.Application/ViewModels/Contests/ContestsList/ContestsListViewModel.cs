@@ -4,11 +4,11 @@ namespace Judge.Application.ViewModels.Contests.ContestsList
 {
     public sealed class ContestsListViewModel
     {
-        public ContestsListViewModel(IEnumerable<ContestItem> contests)
+        public ContestsListViewModel(ICollection<ContestItem> contests)
         {
             Contests = contests;
         }
 
-        public IEnumerable<ContestItem> Contests { get; }
+        public ICollection<ContestItem> Contests { get; }
     }
 }

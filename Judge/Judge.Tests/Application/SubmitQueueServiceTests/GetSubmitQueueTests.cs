@@ -33,12 +33,12 @@ namespace Judge.Tests.Application.SubmitQueueServiceTests
             _taskRepository = MockRepository.GenerateMock<ITaskNameRepository>();
             _userRepository = MockRepository.GenerateMock<IUserRepository>();
 
-            unitOfWork.Stub(o => o.GetRepository<ISubmitResultRepository>()).Return(_submitResultRepository);
-            unitOfWork.Stub(o => o.GetRepository<ILanguageRepository>()).Return(languageRepository);
-            unitOfWork.Stub(o => o.GetRepository<ITaskNameRepository>()).Return(_taskRepository);
-            unitOfWork.Stub(o => o.GetRepository<IUserRepository>()).Return(_userRepository);
+            unitOfWork.Stub(o => o.SubmitResultRepository).Return(_submitResultRepository);
+            unitOfWork.Stub(o => o.LanguageRepository).Return(languageRepository);
+            unitOfWork.Stub(o => o.TaskNameRepository).Return(_taskRepository);
+            unitOfWork.Stub(o => o.UserRepository).Return(_userRepository);
 
-            unitOfWorkFactory.Stub(o => o.GetUnitOfWork(Arg<bool>.Is.Anything)).Return(unitOfWork);
+            unitOfWorkFactory.Stub(o => o.GetUnitOfWork()).Return(unitOfWork);
 
             var principal = MockRepository.GenerateMock<IPrincipal>();
 

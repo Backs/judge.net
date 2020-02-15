@@ -80,4 +80,7 @@
     <Compile Remove="bin\Debug\WorkingDirectory\Program.cs" />
     <Compile Remove="bin\Debug\Compiler\CompilerTests\CompileTests.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\UnitOfWorkTests\" />
+  </ItemGroup>
 </Project>

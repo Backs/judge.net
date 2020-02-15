@@ -3,9 +3,6 @@ using System.Security.Principal;
 using Judge.Application.Interfaces;
 using Judge.Application.ViewModels.Submit;
 using Judge.Data;
-using Judge.Model.Account;
-using Judge.Model.CheckSolution;
-using Judge.Model.Configuration;
 using Judge.Model.SubmitSolution;
 
 namespace Judge.Application
@@ -23,12 +20,12 @@ namespace Judge.Application
 
         public SubmitQueueViewModel GetSubmitQueue(long userId, long problemId, int page, int pageSize)
         {
-            using (var uow = _unitOfWorkFactory.GetUnitOfWork(false))
+            using (var uow = _unitOfWorkFactory.GetUnitOfWork())
             {
-                var submitResultRepository = uow.GetRepository<ISubmitResultRepository>();
-                var languageRepository = uow.GetRepository<ILanguageRepository>();
-                var taskRepository = uow.GetRepository<ITaskNameRepository>();
-                var userRepository = uow.GetRepository<IUserRepository>();
+                var submitResultRepository = uow.SubmitResultRepository;
+                var languageRepository = uow.LanguageRepository;
+                var taskRepository = uow.TaskNameRepository;
+                var userRepository = uow.UserRepository;
 
                 var languages = languageRepository.GetLanguages().ToDictionary(o => o.Id, o => o.Name);
 
@@ -40,7 +37,8 @@ namespace Judge.Application
                 var task = taskRepository.GetTasks(new[] { problemId }).First();
                 var user = userRepository.GetUsers(new[] { userId }).First();
 
-                var items = submits.Select(o => new SubmitQueueItem(o, languages[o.Submit.LanguageId], task.Name, user.UserName) { ResultsEnabled = true });
+                var items = submits.Select(o => new SubmitQueueItem(o, languages[o.Submit.LanguageId], task.Name, user.UserName) { ResultsEnabled = true })
+                    .ToArray();
 
                 var model = new SubmitQueueViewModel(items)
                 {
@@ -58,12 +56,12 @@ namespace Judge.Application
 
         public SubmitQueueViewModel GetSubmitQueue(long? userId, int page, int pageSize)
         {
-            using (var uow = _unitOfWorkFactory.GetUnitOfWork(false))
+            using (var uow = _unitOfWorkFactory.GetUnitOfWork())
             {
-                var submitResultRepository = uow.GetRepository<ISubmitResultRepository>();
-                var languageRepository = uow.GetRepository<ILanguageRepository>();
-                var taskRepository = uow.GetRepository<ITaskNameRepository>();
-                var userRepository = uow.GetRepository<IUserRepository>();
+                var submitResultRepository = uow.SubmitResultRepository;
+                var languageRepository = uow.LanguageRepository;
+                var taskRepository = uow.TaskNameRepository;
+                var userRepository = uow.UserRepository;
 
                 var languages = languageRepository.GetLanguages().ToDictionary(o => o.Id, o => o.Name);
                 var submits = submitResultRepository.GetSubmits(AllProblemsSpecification.Instance, page, pageSize).ToArray();
@@ -76,7 +74,7 @@ namespace Judge.Application
                 var items = submits.Select(o => new SubmitQueueItem(o, languages[o.Submit.LanguageId], tasks[o.Submit.ProblemId], users[o.Submit.UserId])
                 {
                     ResultsEnabled = userId == o.Submit.UserId || hasPermission
-                });
+                }).ToArray();
 
                 var count = submitResultRepository.Count(AllProblemsSpecification.Instance);
 

@@ -20,9 +20,9 @@ namespace Judge.Application
 
         public UserViewModel GetUserInfo(long id)
         {
-            using (var uow = _unitOfWorkFactory.GetUnitOfWork(false))
+            using (var uow = _unitOfWorkFactory.GetUnitOfWork())
             {
-                var userRepository = uow.GetRepository<IUserRepository>();
+                var userRepository = uow.UserRepository;
 
                 var user = userRepository.GetUser(id);
 
@@ -31,8 +31,8 @@ namespace Judge.Application
                     return null;
                 }
 
-                var submitRepository = uow.GetRepository<ISubmitRepository>();
-                var taskNameRepository = uow.GetRepository<ITaskNameRepository>();
+                var submitRepository = uow.SubmitRepository;
+                var taskNameRepository = uow.TaskNameRepository;
 
                 var solvedTasks = submitRepository.Get(new UserSolvedSpecification(id)).Select(o => o.ProblemId).ToArray();
                 var unsolvedTasks = submitRepository.Get(new UserUnsolvedSpecification(id)).Select(o => o.ProblemId).ToArray();

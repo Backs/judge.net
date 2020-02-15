@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Judge.Checker;
 using Judge.Compiler;
+using Judge.Data;
 using Judge.Model.CheckSolution;
 using Judge.Model.Configuration;
 using Judge.Model.Entities;
@@ -15,17 +16,15 @@ namespace Judge.JudgeService
 {
     internal sealed class JudgeServiceImplementation : IJudgeService
     {
-        private readonly ILanguageRepository _languageRepository;
-        private readonly ITaskRepository _taskRepository;
-
+        private readonly IUnitOfWorkFactory unitOfWorkFactory;
+        
         private readonly string _workingDirectory = ConfigurationManager.AppSettings["WorkingDirectory"];
         private readonly string _storagePath = ConfigurationManager.AppSettings["StoragePath"];
         private readonly string _runnerPath = ConfigurationManager.AppSettings["RunnnerPath"];
 
-        public JudgeServiceImplementation(ILanguageRepository languageRepository, ITaskRepository taskRepository)
+        public JudgeServiceImplementation(IUnitOfWorkFactory unitOfWorkFactory)
         {
-            _languageRepository = languageRepository;
-            _taskRepository = taskRepository;
+            this.unitOfWorkFactory = unitOfWorkFactory;
         }
 
         private CompileResult Compile(Language language, string fileName, string sourceCode)
@@ -58,8 +57,13 @@ namespace Judge.JudgeService
         {
             CreateWorkingDirectory();
 
-            var language = _languageRepository.Get(submitResult.Submit.LanguageId);
-            var task = _taskRepository.Get(submitResult.Submit.ProblemId);
+            Language language;
+            Task task;
+            using (var uow = this.unitOfWorkFactory.GetUnitOfWork())
+            {
+                language = uow.LanguageRepository.Get(submitResult.Submit.LanguageId);
+                task = uow.TaskRepository.Get(submitResult.Submit.ProblemId);
+            }
 
             CompileResult compileResult;
             if (language.IsCompilable)

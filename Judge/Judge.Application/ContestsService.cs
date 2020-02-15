@@ -12,8 +12,6 @@ using Judge.Application.ViewModels.Contests.ContestTasks;
 using Judge.Application.ViewModels.Submit;
 using Judge.Data;
 using Judge.Model;
-using Judge.Model.Account;
-using Judge.Model.Configuration;
 using Judge.Model.Contests;
 using Judge.Model.SubmitSolution;
 
@@ -30,24 +28,24 @@ namespace Judge.Application
 
         public ContestsListViewModel GetContests(bool showAll)
         {
-            using (var unitOfWork = _factory.GetUnitOfWork(false))
+            using (var unitOfWork = _factory.GetUnitOfWork())
             {
-                var repository = unitOfWork.GetRepository<IContestsRepository>();
+                var repository = unitOfWork.ContestsRepository;
 
                 var specification = showAll ? (ISpecification<Contest>)AllContestsSpecification.Instance : OpenedContestsSpecification.Instance;
-                var items = repository.GetList(specification).Select(o => new ContestItem(o));
+                var items = repository.GetList(specification).Select(o => new ContestItem(o)).ToArray();
                 return new ContestsListViewModel(items);
             }
         }
 
         public ContestTasksViewModel GetTasks(int contestId, long? userId)
         {
-            using (var unitOfWork = _factory.GetUnitOfWork(false))
+            using (var unitOfWork = _factory.GetUnitOfWork())
             {
-                var contestRepository = unitOfWork.GetRepository<IContestsRepository>();
+                var contestRepository = unitOfWork.ContestsRepository;
                 var contest = contestRepository.Get(contestId);
-                var taskRepository = unitOfWork.GetRepository<IContestTaskRepository>();
-                var submitResultRepository = unitOfWork.GetRepository<ISubmitResultRepository>();
+                var taskRepository = unitOfWork.ContestTaskRepository;
+                var submitResultRepository = unitOfWork.SubmitResultRepository;
 
                 var contestTasks = taskRepository.GetTasks(contestId).ToArray();
 
@@ -65,7 +63,8 @@ namespace Judge.Application
                     ProblemId = o.Task.Id,
                     Solved = solvedTasks.Contains(o.Task.Id)
                 })
-                .OrderBy(o => o.Label);
+                .OrderBy(o => o.Label)
+                .ToArray();
 
                 return new ContestTasksViewModel(items)
                 {
@@ -76,15 +75,15 @@ namespace Judge.Application
 
         public ContestStatementViewModel GetStatement(int contestId, string label)
         {
-            using (var unitOfWork = _factory.GetUnitOfWork(false))
+            using (var unitOfWork = _factory.GetUnitOfWork())
             {
-                var contestTaskRepository = unitOfWork.GetRepository<IContestTaskRepository>();
+                var contestTaskRepository = unitOfWork.ContestTaskRepository;
 
                 var task = contestTaskRepository.Get(contestId, label);
                 if (task == null)
                     return null;
 
-                var contestRepository = unitOfWork.GetRepository<IContestsRepository>();
+                var contestRepository = unitOfWork.ContestsRepository;
                 var contest = contestRepository.Get(contestId);
 
                 return new ContestStatementViewModel
@@ -112,16 +111,16 @@ namespace Judge.Application
                 sourceCode = sr.ReadToEnd();
             }
 
-            using (var unitOfWork = _factory.GetUnitOfWork(true))
+            using (var unitOfWork = _factory.GetUnitOfWork())
             {
-                var contest = unitOfWork.GetRepository<IContestsRepository>().Get(contestId);
+                var contest = unitOfWork.ContestsRepository.Get(contestId);
                 if (DateTime.UtcNow < contest.StartTime)
                     throw new InvalidOperationException("Contest not started");
 
                 if (DateTime.UtcNow >= contest.FinishTime)
                     throw new InvalidOperationException("Contest finished");
 
-                var task = unitOfWork.GetRepository<IContestTaskRepository>().Get(contestId, label);
+                var task = unitOfWork.ContestTaskRepository.Get(contestId, label);
 
                 if (task == null)
                     throw new InvalidOperationException("Task not found");
@@ -137,7 +136,7 @@ namespace Judge.Application
                 submit.UserHost = userInfo.Host;
                 submit.SessionId = userInfo.SessionId;
 
-                var submitRepository = unitOfWork.GetRepository<ISubmitRepository>();
+                var submitRepository = unitOfWork.SubmitRepository;
                 submitRepository.Add(submit);
                 unitOfWork.Commit();
             }
@@ -145,12 +144,12 @@ namespace Judge.Application
 
         public SubmitQueueViewModel GetSubmitQueue(long userId, int contestId, string label, int page, int pageSize)
         {
-            using (var uow = _factory.GetUnitOfWork(false))
+            using (var uow = _factory.GetUnitOfWork())
             {
-                var submitResultRepository = uow.GetRepository<ISubmitResultRepository>();
-                var languageRepository = uow.GetRepository<ILanguageRepository>();
-                var userRepository = uow.GetRepository<IUserRepository>();
-                var contestTaskRepository = uow.GetRepository<IContestTaskRepository>();
+                var submitResultRepository = uow.SubmitResultRepository;
+                var languageRepository = uow.LanguageRepository;
+                var userRepository = uow.UserRepository;
+                var contestTaskRepository = uow.ContestTaskRepository;
 
                 var task = contestTaskRepository.Get(contestId, label);
 
@@ -163,7 +162,8 @@ namespace Judge.Application
 
                 var user = userRepository.GetUsers(new[] { userId }).First();
 
-                var items = submits.Select(o => new SubmitQueueItem(o, languages[o.Submit.LanguageId], task.Task.Name, user.UserName) { ResultsEnabled = true });
+                var items = submits.Select(o => new SubmitQueueItem(o, languages[o.Submit.LanguageId], task.Task.Name, user.UserName) { ResultsEnabled = true })
+                    .ToArray();
 
                 var model = new ContestSubmitQueueViewModel(items)
                 {
@@ -181,12 +181,12 @@ namespace Judge.Application
 
         public ContestResultViewModel GetResults(int id)
         {
-            using (var unitOfWork = _factory.GetUnitOfWork(false))
+            using (var unitOfWork = _factory.GetUnitOfWork())
             {
-                var contestResultRepository = unitOfWork.GetRepository<IContestResultRepository>();
-                var contestTaskRepository = unitOfWork.GetRepository<IContestTaskRepository>();
-                var contestRepository = unitOfWork.GetRepository<IContestsRepository>();
-                var userRepository = unitOfWork.GetRepository<IUserRepository>();
+                var contestResultRepository = unitOfWork.ContestResultRepository;
+                var contestTaskRepository = unitOfWork.ContestTaskRepository;
+                var contestRepository = unitOfWork.ContestsRepository;
+                var userRepository = unitOfWork.UserRepository;
 
                 var contest = contestRepository.Get(id);
                 var tasks = contestTaskRepository.GetTasks(id);

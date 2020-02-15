@@ -20,9 +20,9 @@ namespace Judge.Tests.Application.ProblemsServiceTests
 
             _taskRepository = MockRepository.GenerateMock<ITaskRepository>();
 
-            unitOfWork.Stub(o => o.GetRepository<ITaskRepository>()).Return(_taskRepository);
+            unitOfWork.Stub(o => o.TaskRepository).Return(_taskRepository);
 
-            unitOfWorkFactory.Stub(o => o.GetUnitOfWork(Arg<bool>.Is.Anything)).Return(unitOfWork);
+            unitOfWorkFactory.Stub(o => o.GetUnitOfWork()).Return(unitOfWork);
 
             _service = new ProblemsService(unitOfWorkFactory);
         }

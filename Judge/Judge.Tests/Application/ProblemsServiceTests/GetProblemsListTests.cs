@@ -26,10 +26,10 @@ namespace Judge.Tests.Application.ProblemsServiceTests
             _taskRepository = MockRepository.GenerateMock<ITaskNameRepository>();
             _submitResultRepository = MockRepository.GenerateMock<ISubmitResultRepository>();
 
-            unitOfWork.Stub(o => o.GetRepository<ITaskNameRepository>()).Return(_taskRepository);
-            unitOfWork.Stub(o => o.GetRepository<ISubmitResultRepository>()).Return(_submitResultRepository);
+            unitOfWork.Stub(o => o.TaskNameRepository).Return(_taskRepository);
+            unitOfWork.Stub(o => o.SubmitResultRepository).Return(_submitResultRepository);
 
-            unitOfWorkFactory.Stub(o => o.GetUnitOfWork(Arg<bool>.Is.Anything)).Return(unitOfWork);
+            unitOfWorkFactory.Stub(o => o.GetUnitOfWork()).Return(unitOfWork);
 
             _service = new ProblemsService(unitOfWorkFactory);
         }

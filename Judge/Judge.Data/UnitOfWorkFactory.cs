@@ -4,18 +4,21 @@ namespace Judge.Data
 {
     internal sealed class UnitOfWorkFactory : IUnitOfWorkFactory
     {
-        private readonly DataContext _context;
-        private readonly Container _container;
+        private readonly string connectionString;
 
-        public UnitOfWorkFactory(DataContext context, Container container)
+        public UnitOfWorkFactory(string connectionString)
         {
-            _context = context;
-            _container = container;
+            this.connectionString = connectionString;
         }
 
-        public IUnitOfWork GetUnitOfWork(bool transactionRequired)
+        public IUnitOfWork GetUnitOfWork()
         {
-            return new UnitOfWork(transactionRequired, _container, _context);
+            return new UnitOfWork(new DataContext(this.connectionString), false);
+        }
+
+        public IUnitOfWork GetUnitOfWork(bool startTransaction)
+        {
+            return new UnitOfWork(new DataContext(this.connectionString), startTransaction);
         }
     }
 }

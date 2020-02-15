@@ -3,9 +3,7 @@ using Judge.Application.ViewModels.Admin.Contests;
 using Judge.Application.ViewModels.Admin.Languages;
 using Judge.Application.ViewModels.Admin.Problems;
 using Judge.Data;
-using Judge.Model.Account;
 using Judge.Model.CheckSolution;
-using Judge.Model.Configuration;
 using Judge.Model.Contests;
 using Judge.Model.Entities;
 using Judge.Model.SubmitSolution;
@@ -26,9 +24,9 @@ namespace Judge.Application
 
         public List<LanguageEditViewModel> GetLanguages()
         {
-            using (var uow = _factory.GetUnitOfWork(false))
+            using (var uow = _factory.GetUnitOfWork())
             {
-                var repository = uow.GetRepository<ILanguageRepository>();
+                var repository = uow.LanguageRepository;
                 return repository.GetLanguages().Select(o => new LanguageEditViewModel
                 {
                     Id = o.Id,
@@ -47,9 +45,9 @@ namespace Judge.Application
 
         public void SaveLanguages(ICollection<LanguageEditViewModel> languages)
         {
-            using (var uow = _factory.GetUnitOfWork(true))
+            using (var uow = _factory.GetUnitOfWork())
             {
-                var repository = uow.GetRepository<ILanguageRepository>();
+                var repository = uow.LanguageRepository;
                 var databaseLanguages = repository.GetLanguages();
 
                 foreach (var databaseLanguage in databaseLanguages)
@@ -93,13 +91,13 @@ namespace Judge.Application
 
         public IEnumerable<SubmitQueueItem> GetSubmitQueue()
         {
-            using (var uow = _factory.GetUnitOfWork(false))
+            using (var uow = _factory.GetUnitOfWork())
             {
-                var submitResultRepository = uow.GetRepository<ISubmitResultRepository>();
-                var languageRepository = uow.GetRepository<ILanguageRepository>();
-                var taskRepository = uow.GetRepository<ITaskNameRepository>();
-                var userRepository = uow.GetRepository<IUserRepository>();
-                var contestTaskRepository = uow.GetRepository<IContestTaskRepository>();
+                var submitResultRepository = uow.SubmitResultRepository;
+                var languageRepository = uow.LanguageRepository;
+                var taskRepository = uow.TaskNameRepository;
+                var userRepository = uow.UserRepository;
+                var contestTaskRepository = uow.ContestTaskRepository;
 
                 var languages = languageRepository.GetLanguages().ToDictionary(o => o.Id, o => o.Name);
                 var submits = submitResultRepository.GetSubmits(AllSubmitsSpecification.Instance, 1, 100).ToArray();
@@ -116,9 +114,9 @@ namespace Judge.Application
 
         public EditProblemViewModel GetProblem(long id)
         {
-            using (var uow = _factory.GetUnitOfWork(false))
+            using (var uow = _factory.GetUnitOfWork())
             {
-                var taskRepository = uow.GetRepository<ITaskRepository>();
+                var taskRepository = uow.TaskRepository;
                 var task = taskRepository.Get(id);
                 return new EditProblemViewModel
                 {
@@ -135,9 +133,9 @@ namespace Judge.Application
 
         public long SaveProblem(EditProblemViewModel model)
         {
-            using (var uow = _factory.GetUnitOfWork(true))
+            using (var uow = _factory.GetUnitOfWork())
             {
-                var taskRepository = uow.GetRepository<ITaskRepository>();
+                var taskRepository = uow.TaskRepository;
 
                 Task task;
                 if (model.Id != null)
@@ -163,10 +161,10 @@ namespace Judge.Application
 
         public EditContestViewModel GetContest(int id)
         {
-            using (var uow = _factory.GetUnitOfWork(false))
+            using (var uow = _factory.GetUnitOfWork())
             {
-                var contestRepository = uow.GetRepository<IContestsRepository>();
-                var contestTaskRepository = uow.GetRepository<IContestTaskRepository>();
+                var contestRepository = uow.ContestsRepository;
+                var contestTaskRepository = uow.ContestTaskRepository;
 
                 var contest = contestRepository.Get(id);
                 var tasks = contestTaskRepository.GetTasks(id);
@@ -185,10 +183,10 @@ namespace Judge.Application
 
         public int SaveContest(EditContestViewModel model)
         {
-            using (var uow = _factory.GetUnitOfWork(transactionRequired: true))
+            using (var uow = _factory.GetUnitOfWork())
             {
-                var contestRepository = uow.GetRepository<IContestsRepository>();
-                var contestTaskRepository = uow.GetRepository<IContestTaskRepository>();
+                var contestRepository = uow.ContestsRepository;
+                var contestTaskRepository = uow.ContestTaskRepository;
 
                 var contest = model.Id != null ? contestRepository.Get(model.Id.Value) : new Contest();
                 contest.FinishTime = model.FinishTime;
