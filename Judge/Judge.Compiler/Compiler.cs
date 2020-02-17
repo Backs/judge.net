@@ -40,10 +40,10 @@ namespace Judge.Compiler
             {
                 p.Start();
 
-                output = p.StandardOutput.ReadToEnd();
+                output = p.StandardError.ReadToEnd();
                 if (string.IsNullOrWhiteSpace(output))
                 {
-                    output = p.StandardError.ReadToEnd();
+                    output = p.StandardOutput.ReadToEnd();
                 }
                 p.WaitForExit(30 * 1000);
                 exitCode = p.ExitCode;
