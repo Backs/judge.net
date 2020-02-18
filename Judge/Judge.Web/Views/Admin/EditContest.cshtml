@@ -24,7 +24,7 @@
             <div class="form-group">
                 @Html.LabelFor(m => m.StartTime, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.StartTime, "{0:yyyy-MM-dd hh:mm:ss}", new { @type = "datetime", @class = "form-control" })
+                    @Html.TextBoxFor(m => m.StartTime, "{0:yyyy-MM-dd HH:mm:ss}", new { @type = "datetime", @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.StartTime, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -32,7 +32,7 @@
             <div class="form-group">
                 @Html.LabelFor(m => m.FinishTime, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.FinishTime, "{0:yyyy-MM-dd hh:mm:ss}", new { @type = "datetime", @class = "form-control" })
+                    @Html.TextBoxFor(m => m.FinishTime, "{0:yyyy-MM-dd HH:mm:ss}", new { @type = "datetime", @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.FinishTime, "", new { @class = "text-danger" })
                 </div>
             </div>
