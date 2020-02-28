@@ -1,18 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Judge.Model.CheckSolution;
-using System.Data.Entity.ModelConfiguration;
+﻿using Judge.Model.CheckSolution;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Judge.Data.Mappings
 {
-    internal sealed class TaskMapping : EntityTypeConfiguration<Task>
+    internal sealed class TaskMapping : IEntityTypeConfiguration<Task>
     {
-        public TaskMapping()
+        public void Configure(EntityTypeBuilder<Task> builder)
         {
-            HasKey(o => o.Id);
-            Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            Property(o => o.CreationDateUtc).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            builder.HasKey(o => o.Id);
+            builder.Property(o => o.Id).UseIdentityColumn();
+            builder.Property(o => o.CreationDateUtc).ValueGeneratedOnAdd();
 
-            ToTable("Tasks");
+            builder.ToTable("Tasks");
         }
     }
 }

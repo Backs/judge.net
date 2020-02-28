@@ -1,17 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.ModelConfiguration;
-using Judge.Model.Contests;
+﻿using Judge.Model.Contests;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Judge.Data.Mappings
 {
-    internal sealed class ContestMapping : EntityTypeConfiguration<Contest>
+    internal sealed class ContestMapping : IEntityTypeConfiguration<Contest>
     {
-        public ContestMapping()
+        public void Configure(EntityTypeBuilder<Contest> builder)
         {
-            HasKey(o => o.Id);
-            Property(o => o.Id)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            ToTable("Contests");
+            builder.HasKey(o => o.Id);
+            builder.Property(o => o.Id).UseIdentityColumn();
+            builder.ToTable("Contests");
         }
     }
 }

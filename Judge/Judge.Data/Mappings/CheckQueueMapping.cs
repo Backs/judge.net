@@ -1,17 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.ModelConfiguration;
-using Judge.Model.SubmitSolution;
+﻿using Judge.Model.SubmitSolution;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Judge.Data.Mappings
 {
-    internal sealed class CheckQueueMapping : EntityTypeConfiguration<CheckQueue>
+    internal sealed class CheckQueueMapping : IEntityTypeConfiguration<CheckQueue>
     {
-        public CheckQueueMapping()
+        public void Configure(EntityTypeBuilder<CheckQueue> builder)
         {
-            HasKey(o => o.SubmitResultId);
-            Property(o => o.CreationDateUtc).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            builder.HasKey(o => o.SubmitResultId);
+            builder.Property(o => o.CreationDateUtc).ValueGeneratedOnAdd();
 
-            ToTable("CheckQueue", "dbo");
+            builder.ToTable("CheckQueue", "dbo");
         }
     }
 }

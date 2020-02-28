@@ -1,22 +1,26 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.ModelConfiguration;
-using Judge.Model.SubmitSolution;
+﻿using Judge.Model.SubmitSolution;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Judge.Data.Mappings
 {
-    internal sealed class SubmitBaseMapping : EntityTypeConfiguration<SubmitBase>
+    internal sealed class SubmitBaseMapping : IEntityTypeConfiguration<SubmitBase>
     {
-        public SubmitBaseMapping()
+        public void Configure(EntityTypeBuilder<SubmitBase> builder)
         {
-            HasKey(o => o.Id);
-            Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            Property(o => o.SubmitDateUtc).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            builder.HasKey(o => o.Id);
+            builder.Property(o => o.Id).UseIdentityColumn();
+            builder.Property(o => o.SubmitDateUtc).ValueGeneratedOnAdd();
+            builder.Property<byte>("SubmitType");
 
-            HasMany(o => o.Results)
-                .WithRequired(o => o.Submit)
-                .Map(map => map.MapKey("SubmitId"));
+            builder.HasDiscriminator<byte>(@"SubmitType").HasValue<ProblemSubmit>(1)
+                .HasValue<ContestTaskSubmit>(2);
 
-            ToTable("Submits", "dbo");
+            builder.HasMany(o => o.Results)
+                .WithOne(o => o.Submit)
+                .HasForeignKey("SubmitId");
+
+            builder.ToTable("Submits", "dbo");
         }
     }
 }

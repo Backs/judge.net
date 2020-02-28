@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using Judge.Model;
 using Judge.Model.SubmitSolution;
+using Microsoft.EntityFrameworkCore;
 
 namespace Judge.Data.Repository
 {

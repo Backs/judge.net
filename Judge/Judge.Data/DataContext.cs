@@ -1,42 +1,41 @@
-﻿using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Infrastructure;
-using System.Data.SqlClient;
-using System.Linq;
+﻿using System.Linq;
 using Judge.Data.Mappings;
 using Judge.Model.SubmitSolution;
+using Microsoft.EntityFrameworkCore;
 
 namespace Judge.Data
 {
     internal sealed class DataContext : DbContext
     {
+        private readonly string _connectionString;
+
         public DataContext(string connectionString)
-            : base(connectionString)
         {
+            _connectionString = connectionString;
         }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(_connectionString);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Configurations.Add(new LanguageMapping());
-            modelBuilder.Configurations.Add(new UserMapping());
-            modelBuilder.Configurations.Add(new SubmitBaseMapping());
-            modelBuilder.Configurations.Add(new ProblemSubmitMapping());
-            modelBuilder.Configurations.Add(new ContestTaskSubmitMapping());
-            modelBuilder.Configurations.Add(new CheckQueueMapping());
-            modelBuilder.Configurations.Add(new SubmitResultMapping());
-            modelBuilder.Configurations.Add(new TaskMapping());
-            modelBuilder.Configurations.Add(new ContestMapping());
-            modelBuilder.Configurations.Add(new ContestTaskMapping());
-            modelBuilder.Configurations.Add(new UserRoleMapping());
+            modelBuilder.ApplyConfiguration(new LanguageMapping());
+            modelBuilder.ApplyConfiguration(new UserMapping());
+            modelBuilder.ApplyConfiguration(new SubmitBaseMapping());
+            modelBuilder.ApplyConfiguration(new CheckQueueMapping());
+            modelBuilder.ApplyConfiguration(new SubmitResultMapping());
+            modelBuilder.ApplyConfiguration(new TaskMapping());
+            modelBuilder.ApplyConfiguration(new ContestMapping());
+            modelBuilder.ApplyConfiguration(new ContestTaskMapping());
+            modelBuilder.ApplyConfiguration(new UserRoleMapping());
         }
 
         public CheckQueue DequeueSubmitCheck()
         {
-            return ObjectContext.ExecuteStoreQuery<CheckQueue>("EXEC dbo.DequeueSubmitCheck").FirstOrDefault();
+            return this.Set<CheckQueue>().FromSqlRaw("EXEC dbo.DequeueSubmitCheck").AsEnumerable().FirstOrDefault();
         }
-
-        private ObjectContext ObjectContext => ((IObjectContextAdapter)this).ObjectContext;
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using Judge.Model.Contests;
+using Microsoft.EntityFrameworkCore;
 
 namespace Judge.Data.Repository
 {

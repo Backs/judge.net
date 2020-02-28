@@ -1,10 +1,11 @@
-﻿using System.Data.Entity;
-using Judge.Data.Repository;
+﻿using Judge.Data.Repository;
 using Judge.Model.Account;
 using Judge.Model.CheckSolution;
 using Judge.Model.Configuration;
 using Judge.Model.Contests;
 using Judge.Model.SubmitSolution;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Judge.Data
 {
@@ -20,7 +21,7 @@ namespace Judge.Data
         private ITaskNameRepository _taskNameRepository;
         private ITaskRepository _taskRepository;
         private IUserRepository _userRepository;
-        private DbContextTransaction _transaction;
+        private IDbContextTransaction _transaction;
 
         public UnitOfWork(DataContext context, bool startTransaction)
         {

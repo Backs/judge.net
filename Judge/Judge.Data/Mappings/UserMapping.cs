@@ -1,18 +1,19 @@
-﻿using System.Data.Entity.ModelConfiguration;
-using Judge.Model.Entities;
+﻿using Judge.Model.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Judge.Data.Mappings
 {
-    internal sealed class UserMapping : EntityTypeConfiguration<User>
+    internal sealed class UserMapping : IEntityTypeConfiguration<User>
     {
-        public UserMapping()
+        public void Configure(EntityTypeBuilder<User> builder)
         {
-            HasKey(o => o.Id);
-            HasMany(o => o.UserRoles)
-                .WithRequired()
+            builder.HasKey(o => o.Id);
+            builder.HasMany(o => o.UserRoles)
+                .WithOne()
                 .HasForeignKey(o => o.UserId);
 
-            ToTable("Users");
+            builder.ToTable("Users");
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Linq;
 using Judge.Model;
 using Judge.Model.SubmitSolution;
+using Microsoft.EntityFrameworkCore;
 
 namespace Judge.Data.Repository
 {

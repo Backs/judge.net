@@ -1,23 +1,24 @@
 ﻿using Judge.Model.Contests;
-using System.Data.Entity.ModelConfiguration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Judge.Data.Mappings
 {
-    internal sealed class ContestTaskMapping : EntityTypeConfiguration<ContestTask>
+    internal sealed class ContestTaskMapping : IEntityTypeConfiguration<ContestTask>
     {
-        public ContestTaskMapping()
+        public void Configure(EntityTypeBuilder<ContestTask> builder)
         {
-            HasKey(o => new { o.TaskName });
+            builder.HasKey(o => new { o.TaskName });
 
-            HasRequired(o => o.Task)
+            builder.HasOne(o => o.Task)
                 .WithMany()
                 .HasForeignKey(o => o.TaskId);
 
-            HasRequired(o => o.Contest)
+            builder.HasOne(o => o.Contest)
                 .WithMany()
                 .HasForeignKey(o => o.ContestId);
 
-            ToTable("ContestTasks");
+            builder.ToTable("ContestTasks");
         }
     }
 }

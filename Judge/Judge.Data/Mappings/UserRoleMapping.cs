@@ -1,15 +1,16 @@
-﻿using System.Data.Entity.ModelConfiguration;
-using Judge.Model.Entities;
+﻿using Judge.Model.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Judge.Data.Mappings
 {
-    internal sealed class UserRoleMapping : EntityTypeConfiguration<UserRole>
+    internal sealed class UserRoleMapping : IEntityTypeConfiguration<UserRole>
     {
-        public UserRoleMapping()
+        public void Configure(EntityTypeBuilder<UserRole> builder)
         {
-            HasKey(o => o.Id);
+            builder.HasKey(o => o.Id);
 
-            ToTable("UserRoles");
+            builder.ToTable("UserRoles");
         }
     }
 }

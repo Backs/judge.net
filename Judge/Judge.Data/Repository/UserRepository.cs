@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using Judge.Model;
 using Judge.Model.Account;
 using Judge.Model.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Judge.Data.Repository
 {

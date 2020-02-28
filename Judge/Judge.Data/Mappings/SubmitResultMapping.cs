@@ -1,21 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.ModelConfiguration;
-using Judge.Model.SubmitSolution;
+﻿using Judge.Model.SubmitSolution;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Judge.Data.Mappings
 {
-    internal sealed class SubmitResultMapping : EntityTypeConfiguration<SubmitResult>
+    internal sealed class SubmitResultMapping : IEntityTypeConfiguration<SubmitResult>
     {
-        public SubmitResultMapping()
+        public void Configure(EntityTypeBuilder<SubmitResult> builder)
         {
-            HasKey(o => o.Id);
-            Property(o => o.Id)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            builder.HasKey(o => o.Id);
+            builder.Property(o => o.Id).UseIdentityColumn();
 
-            HasOptional(o => o.CheckQueue)
-                .WithRequired();
+            builder.HasOne(o => o.CheckQueue).WithOne();
 
-            ToTable("SubmitResults", "dbo");
+            builder.ToTable("SubmitResults", "dbo");
         }
     }
 }

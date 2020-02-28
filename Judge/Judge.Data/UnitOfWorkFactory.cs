@@ -1,6 +1,4 @@
-﻿using SimpleInjector;
-
-namespace Judge.Data
+﻿namespace Judge.Data
 {
     internal sealed class UnitOfWorkFactory : IUnitOfWorkFactory
     {
