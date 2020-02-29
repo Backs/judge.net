@@ -18,7 +18,7 @@ namespace Judge.Model.SubmitSolution
 
         public Expression<Func<SubmitResult, bool>> IsSatisfiedBy => t =>
                     t.Submit is ContestTaskSubmit &&
-                    (t.Submit as ContestTaskSubmit).ContestId == _contestId &&
+                    ((ContestTaskSubmit)t.Submit).ContestId == _contestId &&
                     t.Submit.ProblemId == _problemId &&
                     t.Submit.UserId == _userId;
     }

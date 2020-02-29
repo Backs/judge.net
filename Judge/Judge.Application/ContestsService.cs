@@ -54,7 +54,9 @@ namespace Judge.Application
 
                 if (userId != null)
                 {
-                    solvedTasks.UnionWith(submitResultRepository.GetSolvedProblems(new UserContestSolvedProblemsSpecification(contestId, userId.Value, contestTasks.Select(o => o.Task.Id))));
+                    var solvedProblems = submitResultRepository.GetSolvedProblems(new UserContestSolvedProblemsSpecification(contestId, userId.Value, contestTasks.Select(o => o.Task.Id)));
+
+                    solvedTasks.UnionWith(solvedProblems);
                 }
 
                 var items = contestTasks.Select(o => new ContestTaskItem

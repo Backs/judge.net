@@ -226,7 +226,8 @@ namespace Judge.Application
                         databaseTask = new ContestTask
                         {
                             Contest = contest,
-                            TaskId = task.ProblemId.Value
+                            TaskId = task.ProblemId.Value,
+                            TaskName = task.Label
                         };
                         contestTaskRepository.Add(databaseTask);
                     }

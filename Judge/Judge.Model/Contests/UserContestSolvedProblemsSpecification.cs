@@ -12,14 +12,14 @@ namespace Judge.Model.Contests
         {
             ContestId = contestId;
             UserId = userId;
-            Problems = problems.Distinct();
+            Problems = problems.Distinct().ToArray();
         }
 
-        public IEnumerable<long> Problems { get; }
+        public long[] Problems { get; }
         public long UserId { get; }
         public int ContestId { get; }
         public Expression<Func<SubmitResult, bool>> IsSatisfiedBy => o => o.Submit is ContestTaskSubmit &&
-                                                                          (o.Submit as ContestTaskSubmit).ContestId == ContestId &&
+                                                                          ((ContestTaskSubmit)o.Submit).ContestId == ContestId &&
                                                                           o.Submit.UserId == UserId &&
                                                                           Problems.Contains(o.Submit.ProblemId);
     }

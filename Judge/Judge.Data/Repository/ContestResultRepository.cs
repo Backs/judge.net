@@ -2,6 +2,7 @@
 using System.Linq;
 using Judge.Model.Contests;
 using Judge.Model.SubmitSolution;
+using Microsoft.EntityFrameworkCore;
 
 namespace Judge.Data.Repository
 {
@@ -18,6 +19,18 @@ namespace Judge.Data.Repository
         {
             var result = _context.Set<ContestTaskSubmit>()
                 .Where(o => o.ContestId == contestId)
+                .Select(o => new
+                {
+                    o.UserId,
+                    o.ProblemId,
+                    Results = o.Results.Select(s => new
+                    {
+                        s.Id,
+                        s.Status,
+                        s.Submit.SubmitDateUtc
+                    })
+                })
+                .ToArray()
                 .GroupBy(o => o.UserId)
                 .Select(o => new
                 {
@@ -26,16 +39,15 @@ namespace Judge.Data.Repository
                     {
                         ProblemId = p.Key,
                         SubmitResults = p.Select(s => s.Results.OrderByDescending(t => t.Id).FirstOrDefault()) //only last judge result
-                                        .Where(s => s.Status != SubmitStatus.ServerError && s.Status != SubmitStatus.Pending && s.Status != SubmitStatus.CompilationError)
-                                        .Select(s => new
-                                        {
-                                            s.Status,
-                                            s.Submit.SubmitDateUtc,
-                                            s.Id
-                                        }).OrderBy(s => s.Id)
+                                         .Where(s => s != null && s.Status != SubmitStatus.ServerError && s.Status != SubmitStatus.Pending && s.Status != SubmitStatus.CompilationError)
+                                         .Select(s => new
+                                         {
+                                             s.Id,
+                                             s.Status,
+                                             s.SubmitDateUtc
+                                         }).OrderBy(s => s.Id).ToArray()
                     })
                 })
-                .AsEnumerable()
                 .Select(o => new
                 {
                     UserId = o.UserId,
