@@ -11,10 +11,6 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Transactions" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Judge.Model\Judge.Model.csproj" />
   </ItemGroup>
   <ItemGroup>
