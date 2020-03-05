@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using System.Text;
 
 namespace Judge.Compiler
 {
@@ -33,28 +34,35 @@ namespace Judge.Compiler
                 ErrorDialog = false
             };
 
-            string output;
+            var output = new StringBuilder();
             int exitCode;
 
             using (var p = new Process { StartInfo = startInfo })
             {
-                p.Start();
-
-                output = p.StandardError.ReadToEnd();
-                if (string.IsNullOrWhiteSpace(output))
+                p.OutputDataReceived += (s, e) =>
                 {
-                    output = p.StandardOutput.ReadToEnd();
-                }
+                    output.AppendLine(e.Data);
+                };
+
+                p.ErrorDataReceived += (s, e) =>
+                {
+                    output.AppendLine(e.Data);
+                };
+                
+                p.Start();
+                p.BeginOutputReadLine();
+                p.BeginErrorReadLine();
+
                 p.WaitForExit(30 * 1000);
                 exitCode = p.ExitCode;
             }
 
             if (exitCode == 0)
             {
-                return CompileResult.Success(output, OutputFileTemplate.Replace(TemplateKeys.FileName, fileNameWithoutExtension));
+                return CompileResult.Success(output.ToString(), OutputFileTemplate.Replace(TemplateKeys.FileName, fileNameWithoutExtension));
             }
 
-            return CompileResult.Error(output);
+            return CompileResult.Error(output.ToString());
         }
 
         private static void CreateFile(CompileSource sourceCode, string workingDirectory)
