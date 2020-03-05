@@ -18,6 +18,11 @@
             return new CompileResult(CompileStatus.Success, output, fileName);
         }
 
+        public static CompileResult NotFound()
+        {
+            return new CompileResult(CompileStatus.CompilerNotFound, null, null);
+        }
+
         public static CompileResult Error(string output)
         {
             return new CompileResult(CompileStatus.Error, output, null);

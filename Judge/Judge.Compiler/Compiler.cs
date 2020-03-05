@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using System.Text;
+using NLog;
 
 namespace Judge.Compiler
 {
@@ -9,6 +10,14 @@ namespace Judge.Compiler
         public string CompilerPath { get; set; }
         public string CompilerOptionsTemplate { get; set; }
         public string OutputFileTemplate { get; set; }
+
+        private readonly ILogger logger;
+
+        public Compiler(ILogger logger)
+        {
+            this.logger = logger;
+        }
+
         public CompileResult Compile(CompileSource sourceCode, string workingDirectory)
         {
             if (!Directory.Exists(workingDirectory))
@@ -23,6 +32,8 @@ namespace Judge.Compiler
 
             var options = CompilerOptionsTemplate.Replace(TemplateKeys.FileName, fileNameWithoutExtension)
                                                     .Replace(TemplateKeys.FileNameExtension, fileExtension);
+
+            this.logger.Info($"Compile options: {options}");
 
             var startInfo = new ProcessStartInfo(CompilerPath, options)
             {

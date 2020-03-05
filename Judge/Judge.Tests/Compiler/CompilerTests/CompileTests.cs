@@ -1,6 +1,8 @@
 ﻿using System.IO;
 using Judge.Compiler;
+using NLog;
 using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace Judge.Tests.Compiler.CompilerTests
 {
@@ -12,7 +14,7 @@ namespace Judge.Tests.Compiler.CompilerTests
         [Test]
         public void SuccessCompilerTest()
         {
-            var compiler = new Judge.Compiler.Compiler
+            var compiler = new Judge.Compiler.Compiler(MockRepository.GenerateMock<ILogger>())
             {
                 CompilerPath = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe",
                 CompilerOptionsTemplate = TemplateKeys.FileName + "." + TemplateKeys.FileNameExtension,
@@ -32,7 +34,7 @@ namespace Judge.Tests.Compiler.CompilerTests
         [Test]
         public void CompilationErrorTest()
         {
-            var compiler = new Judge.Compiler.Compiler
+            var compiler = new Judge.Compiler.Compiler(MockRepository.GenerateMock<ILogger>())
             {
                 CompilerPath = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe",
                 CompilerOptionsTemplate = TemplateKeys.FileName + "." + TemplateKeys.FileNameExtension,

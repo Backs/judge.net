@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Threading;
 using Judge.Data;
+using NLog;
 using SimpleInjector;
 using SimpleInjector.Lifestyles;
 
@@ -11,6 +12,8 @@ namespace Judge.JudgeService
     {
         static void Main(string[] args)
         {
+            ILogger logger = LogManager.GetLogger("Judge");
+
             var container = new Container();
             container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
 
@@ -19,7 +22,9 @@ namespace Judge.JudgeService
 
             container.Register<IJudgeService, JudgeServiceImplementation>(Lifestyle.Scoped);
             container.Register<CheckService>(Lifestyle.Scoped);
+            container.RegisterInstance(logger);
 
+            logger.Info("Service started");
             Console.WriteLine("Press any key to exit...");
 
             while (true)
@@ -34,6 +39,7 @@ namespace Judge.JudgeService
                 }
                 catch (Exception ex)
                 {
+                    logger.Error(ex);
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine(ex);
                     Console.ResetColor();
@@ -43,6 +49,8 @@ namespace Judge.JudgeService
 
                 Thread.Sleep(TimeSpan.FromSeconds(1));
             }
+
+            logger.Info("Service stopped");
         }
     }
 }

@@ -3,6 +3,7 @@
     public enum CompileStatus
     {
         Success,
-        Error
+        Error,
+        CompilerNotFound
     }
 }

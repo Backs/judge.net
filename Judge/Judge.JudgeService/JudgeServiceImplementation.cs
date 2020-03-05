@@ -6,10 +6,10 @@ using Judge.Checker;
 using Judge.Compiler;
 using Judge.Data;
 using Judge.Model.CheckSolution;
-using Judge.Model.Configuration;
 using Judge.Model.Entities;
 using Judge.Model.SubmitSolution;
 using Judge.Runner;
+using NLog;
 using Configuration = Judge.Runner.Configuration;
 
 namespace Judge.JudgeService
@@ -17,19 +17,27 @@ namespace Judge.JudgeService
     internal sealed class JudgeServiceImplementation : IJudgeService
     {
         private readonly IUnitOfWorkFactory unitOfWorkFactory;
-        
+        private readonly ILogger logger;
+
         private readonly string _workingDirectory = ConfigurationManager.AppSettings["WorkingDirectory"];
         private readonly string _storagePath = ConfigurationManager.AppSettings["StoragePath"];
         private readonly string _runnerPath = ConfigurationManager.AppSettings["RunnnerPath"];
 
-        public JudgeServiceImplementation(IUnitOfWorkFactory unitOfWorkFactory)
+        public JudgeServiceImplementation(IUnitOfWorkFactory unitOfWorkFactory, ILogger logger)
         {
             this.unitOfWorkFactory = unitOfWorkFactory;
+            this.logger = logger;
         }
 
         private CompileResult Compile(Language language, string fileName, string sourceCode)
         {
-            var compiler = new Compiler.Compiler
+            if (!File.Exists(language.CompilerPath))
+            {
+                this.logger.Error($"Compiler not found: {language.Name}, {language.CompilerPath}");
+                return CompileResult.NotFound();
+            }
+
+            var compiler = new Compiler.Compiler(this.logger)
             {
                 CompilerPath = language.CompilerPath,
                 CompilerOptionsTemplate = language.CompilerOptionsTemplate,
@@ -69,6 +77,7 @@ namespace Judge.JudgeService
             if (language.IsCompilable)
             {
                 compileResult = Compile(language, submitResult.Submit.FileName, submitResult.Submit.SourceCode);
+                this.logger.Info($"Compile result: {compileResult.CompileStatus}");
             }
             else
             {
@@ -82,6 +91,7 @@ namespace Judge.JudgeService
             if (compileResult.CompileStatus == CompileStatus.Success)
             {
                 var runString = GetRunString(language, compileResult.FileName);
+                this.logger.Info($"Run string: {runString}");
 
                 CopyChecker(task);
                 results = Run(task, runString);
@@ -164,6 +174,8 @@ namespace Judge.JudgeService
                 TimePassedMilliseconds = runResult.TimePassedMilliseconds
             };
 
+            this.logger.Info($"Run status: {runResult.RunStatus}");
+
             if (runResult.RunStatus == RunStatus.Success)
             {
                 var checkAnswerResult = CheckAnswer(configuration);
@@ -177,8 +189,12 @@ namespace Judge.JudgeService
         private CheckResult CheckAnswer(Configuration configuration)
         {
             var checker = new Checker.Checker();
-            string answerFileName = configuration.InputFile + ".a";
-            return checker.Check(_workingDirectory, configuration.InputFile, configuration.OutputFile, answerFileName);
+            var answerFileName = configuration.InputFile + ".a";
+            var checkResult = checker.Check(_workingDirectory, configuration.InputFile, configuration.OutputFile, answerFileName);
+
+            this.logger.Info($"Check result: {configuration.InputFile}, {checkResult.CheckStatus}, {checkResult.Message}");
+
+            return checkResult;
         }
 
         private IEnumerable<string> GetInputFiles(Task task)

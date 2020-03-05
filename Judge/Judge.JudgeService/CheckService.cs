@@ -1,5 +1,6 @@
 ﻿using Judge.Data;
 using Judge.Model.SubmitSolution;
+using NLog;
 
 namespace Judge.JudgeService
 {
@@ -7,11 +8,13 @@ namespace Judge.JudgeService
     {
         private readonly IJudgeService _service;
         private readonly IUnitOfWorkFactory _unitOfWorkFactory;
+        private readonly ILogger logger;
 
-        public CheckService(IJudgeService service, IUnitOfWorkFactory unitOfWorkFactory)
+        public CheckService(IJudgeService service, IUnitOfWorkFactory unitOfWorkFactory, ILogger logger)
         {
             _service = service;
             _unitOfWorkFactory = unitOfWorkFactory;
+            this.logger = logger;
         }
 
         public void Check()
@@ -23,17 +26,22 @@ namespace Judge.JudgeService
                 if (submit == null)
                     return;
 
-                var result = _service.Check(submit);
+                using (NestedDiagnosticsLogicalContext.Push($"Submit-{submit.Id}"))
+                {
+                    this.logger.Info($"Dequeued submit");
 
-                submit.PassedTests = result.TestsPassedCount;
-                submit.TotalBytes = result.PeakMemoryBytes;
-                submit.TotalMilliseconds = result.TimeConsumedMilliseconds;
-                submit.Status = result.GetStatus();
-                submit.CompileOutput = result.CompileResult.Output;
-                submit.RunDescription = result.Description;
-                submit.RunOutput = result.Output;
+                    var result = _service.Check(submit);
 
-                unitOfWork.Commit();
+                    submit.PassedTests = result.TestsPassedCount;
+                    submit.TotalBytes = result.PeakMemoryBytes;
+                    submit.TotalMilliseconds = result.TimeConsumedMilliseconds;
+                    submit.Status = result.GetStatus();
+                    submit.CompileOutput = result.CompileResult.Output;
+                    submit.RunDescription = result.Description;
+                    submit.RunOutput = result.Output;
+
+                    unitOfWork.Commit();
+                }
             }
         }
     }

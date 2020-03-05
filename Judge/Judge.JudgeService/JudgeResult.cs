@@ -22,6 +22,11 @@ namespace Judge.JudgeService
 
         public SubmitStatus GetStatus()
         {
+            if (CompileResult.CompileStatus == CompileStatus.CompilerNotFound)
+            {
+                return SubmitStatus.ServerError;
+            }
+
             if (CompileResult.CompileStatus == CompileStatus.Error)
             {
                 return SubmitStatus.CompilationError;
