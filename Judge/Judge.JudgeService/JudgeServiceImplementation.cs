@@ -81,7 +81,8 @@ namespace Judge.JudgeService
             }
             else
             {
-                File.WriteAllText(Path.Combine(_workingDirectory, submitResult.Submit.FileName), submitResult.Submit.SourceCode);
+                File.WriteAllText(Path.Combine(_workingDirectory, submitResult.Submit.FileName),
+                    submitResult.Submit.SourceCode);
                 compileResult = CompileResult.GetEmpty(submitResult.Submit.FileName);
             }
 
@@ -151,13 +152,15 @@ namespace Judge.JudgeService
                     break;
                 }
             }
+
             return results;
         }
 
         private SubmitRunResult Run(Task task, string input, string runString)
         {
             var runService = new RunService(_runnerPath, _workingDirectory);
-            var configuration = new Configuration(runString, _workingDirectory, task.TimeLimitMilliseconds, task.MemoryLimitBytes);
+            var configuration = new Configuration(runString, _workingDirectory, task.TimeLimitMilliseconds,
+                task.MemoryLimitBytes);
             configuration.InputFile = input;
             configuration.OutputFile = "output.txt"; //TODO
 
@@ -190,9 +193,11 @@ namespace Judge.JudgeService
         {
             var checker = new Checker.Checker();
             var answerFileName = configuration.InputFile + ".a";
-            var checkResult = checker.Check(_workingDirectory, configuration.InputFile, configuration.OutputFile, answerFileName);
+            var checkResult = checker.Check(_workingDirectory, configuration.InputFile, configuration.OutputFile,
+                answerFileName);
 
-            this.logger.Info($"Check result: {configuration.InputFile}, {checkResult.CheckStatus}, {checkResult.Message}");
+            this.logger.Info(
+                $"Check result: {configuration.InputFile}, {checkResult.CheckStatus}, {checkResult.Message}");
 
             return checkResult;
         }
@@ -216,12 +221,11 @@ namespace Judge.JudgeService
 
             public int Compare(string x, string y)
             {
-                int.TryParse(x, out int ax);
-                int.TryParse(y, out int ay);
+                int.TryParse(x, out var ax);
+                int.TryParse(y, out var ay);
 
                 return ax.CompareTo(ay);
             }
         }
-
     }
 }

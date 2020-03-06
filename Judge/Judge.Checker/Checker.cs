@@ -6,7 +6,7 @@ namespace Judge.Checker
 {
     public sealed class Checker
     {
-        private static string _checkerFileName = "check.exe";
+        private const string CheckerFileName = "check.exe";
 
         public CheckResult Check(string workingDirectory, string inputFileName, string outputFileName, string answerFileName)
         {
@@ -15,7 +15,7 @@ namespace Judge.Checker
                 return CheckResult.Fail("Working directory not found");
             }
 
-            var checker = Directory.GetFiles(workingDirectory, _checkerFileName).FirstOrDefault();
+            var checker = Directory.GetFiles(workingDirectory, CheckerFileName).FirstOrDefault();
 
             if (checker == null)
             {
