@@ -17,8 +17,11 @@ namespace Judge.Data.Repository
 
         public IEnumerable<ContestResult> Get(long contestId)
         {
+            var contestTasks = _context.Set<ContestTask>().Where(o => o.ContestId == contestId).Select(o => o.TaskId)
+                .ToArray();
+
             var result = _context.Set<ContestTaskSubmit>()
-                .Where(o => o.ContestId == contestId)
+                .Where(o => o.ContestId == contestId && contestTasks.Contains(o.ProblemId))
                 .Select(o => new
                 {
                     o.UserId,

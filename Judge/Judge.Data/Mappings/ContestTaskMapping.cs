@@ -8,7 +8,7 @@ namespace Judge.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<ContestTask> builder)
         {
-            builder.HasKey(o => new { o.TaskName });
+            builder.HasKey(o => new { o.ContestId, o.TaskName });
 
             builder.HasOne(o => o.Task)
                 .WithMany()
