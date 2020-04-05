@@ -7,7 +7,7 @@ using Microsoft.AspNet.Identity;
 
 namespace Judge.Application
 {
-    internal sealed class UserStore : IUserPasswordStore<ApplicationUser, long>, IUserLockoutStore<ApplicationUser, long>, IUserTwoFactorStore<ApplicationUser, long>, IUserRoleStore<ApplicationUser, long>
+    internal sealed class UserStore : IUserPasswordStore<ApplicationUser, long>, IUserLockoutStore<ApplicationUser, long>, IUserTwoFactorStore<ApplicationUser, long>, IUserRoleStore<ApplicationUser, long>, IUserEmailStore<ApplicationUser, long>
     {
         private readonly IUnitOfWorkFactory _unitOfWorkFactory;
         public UserStore(IUnitOfWorkFactory unitOfWorkFactory)
@@ -72,7 +72,7 @@ namespace Judge.Application
             using (var uow = _unitOfWorkFactory.GetUnitOfWork())
             {
                 var userRepository = uow.UserRepository;
-                var result = userRepository.Get(userName);
+                var result = userRepository.FindByName(userName);
 
                 return Task.FromResult(result == null ? null : new ApplicationUser(result));
             }
@@ -156,6 +156,38 @@ namespace Judge.Application
         public Task<bool> IsInRoleAsync(ApplicationUser user, string roleName)
         {
             return Task.FromResult(user.UserRoles.Any(o => o == roleName));
+        }
+
+        public Task SetEmailAsync(ApplicationUser user, string email)
+        {
+            user.Email = email;
+            return Task.CompletedTask;
+        }
+
+        public Task<string> GetEmailAsync(ApplicationUser user)
+        {
+            return Task.FromResult(user.Email);
+        }
+
+        public Task<bool> GetEmailConfirmedAsync(ApplicationUser user)
+        {
+            return Task.FromResult(true);
+        }
+
+        public Task SetEmailConfirmedAsync(ApplicationUser user, bool confirmed)
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task<ApplicationUser> FindByEmailAsync(string email)
+        {
+            using (var uow = _unitOfWorkFactory.GetUnitOfWork())
+            {
+                var userRepository = uow.UserRepository;
+                var result = userRepository.FindByEmail(email);
+
+                return Task.FromResult(result == null ? null : new ApplicationUser(result));
+            }
         }
     }
 }

@@ -21,7 +21,8 @@ namespace Judge.Application
 
                 manager.UserManager.UserValidator = new UserValidator<ApplicationUser, long>(manager.UserManager)
                 {
-                    AllowOnlyAlphanumericUserNames = false
+                    AllowOnlyAlphanumericUserNames = false,
+                    RequireUniqueEmail = true
                 };
                 manager.UserManager.UserTokenProvider = new UserTokenProvider();
                 return manager;
@@ -30,24 +31,32 @@ namespace Judge.Application
 
         public SignInStatus SignIn(string email, string password, bool isPersistent)
         {
-            var status = SignInManager.PasswordSignIn(email, password, isPersistent, shouldLockout: false);
+            var signedUser = SignInManager.UserManager.FindByEmail(email);
+
+            if (signedUser == null)
+            {
+                return SignInStatus.Failure;
+            }
+
+            var status = SignInManager.PasswordSignIn(signedUser.UserName, password, isPersistent, shouldLockout: false);
             return status;
         }
 
-        public void Register(RegisterViewModel model)
+        public RegistrationResult Register(RegisterViewModel model)
         {
-            SignInManager.UserManager.CreateAsync(new ApplicationUser { UserName = model.UserName, Email = model.Email }, model.Password).Wait();
+            var identityResult = SignInManager.UserManager.CreateAsync(new ApplicationUser { UserName = model.UserName, Email = model.Email }, model.Password).Result;
+
+            return new RegistrationResult
+            {
+                Succeeded = identityResult.Succeeded,
+                Errors = identityResult.Errors
+            };
         }
 
         public void SignOut()
         {
             SignInManager.AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie,
                 DefaultAuthenticationTypes.TwoFactorCookie);
-        }
-
-        public bool UserExists(string email)
-        {
-            return SignInManager.UserManager.FindByName(email) != null;
         }
 
         public void UpdateUser(UserEditViewModel model)

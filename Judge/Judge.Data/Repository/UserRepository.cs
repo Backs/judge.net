@@ -4,6 +4,7 @@ using Judge.Model;
 using Judge.Model.Account;
 using Judge.Model.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace Judge.Data.Repository
 {
@@ -18,7 +19,7 @@ namespace Judge.Data.Repository
 
         public User Get(long id)
         {
-            return _context.Set<User>().Include(o => o.UserRoles).FirstOrDefault(o => o.Id == id);
+            return BaseQuery().FirstOrDefault(o => o.Id == id);
         }
 
         public void Add(User user)
@@ -36,14 +37,24 @@ namespace Judge.Data.Repository
             _context.Set<User>().Remove(user);
         }
 
-        public User Get(string userName)
+        public User FindByName(string userName)
         {
-            return _context.Set<User>().Include(o => o.UserRoles).FirstOrDefault(o => o.Email == userName);
+            return BaseQuery().FirstOrDefault(o => o.UserName == userName);
+        }
+
+        public User FindByEmail(string email)
+        {
+            return BaseQuery().FirstOrDefault(o => o.Email == email);
         }
 
         public IEnumerable<User> Find(ISpecification<User> specification)
         {
-            return _context.Set<User>().Include(o => o.UserRoles).Where(specification.IsSatisfiedBy);
+            return BaseQuery().Where(specification.IsSatisfiedBy);
+        }
+
+        private IIncludableQueryable<User, ICollection<UserRole>> BaseQuery()
+        {
+            return _context.Set<User>().Include(o => o.UserRoles);
         }
     }
 }
