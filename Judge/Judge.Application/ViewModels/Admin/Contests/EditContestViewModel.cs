@@ -31,6 +31,9 @@ namespace Judge.Application.ViewModels.Admin.Contests
         public bool IsOpened { get; set; }
         public int? Id { get; set; }
         public List<TaskEditViewModel> Tasks { get; set; }
+
+        public ContestRules Rules { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (Tasks.Any(o => string.IsNullOrWhiteSpace(o.Label)))

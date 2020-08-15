@@ -10,6 +10,7 @@ namespace Judge.Model.Contests
         public DateTime FinishTime { get; set; }
         public DateTime? FreezeTime { get; set; }
         public bool IsOpened { get; set; }
+        public ContestRules Rules { get; set; }
 
         public override string ToString()
         {

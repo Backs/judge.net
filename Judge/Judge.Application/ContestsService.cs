@@ -211,7 +211,7 @@ namespace Judge.Application
                             Solved = t.Solved,
                             ProblemId = t.ProblemId,
                             Attempts = t.Attempts
-                        }).ToList().AsReadOnly()
+                        }).ToDictionary(t => t.ProblemId)
                     }).OrderByDescending(o => o.SolvedCount).ThenBy(o => o.Time)
                 };
             }

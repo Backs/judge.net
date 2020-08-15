@@ -35,7 +35,7 @@
                 {
                     <td class="task">
                         @{
-                            var s = user.Tasks.FirstOrDefault(o => o.ProblemId == task.ProblemId);
+                            var s = user.TryGetTask(task.ProblemId);
                             var css = s?.Solved == true ? "green" : "red";
                         }
                         @if (s != null)

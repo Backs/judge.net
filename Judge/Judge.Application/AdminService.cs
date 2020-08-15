@@ -12,6 +12,8 @@ using System.Linq;
 using Judge.Application.ViewModels.Admin.Users;
 using Judge.Model.Account;
 using SubmitQueueItem = Judge.Application.ViewModels.Admin.Submits.SubmitQueueItem;
+using System;
+using ContestRules = Judge.Application.ViewModels.Admin.Contests.ContestRules;
 
 namespace Judge.Application
 {
@@ -179,6 +181,7 @@ namespace Judge.Application
                     IsOpened = contest.IsOpened,
                     Name = contest.Name,
                     StartTime = contest.StartTime,
+                    Rules = (ContestRules)contest.Rules,
                     Tasks = tasks.Select(o => new TaskEditViewModel(o)).ToList()
                 };
             }
@@ -204,7 +207,7 @@ namespace Judge.Application
 
                 var databaseTasks = model.Id != null
                     ? contestTaskRepository.GetTasks(model.Id.Value).ToArray()
-                    : new ContestTask[0];
+                    : Array.Empty<ContestTask>();
 
                 foreach (var databaseTask in databaseTasks)
                 {

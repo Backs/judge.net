@@ -38,6 +38,14 @@
             </div>
 
             <div class="form-group">
+                @Html.LabelFor(m => m.Rules, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.EnumDropDownListFor(m => m.Rules, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Rules, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
                 @Html.LabelFor(m => m.IsOpened, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @Html.EditorFor(m => m.IsOpened)
