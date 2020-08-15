@@ -10,9 +10,6 @@
     <AssemblyTitle>Judge.Tests</AssemblyTitle>
     <Product>Judge.Tests</Product>
     <Copyright>Copyright ©  2017</Copyright>
-    <AssemblyTitle>Judge.Tests</AssemblyTitle>
-    <Product>Judge.Tests</Product>
-    <Copyright>Copyright ©  2017</Copyright>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <Import Project="..\Configurations.targets" />

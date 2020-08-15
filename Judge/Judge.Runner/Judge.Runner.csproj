@@ -4,9 +4,6 @@
     <AssemblyTitle>Judge.Runner</AssemblyTitle>
     <Product>Judge.Runner</Product>
     <Copyright>Copyright ©  2017</Copyright>
-    <AssemblyTitle>Judge.Runner</AssemblyTitle>
-    <Product>Judge.Runner</Product>
-    <Copyright>Copyright ©  2017</Copyright>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>

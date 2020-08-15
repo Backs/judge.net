@@ -4,9 +4,6 @@
     <AssemblyTitle>Judge.Compiler</AssemblyTitle>
     <Product>Judge.Compiler</Product>
     <Copyright>Copyright ©  2017</Copyright>
-    <AssemblyTitle>Judge.Compiler</AssemblyTitle>
-    <Product>Judge.Compiler</Product>
-    <Copyright>Copyright ©  2017</Copyright>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>

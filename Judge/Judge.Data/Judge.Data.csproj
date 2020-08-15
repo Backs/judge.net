@@ -5,9 +5,6 @@
     <AssemblyTitle>Judge.Data</AssemblyTitle>
     <Product>Judge.Data</Product>
     <Copyright>Copyright ©  2015</Copyright>
-    <AssemblyTitle>Judge.Data</AssemblyTitle>
-    <Product>Judge.Data</Product>
-    <Copyright>Copyright ©  2015</Copyright>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>

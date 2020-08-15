@@ -4,9 +4,6 @@
     <AssemblyTitle>Judge.Checker</AssemblyTitle>
     <Product>Judge.Checker</Product>
     <Copyright>Copyright ©  2017</Copyright>
-    <AssemblyTitle>Judge.Checker</AssemblyTitle>
-    <Product>Judge.Checker</Product>
-    <Copyright>Copyright ©  2017</Copyright>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>

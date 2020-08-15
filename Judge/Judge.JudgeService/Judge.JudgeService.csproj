@@ -7,9 +7,6 @@
     <AssemblyTitle>Judge.JudgeService</AssemblyTitle>
     <Product>Judge.JudgeService</Product>
     <Copyright>Copyright ©  2017</Copyright>
-    <AssemblyTitle>Judge.JudgeService</AssemblyTitle>
-    <Product>Judge.JudgeService</Product>
-    <Copyright>Copyright ©  2017</Copyright>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <Import Project="..\Configurations.targets" />

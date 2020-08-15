@@ -4,9 +4,6 @@
     <AssemblyTitle>Judge.Model</AssemblyTitle>
     <Product>Judge.Model</Product>
     <Copyright>Copyright ©  2015</Copyright>
-    <AssemblyTitle>Judge.Model</AssemblyTitle>
-    <Product>Judge.Model</Product>
-    <Copyright>Copyright ©  2015</Copyright>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 </Project>
