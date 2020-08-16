@@ -198,21 +198,22 @@ namespace Judge.Application
                 var userSpecification = new UserListSpecification(results.Select(o => o.UserId).Distinct());
                 var users = userRepository.Find(userSpecification).ToDictionary(o => o.Id, o => o.UserName);
 
-                return new ContestResultViewModel
+                var userModels = results.Select(o => new ContestUserResultViewModel
+                {
+                    UserId = o.UserId,
+                    UserName = users[o.UserId],
+                    Tasks = o.TaskResults.Select(t => new ContestTaskResultViewModel(contest.StartTime, t.SubmitDateUtc)
+                    {
+                        Solved = t.Solved,
+                        ProblemId = t.ProblemId,
+                        Attempts = t.Attempts
+                    }).ToDictionary(t => t.ProblemId)
+                });
+
+                return new ContestResultViewModel(userModels)
                 {
                     Contest = new ContestItem(contest),
-                    Tasks = tasks.Select(o => new TaskViewModel { Label = o.TaskName, ProblemId = o.Task.Id }).ToArray(),
-                    Users = results.Select(o => new ContestUserResultViewModel
-                    {
-                        UserId = o.UserId,
-                        UserName = users[o.UserId],
-                        Tasks = o.TaskResults.Select(t => new ContestTaskResultViewModel(contest.StartTime, t.SubmitDateUtc)
-                        {
-                            Solved = t.Solved,
-                            ProblemId = t.ProblemId,
-                            Attempts = t.Attempts
-                        }).ToDictionary(t => t.ProblemId)
-                    }).OrderByDescending(o => o.SolvedCount).ThenBy(o => o.Time)
+                    Tasks = tasks.Select(o => new TaskViewModel { Label = o.TaskName, ProblemId = o.Task.Id }).ToArray()
                 };
             }
         }

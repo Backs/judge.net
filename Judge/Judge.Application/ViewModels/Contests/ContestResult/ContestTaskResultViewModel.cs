@@ -17,14 +17,14 @@ namespace Judge.Application.ViewModels.Contests.ContestResult
 
         private TimeSpan _elapsedTime;
 
-        public string GetElapsedTimeString()
+        public string GetScoreLabel()
         {
             var hours = (int)_elapsedTime.TotalHours;
             var minutes = _elapsedTime.Minutes;
             return $"{hours}:{minutes:00}";
         }
 
-        public int GetTime()
+        public int GetScore()
         {
             if (!Solved)
                 return 0;

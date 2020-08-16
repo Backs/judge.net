@@ -29,7 +29,7 @@
         @foreach (var user in Model.Users)
         {
             <tr>
-                <td>@(++index)</td>
+                <td>@user.Place</td>
                 <td>@user.UserName</td>
                 @foreach (var task in Model.Tasks)
                 {
@@ -42,12 +42,12 @@
                         {
                             <span class="@css">@s.GetAttempts()</span>
                             <br />
-                            <small class="@css">@s.GetElapsedTimeString()</small>
+                            <small class="@css">@s.GetScoreLabel()</small>
                         }
                     </td>
                 }
                 <td>@user.SolvedCount</td>
-                <td>@user.Time</td>
+                <td>@user.Score</td>
             </tr>
         }
         </tbody>
