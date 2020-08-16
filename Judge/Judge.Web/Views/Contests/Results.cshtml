@@ -2,7 +2,6 @@
 @{
     ViewBag.Title = Model.Contest.Name;
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var index = 0;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -22,7 +21,7 @@
                 </th>
             }
             <th>Решено</th>
-            <th>Время</th>
+            <th>Итого</th>
         </tr>
         </thead>
         <tbody>
@@ -42,7 +41,7 @@
                         {
                             <span class="@css">@s.GetAttempts()</span>
                             <br />
-                            <small class="@css">@s.GetScoreLabel()</small>
+                            <small class="@css">@s.GetLabel()</small>
                         }
                     </td>
                 }

@@ -202,12 +202,12 @@ namespace Judge.Application
                 {
                     UserId = o.UserId,
                     UserName = users[o.UserId],
-                    Tasks = o.TaskResults.Select(t => new ContestTaskResultViewModel(contest.StartTime, t.SubmitDateUtc)
+                    Tasks = o.TaskResults.Select(t => new AcmContestTaskResultViewModel(contest.StartTime, t.SubmitDateUtc)
                     {
                         Solved = t.Solved,
                         ProblemId = t.ProblemId,
                         Attempts = t.Attempts
-                    }).ToDictionary(t => t.ProblemId)
+                    }).Cast<ContestTaskResultViewModelBase>().ToDictionary(t => t.ProblemId)
                 });
 
                 return new ContestResultViewModel(userModels)
