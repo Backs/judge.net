@@ -198,16 +198,13 @@ namespace Judge.Application
                 var userSpecification = new UserListSpecification(results.Select(o => o.UserId).Distinct());
                 var users = userRepository.Find(userSpecification).ToDictionary(o => o.Id, o => o.UserName);
 
+                var factory = GetFactory(contest.Rules);
+
                 var userModels = results.Select(o => new ContestUserResultViewModel
                 {
                     UserId = o.UserId,
                     UserName = users[o.UserId],
-                    Tasks = o.TaskResults.Select(t => new AcmContestTaskResultViewModel(contest.StartTime, t.SubmitDateUtc)
-                    {
-                        Solved = t.Solved,
-                        ProblemId = t.ProblemId,
-                        Attempts = t.Attempts
-                    }).Cast<ContestTaskResultViewModelBase>().ToDictionary(t => t.ProblemId)
+                    Tasks = o.TaskResults.Select(t => factory.Convert(contest, t)).ToDictionary(t => t.ProblemId)
                 });
 
                 return new ContestResultViewModel(userModels)
@@ -215,6 +212,19 @@ namespace Judge.Application
                     Contest = new ContestItem(contest),
                     Tasks = tasks.Select(o => new TaskViewModel { Label = o.TaskName, ProblemId = o.Task.Id }).ToArray()
                 };
+            }
+        }
+
+        private static IContestTaskResultFactory GetFactory(ContestRules rules)
+        {
+            switch (rules)
+            {
+                case ContestRules.Acm:
+                    return new AcmContestTaskResultFactory();
+                case ContestRules.Points:
+                    return new PointsContestTaskResultFactory();
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(rules), rules, null);
             }
         }
     }

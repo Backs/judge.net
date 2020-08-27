@@ -6,7 +6,7 @@ namespace Judge.Application.ViewModels.Contests.ContestResult
     {
         private const int MaxScore = 100;
         private const int Penalty = 20;
-        private const int MinScore = 1;
+        private const int MinScore = 5;
 
         public PointsContestTaskResultViewModel(DateTime submitDateUtc)
             : base(submitDateUtc)

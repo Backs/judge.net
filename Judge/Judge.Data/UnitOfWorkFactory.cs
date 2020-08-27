@@ -11,7 +11,7 @@
 
         public IUnitOfWork GetUnitOfWork()
         {
-            return new UnitOfWork(new DataContext(this.connectionString), false);
+            return GetUnitOfWork(false);
         }
 
         public IUnitOfWork GetUnitOfWork(bool startTransaction)

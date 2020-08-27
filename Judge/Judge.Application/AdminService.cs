@@ -199,6 +199,7 @@ namespace Judge.Application
                 contest.IsOpened = model.IsOpened;
                 contest.Name = model.Name;
                 contest.StartTime = model.StartTime;
+                contest.Rules = (Model.Contests.ContestRules)model.Rules;
 
                 if (model.Id == null)
                 {
