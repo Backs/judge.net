@@ -12,8 +12,8 @@ namespace Judge.Application.Interfaces
         /// <param name="page">Page number from 1 to N</param>
         /// <param name="pageSize">Page size from 1 to N</param>
         /// <param name="userId"></param>
-        /// <param name="showClosed"></param>
-        ProblemsListViewModel GetProblemsList(int page, int pageSize, long? userId, bool showClosed);
+        /// <param name="openedOnly"></param>
+        ProblemsListViewModel GetProblemsList(int page, int pageSize, long? userId, bool openedOnly);
         StatementViewModel GetStatement(long id);
         IReadOnlyCollection<ProblemItem> GetAllProblems();
     }

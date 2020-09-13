@@ -20,7 +20,7 @@ namespace Judge.Application
             _factory = factory;
         }
 
-        public ProblemsListViewModel GetProblemsList(int page, int pageSize, long? userId, bool showClosed)
+        public ProblemsListViewModel GetProblemsList(int page, int pageSize, long? userId, bool openedOnly)
         {
             if (page <= 0)
                 throw new ArgumentOutOfRangeException(nameof(page));
@@ -32,9 +32,9 @@ namespace Judge.Application
                 var taskRepository = unitOfWork.TaskNameRepository;
                 var submitResultRepository = unitOfWork.SubmitResultRepository;
 
-                var tasks = GetProblems(page, pageSize, taskRepository, showClosed);
+                var tasks = GetProblems(page, pageSize, taskRepository, openedOnly);
 
-                var count = taskRepository.Count();
+                var count = taskRepository.Count(openedOnly);
 
                 var solvedTasks = new HashSet<long>();
 
@@ -57,9 +57,9 @@ namespace Judge.Application
             }
         }
 
-        private static ProblemItem[] GetProblems(int page, int pageSize, ITaskNameRepository taskRepository, bool showClosed)
+        private static ProblemItem[] GetProblems(int page, int pageSize, ITaskNameRepository taskRepository, bool openedOnly)
         {
-            var specification = showClosed ? (ISpecification<Task>)AllTasksSpecification.Instance : OpenedTasksSpecification.Instance;
+            var specification = openedOnly ? (ISpecification<Task>)OpenedTasksSpecification.Instance : AllTasksSpecification.Instance;
             var tasks = taskRepository.GetTasks(specification, page, pageSize)
                 .Select(o => new ProblemItem
                 {

@@ -85,7 +85,7 @@ namespace Judge.Web.Controllers
 
         public ActionResult Problems(int? page)
         {
-            var model = _problemsService.GetProblemsList(page ?? 1, 20, null, true);
+            var model = _problemsService.GetProblemsList(page ?? 1, 20, null, false);
             return View(model);
         }
 

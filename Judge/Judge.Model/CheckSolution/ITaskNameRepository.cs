@@ -6,7 +6,7 @@ namespace Judge.Model.CheckSolution
     {
         IEnumerable<TaskName> GetTasks(ISpecification<Task> specification, int page, int pageSize);
         IEnumerable<TaskName> GetTasks(IEnumerable<long> tasks);
-        int Count();
+        int Count(bool openedOnly);
         TaskName Get(long id);
     }
 }

@@ -40,9 +40,11 @@ namespace Judge.Data.Repository
                 .AsEnumerable();
         }
 
-        public int Count()
+        public int Count(bool openedOnly)
         {
-            return _context.Set<Task>().Count();
+            return openedOnly ?
+                _context.Set<Task>().Count(o => o.IsOpened == true) :
+                _context.Set<Task>().Count();
         }
 
         public TaskName Get(long id)

@@ -41,8 +41,8 @@ namespace Judge.Tests.Application.ProblemsServiceTests
             const int page = 1;
 
             var tasks = new[] { new TaskName { Id = 1, Name = "A" }, new TaskName { Id = 2, Name = "B" } };
-            _taskRepository.Stub(o => o.GetTasks(AllTasksSpecification.Instance, page, pageSize)).Return(tasks);
-            _taskRepository.Stub(o => o.Count()).Return(tasks.Length);
+            _taskRepository.Stub(o => o.GetTasks(OpenedTasksSpecification.Instance, page, pageSize)).Return(tasks);
+            _taskRepository.Stub(o => o.Count(true)).Return(tasks.Length);
 
             var model = _service.GetProblemsList(page, pageSize, null, true);
 
@@ -63,8 +63,8 @@ namespace Judge.Tests.Application.ProblemsServiceTests
                 new TaskName { Id = 2, Name = "B" },
                 new TaskName { Id = 3, Name = "C" }
             };
-            _taskRepository.Stub(o => o.GetTasks(AllTasksSpecification.Instance, 1, 2)).Return(tasks.Take(2));
-            _taskRepository.Stub(o => o.Count()).Return(tasks.Length);
+            _taskRepository.Stub(o => o.GetTasks(OpenedTasksSpecification.Instance, 1, 2)).Return(tasks.Take(2));
+            _taskRepository.Stub(o => o.Count(true)).Return(tasks.Length);
 
             var model = _service.GetProblemsList(1, 2, null, true);
 
@@ -83,8 +83,8 @@ namespace Judge.Tests.Application.ProblemsServiceTests
                 new TaskName { Id = 4, Name = "D" },
                 new TaskName { Id = 5, Name = "E" },
             };
-            _taskRepository.Stub(o => o.GetTasks(AllTasksSpecification.Instance, 2, 2)).Return(tasks.Skip(2).Take(2));
-            _taskRepository.Stub(o => o.Count()).Return(tasks.Length);
+            _taskRepository.Stub(o => o.GetTasks(OpenedTasksSpecification.Instance, 2, 2)).Return(tasks.Skip(2).Take(2));
+            _taskRepository.Stub(o => o.Count(true)).Return(tasks.Length);
 
             var model = _service.GetProblemsList(2, 2, null, true);
 
@@ -107,8 +107,8 @@ namespace Judge.Tests.Application.ProblemsServiceTests
                 new TaskName { Id = 3, Name = "C" }
             };
 
-            _taskRepository.Stub(o => o.GetTasks(AllTasksSpecification.Instance, 1, 2)).Return(tasks);
-            _taskRepository.Stub(o => o.Count()).Return(tasks.Length);
+            _taskRepository.Stub(o => o.GetTasks(OpenedTasksSpecification.Instance, 1, 2)).Return(tasks);
+            _taskRepository.Stub(o => o.Count(true)).Return(tasks.Length);
 
             _submitResultRepository.Stub(o => o.GetSolvedProblems(Arg<ISpecification<SubmitResult>>.Is.Anything)).Return(new[] { solvedTaskId });
 
