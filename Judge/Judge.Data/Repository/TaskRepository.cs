@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Judge.Model.CheckSolution;
 using Task = Judge.Model.CheckSolution.Task;
 
@@ -21,6 +22,13 @@ namespace Judge.Data.Repository
         public void Add(Task problem)
         {
             _context.Set<Task>().Add(problem);
+        }
+
+        public IEnumerable<Task> GetTasks(IEnumerable<long> ids)
+        {
+            return _context.Set<Task>()
+                .Where(o => ids.Contains(o.Id))
+                .AsEnumerable();
         }
     }
 }

@@ -1,31 +1,35 @@
 ﻿using System;
+using Judge.Model.CheckSolution;
 using Judge.Model.SubmitSolution;
 
 namespace Judge.Application.ViewModels.Submit
 {
     public class SubmitQueueItem
     {
-        public SubmitQueueItem(SubmitResult submitResult, string language, string problemName, string userName)
+        public SubmitQueueItem(SubmitResult result, string language, Task task, string userName)
         {
-            SubmitId = submitResult.Submit.Id;
-            Language = language;
-            ProblemId = submitResult.Submit.ProblemId;
-            ProblemName = problemName;
-            ResultDescription = submitResult.Status.GetDescription();
-            SubmitResultId = submitResult.Id;
-            SubmitTime = submitResult.Submit.SubmitDateUtc;
-            UserId = submitResult.Submit.UserId;
-            UserName = userName;
-            Status = submitResult.Status;
-            CompileResult = submitResult.CompileOutput;
+            var totalBytes = result.TotalBytes != null ? Math.Min(result.TotalBytes.Value, task.MemoryLimitBytes) : (int?)null;
+            var totalMilliseconds = result.TotalMilliseconds != null ? Math.Min(result.TotalMilliseconds.Value, task.TimeLimitMilliseconds) : (int?)null;
 
-            if (submitResult.Status != SubmitStatus.CompilationError && submitResult.Status != SubmitStatus.ServerError)
+            SubmitId = result.Submit.Id;
+            Language = language;
+            ProblemId = result.Submit.ProblemId;
+            ProblemName = task.Name;
+            ResultDescription = result.Status.GetDescription();
+            SubmitResultId = result.Id;
+            SubmitTime = result.Submit.SubmitDateUtc;
+            UserId = result.Submit.UserId;
+            UserName = userName;
+            Status = result.Status;
+            CompileResult = result.CompileOutput;
+
+            if (result.Status != SubmitStatus.CompilationError && result.Status != SubmitStatus.ServerError)
             {
-                AllocatedMemory = (submitResult.TotalBytes / (1024f * 1024f))?.ToString("F3");
-                ExecutionTime = (submitResult.TotalMilliseconds / 1000f)?.ToString("F3");
-                if (submitResult.Status != SubmitStatus.Accepted)
+                AllocatedMemory = (totalBytes / (1024f * 1024f))?.ToString("F3");
+                ExecutionTime = (totalMilliseconds / 1000f)?.ToString("F3");
+                if (result.Status != SubmitStatus.Accepted)
                 {
-                    PassedTests = submitResult.PassedTests;
+                    PassedTests = result.PassedTests;
                 }
             }
         }

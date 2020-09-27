@@ -25,7 +25,7 @@ namespace Judge.Application
             {
                 var submitResultRepository = uow.SubmitResultRepository;
                 var languageRepository = uow.LanguageRepository;
-                var taskRepository = uow.TaskNameRepository;
+                var taskRepository = uow.TaskRepository;
                 var userRepository = uow.UserRepository;
 
                 var languages = languageRepository.GetLanguages().ToDictionary(o => o.Id, o => o.Name);
@@ -38,7 +38,7 @@ namespace Judge.Application
                 var task = taskRepository.Get(problemId);
                 var user = userRepository.Get(userId);
 
-                var items = submits.Select(o => new SubmitQueueItem(o, languages[o.Submit.LanguageId], task.Name, user.UserName) { ResultsEnabled = true })
+                var items = submits.Select(o => new SubmitQueueItem(o, languages[o.Submit.LanguageId], task, user.UserName) { ResultsEnabled = true })
                     .ToArray();
 
                 var model = new SubmitQueueViewModel(items)
@@ -61,14 +61,14 @@ namespace Judge.Application
             {
                 var submitResultRepository = uow.SubmitResultRepository;
                 var languageRepository = uow.LanguageRepository;
-                var taskRepository = uow.TaskNameRepository;
+                var taskRepository = uow.TaskRepository;
                 var userRepository = uow.UserRepository;
 
                 var languages = languageRepository.GetLanguages().ToDictionary(o => o.Id, o => o.Name);
                 var submits = submitResultRepository.GetSubmits(AllProblemsSpecification.Instance, page, pageSize).ToArray();
 
                 var userSpecification = new UserListSpecification(submits.Select(o => o.Submit.UserId).Distinct());
-                var tasks = taskRepository.GetTasks(submits.Select(o => o.Submit.ProblemId).Distinct()).ToDictionary(o => o.Id, o => o.Name);
+                var tasks = taskRepository.GetTasks(submits.Select(o => o.Submit.ProblemId).Distinct()).ToDictionary(o => o.Id);
                 var users = userRepository.Find(userSpecification).ToDictionary(o => o.Id, o => o.UserName);
 
                 var hasPermission = _principal.IsInRole("admin");

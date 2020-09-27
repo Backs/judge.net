@@ -75,7 +75,7 @@ namespace Judge.Application
             using (var unitOfWork = _factory.GetUnitOfWork())
             {
                 var submitResultRepository = unitOfWork.SubmitResultRepository;
-                var taskRepository = unitOfWork.TaskNameRepository;
+                var taskRepository = unitOfWork.TaskRepository;
 
                 var result = submitResultRepository.Get(submitResultId);
                 if (result == null)
@@ -92,7 +92,10 @@ namespace Judge.Application
 
                 var problem = taskRepository.Get(submit.ProblemId);
 
-                var submitViewModel = hasPermission ? new SubmitViewModel(result.TotalBytes, result.TotalMilliseconds)
+                var totalBytes = result.TotalBytes != null ? Math.Min(result.TotalBytes.Value, problem.MemoryLimitBytes) : (int?)null;
+                var totalMilliseconds = result.TotalMilliseconds != null ? Math.Min(result.TotalMilliseconds.Value, problem.TimeLimitMilliseconds) : (int?)null;
+
+                var submitViewModel = hasPermission ? new SubmitViewModel(totalBytes, totalMilliseconds)
                 {
                     PassedTests = result.PassedTests,
                     Status = result.Status,

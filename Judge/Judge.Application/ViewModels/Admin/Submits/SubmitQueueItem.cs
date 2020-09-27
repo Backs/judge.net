@@ -1,4 +1,5 @@
-﻿using Judge.Model.SubmitSolution;
+﻿using Judge.Model.CheckSolution;
+using Judge.Model.SubmitSolution;
 
 namespace Judge.Application.ViewModels.Admin.Submits
 {
@@ -9,8 +10,8 @@ namespace Judge.Application.ViewModels.Admin.Submits
         public string RunDescription { get; }
         public string RunOutput { get; }
 
-        public SubmitQueueItem(SubmitResult submitResult, string language, string problemName, string taskLabel, int? contestId, string userName)
-            : base(submitResult, language, problemName, userName)
+        public SubmitQueueItem(SubmitResult submitResult, string language, Task task, string taskLabel, int? contestId, string userName)
+            : base(submitResult, language, task, userName)
         {
             TaskLabel = taskLabel;
             ContestId = contestId;

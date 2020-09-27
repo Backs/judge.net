@@ -165,7 +165,7 @@ namespace Judge.Application
 
                 var user = userRepository.Get(userId);
 
-                var items = submits.Select(o => new SubmitQueueItem(o, languages[o.Submit.LanguageId], task.Task.Name, user.UserName) { ResultsEnabled = true })
+                var items = submits.Select(o => new SubmitQueueItem(o, languages[o.Submit.LanguageId], task.Task, user.UserName) { ResultsEnabled = true })
                     .ToArray();
 
                 var model = new ContestSubmitQueueViewModel(items)
