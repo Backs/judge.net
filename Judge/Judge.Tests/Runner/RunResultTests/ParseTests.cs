@@ -16,7 +16,7 @@ Program failed to terminate within 1.00 sec
   time passed: 1.15 sec
 peak memory: 3018752 of 10485760 bytes";
 
-            var result = RunResult.Parse(input);
+            var result = RunResult.Parse(input, 0);
 
             Assert.That(result.PeakMemoryBytes, Is.EqualTo(3018752));
             Assert.That(result.TimePassedMilliseconds, Is.EqualTo(1150));
@@ -33,7 +33,7 @@ Security violation: Child process created
   time passed: 0.01 sec
 peak memory: 1376256 of 10485760 bytes";
 
-            var result = RunResult.Parse(input);
+            var result = RunResult.Parse(input, 0);
 
             Assert.That(result.PeakMemoryBytes, Is.EqualTo(1376256));
             Assert.That(result.TimePassedMilliseconds, Is.EqualTo(10));
@@ -51,7 +51,7 @@ Program tried to allocate more than 10240 bytes
   time passed: 0.00 sec
 peak memory: 90112 of 10240 bytes";
 
-            var result = RunResult.Parse(input);
+            var result = RunResult.Parse(input, 0);
 
             Assert.That(result.PeakMemoryBytes, Is.EqualTo(90112));
             Assert.That(result.TimePassedMilliseconds, Is.EqualTo(0));
@@ -69,7 +69,7 @@ Program successfully terminated
   time passed: 0.05 sec
 peak memory: 3670016 of 10485760 bytes";
 
-            var result = RunResult.Parse(input);
+            var result = RunResult.Parse(input, 1);
 
             Assert.That(result.PeakMemoryBytes, Is.EqualTo(3670016));
             Assert.That(result.TimePassedMilliseconds, Is.EqualTo(50));

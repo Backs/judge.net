@@ -32,15 +32,17 @@ namespace Judge.Runner
             }
 
             string output;
+            var exitCode = 0;
             using (var p = new Process { StartInfo = startInfo })
             {
                 p.Start();
 
                 output = p.StandardOutput.ReadToEnd();
                 p.WaitForExit();
+                exitCode = p.ExitCode;
             }
 
-            return RunResult.Parse(output);
+            return RunResult.Parse(output, exitCode);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Judge.Runner
         private static readonly Regex TimeRegex = new Regex(@"\d*\.\d{2}", RegexOptions.Compiled);
         private static readonly Regex NumberRegex = new Regex(@"\d+", RegexOptions.Compiled);
 
-        public static RunResult Parse(string input)
+        public static RunResult Parse(string input, int exitCode)
         {
             if (string.IsNullOrWhiteSpace(input))
             {
@@ -34,8 +34,7 @@ namespace Judge.Runner
             var startIndex = Array.FindIndex(rows, o => o.StartsWith("  time consumed"));
 
             var textStatus = rows[1];
-            var exitCodeRow = rows.FirstOrDefault(o => o.StartsWith("  exit code"));
-            var runStatus = GetStatus(textStatus, exitCodeRow != null ? int.Parse(NumberRegex.Match(exitCodeRow).Value) : 0);
+            var runStatus = GetStatus(textStatus, exitCode);
 
             if (runStatus == RunStatus.InvocationFailed)
             {
@@ -75,28 +74,28 @@ namespace Judge.Runner
 
         private static RunStatus GetStatus(string textStatus, int exitCode)
         {
-            if (exitCode != 0)
+            switch (textStatus)
             {
-                return RunStatus.RuntimeError;
+                case "Time limit exceeded":
+                    return RunStatus.TimeLimitExceeded;
+                case "Memory limit exceeded":
+                    return RunStatus.MemoryLimitExceeded;
+                case "Crash":
+                    return RunStatus.RuntimeError;
+                case "Idleness limit exceeded":
+                    return RunStatus.IdlenessLimitExceeded;
             }
-
-            if (textStatus == "Time limit exceeded")
-                return RunStatus.TimeLimitExceeded;
-
-            if (textStatus == "Memory limit exceeded")
-                return RunStatus.MemoryLimitExceeded;
-
-            if (textStatus == "Crash")
-                return RunStatus.RuntimeError;
-
-            if (textStatus == "Idleness limit exceeded")
-                return RunStatus.IdlenessLimitExceeded;
 
             if (textStatus.StartsWith("Security violation"))
                 return RunStatus.SecurityViolation;
 
             if (textStatus.StartsWith("Invocation failed"))
                 return RunStatus.InvocationFailed;
+
+            if (exitCode != 0)
+            {
+                return RunStatus.RuntimeError;
+            }
 
             if (textStatus.StartsWith("Program successfully terminated"))
                 return RunStatus.Success;

@@ -34,7 +34,7 @@ namespace Judge.Runner
 
         public override string ToString()
         {
-            var arguments = new List<string>(16);
+            var arguments = new List<string>(20);
 
             if (!string.IsNullOrWhiteSpace(InputFile))
             {
@@ -55,7 +55,9 @@ namespace Judge.Runner
             arguments.Add(MemoryLimitBytes / 1024 + "K");
 
             arguments.Add("-y");
-            arguments.Add("1s");
+            arguments.Add("2s");
+
+            arguments.Add("-x");
 
             if (!string.IsNullOrWhiteSpace(Directory))
             {
