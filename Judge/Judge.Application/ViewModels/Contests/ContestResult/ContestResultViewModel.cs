@@ -6,9 +6,9 @@ namespace Judge.Application.ViewModels.Contests.ContestResult
 {
     public class ContestResultViewModel
     {
-        public ContestResultViewModel(IEnumerable<ContestUserResultViewModel> users)
+        public ContestResultViewModel(IEnumerable<ContestUserResultViewModelBase> users)
         {
-            var result = new List<ContestUserResultViewModel>();
+            var result = new List<ContestUserResultViewModelBase>();
 
             var place = 1;
             foreach (var user in users.OrderByDescending(o => o))
@@ -29,6 +29,6 @@ namespace Judge.Application.ViewModels.Contests.ContestResult
 
         public IEnumerable<TaskViewModel> Tasks { get; set; }
 
-        public IEnumerable<ContestUserResultViewModel> Users { get; }
+        public IEnumerable<ContestUserResultViewModelBase> Users { get; }
     }
 }

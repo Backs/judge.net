@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Judge.Application.ViewModels.Contests.ContestResult
 {
-    public sealed class ContestUserResultViewModel : IComparable<ContestUserResultViewModel>
+    public abstract class ContestUserResultViewModelBase : IComparable
     {
-        public long UserId { get; set; }
         public IReadOnlyDictionary<long, ContestTaskResultViewModelBase> Tasks { get; set; }
         public string UserName { get; set; }
         public int SolvedCount => Tasks.Count(s => s.Value.Solved);
@@ -18,14 +17,6 @@ namespace Judge.Application.ViewModels.Contests.ContestResult
             return Tasks.TryGetValue(problemId, out var value) ? value : null;
         }
 
-        public int CompareTo(ContestUserResultViewModel other)
-        {
-            if (SolvedCount == other.SolvedCount)
-            {
-                return Score.CompareTo(other.Score);
-            }
-
-            return SolvedCount.CompareTo(other.SolvedCount);
-        }
+        public abstract int CompareTo(object other);
     }
 }

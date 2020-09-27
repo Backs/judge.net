@@ -200,18 +200,7 @@ namespace Judge.Application
 
                 var factory = GetFactory(contest.Rules);
 
-                var userModels = results.Select(o => new ContestUserResultViewModel
-                {
-                    UserId = o.UserId,
-                    UserName = users[o.UserId],
-                    Tasks = o.TaskResults.Select(t => factory.Convert(contest, t)).ToDictionary(t => t.ProblemId)
-                });
-
-                return new ContestResultViewModel(userModels)
-                {
-                    Contest = new ContestItem(contest),
-                    Tasks = tasks.Select(o => new TaskViewModel { Label = o.TaskName, ProblemId = o.Task.Id }).ToArray()
-                };
+                return factory.Convert(tasks, results, users, contest);
             }
         }
 

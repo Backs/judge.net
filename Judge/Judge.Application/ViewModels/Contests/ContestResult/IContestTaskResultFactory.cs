@@ -1,9 +1,14 @@
-﻿using Judge.Model.Contests;
+﻿using System.Collections.Generic;
+using Judge.Model.Contests;
 
 namespace Judge.Application.ViewModels.Contests.ContestResult
 {
     internal interface IContestTaskResultFactory
     {
-        ContestTaskResultViewModelBase Convert(Contest contest, ContestTaskResult taskResult);
+        ContestResultViewModel Convert(
+            IEnumerable<ContestTask> tasks,
+            IEnumerable<Model.Contests.ContestResult> results,
+            IDictionary<long, string> users,
+            Contest contest);
     }
 }
