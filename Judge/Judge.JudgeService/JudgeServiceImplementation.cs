@@ -21,7 +21,7 @@ namespace Judge.JudgeService
 
         private readonly string _workingDirectory = ConfigurationManager.AppSettings["WorkingDirectory"];
         private readonly string _storagePath = ConfigurationManager.AppSettings["StoragePath"];
-        private readonly string _runnerPath = ConfigurationManager.AppSettings["RunnnerPath"];
+        private readonly string _runnerPath = ConfigurationManager.AppSettings["RunnerPath"];
 
         public JudgeServiceImplementation(IUnitOfWorkFactory unitOfWorkFactory, ILogger logger)
         {
