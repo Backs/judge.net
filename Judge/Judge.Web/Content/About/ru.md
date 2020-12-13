@@ -7,8 +7,8 @@ Judge.NET - архив задач по программированию и ав�
 ### Используемые технологии
 1. ASP.NET MVC, jQuery, Bootstrap
 2. SQL Server
-3. Entity Framework 6
-4. Unity container
+3. Entity Framework Core
+4. SimpleInjector container
 
 ### Поддержка
 Вопросы и предложения можно направлять на [email](mailto:rogatnev.sergey@gmail.com).

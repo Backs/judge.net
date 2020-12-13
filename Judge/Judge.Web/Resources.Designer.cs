@@ -106,6 +106,15 @@ namespace Judge.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Назад.
+        /// </summary>
+        public static string Back {
+            get {
+                return ResourceManager.GetString("Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Закрыть.
         /// </summary>
         public static string Close {

@@ -327,4 +327,7 @@
   <data name="UserName" xml:space="preserve">
     <value>Имя пользователя</value>
   </data>
+  <data name="Back" xml:space="preserve">
+    <value>Назад</value>
+  </data>
 </root>
