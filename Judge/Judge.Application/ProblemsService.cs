@@ -70,7 +70,7 @@ namespace Judge.Application
             return tasks;
         }
 
-        public StatementViewModel GetStatement(long id)
+        public StatementViewModel GetStatement(long id, bool isAdmin)
         {
             using (var unitOfWork = _factory.GetUnitOfWork())
             {
@@ -79,7 +79,7 @@ namespace Judge.Application
                 if (task == null)
                     return null;
 
-                if (!task.IsOpened)
+                if (!isAdmin && !task.IsOpened)
                 {
                     return null;
                 }

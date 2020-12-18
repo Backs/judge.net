@@ -14,7 +14,7 @@ namespace Judge.Application.Interfaces
         /// <param name="userId"></param>
         /// <param name="openedOnly"></param>
         ProblemsListViewModel GetProblemsList(int page, int pageSize, long? userId, bool openedOnly);
-        StatementViewModel GetStatement(long id);
+        StatementViewModel GetStatement(long id, bool isAdmin);
         IReadOnlyCollection<ProblemItem> GetAllProblems();
     }
 }

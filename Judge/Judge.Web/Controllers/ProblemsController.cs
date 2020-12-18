@@ -37,7 +37,9 @@ namespace Judge.Web.Controllers
 
         public ActionResult Statement(long id)
         {
-            var model = _problemsService.GetStatement(id);
+            var isAdmin = this.User.IsInRole("admin");
+
+            var model = _problemsService.GetStatement(id, isAdmin);
             if (model == null)
                 return HttpNotFound();
 

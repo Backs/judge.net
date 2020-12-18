@@ -30,7 +30,7 @@ namespace Judge.Tests.Application.ProblemsServiceTests
         [Test]
         public void StatementNotFoundTest()
         {
-            var result = _service.GetStatement(1);
+            var result = _service.GetStatement(1, false);
             Assert.IsNull(result);
         }
 
@@ -47,7 +47,7 @@ namespace Judge.Tests.Application.ProblemsServiceTests
                 IsOpened = true
             };
             _taskRepository.Stub(o => o.Get(1)).Return(task);
-            var result = _service.GetStatement(1);
+            var result = _service.GetStatement(1, false);
 
             Assert.That(result.MemoryLimitBytes, Is.EqualTo(task.MemoryLimitBytes));
             Assert.That(result.TimeLimitMilliseconds, Is.EqualTo(task.TimeLimitMilliseconds));
@@ -68,7 +68,7 @@ namespace Judge.Tests.Application.ProblemsServiceTests
                 IsOpened = false
             };
             _taskRepository.Stub(o => o.Get(1)).Return(task);
-            var statement = _service.GetStatement(1);
+            var statement = _service.GetStatement(1, false);
             Assert.IsNull(statement);
         }
     }
