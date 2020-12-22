@@ -5,12 +5,12 @@
         public override int CompareTo(object other)
         {
             var value = (AcmContestUserResultViewModel)other;
-            if (SolvedCount == value.SolvedCount)
+            if (this.SolvedCount == value.SolvedCount)
             {
-                return Score.CompareTo(value.Score);
+                return this.Score.CompareTo(value.Score);
             }
 
-            return SolvedCount.CompareTo(value.SolvedCount);
+            return this.SolvedCount.CompareTo(value.SolvedCount);
         }
     }
 }
