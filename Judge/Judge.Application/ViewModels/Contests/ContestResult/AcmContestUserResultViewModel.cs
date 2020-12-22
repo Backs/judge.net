@@ -7,7 +7,7 @@
             var value = (AcmContestUserResultViewModel)other;
             if (SolvedCount == value.SolvedCount)
             {
-                return Score.CompareTo(value.Score);
+                return value.Score.CompareTo(Score);
             }
 
             return SolvedCount.CompareTo(value.SolvedCount);
