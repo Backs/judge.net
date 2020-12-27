@@ -1,35 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Web;
-using Judge.Application.Interfaces;
-using Judge.Application.ViewModels;
-using Judge.Application.ViewModels.Contests;
-using Judge.Application.ViewModels.Contests.ContestResult;
-using Judge.Application.ViewModels.Contests.ContestsList;
-using Judge.Application.ViewModels.Contests.ContestTasks;
-using Judge.Application.ViewModels.Submit;
-using Judge.Data;
-using Judge.Model;
-using Judge.Model.Account;
-using Judge.Model.Contests;
-using Judge.Model.SubmitSolution;
-
-namespace Judge.Application
+﻿namespace Judge.Application
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Web;
+    using Judge.Application.Interfaces;
+    using Judge.Application.ViewModels;
+    using Judge.Application.ViewModels.Contests;
+    using Judge.Application.ViewModels.Contests.ContestResult;
+    using Judge.Application.ViewModels.Contests.ContestsList;
+    using Judge.Application.ViewModels.Contests.ContestTasks;
+    using Judge.Application.ViewModels.Submit;
+    using Judge.Data;
+    using Judge.Model;
+    using Judge.Model.Account;
+    using Judge.Model.Contests;
+    using Judge.Model.SubmitSolution;
+
     internal sealed class ContestsService : IContestsService
     {
-        private readonly IUnitOfWorkFactory _factory;
+        private readonly IUnitOfWorkFactory factory;
 
         public ContestsService(IUnitOfWorkFactory factory)
         {
-            _factory = factory;
+            this.factory = factory;
         }
 
         public ContestsListViewModel GetContests(bool showAll)
         {
-            using (var unitOfWork = _factory.GetUnitOfWork())
+            using (var unitOfWork = this.factory.GetUnitOfWork())
             {
                 var repository = unitOfWork.ContestsRepository;
 
@@ -41,7 +41,7 @@ namespace Judge.Application
 
         public ContestTasksViewModel GetTasks(int contestId, long? userId)
         {
-            using (var unitOfWork = _factory.GetUnitOfWork())
+            using (var unitOfWork = this.factory.GetUnitOfWork())
             {
                 var contestRepository = unitOfWork.ContestsRepository;
                 var contest = contestRepository.Get(contestId);
@@ -78,7 +78,7 @@ namespace Judge.Application
 
         public ContestStatementViewModel GetStatement(int contestId, string label)
         {
-            using (var unitOfWork = _factory.GetUnitOfWork())
+            using (var unitOfWork = this.factory.GetUnitOfWork())
             {
                 var contestTaskRepository = unitOfWork.ContestTaskRepository;
 
@@ -114,7 +114,7 @@ namespace Judge.Application
                 sourceCode = sr.ReadToEnd();
             }
 
-            using (var unitOfWork = _factory.GetUnitOfWork())
+            using (var unitOfWork = this.factory.GetUnitOfWork())
             {
                 var contest = unitOfWork.ContestsRepository.Get(contestId);
                 if (DateTime.UtcNow < contest.StartTime)
@@ -147,7 +147,7 @@ namespace Judge.Application
 
         public SubmitQueueViewModel GetSubmitQueue(long userId, int contestId, string label, int page, int pageSize)
         {
-            using (var uow = _factory.GetUnitOfWork())
+            using (var uow = this.factory.GetUnitOfWork())
             {
                 var submitResultRepository = uow.SubmitResultRepository;
                 var languageRepository = uow.LanguageRepository;
@@ -170,7 +170,7 @@ namespace Judge.Application
 
                 var model = new ContestSubmitQueueViewModel(items)
                 {
-                    Pagination = new ViewModels.PaginationViewModel
+                    Pagination = new PaginationViewModel
                     {
                         CurrentPage = page,
                         PageSize = pageSize,
@@ -184,7 +184,7 @@ namespace Judge.Application
 
         public ContestResultViewModel GetResults(int id)
         {
-            using (var unitOfWork = _factory.GetUnitOfWork())
+            using (var unitOfWork = this.factory.GetUnitOfWork())
             {
                 var contestResultRepository = unitOfWork.ContestResultRepository;
                 var contestTaskRepository = unitOfWork.ContestTaskRepository;
@@ -198,9 +198,9 @@ namespace Judge.Application
                 var userSpecification = new UserListSpecification(results.Select(o => o.UserId).Distinct());
                 var users = userRepository.Find(userSpecification).ToDictionary(o => o.Id, o => o.UserName);
 
-                var factory = GetFactory(contest.Rules);
+                var contestFactory = GetFactory(contest.Rules);
 
-                return factory.Convert(tasks, results, users, contest);
+                return contestFactory.Convert(tasks, results, users, contest);
             }
         }
 
@@ -212,6 +212,8 @@ namespace Judge.Application
                     return new AcmContestTaskResultFactory();
                 case ContestRules.Points:
                     return new PointsContestTaskResultFactory();
+                case ContestRules.CheckPoint:
+                    return new CheckPointContestTaskResultFactory();
                 default:
                     throw new ArgumentOutOfRangeException(nameof(rules), rules, null);
             }

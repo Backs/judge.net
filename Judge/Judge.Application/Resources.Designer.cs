@@ -61,6 +61,15 @@ namespace Judge.Application {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Чек-поинт.
+        /// </summary>
+        public static string ContestCheckPointTime {
+            get {
+                return ResourceManager.GetString("ContestCheckPointTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Время окончания.
         /// </summary>
         public static string ContestFinish {
@@ -201,6 +210,15 @@ namespace Judge.Application {
         public static string RememberMe {
             get {
                 return ResourceManager.GetString("RememberMe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Правила.
+        /// </summary>
+        public static string Rules {
+            get {
+                return ResourceManager.GetString("Rules", resourceCulture);
             }
         }
         

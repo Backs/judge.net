@@ -27,11 +27,16 @@ namespace Judge.Application.ViewModels.Admin.Contests
         [Display(ResourceType = typeof(Resources), Name = "ContestFinish")]
         public DateTime FinishTime { get; set; }
 
+        [DataType(DataType.DateTime)]
+        [Display(ResourceType = typeof(Resources), Name = "ContestCheckPointTime")]
+        public DateTime? CheckPointTime { get; set; }
+
         [Display(ResourceType = typeof(Resources), Name = "ContestIsOpened")]
         public bool IsOpened { get; set; }
         public int? Id { get; set; }
         public List<TaskEditViewModel> Tasks { get; set; }
 
+        [Display(ResourceType = typeof(Resources), Name = "Rules")]
         public ContestRules Rules { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

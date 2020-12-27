@@ -1,34 +1,34 @@
-﻿using Judge.Application.Interfaces;
-using Judge.Application.ViewModels.Admin.Contests;
-using Judge.Application.ViewModels.Admin.Languages;
-using Judge.Application.ViewModels.Admin.Problems;
-using Judge.Data;
-using Judge.Model.CheckSolution;
-using Judge.Model.Contests;
-using Judge.Model.Entities;
-using Judge.Model.SubmitSolution;
-using System.Collections.Generic;
-using System.Linq;
-using Judge.Application.ViewModels.Admin.Users;
-using Judge.Model.Account;
-using SubmitQueueItem = Judge.Application.ViewModels.Admin.Submits.SubmitQueueItem;
-using System;
-using ContestRules = Judge.Application.ViewModels.Admin.Contests.ContestRules;
-
-namespace Judge.Application
+﻿namespace Judge.Application
 {
+    using Judge.Application.Interfaces;
+    using Judge.Application.ViewModels.Admin.Contests;
+    using Judge.Application.ViewModels.Admin.Languages;
+    using Judge.Application.ViewModels.Admin.Problems;
+    using Judge.Data;
+    using Judge.Model.CheckSolution;
+    using Judge.Model.Contests;
+    using Judge.Model.Entities;
+    using Judge.Model.SubmitSolution;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Judge.Application.ViewModels.Admin.Users;
+    using Judge.Model.Account;
+    using SubmitQueueItem = Judge.Application.ViewModels.Admin.Submits.SubmitQueueItem;
+    using System;
+    using ContestRules = Judge.Application.ViewModels.Admin.Contests.ContestRules;
+
     internal sealed class AdminService : IAdminService
     {
-        private readonly IUnitOfWorkFactory _factory;
+        private readonly IUnitOfWorkFactory factory;
 
         public AdminService(IUnitOfWorkFactory factory)
         {
-            _factory = factory;
+            this.factory = factory;
         }
 
         public List<LanguageEditViewModel> GetLanguages()
         {
-            using (var uow = _factory.GetUnitOfWork())
+            using (var uow = this.factory.GetUnitOfWork())
             {
                 var repository = uow.LanguageRepository;
                 return repository.GetLanguages().Select(o => new LanguageEditViewModel
@@ -49,7 +49,7 @@ namespace Judge.Application
 
         public void SaveLanguages(ICollection<LanguageEditViewModel> languages)
         {
-            using (var uow = _factory.GetUnitOfWork())
+            using (var uow = this.factory.GetUnitOfWork())
             {
                 var repository = uow.LanguageRepository;
                 var databaseLanguages = repository.GetLanguages();
@@ -95,7 +95,7 @@ namespace Judge.Application
 
         public IEnumerable<SubmitQueueItem> GetSubmitQueue()
         {
-            using (var uow = _factory.GetUnitOfWork())
+            using (var uow = this.factory.GetUnitOfWork())
             {
                 var submitResultRepository = uow.SubmitResultRepository;
                 var languageRepository = uow.LanguageRepository;
@@ -119,7 +119,7 @@ namespace Judge.Application
 
         public EditProblemViewModel GetProblem(long id)
         {
-            using (var uow = _factory.GetUnitOfWork())
+            using (var uow = this.factory.GetUnitOfWork())
             {
                 var taskRepository = uow.TaskRepository;
                 var task = taskRepository.Get(id);
@@ -138,7 +138,7 @@ namespace Judge.Application
 
         public long SaveProblem(EditProblemViewModel model)
         {
-            using (var uow = _factory.GetUnitOfWork())
+            using (var uow = this.factory.GetUnitOfWork())
             {
                 var taskRepository = uow.TaskRepository;
 
@@ -166,7 +166,7 @@ namespace Judge.Application
 
         public EditContestViewModel GetContest(int id)
         {
-            using (var uow = _factory.GetUnitOfWork())
+            using (var uow = this.factory.GetUnitOfWork())
             {
                 var contestRepository = uow.ContestsRepository;
                 var contestTaskRepository = uow.ContestTaskRepository;
@@ -178,6 +178,7 @@ namespace Judge.Application
                 {
                     Id = contest.Id,
                     FinishTime = contest.FinishTime,
+                    CheckPointTime = contest.CheckPointTime,
                     IsOpened = contest.IsOpened,
                     Name = contest.Name,
                     StartTime = contest.StartTime,
@@ -189,7 +190,7 @@ namespace Judge.Application
 
         public int SaveContest(EditContestViewModel model)
         {
-            using (var uow = _factory.GetUnitOfWork())
+            using (var uow = this.factory.GetUnitOfWork())
             {
                 var contestRepository = uow.ContestsRepository;
                 var contestTaskRepository = uow.ContestTaskRepository;
@@ -199,6 +200,7 @@ namespace Judge.Application
                 contest.IsOpened = model.IsOpened;
                 contest.Name = model.Name;
                 contest.StartTime = model.StartTime;
+                contest.CheckPointTime = model.CheckPointTime;
                 contest.Rules = (Model.Contests.ContestRules)model.Rules;
 
                 if (model.Id == null)
@@ -245,7 +247,7 @@ namespace Judge.Application
 
         public UserListViewModel GetUsers()
         {
-            using (var uow = this._factory.GetUnitOfWork())
+            using (var uow = this.factory.GetUnitOfWork())
             {
                 var users = uow.UserRepository.Find(AllUsersSpecification.Instance);
 
@@ -260,7 +262,7 @@ namespace Judge.Application
 
         public UserEditViewModel GetUser(long id)
         {
-            using (var uow = _factory.GetUnitOfWork())
+            using (var uow = this.factory.GetUnitOfWork())
             {
                 var user = uow.UserRepository.Get(id);
 
