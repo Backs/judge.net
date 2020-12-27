@@ -2,11 +2,11 @@
 {
     using System;
 
-    public sealed class FixedDateContestTaskResultViewModel : ContestTaskResultViewModelBase
+    public sealed class CheckPointContestTaskResultViewModel : ContestTaskResultViewModelBase
     {
         private readonly DateTime checkPointDate;
 
-        public FixedDateContestTaskResultViewModel(DateTime submitDateUtc, DateTime checkPointDate)
+        public CheckPointContestTaskResultViewModel(DateTime submitDateUtc, DateTime checkPointDate)
         : base(submitDateUtc)
         {
             this.checkPointDate = checkPointDate;
@@ -23,8 +23,11 @@
 
         public override int GetScore()
         {
+            if (!this.Solved)
+                return 0;
+
             var diff = this.SubmitDateUtc.Subtract(this.checkPointDate).Duration();
-            return (int)diff.TotalMinutes;
+            return (this.Attempts - 1) * 20 + (int)diff.TotalMinutes;
         }
     }
 }

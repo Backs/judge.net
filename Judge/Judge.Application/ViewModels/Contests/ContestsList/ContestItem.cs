@@ -1,33 +1,40 @@
-﻿using System;
-using Judge.Model.Contests;
-
-namespace Judge.Application.ViewModels.Contests.ContestsList
+﻿namespace Judge.Application.ViewModels.Contests.ContestsList
 {
+    using System;
+    using Judge.Model.Contests;
+    using ContestRules = Judge.Application.ViewModels.Admin.Contests.ContestRules;
+
     public sealed class ContestItem
     {
         public ContestItem(Contest contest)
         {
-            Id = contest.Id;
-            Name = contest.Name;
-            StartTime = contest.StartTime;
-            Duration = contest.FinishTime - contest.StartTime;
-            FinishTime = contest.FinishTime;
+            this.Id = contest.Id;
+            this.Name = contest.Name;
+            this.StartTime = contest.StartTime;
+            this.Duration = contest.FinishTime - contest.StartTime;
+            this.FinishTime = contest.FinishTime;
+            this.Rules = (ContestRules)contest.Rules;
+            this.CheckPointTime = contest.CheckPointTime;
 
             var now = DateTime.UtcNow;
 
             if (now < contest.StartTime)
             {
-                Status = ContestStatus.Planned;
+                this.Status = ContestStatus.Planned;
             }
             else if (now < contest.FinishTime)
             {
-                Status = ContestStatus.Started;
+                this.Status = ContestStatus.Started;
             }
             else
             {
-                Status = ContestStatus.Finished;
+                this.Status = ContestStatus.Finished;
             }
         }
+
+        public DateTime? CheckPointTime { get; set; }
+
+        public ContestRules Rules { get; set; }
 
         public DateTime FinishTime { get; set; }
 
@@ -35,7 +42,7 @@ namespace Judge.Application.ViewModels.Contests.ContestsList
         {
             get
             {
-                switch (Status)
+                switch (this.Status)
                 {
                     case ContestStatus.Planned:
                         return Resources.ContestStatusPlanned;
@@ -51,9 +58,9 @@ namespace Judge.Application.ViewModels.Contests.ContestsList
 
         public string GetLeftTimeString()
         {
-            if (Status == ContestStatus.Started)
+            if (this.Status == ContestStatus.Started)
             {
-                var time = FinishTime - DateTime.UtcNow;
+                var time = this.FinishTime - DateTime.UtcNow;
                 var hours = (int)time.TotalHours;
                 var minutes = time.Minutes;
                 return $"{Resources.Left}: {hours}:{minutes:00}";
@@ -63,8 +70,8 @@ namespace Judge.Application.ViewModels.Contests.ContestsList
 
         public string GetDurationTimeString()
         {
-            var hours = (int)Duration.TotalHours;
-            var minutes = Duration.Minutes;
+            var hours = (int)this.Duration.TotalHours;
+            var minutes = this.Duration.Minutes;
             return $"{hours}:{minutes:00}";
         }
 
@@ -73,8 +80,22 @@ namespace Judge.Application.ViewModels.Contests.ContestsList
         public DateTime StartTime { get; }
         public TimeSpan Duration { get; }
         public ContestStatus Status { get; }
-        public bool IsFinished => Status == ContestStatus.Finished;
-        public bool IsNotStarted => Status == ContestStatus.Planned;
-        public bool IsStarted => Status == ContestStatus.Started;
+        public bool IsFinished => this.Status == ContestStatus.Finished;
+        public bool IsNotStarted => this.Status == ContestStatus.Planned;
+        public bool IsStarted => this.Status == ContestStatus.Started;
+        public bool HasAdditionalRules => this.Rules == ContestRules.CheckPoint;
+
+        public string GetAdditionalRules()
+        {
+            if (this.HasAdditionalRules)
+            {
+                if (this.Rules == ContestRules.CheckPoint)
+                {
+                    return $"Время, относительно которого считается штраф: {this.CheckPointTime}";
+                }
+            }
+
+            return null;
+        }
     }
 }

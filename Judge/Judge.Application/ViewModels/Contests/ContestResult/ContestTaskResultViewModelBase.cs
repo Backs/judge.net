@@ -1,12 +1,12 @@
-﻿using System;
-
-namespace Judge.Application.ViewModels.Contests.ContestResult
+﻿namespace Judge.Application.ViewModels.Contests.ContestResult
 {
+    using System;
+
     public abstract class ContestTaskResultViewModelBase
     {
         protected ContestTaskResultViewModelBase(DateTime submitDateUtc)
         {
-            SubmitDateUtc = submitDateUtc;
+            this.SubmitDateUtc = submitDateUtc;
         }
 
         public bool Solved { get; set; }
@@ -18,16 +18,13 @@ namespace Judge.Application.ViewModels.Contests.ContestResult
 
         public string GetAttempts()
         {
-            if (Solved)
+            if (!this.Solved)
             {
-                var a = Attempts - 1;
-                if (a == 0)
-                {
-                    return "+";
-                }
-                return "+" + a;
+                return "-" + this.Attempts;
             }
-            return "-" + Attempts;
+
+            var additionalAttempts = this.Attempts - 1;
+            return additionalAttempts == 0 ? "+" : "+" + additionalAttempts;
         }
     }
 }

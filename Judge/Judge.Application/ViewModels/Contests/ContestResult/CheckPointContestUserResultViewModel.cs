@@ -1,10 +1,10 @@
 ﻿namespace Judge.Application.ViewModels.Contests.ContestResult
 {
-    public sealed class AcmContestUserResultViewModel : ContestUserResultViewModelBase
+    public sealed class CheckPointContestUserResultViewModel : ContestUserResultViewModelBase
     {
         public override int CompareTo(object other)
         {
-            var value = (AcmContestUserResultViewModel)other;
+            var value = (CheckPointContestUserResultViewModel)other;
             if (this.SolvedCount == value.SolvedCount)
             {
                 return value.Score.CompareTo(this.Score);

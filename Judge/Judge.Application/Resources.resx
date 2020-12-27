@@ -204,4 +204,10 @@
   <data name="NewPassword" xml:space="preserve">
     <value>Новый пароль</value>
   </data>
+  <data name="ContestCheckPointTime" xml:space="preserve">
+    <value>Чек-поинт</value>
+  </data>
+  <data name="Rules" xml:space="preserve">
+    <value>Правила</value>
+  </data>
 </root>

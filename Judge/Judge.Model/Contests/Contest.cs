@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Judge.Model.Contests
+﻿namespace Judge.Model.Contests
 {
+    using System;
+
     public sealed class Contest
     {
         public int Id { get; private set; }
@@ -11,10 +11,11 @@ namespace Judge.Model.Contests
         public DateTime? FreezeTime { get; set; }
         public bool IsOpened { get; set; }
         public ContestRules Rules { get; set; }
+        public DateTime? CheckPointTime { get; set; }
 
         public override string ToString()
         {
-            return $"{Id}-{Name}";
+            return $"{this.Id}-{this.Name}";
         }
     }
 }

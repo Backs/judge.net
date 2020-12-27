@@ -2,7 +2,8 @@
 {
     public enum ContestRules
     {
-        Acm,
-        Points
+        Acm = 0,
+        Points = 1,
+        CheckPoint = 2
     }
 }

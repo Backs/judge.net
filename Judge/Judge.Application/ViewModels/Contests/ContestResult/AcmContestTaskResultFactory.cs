@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Judge.Application.ViewModels.Contests.ContestsList;
-using Judge.Model.Contests;
-
-namespace Judge.Application.ViewModels.Contests.ContestResult
+﻿namespace Judge.Application.ViewModels.Contests.ContestResult
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Judge.Application.ViewModels.Contests.ContestsList;
+    using Judge.Model.Contests;
+
     internal sealed class AcmContestTaskResultFactory : IContestTaskResultFactory
     {
         private static ContestTaskResultViewModelBase Convert(Contest contest, ContestTaskResult taskResult)
