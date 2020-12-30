@@ -2,7 +2,7 @@
 
 <div>
     <ul>
-        <li>@Resources.ContestStart: @Model.StartTime</li>
+        <li>@Resources.ContestStart: @Model.StartTime @Html.Partial("Countdown", Model.StartTime)</li>
         <li>@Resources.ContestDuration: @Model.GetDurationTimeString()</li>
         @if (Model.HasAdditionalRules)
         {

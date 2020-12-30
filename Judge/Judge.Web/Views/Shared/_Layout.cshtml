@@ -61,5 +61,30 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+<script>
+$(function (){
+    $("[countdown]").each(function (){
+        var target = $(this);
+        var endDate = new Date(target.attr("countdown"));
+        setInterval(function () {
+            var seconds = Math.floor((endDate.getTime() - new Date().getTime()) / 1000);
+            if (seconds < 0)
+                seconds = 0;
+            var minutes = Math.floor(seconds / 60);
+            seconds %= 60;
+            var hours = Math.floor(minutes / 60);
+            minutes %= 60;
+            var days = Math.floor(hours / 24);
+            hours %= 24;
+            var text = `${minutes}:${seconds}`;
+            if (days > 0 || hours > 0)
+                text = `${hours}:${text}`;
+            if (days > 0)
+                text = `${days}:${text}`;
+            target.text(text);
+        }, 1000);        
+    });
+})
+</script>
 </body>
 </html>
