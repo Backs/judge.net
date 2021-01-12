@@ -1,26 +1,25 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Judge.Model.Contests;
-using Judge.Model.SubmitSolution;
-using Microsoft.EntityFrameworkCore;
-
-namespace Judge.Data.Repository
+﻿namespace Judge.Data.Repository
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Judge.Model.Contests;
+    using Judge.Model.SubmitSolution;
+
     internal sealed class ContestResultRepository : IContestResultRepository
     {
-        private readonly DataContext _context;
+        private readonly DataContext context;
 
         public ContestResultRepository(DataContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
         public IEnumerable<ContestResult> Get(long contestId)
         {
-            var contestTasks = _context.Set<ContestTask>().Where(o => o.ContestId == contestId).Select(o => o.TaskId)
+            var contestTasks = this.context.Set<ContestTask>().Where(o => o.ContestId == contestId).Select(o => o.TaskId)
                 .ToArray();
 
-            var result = _context.Set<ContestTaskSubmit>()
+            var result = this.context.Set<ContestTaskSubmit>()
                 .Where(o => o.ContestId == contestId && contestTasks.Contains(o.ProblemId))
                 .Select(o => new
                 {
@@ -69,8 +68,8 @@ namespace Judge.Data.Repository
                     {
                         Solved = t.Solved,
                         ProblemId = t.ProblemId,
-                        Attempts = t.FirstSuccess == null ? t.SubmitResults.Count() : t.SubmitResults.Count(s => s.Id <= t.FirstSuccess.Id),
-                        SubmitDateUtc = t.FirstSuccess == null ? t.SubmitResults.Last().SubmitDateUtc : t.FirstSuccess.SubmitDateUtc
+                        Attempts = t.FirstSuccess == null ? t.SubmitResults.Length : t.SubmitResults.Count(s => s.Id <= t.FirstSuccess.Id),
+                        SubmitDateUtc = t.FirstSuccess?.SubmitDateUtc ?? t.SubmitResults.Last().SubmitDateUtc
                     })
                 })
                 .Where(t => t.TaskResults.Any());

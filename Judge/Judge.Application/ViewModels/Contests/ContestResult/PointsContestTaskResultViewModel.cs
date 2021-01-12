@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Judge.Application.ViewModels.Contests.ContestResult
+﻿namespace Judge.Application.ViewModels.Contests.ContestResult
 {
+    using System;
+
     public class PointsContestTaskResultViewModel : ContestTaskResultViewModelBase
     {
         private const int MaxScore = 100;
@@ -15,14 +15,14 @@ namespace Judge.Application.ViewModels.Contests.ContestResult
 
         public override string GetLabel()
         {
-            return Solved ? GetScore().ToString() : string.Empty;
+            return this.Solved ? GetScore().ToString() : string.Empty;
         }
 
         public override int GetScore()
         {
-            if (!Solved) return 0;
+            if (!this.Solved) return 0;
 
-            var result = MaxScore - ((Attempts - 1) * Penalty);
+            var result = MaxScore - ((this.Attempts - 1) * Penalty);
             return result <= 0 ? MinScore : result;
 
         }

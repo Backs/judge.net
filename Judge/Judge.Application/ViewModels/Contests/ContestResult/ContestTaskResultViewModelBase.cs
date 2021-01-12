@@ -9,11 +9,18 @@
             this.SubmitDateUtc = submitDateUtc;
         }
 
+        public bool FirstSolved { get; set; }
+
         public bool Solved { get; set; }
+
         public long ProblemId { get; set; }
+        
         public int Attempts { get; set; }
+        
         public DateTime SubmitDateUtc { get; }
+        
         public abstract string GetLabel();
+        
         public abstract int GetScore();
 
         public string GetAttempts()

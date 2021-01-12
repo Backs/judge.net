@@ -1,10 +1,11 @@
-﻿using Judge.Application.ViewModels.Contests.ContestsList;
-using Judge.Model.Contests;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Judge.Application.ViewModels.Contests.ContestResult
+﻿namespace Judge.Application.ViewModels.Contests.ContestResult
 {
+    using Judge.Application.ViewModels.Contests.ContestsList;
+    using Judge.Model.Contests;
+    using System.Collections.Generic;
+    using System.Linq;
+    using ContestResult = Judge.Model.Contests.ContestResult;
+
     internal sealed class PointsContestTaskResultFactory : IContestTaskResultFactory
     {
         private static ContestTaskResultViewModelBase Convert(ContestTaskResult taskResult)
@@ -17,11 +18,10 @@ namespace Judge.Application.ViewModels.Contests.ContestResult
             };
         }
 
-        public ContestResultViewModel Convert(
-            IEnumerable<ContestTask> tasks,
-            IEnumerable<Model.Contests.ContestResult> results,
-            IDictionary<long, string> users,
-            Contest contest)
+        public ContestResultViewModel Convert(IEnumerable<ContestTask> tasks,
+        IReadOnlyList<ContestResult> results,
+        IDictionary<long, string> users,
+        Contest contest)
         {
             var userModels = results.Select(o => new PointContestUserResultViewModel
             {

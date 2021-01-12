@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Judge.Application.ViewModels.Contests.ContestsList;
-
-namespace Judge.Application.ViewModels.Contests.ContestResult
+﻿namespace Judge.Application.ViewModels.Contests.ContestResult
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Judge.Application.ViewModels.Contests.ContestsList;
+
     public class ContestResultViewModel
     {
         public ContestResultViewModel(IEnumerable<ContestUserResultViewModelBase> users)
@@ -22,7 +22,7 @@ namespace Judge.Application.ViewModels.Contests.ContestResult
                 result.Add(user);
             }
 
-            Users = result;
+            this.Users = result;
         }
 
         public ContestItem Contest { get; set; }

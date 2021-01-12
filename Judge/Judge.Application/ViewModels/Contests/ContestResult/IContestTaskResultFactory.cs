@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using Judge.Model.Contests;
-
-namespace Judge.Application.ViewModels.Contests.ContestResult
+﻿namespace Judge.Application.ViewModels.Contests.ContestResult
 {
+    using System.Collections.Generic;
+    using Judge.Model.Contests;
+    using ContestResult = Judge.Model.Contests.ContestResult;
+
     internal interface IContestTaskResultFactory
     {
-        ContestResultViewModel Convert(
-            IEnumerable<ContestTask> tasks,
-            IEnumerable<Model.Contests.ContestResult> results,
-            IDictionary<long, string> users,
-            Contest contest);
+        ContestResultViewModel Convert(IEnumerable<ContestTask> tasks,
+        IReadOnlyList<ContestResult> results,
+        IDictionary<long, string> users,
+        Contest contest);
     }
 }
