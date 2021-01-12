@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-
-namespace Judge.Application.ViewModels.Admin.Contests
+﻿namespace Judge.Application.ViewModels.Admin.Contests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq;
+
     public sealed class EditContestViewModel : IValidatableObject
     {
         public EditContestViewModel()
         {
-            Tasks = new List<TaskEditViewModel>();
+            this.Tasks = new List<TaskEditViewModel>();
         }
-        public bool IsNewContest => Id == null;
+
+        public bool IsNewContest => this.Id == null;
 
         [Required]
         [Display(ResourceType = typeof(Resources), Name = "ContestName")]
@@ -33,6 +34,7 @@ namespace Judge.Application.ViewModels.Admin.Contests
 
         [Display(ResourceType = typeof(Resources), Name = "ContestIsOpened")]
         public bool IsOpened { get; set; }
+
         public int? Id { get; set; }
         public List<TaskEditViewModel> Tasks { get; set; }
 
@@ -41,21 +43,18 @@ namespace Judge.Application.ViewModels.Admin.Contests
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (Tasks.Any(o => string.IsNullOrWhiteSpace(o.Label)))
+            if (this.Tasks.Any(o => string.IsNullOrWhiteSpace(o.Label)))
             {
                 yield return new ValidationResult(Resources.TaskHaveNoLabel);
+
                 yield break;
             }
 
-            if (Tasks.GroupBy(o => o.ProblemId).Any(o => o.Count() > 1))
-            {
+            if (this.Tasks.GroupBy(o => o.ProblemId).Any(o => o.Count() > 1))
                 yield return new ValidationResult(Resources.TasksHaveDuplicates);
-            }
 
-            if (Tasks.GroupBy(o => o.Label).Any(o => o.Count() > 1))
-            {
+            if (this.Tasks.GroupBy(o => o.Label).Any(o => o.Count() > 1))
                 yield return new ValidationResult(Resources.TaskLabelsHaveDuplicates);
-            }
         }
     }
 }

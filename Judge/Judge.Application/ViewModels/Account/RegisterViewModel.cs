@@ -1,10 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Judge.Application.ViewModels.Account
+﻿namespace Judge.Application.ViewModels.Account
 {
+    using System.ComponentModel.DataAnnotations;
+
     public sealed class RegisterViewModel
     {
-
         [Display(Name = "Email")]
         [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "EnterEmail")]
         [MaxLength(256)]

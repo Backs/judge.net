@@ -1,7 +1,7 @@
-﻿using Judge.Application.ViewModels.User;
-
-namespace Judge.Application.Interfaces
+﻿namespace Judge.Application.Interfaces
 {
+    using Judge.Application.ViewModels.User;
+
     public interface IUserService
     {
         UserViewModel GetUserInfo(long id);

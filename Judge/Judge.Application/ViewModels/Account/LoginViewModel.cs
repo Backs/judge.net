@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Judge.Application.ViewModels.Account
+﻿namespace Judge.Application.ViewModels.Account
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class LoginViewModel
     {
         [Display(Name = "Email")]

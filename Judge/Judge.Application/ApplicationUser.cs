@@ -1,42 +1,42 @@
-﻿using System.Linq;
-using Judge.Model.Entities;
-using Microsoft.AspNet.Identity;
-
-namespace Judge.Application
+﻿namespace Judge.Application
 {
+    using System.Linq;
+    using Judge.Model.Entities;
+    using Microsoft.AspNet.Identity;
+
     public sealed class ApplicationUser : IUser<long>
     {
         public User User { get; }
 
         public ApplicationUser(User user)
         {
-            User = user;
+            this.User = user;
         }
 
         public ApplicationUser()
         {
-            User = new User();
+            this.User = new User();
         }
 
-        public long Id => User.Id;
+        public long Id => this.User.Id;
         public string UserName
         {
-            get => User.UserName;
-            set => User.UserName = value;
+            get => this.User.UserName;
+            set => this.User.UserName = value;
         }
 
         public string Email
         {
-            get => User.Email;
-            set => User.Email = value;
+            get => this.User.Email;
+            set => this.User.Email = value;
         }
 
         public string PasswordHash
         {
-            get => User.PasswordHash;
-            set => User.PasswordHash = value;
+            get => this.User.PasswordHash;
+            set => this.User.PasswordHash = value;
         }
 
-        public string[] UserRoles => User.UserRoles.Select(o => o.RoleName).ToArray();
+        public string[] UserRoles => this.User.UserRoles.Select(o => o.RoleName).ToArray();
     }
 }

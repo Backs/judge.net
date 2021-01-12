@@ -1,12 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
-
-namespace Judge.Application.ViewModels.Admin.Problems
+﻿namespace Judge.Application.ViewModels.Admin.Problems
 {
+    using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
+
     public sealed class EditProblemViewModel
     {
         public long? Id { get; set; }
-        public bool IsNewTask => Id == null;
+        public bool IsNewTask => this.Id == null;
 
         [Required]
         [MaxLength(512)]

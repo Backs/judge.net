@@ -1,35 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Security.Authentication;
-using System.Security.Principal;
-using System.Web;
-using Judge.Application.Interfaces;
-using Judge.Application.ViewModels;
-using Judge.Application.ViewModels.Problems.Solution;
-using Judge.Application.ViewModels.Submit;
-using Judge.Data;
-using Judge.Model.CheckSolution;
-using Judge.Model.Configuration;
-using Judge.Model.SubmitSolution;
-
-namespace Judge.Application
+﻿namespace Judge.Application
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Security.Authentication;
+    using System.Security.Principal;
+    using System.Web;
+    using Judge.Application.Interfaces;
+    using Judge.Application.ViewModels;
+    using Judge.Application.ViewModels.Problems.Solution;
+    using Judge.Application.ViewModels.Submit;
+    using Judge.Data;
+    using Judge.Model.SubmitSolution;
+
     internal sealed class SubmitSolutionService : ISubmitSolutionService
     {
-        private readonly IUnitOfWorkFactory _factory;
-        private readonly IPrincipal _principal;
+        private readonly IUnitOfWorkFactory factory;
+        private readonly IPrincipal principal;
 
         public SubmitSolutionService(IUnitOfWorkFactory factory, IPrincipal principal)
         {
-            _factory = factory;
-            _principal = principal;
+            this.factory = factory;
+            this.principal = principal;
         }
 
         public IEnumerable<LanguageViewModel> GetLanguages()
         {
-            using (var uow = _factory.GetUnitOfWork())
+            using (var uow = this.factory.GetUnitOfWork())
             {
                 var languageRepository = uow.LanguageRepository;
 
@@ -62,7 +60,7 @@ namespace Judge.Application
             submit.UserHost = userInfo.Host;
             submit.SessionId = userInfo.SessionId;
 
-            using (var unitOfWork = _factory.GetUnitOfWork())
+            using (var unitOfWork = this.factory.GetUnitOfWork())
             {
                 var submitRepository = unitOfWork.SubmitRepository;
                 submitRepository.Add(submit);
@@ -72,7 +70,7 @@ namespace Judge.Application
 
         public SolutionViewModel GetSolution(long submitResultId, long userId)
         {
-            using (var unitOfWork = _factory.GetUnitOfWork())
+            using (var unitOfWork = this.factory.GetUnitOfWork())
             {
                 var submitResultRepository = unitOfWork.SubmitResultRepository;
                 var taskRepository = unitOfWork.TaskRepository;
@@ -81,7 +79,7 @@ namespace Judge.Application
                 if (result == null)
                     return null;
 
-                var hasPermission = _principal.IsInRole("admin");
+                var hasPermission = this.principal.IsInRole("admin");
 
                 var submit = result.Submit;
 

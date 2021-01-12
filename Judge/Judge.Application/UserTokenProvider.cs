@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
-
-namespace Judge.Application
+﻿namespace Judge.Application
 {
+    using System.Threading.Tasks;
+    using Microsoft.AspNet.Identity;
+
     internal sealed class UserTokenProvider : IUserTokenProvider<ApplicationUser,long>
     {
         public Task<string> GenerateAsync(string purpose, UserManager<ApplicationUser, long> manager, ApplicationUser user)

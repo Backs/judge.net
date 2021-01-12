@@ -1,9 +1,9 @@
-﻿using Judge.Application.ViewModels.Account;
-using Judge.Application.ViewModels.Admin.Users;
-using Microsoft.AspNet.Identity.Owin;
-
-namespace Judge.Application.Interfaces
+﻿namespace Judge.Application.Interfaces
 {
+    using Judge.Application.ViewModels.Account;
+    using Judge.Application.ViewModels.Admin.Users;
+    using Microsoft.AspNet.Identity.Owin;
+
     public interface ISecurityService
     {
         SignInStatus SignIn(string email, string password, bool isPersistent);

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using Judge.Application.ViewModels.Problems.ProblemsList;
-using Judge.Application.ViewModels.Problems.Statement;
-
-namespace Judge.Application.Interfaces
+﻿namespace Judge.Application.Interfaces
 {
+    using System.Collections.Generic;
+    using Judge.Application.ViewModels.Problems.ProblemsList;
+    using Judge.Application.ViewModels.Problems.Statement;
+
     public interface IProblemsService
     {
         /// <summary>
@@ -14,7 +14,9 @@ namespace Judge.Application.Interfaces
         /// <param name="userId"></param>
         /// <param name="openedOnly"></param>
         ProblemsListViewModel GetProblemsList(int page, int pageSize, long? userId, bool openedOnly);
+
         StatementViewModel GetStatement(long id, bool isAdmin);
+
         IReadOnlyCollection<ProblemItem> GetAllProblems();
     }
 }

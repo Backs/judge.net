@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Judge.Data;
-using Microsoft.AspNet.Identity;
-
-namespace Judge.Application
+﻿namespace Judge.Application
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Judge.Data;
+    using Microsoft.AspNet.Identity;
+
     internal sealed class UserStore : IUserPasswordStore<ApplicationUser, long>, IUserLockoutStore<ApplicationUser, long>, IUserTwoFactorStore<ApplicationUser, long>, IUserRoleStore<ApplicationUser, long>, IUserEmailStore<ApplicationUser, long>
     {
-        private readonly IUnitOfWorkFactory _unitOfWorkFactory;
+        private readonly IUnitOfWorkFactory unitOfWorkFactory;
         public UserStore(IUnitOfWorkFactory unitOfWorkFactory)
         {
-            _unitOfWorkFactory = unitOfWorkFactory;
+            this.unitOfWorkFactory = unitOfWorkFactory;
         }
 
         public void Dispose()
@@ -22,7 +22,7 @@ namespace Judge.Application
 
         public Task CreateAsync(ApplicationUser user)
         {
-            using (var uow = _unitOfWorkFactory.GetUnitOfWork())
+            using (var uow = this.unitOfWorkFactory.GetUnitOfWork())
             {
                 var userRepository = uow.UserRepository;
                 userRepository.Add(user.User);
@@ -34,7 +34,7 @@ namespace Judge.Application
 
         public Task UpdateAsync(ApplicationUser user)
         {
-            using (var uow = _unitOfWorkFactory.GetUnitOfWork())
+            using (var uow = this.unitOfWorkFactory.GetUnitOfWork())
             {
                 var userRepository = uow.UserRepository;
                 userRepository.Update(user.User);
@@ -46,7 +46,7 @@ namespace Judge.Application
 
         public Task DeleteAsync(ApplicationUser user)
         {
-            using (var uow = _unitOfWorkFactory.GetUnitOfWork())
+            using (var uow = this.unitOfWorkFactory.GetUnitOfWork())
             {
                 var userRepository = uow.UserRepository;
                 userRepository.Delete(user.User);
@@ -58,7 +58,7 @@ namespace Judge.Application
 
         public Task<ApplicationUser> FindByIdAsync(long userId)
         {
-            using (var uow = _unitOfWorkFactory.GetUnitOfWork())
+            using (var uow = this.unitOfWorkFactory.GetUnitOfWork())
             {
                 var userRepository = uow.UserRepository;
                 var result = userRepository.Get(userId);
@@ -69,7 +69,7 @@ namespace Judge.Application
 
         public Task<ApplicationUser> FindByNameAsync(string userName)
         {
-            using (var uow = _unitOfWorkFactory.GetUnitOfWork())
+            using (var uow = this.unitOfWorkFactory.GetUnitOfWork())
             {
                 var userRepository = uow.UserRepository;
                 var result = userRepository.FindByName(userName);
@@ -181,7 +181,7 @@ namespace Judge.Application
 
         public Task<ApplicationUser> FindByEmailAsync(string email)
         {
-            using (var uow = _unitOfWorkFactory.GetUnitOfWork())
+            using (var uow = this.unitOfWorkFactory.GetUnitOfWork())
             {
                 var userRepository = uow.UserRepository;
                 var result = userRepository.FindByEmail(email);

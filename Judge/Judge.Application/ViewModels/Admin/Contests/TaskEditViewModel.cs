@@ -1,23 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Judge.Model.Contests;
-
-namespace Judge.Application.ViewModels.Admin.Contests
+﻿namespace Judge.Application.ViewModels.Admin.Contests
 {
+    using System.ComponentModel.DataAnnotations;
+    using Judge.Model.Contests;
+
     public sealed class TaskEditViewModel
     {
         public TaskEditViewModel(ContestTask o)
         {
-            ProblemId = o.Task.Id;
-            Label = o.TaskName;
+            this.ProblemId = o.Task.Id;
+            this.Label = o.TaskName;
         }
 
         public TaskEditViewModel()
         {
-            
         }
 
-        [Required]
-        public long? ProblemId { get; set; }
+        [Required] public long? ProblemId { get; set; }
 
         [Required]
         [MaxLength(6)]

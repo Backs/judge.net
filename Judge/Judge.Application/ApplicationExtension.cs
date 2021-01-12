@@ -1,25 +1,22 @@
-﻿using System;
-using Judge.Application.Interfaces;
-using Judge.Data;
-using Judge.Model.Entities;
-using Microsoft.AspNet.Identity;
-using SimpleInjector;
-using SimpleInjector.Integration.Web;
-
-namespace Judge.Application
+﻿namespace Judge.Application
 {
+    using Judge.Application.Interfaces;
+    using Judge.Data;
+    using Microsoft.AspNet.Identity;
+    using SimpleInjector;
+
     public sealed class ApplicationExtension
     {
-        private readonly string _connectionString;
+        private readonly string connectionString;
 
         public ApplicationExtension(string connectionString)
         {
-            _connectionString = connectionString;
+            this.connectionString = connectionString;
         }
 
         public void Configure(Container container)
         {
-            new DataContainerExtension(_connectionString, Lifestyle.Scoped).Configure(container);
+            new DataContainerExtension(this.connectionString, Lifestyle.Scoped).Configure(container);
 
             container.Register<ISecurityService, SecurityService>(Lifestyle.Scoped);
 

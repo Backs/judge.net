@@ -1,26 +1,23 @@
-﻿using System.Linq;
-using Judge.Application.Interfaces;
-using Judge.Application.ViewModels.User;
-using Judge.Data;
-using Judge.Model.Account;
-using Judge.Model.CheckSolution;
-using Judge.Model.Entities;
-using Judge.Model.SubmitSolution;
-
-namespace Judge.Application
+﻿namespace Judge.Application
 {
+    using System.Linq;
+    using Judge.Application.Interfaces;
+    using Judge.Application.ViewModels.User;
+    using Judge.Data;
+    using Judge.Model.Entities;
+
     internal sealed class UserService : IUserService
     {
-        private readonly IUnitOfWorkFactory _unitOfWorkFactory;
+        private readonly IUnitOfWorkFactory unitOfWorkFactory;
 
         public UserService(IUnitOfWorkFactory unitOfWorkFactory)
         {
-            _unitOfWorkFactory = unitOfWorkFactory;
+            this.unitOfWorkFactory = unitOfWorkFactory;
         }
 
         public UserViewModel GetUserInfo(long id)
         {
-            using (var uow = _unitOfWorkFactory.GetUnitOfWork())
+            using (var uow = this.unitOfWorkFactory.GetUnitOfWork())
             {
                 var userRepository = uow.UserRepository;
 

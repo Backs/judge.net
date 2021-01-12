@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Judge.Application.Interfaces;
-using Judge.Application.ViewModels.Problems.ProblemsList;
-using Judge.Application.ViewModels.Problems.Statement;
-using Judge.Data;
-using Judge.Model;
-using Judge.Model.CheckSolution;
-using Judge.Model.SubmitSolution;
-
-namespace Judge.Application
+﻿namespace Judge.Application
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Judge.Application.Interfaces;
+    using Judge.Application.ViewModels.Problems.ProblemsList;
+    using Judge.Application.ViewModels.Problems.Statement;
+    using Judge.Data;
+    using Judge.Model;
+    using Judge.Model.CheckSolution;
+    using Judge.Model.SubmitSolution;
+
     internal sealed class ProblemsService : IProblemsService
     {
-        private readonly IUnitOfWorkFactory _factory;
+        private readonly IUnitOfWorkFactory factory;
 
         public ProblemsService(IUnitOfWorkFactory factory)
         {
-            _factory = factory;
+            this.factory = factory;
         }
 
         public ProblemsListViewModel GetProblemsList(int page, int pageSize, long? userId, bool openedOnly)
@@ -27,7 +27,7 @@ namespace Judge.Application
             if (pageSize <= 0)
                 throw new ArgumentOutOfRangeException(nameof(pageSize));
 
-            using (var unitOfWork = _factory.GetUnitOfWork())
+            using (var unitOfWork = this.factory.GetUnitOfWork())
             {
                 var taskRepository = unitOfWork.TaskNameRepository;
                 var submitResultRepository = unitOfWork.SubmitResultRepository;
@@ -72,7 +72,7 @@ namespace Judge.Application
 
         public StatementViewModel GetStatement(long id, bool isAdmin)
         {
-            using (var unitOfWork = _factory.GetUnitOfWork())
+            using (var unitOfWork = this.factory.GetUnitOfWork())
             {
                 var taskRepository = unitOfWork.TaskRepository;
                 var task = taskRepository.Get(id);
@@ -98,7 +98,7 @@ namespace Judge.Application
 
         public IReadOnlyCollection<ProblemItem> GetAllProblems()
         {
-            using (var uow = _factory.GetUnitOfWork())
+            using (var uow = this.factory.GetUnitOfWork())
             {
                 var taskRepository = uow.TaskNameRepository;
                 return taskRepository.GetTasks(AllTasksSpecification.Instance, 1, int.MaxValue)

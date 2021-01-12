@@ -1,27 +1,27 @@
-﻿using System.Linq;
-using System.Security.Principal;
-using Judge.Application.Interfaces;
-using Judge.Application.ViewModels.Submit;
-using Judge.Data;
-using Judge.Model.Account;
-using Judge.Model.SubmitSolution;
-
-namespace Judge.Application
+﻿namespace Judge.Application
 {
+    using System.Linq;
+    using System.Security.Principal;
+    using Judge.Application.Interfaces;
+    using Judge.Application.ViewModels.Submit;
+    using Judge.Data;
+    using Judge.Model.Account;
+    using Judge.Model.SubmitSolution;
+
     internal sealed class SubmitQueueService : ISubmitQueueService
     {
-        private readonly IUnitOfWorkFactory _unitOfWorkFactory;
-        private readonly IPrincipal _principal;
+        private readonly IUnitOfWorkFactory unitOfWorkFactory;
+        private readonly IPrincipal principal;
 
         public SubmitQueueService(IUnitOfWorkFactory unitOfWorkFactory, IPrincipal principal)
         {
-            _unitOfWorkFactory = unitOfWorkFactory;
-            _principal = principal;
+            this.unitOfWorkFactory = unitOfWorkFactory;
+            this.principal = principal;
         }
 
         public SubmitQueueViewModel GetSubmitQueue(long userId, long problemId, int page, int pageSize)
         {
-            using (var uow = _unitOfWorkFactory.GetUnitOfWork())
+            using (var uow = this.unitOfWorkFactory.GetUnitOfWork())
             {
                 var submitResultRepository = uow.SubmitResultRepository;
                 var languageRepository = uow.LanguageRepository;
@@ -57,7 +57,7 @@ namespace Judge.Application
 
         public SubmitQueueViewModel GetSubmitQueue(long? userId, int page, int pageSize)
         {
-            using (var uow = _unitOfWorkFactory.GetUnitOfWork())
+            using (var uow = this.unitOfWorkFactory.GetUnitOfWork())
             {
                 var submitResultRepository = uow.SubmitResultRepository;
                 var languageRepository = uow.LanguageRepository;
@@ -71,7 +71,7 @@ namespace Judge.Application
                 var tasks = taskRepository.GetTasks(submits.Select(o => o.Submit.ProblemId).Distinct()).ToDictionary(o => o.Id);
                 var users = userRepository.Find(userSpecification).ToDictionary(o => o.Id, o => o.UserName);
 
-                var hasPermission = _principal.IsInRole("admin");
+                var hasPermission = this.principal.IsInRole("admin");
 
                 var items = submits.Select(o => new SubmitQueueItem(o, languages[o.Submit.LanguageId], tasks[o.Submit.ProblemId], users[o.Submit.UserId])
                 {
