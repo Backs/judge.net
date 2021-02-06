@@ -127,3 +127,8 @@ let main argv =
     0
 
 ```
+
+#### Python 3
+```
+print(sum(int(x) for x in input().split(' ')))
+```
