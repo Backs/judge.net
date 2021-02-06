@@ -156,7 +156,7 @@
 
                 var task = contestTaskRepository.Get(contestId, label);
 
-                var languages = languageRepository.GetLanguages().ToDictionary(o => o.Id, o => o.Name);
+                var languages = languageRepository.GetLanguages(false).ToDictionary(o => o.Id, o => o.Name);
 
                 var specification = new ContestTaskSpecification(contestId, task.Task.Id, userId);
 

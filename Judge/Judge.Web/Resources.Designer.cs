@@ -349,20 +349,20 @@ namespace Judge.Web {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Доступен.
-        /// </summary>
-        public static string LanguageEnabled {
-            get {
-                return ResourceManager.GetString("LanguageEnabled", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Исполняемый файл.
         /// </summary>
         public static string LanguageExecutionFile {
             get {
                 return ResourceManager.GetString("LanguageExecutionFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Скрыт.
+        /// </summary>
+        public static string LanguageIsHidden {
+            get {
+                return ResourceManager.GetString("LanguageIsHidden", resourceCulture);
             }
         }
         

@@ -31,7 +31,7 @@
             using (var uow = this.factory.GetUnitOfWork())
             {
                 var repository = uow.LanguageRepository;
-                return repository.GetLanguages().Select(o => new LanguageEditViewModel
+                return repository.GetLanguages(false).Select(o => new LanguageEditViewModel
                 {
                     Id = o.Id,
                     CompilerOptionsTemplate = o.CompilerOptionsTemplate,
@@ -52,7 +52,7 @@
             using (var uow = this.factory.GetUnitOfWork())
             {
                 var repository = uow.LanguageRepository;
-                var databaseLanguages = repository.GetLanguages();
+                var databaseLanguages = repository.GetLanguages(false);
 
                 foreach (var databaseLanguage in databaseLanguages)
                 {
@@ -103,7 +103,7 @@
                 var userRepository = uow.UserRepository;
                 var contestTaskRepository = uow.ContestTaskRepository;
 
-                var languages = languageRepository.GetLanguages().ToDictionary(o => o.Id, o => o.Name);
+                var languages = languageRepository.GetLanguages(false).ToDictionary(o => o.Id, o => o.Name);
                 var submits = submitResultRepository.GetSubmits(AllSubmitsSpecification.Instance, 1, 100).ToArray();
 
                 var userSpecification = new UserListSpecification(submits.Select(o => o.Submit.UserId).Distinct());

@@ -28,7 +28,7 @@ namespace Judge.Tests.Application.SubmitQueueServiceTests
             var unitOfWork = MockRepository.GenerateMock<IUnitOfWork>();
             _submitResultRepository = MockRepository.GenerateMock<ISubmitResultRepository>();
             var languageRepository = MockRepository.GenerateMock<ILanguageRepository>();
-            languageRepository.Stub(o => o.GetLanguages()).Return(new[] { new Language() });
+            languageRepository.Stub(o => o.GetLanguages(false)).Return(new[] { new Language() });
 
             _taskRepository = MockRepository.GenerateMock<ITaskNameRepository>();
             _userRepository = MockRepository.GenerateMock<IUserRepository>();

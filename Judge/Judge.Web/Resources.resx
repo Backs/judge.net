@@ -255,8 +255,8 @@
   <data name="LanguageDescription" xml:space="preserve">
     <value>Описание</value>
   </data>
-  <data name="LanguageEnabled" xml:space="preserve">
-    <value>Доступен</value>
+  <data name="LanguageIsHidden" xml:space="preserve">
+    <value>Скрыт</value>
   </data>
   <data name="LanguageExecutionFile" xml:space="preserve">
     <value>Исполняемый файл</value>

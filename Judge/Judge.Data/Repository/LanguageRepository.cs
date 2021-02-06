@@ -1,37 +1,44 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Judge.Model.Configuration;
-using Judge.Model.Entities;
-
-namespace Judge.Data.Repository
+﻿namespace Judge.Data.Repository
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Judge.Model.Configuration;
+    using Judge.Model.Entities;
+
     internal sealed class LanguageRepository : ILanguageRepository
     {
-        private readonly DataContext _context;
+        private readonly DataContext context;
 
         public LanguageRepository(DataContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
-        public IEnumerable<Language> GetLanguages()
+        public IEnumerable<Language> GetLanguages(bool activeOnly)
         {
-            return _context.Set<Language>().OrderBy(o => o.Id).AsEnumerable();
+            IQueryable<Language> query = this.context.Set<Language>();
+
+            if (activeOnly)
+            {
+                query = query.Where(o => o.IsHidden == false);
+            }
+
+            return query.OrderBy(o => o.Name).AsEnumerable();
         }
 
         public Language Get(int id)
         {
-            return _context.Set<Language>().FirstOrDefault(o => o.Id == id);
+            return this.context.Set<Language>().FirstOrDefault(o => o.Id == id);
         }
 
         public void Add(Language language)
         {
-            _context.Set<Language>().Add(language);
+            this.context.Set<Language>().Add(language);
         }
 
         public void Delete(Language language)
         {
-            _context.Set<Language>().Remove(language);
+            this.context.Set<Language>().Remove(language);
         }
     }
 }

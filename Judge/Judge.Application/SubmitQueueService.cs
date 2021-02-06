@@ -28,7 +28,7 @@
                 var taskRepository = uow.TaskRepository;
                 var userRepository = uow.UserRepository;
 
-                var languages = languageRepository.GetLanguages().ToDictionary(o => o.Id, o => o.Name);
+                var languages = languageRepository.GetLanguages(false).ToDictionary(o => o.Id, o => o.Name);
 
                 var specification = new UserProblemSpecification(userId, problemId);
 
@@ -64,7 +64,7 @@
                 var taskRepository = uow.TaskRepository;
                 var userRepository = uow.UserRepository;
 
-                var languages = languageRepository.GetLanguages().ToDictionary(o => o.Id, o => o.Name);
+                var languages = languageRepository.GetLanguages(false).ToDictionary(o => o.Id, o => o.Name);
                 var submits = submitResultRepository.GetSubmits(AllProblemsSpecification.Instance, page, pageSize).ToArray();
 
                 var userSpecification = new UserListSpecification(submits.Select(o => o.Submit.UserId).Distinct());

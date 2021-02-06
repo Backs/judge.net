@@ -1,64 +1,66 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
-using Judge.Application.Interfaces;
-using Judge.Application.ViewModels.Admin.Contests;
-using Judge.Application.ViewModels.Admin.Languages;
-using Judge.Application.ViewModels.Admin.Problems;
-using Judge.Application.ViewModels.Admin.Users;
-
-namespace Judge.Web.Controllers
+﻿namespace Judge.Web.Controllers
 {
+    using System.Collections.Generic;
+    using System.Web.Mvc;
+    using Judge.Application.Interfaces;
+    using Judge.Application.ViewModels.Admin.Contests;
+    using Judge.Application.ViewModels.Admin.Languages;
+    using Judge.Application.ViewModels.Admin.Problems;
+    using Judge.Application.ViewModels.Admin.Users;
+
     [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
-        private readonly IAdminService _adminService;
-        private readonly IProblemsService _problemsService;
-        private readonly IContestsService _contestsService;
+        private readonly IAdminService adminService;
+        private readonly IProblemsService problemsService;
+        private readonly IContestsService contestsService;
         private readonly ISecurityService securityService;
 
-        public AdminController(IAdminService adminService, IProblemsService problemsService, IContestsService contestsService, ISecurityService securityService)
+        public AdminController(IAdminService adminService, IProblemsService problemsService,
+        IContestsService contestsService, ISecurityService securityService)
         {
-            _adminService = adminService;
-            _problemsService = problemsService;
-            _contestsService = contestsService;
+            this.adminService = adminService;
+            this.problemsService = problemsService;
+            this.contestsService = contestsService;
             this.securityService = securityService;
         }
 
         public ActionResult Index()
         {
-            return View();
+            return this.View();
         }
 
         [HttpGet]
         public ActionResult Languages()
         {
-            var model = _adminService.GetLanguages();
+            var model = this.adminService.GetLanguages();
 
-            return View(model);
+            return this.View(model);
         }
 
         [HttpPost]
         public ActionResult Languages(List<LanguageEditViewModel> languages)
         {
-            languages.ForEach(o => TryValidateModel(o));
-            if (!ModelState.IsValid)
+            languages.ForEach(o => this.TryValidateModel(o));
+            if (!this.ModelState.IsValid)
             {
-                return View(languages);
+                return this.View(languages);
             }
-            _adminService.SaveLanguages(languages);
 
-            return RedirectToAction("Index");
+            this.adminService.SaveLanguages(languages);
+
+            return this.RedirectToAction("Index");
         }
 
         public PartialViewResult Language()
         {
-            return PartialView("Admin/Languages/_LanguageEditView", new LanguageEditViewModel());
+            return this.PartialView("Admin/Languages/_LanguageEditView", new LanguageEditViewModel());
         }
 
         public ActionResult Submits()
         {
-            var model = _adminService.GetSubmitQueue();
-            return View(model);
+            var model = this.adminService.GetSubmitQueue();
+            return this.View(model);
         }
 
         [HttpGet]
@@ -66,93 +68,96 @@ namespace Judge.Web.Controllers
         {
             if (id == null)
             {
-                return View(new EditProblemViewModel());
+                return this.View(new EditProblemViewModel());
             }
-            var model = _adminService.GetProblem(id.Value);
-            return View(model);
+
+            var model = this.adminService.GetProblem(id.Value);
+            return this.View(model);
         }
 
         [HttpPost]
         public ActionResult EditProblem(EditProblemViewModel model)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
-                var id = _adminService.SaveProblem(model);
-                return RedirectToAction("EditProblem", new { id });
+                var id = this.adminService.SaveProblem(model);
+                return this.RedirectToAction("EditProblem", new {id});
             }
-            return View(model);
+
+            return this.View(model);
         }
 
         public ActionResult Problems(int? page)
         {
-            var model = _problemsService.GetProblemsList(page ?? 1, 20, null, false);
-            return View(model);
+            var model = this.problemsService.GetProblemsList(page ?? 1, 20, null, false);
+            return this.View(model);
         }
 
         public ActionResult Contests()
         {
-            var contests = _contestsService.GetContests(true);
-            return View(contests);
+            var contests = this.contestsService.GetContests(true);
+            return this.View(contests);
         }
 
         public ActionResult EditContest(int? id)
         {
-            var problems = _problemsService.GetAllProblems();
-            ViewBag.Problems = problems;
+            var problems = this.problemsService.GetAllProblems();
+            this.ViewBag.Problems = problems;
 
-            var model = id != null ? _adminService.GetContest(id.Value) : new EditContestViewModel();
-            return View(model);
+            var model = id != null ? this.adminService.GetContest(id.Value) : new EditContestViewModel();
+            return this.View(model);
         }
 
         [HttpPost]
         public ActionResult EditContest(EditContestViewModel model)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
-                model.Id = _adminService.SaveContest(model);
-                return RedirectToAction("EditContest", new { id = model.Id });
+                model.Id = this.adminService.SaveContest(model);
+                return this.RedirectToAction("EditContest", new {id = model.Id});
             }
-            var problems = _problemsService.GetAllProblems();
-            ViewBag.Problems = problems;
-            return View(model);
+
+            var problems = this.problemsService.GetAllProblems();
+            this.ViewBag.Problems = problems;
+            return this.View(model);
         }
 
         [HttpGet]
         public ActionResult Users()
         {
-            var model = _adminService.GetUsers();
-            return View(model);
+            var model = this.adminService.GetUsers();
+            return this.View(model);
         }
 
         [HttpGet]
         public ActionResult EditUser(long id)
         {
-            var model = _adminService.GetUser(id);
+            var model = this.adminService.GetUser(id);
 
             if (model == null)
             {
-                return HttpNotFound();
+                return this.HttpNotFound();
             }
 
-            return View(model);
+            return this.View(model);
         }
 
-        public ActionResult Edituser(UserEditViewModel model)
+        public ActionResult EditUser(UserEditViewModel model)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
-                securityService.UpdateUser(model);
-                return RedirectToAction("Users");
+                this.securityService.UpdateUser(model);
+                return this.RedirectToAction("Users");
             }
 
-            return View(model);
+            return this.View(model);
         }
 
         public PartialViewResult Task()
         {
-            var problems = _problemsService.GetAllProblems();
-            ViewBag.Problems = problems;
-            return PartialView("Admin/Contests/_TaskEditView", new TaskEditViewModel());
+            var problems = this.problemsService.GetAllProblems();
+            this.ViewBag.Problems = problems;
+            return this.PartialView("Admin/Contests/_TaskEditView", new TaskEditViewModel());
         }
     }
 }

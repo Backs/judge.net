@@ -31,7 +31,7 @@
             {
                 var languageRepository = uow.LanguageRepository;
 
-                return languageRepository.GetLanguages().Select(o => new LanguageViewModel
+                return languageRepository.GetLanguages(true).Select(o => new LanguageViewModel
                 {
                     Id = o.Id,
                     Name = o.Name
