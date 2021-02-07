@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyTitle>Judge.Model</AssemblyTitle>
-    <Product>Judge.Model</Product>
-    <Copyright>Copyright ©  2015</Copyright>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <AssemblyTitle>Judge.Model</AssemblyTitle>
+        <Product>Judge.Model</Product>
+        <Copyright>Copyright ©  2015</Copyright>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <LangVersion>9.0</LangVersion>
+    </PropertyGroup>
 </Project>

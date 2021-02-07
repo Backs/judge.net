@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq.Expressions;
-
-namespace Judge.Model.SubmitSolution
+﻿namespace Judge.Model.SubmitSolution
 {
+    using System;
+    using System.Linq.Expressions;
+
     public sealed class AllSubmitsSpecification : ISpecification<SubmitResult>
     {
         private AllSubmitsSpecification()

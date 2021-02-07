@@ -1,5 +1,5 @@
 ﻿@using System.Globalization
-@model IEnumerable<Judge.Application.ViewModels.Admin.Submits.SubmitQueueItem>
+@model Judge.Application.ViewModels.Admin.Submits.SubmitsQueue
 @{
     ViewBag.Title = Resources.Queue;
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -24,7 +24,32 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @using (Html.BeginForm("Submits", "Admin", FormMethod.Get))
+            {
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        @Html.DropDownListFor(
+                        o => o.SelectedLanguage,
+                        Model.Languages.Select(o => new SelectListItem { Text = o.Name, Value = o.Id.ToString() }),
+                        new { @class = "form-control", onchange = "this.form.submit();" }
+                        )
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(
+                        o => o.SelectedStatus,
+                        Model.Statuses.Select(o => new SelectListItem { Text = o.Name, Value = o.Id.ToString() }),
+                        new { @class = "form-control", onchange = "this.form.submit();" }
+                        )
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            }
+            @foreach (var item in Model.Submits)
             {
                 <tr>
                     <td>

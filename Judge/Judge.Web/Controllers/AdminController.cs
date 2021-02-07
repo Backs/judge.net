@@ -1,12 +1,16 @@
 ﻿namespace Judge.Web.Controllers
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Web.Mvc;
     using Judge.Application.Interfaces;
     using Judge.Application.ViewModels.Admin.Contests;
     using Judge.Application.ViewModels.Admin.Languages;
     using Judge.Application.ViewModels.Admin.Problems;
+    using Judge.Application.ViewModels.Admin.Submits;
     using Judge.Application.ViewModels.Admin.Users;
+    using Judge.Model.SubmitSolution;
 
     [Authorize(Roles = "admin")]
     public class AdminController : Controller
@@ -57,9 +61,25 @@
             return this.PartialView("Admin/Languages/_LanguageEditView", new LanguageEditViewModel());
         }
 
-        public ActionResult Submits()
+        [HttpGet]
+        public ActionResult Submits(SubmitsFilter filter)
         {
-            var model = this.adminService.GetSubmitQueue();
+            filter = filter ?? new SubmitsFilter();
+
+            var submits = this.adminService.GetSubmitQueue(filter.SelectedLanguage, filter.SelectedStatus);
+            var languages = this.adminService.GetLanguages();
+
+            var statuses = Enum.GetValues(typeof(SubmitStatus)).Cast<SubmitStatus>().Select(o => new SubmitStatusItem { Id = o, Name = o.GetDescription() });
+
+            var model = new SubmitsQueue
+            {
+                Submits = submits,
+                Languages = new[] { new LanguageItem { Name = "Все" } }.Concat(languages.Select(o => new LanguageItem { Id = o.Id, Name = o.Name })),
+                SelectedLanguage = filter.SelectedLanguage,
+                Statuses = new[] { new SubmitStatusItem { Name = "Все" } }.Concat(statuses),
+                SelectedStatus = filter.SelectedStatus
+            };
+
             return this.View(model);
         }
 
@@ -81,7 +101,7 @@
             if (this.ModelState.IsValid)
             {
                 var id = this.adminService.SaveProblem(model);
-                return this.RedirectToAction("EditProblem", new {id});
+                return this.RedirectToAction("EditProblem", new { id });
             }
 
             return this.View(model);
@@ -114,7 +134,7 @@
             if (this.ModelState.IsValid)
             {
                 model.Id = this.adminService.SaveContest(model);
-                return this.RedirectToAction("EditContest", new {id = model.Id});
+                return this.RedirectToAction("EditContest", new { id = model.Id });
             }
 
             var problems = this.problemsService.GetAllProblems();

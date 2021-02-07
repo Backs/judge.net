@@ -6,6 +6,7 @@
     using Judge.Application.ViewModels.Admin.Problems;
     using Judge.Application.ViewModels.Admin.Submits;
     using Judge.Application.ViewModels.Admin.Users;
+    using Judge.Model.SubmitSolution;
 
     public interface IAdminService
     {
@@ -13,7 +14,7 @@
 
         void SaveLanguages(ICollection<LanguageEditViewModel> languages);
 
-        IEnumerable<SubmitQueueItem> GetSubmitQueue();
+        IEnumerable<SubmitQueueItem> GetSubmitQueue(int? language, SubmitStatus? status);
 
         EditProblemViewModel GetProblem(long id);
 

@@ -1,31 +1,23 @@
-﻿using System;
-
-namespace Judge.Model.SubmitSolution
+﻿namespace Judge.Model.SubmitSolution
 {
+    using System;
+
     public static class SubmitStatusExtensions
     {
         public static string GetDescription(this SubmitStatus submitStatus)
         {
-            switch (submitStatus)
+            return submitStatus switch
             {
-                case SubmitStatus.Pending:
-                    return "Pending...";
-                case SubmitStatus.CompilationError:
-                    return "Compilation error";
-                case SubmitStatus.RuntimeError:
-                    return "Runtime error";
-                case SubmitStatus.TimeLimitExceeded:
-                    return "Time limit exceeded";
-                case SubmitStatus.MemoryLimitExceeded:
-                    return "Memory limit exceeded";
-                case SubmitStatus.WrongAnswer:
-                    return "Wrong answer";
-                case SubmitStatus.Accepted:
-                    return "Accepted";
-                case SubmitStatus.ServerError:
-                    return "Server error";
-            }
-            throw new ArgumentOutOfRangeException();
+                SubmitStatus.Pending => "Pending...",
+                SubmitStatus.CompilationError => "Compilation error",
+                SubmitStatus.RuntimeError => "Runtime error",
+                SubmitStatus.TimeLimitExceeded => "Time limit exceeded",
+                SubmitStatus.MemoryLimitExceeded => "Memory limit exceeded",
+                SubmitStatus.WrongAnswer => "Wrong answer",
+                SubmitStatus.Accepted => "Accepted",
+                SubmitStatus.ServerError => "Server error",
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
     }
 }

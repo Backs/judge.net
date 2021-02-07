@@ -93,7 +93,7 @@
             }
         }
 
-        public IEnumerable<SubmitQueueItem> GetSubmitQueue()
+        public IEnumerable<SubmitQueueItem> GetSubmitQueue(int? language, SubmitStatus? status)
         {
             using (var uow = this.factory.GetUnitOfWork())
             {
@@ -104,7 +104,7 @@
                 var contestTaskRepository = uow.ContestTaskRepository;
 
                 var languages = languageRepository.GetLanguages(false).ToDictionary(o => o.Id, o => o.Name);
-                var submits = submitResultRepository.GetSubmits(AllSubmitsSpecification.Instance, 1, 100).ToArray();
+                var submits = submitResultRepository.GetSubmits(new AdminSearchSubmitsSpecification(language, status), 1, 100).ToArray();
 
                 var userSpecification = new UserListSpecification(submits.Select(o => o.Submit.UserId).Distinct());
                 var tasks = taskRepository.GetTasks(submits.Select(o => o.Submit.ProblemId).Distinct()).ToDictionary(o => o.Id);
