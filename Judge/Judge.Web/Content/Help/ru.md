@@ -132,3 +132,11 @@ let main argv =
 ```
 print(sum(int(x) for x in input().split(' ')))
 ```
+
+#### Kotlin
+```
+fun main(args: Array<String>) {
+   val (x, y) = readLine()!!.split(' ').map(String::toInt)
+   println(x + y)
+}
+```
