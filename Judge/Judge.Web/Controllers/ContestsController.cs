@@ -1,105 +1,108 @@
-﻿using System.Web.Mvc;
-using Judge.Application.Interfaces;
-using Judge.Application.ViewModels;
-using Judge.Application.ViewModels.Contests;
-using Judge.Web.Services;
-using Microsoft.AspNet.Identity;
-
-namespace Judge.Web.Controllers
+﻿namespace Judge.Web.Controllers
 {
+    using System.Web.Mvc;
+    using Judge.Application.Interfaces;
+    using Judge.Application.ViewModels;
+    using Judge.Application.ViewModels.Contests;
+    using Judge.Web.Services;
+    using Microsoft.AspNet.Identity;
+
     public sealed class ContestsController : Controller
     {
-        private readonly IContestsService _contestsService;
-        private readonly ISubmitSolutionService _submitSolutionService;
-        private readonly ISessionService _sessionService;
+        private readonly IContestsService contestsService;
+        private readonly ISubmitSolutionService submitSolutionService;
+        private readonly ISessionService sessionService;
 
-        public ContestsController(IContestsService contestsService, ISubmitSolutionService submitSolutionService, ISessionService sessionService)
+        public ContestsController(
+            IContestsService contestsService,
+            ISubmitSolutionService submitSolutionService,
+            ISessionService sessionService)
         {
-            _contestsService = contestsService;
-            _submitSolutionService = submitSolutionService;
-            _sessionService = sessionService;
+            this.contestsService = contestsService;
+            this.submitSolutionService = submitSolutionService;
+            this.sessionService = sessionService;
         }
 
         public ActionResult Index()
         {
-            var model = _contestsService.GetContests(false);
-            return View(model);
+            var model = this.contestsService.GetContests(false);
+            return this.View(model);
         }
 
         public ActionResult Tasks(int id)
         {
             long? userId = null;
-            if (User.Identity.IsAuthenticated)
+            if (this.User.Identity.IsAuthenticated)
             {
-                userId = User.Identity.GetUserId<long>();
+                userId = this.User.Identity.GetUserId<long>();
             }
-            var model = _contestsService.GetTasks(id, userId);
-            return View(model);
+            var model = this.contestsService.GetTasks(id, userId);
+            return this.View(model);
         }
 
         public ActionResult Task(int contestId, string label)
         {
-            var model = _contestsService.GetStatement(contestId, label);
+            var model = this.contestsService.GetStatement(contestId, label);
             if (model == null)
-                return HttpNotFound();
+                return this.HttpNotFound();
 
             if (model.Contest.IsNotStarted)
             {
-                return View("NotStartedContest");
+                return this.View("NotStartedContest");
             }
 
-            return View(model);
+            return this.View(model);
         }
 
         public ActionResult Results(int id)
         {
-            var model = _contestsService.GetResults(id);
-            return View(model);
+            var model = this.contestsService.GetResults(id);
+            return this.View(model);
         }
 
         [Authorize]
         public ActionResult SubmitSolution(int contestId, string label)
         {
-            var languages = _submitSolutionService.GetLanguages();
+            var languages = this.submitSolutionService.GetLanguages(contestId, label, this.User.Identity.GetUserId<long>());
             var model = new SubmitContestSolutionViewModel
             {
                 Languages = languages,
                 Label = label,
                 ContestId = contestId,
-                SelectedLanguage = _sessionService.GetSelectedLanguage()
+                SelectedLanguage = this.sessionService.GetSelectedLanguage()
             };
-            return PartialView("Contests/_SubmitSolution", model);
+            return this.PartialView("Contests/_SubmitSolution", model);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
         [Authorize]
         public ActionResult SubmitSolution(SubmitContestSolutionViewModel model)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 model.Success = true;
-                var userId = User.Identity.GetUserId<long>();
-                var userHost = Request.UserHostAddress;
-                var sessionId = Session.SessionID;
+                var userId = this.User.Identity.GetUserId<long>();
+                var userHost = this.Request.UserHostAddress;
+                var sessionId = this.Session.SessionID;
                 var userInfo = new UserInfo(userId, userHost, sessionId);
-                _contestsService.SubmitSolution(model.ContestId, model.Label, model.SelectedLanguage, model.File, userInfo);
+                this.contestsService.SubmitSolution(model.ContestId, model.Label, model.SelectedLanguage, model.File, userInfo);
 
-                _sessionService.SaveSelectedLanguage(model.SelectedLanguage);
+                this.sessionService.SaveSelectedLanguage(model.SelectedLanguage);
 
-                return Redirect(Request.UrlReferrer.ToString());
+                return this.Redirect(this.Request.UrlReferrer.ToString());
             }
 
             model.Success = false;
-            model.Languages = _submitSolutionService.GetLanguages();
-            return PartialView("Contests/_SubmitSolution", model);
+            model.Languages = this.submitSolutionService.GetLanguages(model.ContestId, model.Label, this.User.Identity.GetUserId<long>());
+            return this.PartialView("Contests/_SubmitSolution", model);
         }
 
         [Authorize]
         public ActionResult UserSubmitQueue(int contestId, string label, int? page)
         {
-            var userId = User.Identity.GetUserId<long>();
-            var model = _contestsService.GetSubmitQueue(userId, contestId, label, page ?? 1, 10);
-            return PartialView("Submits/_SubmitQueue", model);
+            var userId = this.User.Identity.GetUserId<long>();
+            var model = this.contestsService.GetSubmitQueue(userId, contestId, label, page ?? 1, 10);
+            return this.PartialView("Submits/_SubmitQueue", model);
         }
     }
 }

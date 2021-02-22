@@ -10,6 +10,8 @@
     {
         IEnumerable<LanguageViewModel> GetLanguages();
 
+        IEnumerable<LanguageViewModel> GetLanguages(int contestId, string label, long userId);
+
         void SubmitSolution(long problemId, int selectedLanguage, HttpPostedFileBase file, UserInfo userInfo);
 
         SolutionViewModel GetSolution(long submitResultId, long userId);

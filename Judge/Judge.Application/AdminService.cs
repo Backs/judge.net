@@ -183,6 +183,7 @@
                     Name = contest.Name,
                     StartTime = contest.StartTime,
                     Rules = (ContestRules)contest.Rules,
+                    OneLanguagePerTask = contest.OneLanguagePerTask,
                     Tasks = tasks.Select(o => new TaskEditViewModel(o)).ToList()
                 };
             }
@@ -202,6 +203,7 @@
                 contest.StartTime = model.StartTime;
                 contest.CheckPointTime = model.CheckPointTime;
                 contest.Rules = (Model.Contests.ContestRules)model.Rules;
+                contest.OneLanguagePerTask = model.OneLanguagePerTask;
 
                 if (model.Id == null)
                 {

@@ -210,4 +210,7 @@
   <data name="Rules" xml:space="preserve">
     <value>Правила</value>
   </data>
+  <data name="OneLanguagePerTask" xml:space="preserve">
+    <value>Один язык на задачу</value>
+  </data>
 </root>

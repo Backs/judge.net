@@ -196,6 +196,15 @@ namespace Judge.Application {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Один язык на задачу.
+        /// </summary>
+        public static string OneLanguagePerTask {
+            get {
+                return ResourceManager.GetString("OneLanguagePerTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Пароль.
         /// </summary>
         public static string Password {

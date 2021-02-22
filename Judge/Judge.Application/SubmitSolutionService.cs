@@ -12,6 +12,7 @@
     using Judge.Application.ViewModels.Problems.Solution;
     using Judge.Application.ViewModels.Submit;
     using Judge.Data;
+    using Judge.Model.Entities;
     using Judge.Model.SubmitSolution;
 
     internal sealed class SubmitSolutionService : ISubmitSolutionService
@@ -36,6 +37,41 @@
                     Id = o.Id,
                     Name = o.Name
                 }).ToArray();
+            }
+        }
+
+        public IEnumerable<LanguageViewModel> GetLanguages(int contestId, string label, long userId)
+        {
+            using (var uow = this.factory.GetUnitOfWork())
+            {
+                var languageRepository = uow.LanguageRepository;
+                var contestRepository = uow.ContestsRepository;
+                var submitRepository = uow.SubmitRepository;
+                var contestTaskRepository = uow.ContestTaskRepository;
+
+                var contest = contestRepository.Get(contestId);
+                var task = contestTaskRepository.Get(contestId, label);
+
+                var languages = languageRepository.GetLanguages(true).Select(o => new LanguageViewModel
+                {
+                    Id = o.Id,
+                    Name = o.Name
+                }).ToArray();
+
+                if (!contest.OneLanguagePerTask)
+                {
+                    return languages;
+                }
+
+                var submit = submitRepository.Get(new ContestUserSubmitsSpecification(userId, contestId, task.TaskId))
+                    .FirstOrDefault();
+
+                if (submit == null)
+                {
+                    return languages;
+                }
+
+                return languages.Where(o => o.Id == submit.LanguageId);
             }
         }
 

@@ -41,6 +41,9 @@
         [Display(ResourceType = typeof(Resources), Name = "Rules")]
         public ContestRules Rules { get; set; }
 
+        [Display(ResourceType = typeof(Resources), Name = "OneLanguagePerTask")]
+        public bool OneLanguagePerTask { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (this.Tasks.Any(o => string.IsNullOrWhiteSpace(o.Label)))
