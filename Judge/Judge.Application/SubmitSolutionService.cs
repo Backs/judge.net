@@ -63,12 +63,13 @@
                     return languages;
                 }
 
-                var submit = submitRepository.Get(new ContestUserSubmitsSpecification(userId, contestId, task.TaskId))
-                    .FirstOrDefault();
+                var submits = submitRepository.Get(new ContestUserSubmitsSpecification(userId, contestId)).ToArray();
+                var submit = submits.FirstOrDefault(o => o.ProblemId == task.TaskId);
 
                 if (submit == null)
                 {
-                    return languages;
+                    var usedLanguages = submits.Select(o => o.LanguageId).ToHashSet();
+                    return languages.Where(o => !usedLanguages.Contains(o.Id));
                 }
 
                 return languages.Where(o => o.Id == submit.LanguageId);

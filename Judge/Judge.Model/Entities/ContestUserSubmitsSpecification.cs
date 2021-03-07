@@ -6,11 +6,10 @@
 
     public sealed class ContestUserSubmitsSpecification : ISpecification<SubmitBase>
     {
-        public ContestUserSubmitsSpecification(long userId, long contestId, long taskId)
+        public ContestUserSubmitsSpecification(long userId, long contestId)
         {
             this.IsSatisfiedBy = submit => submit.UserId == userId &&
                                            submit is ContestTaskSubmit &&
-                                           submit.ProblemId == taskId &&
                                            ((ContestTaskSubmit)submit).ContestId == contestId;
         }
 

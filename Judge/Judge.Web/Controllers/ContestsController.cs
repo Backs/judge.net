@@ -1,5 +1,6 @@
 ﻿namespace Judge.Web.Controllers
 {
+    using System.Linq;
     using System.Web.Mvc;
     using Judge.Application.Interfaces;
     using Judge.Application.ViewModels;
@@ -78,7 +79,12 @@
         [Authorize]
         public ActionResult SubmitSolution(SubmitContestSolutionViewModel model)
         {
-            if (this.ModelState.IsValid)
+            var languages = this.submitSolutionService.GetLanguages(model.ContestId, model.Label, this.User.Identity.GetUserId<long>())
+            .ToArray();
+
+            var languageAllowed = languages.Any(o => o.Id == model.SelectedLanguage);
+
+            if (this.ModelState.IsValid && languageAllowed)
             {
                 model.Success = true;
                 var userId = this.User.Identity.GetUserId<long>();
@@ -93,7 +99,7 @@
             }
 
             model.Success = false;
-            model.Languages = this.submitSolutionService.GetLanguages(model.ContestId, model.Label, this.User.Identity.GetUserId<long>());
+            model.Languages = languages;
             return this.PartialView("Contests/_SubmitSolution", model);
         }
 
