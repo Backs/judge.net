@@ -140,3 +140,16 @@ fun main(args: Array<String>) {
    println(x + y)
 }
 ```
+
+#### Go
+```
+package main
+import "fmt"
+
+func main() {
+   var a, b int
+   fmt.Scan(&a)
+   fmt.Scan(&b)
+   fmt.Println(a + b)
+}
+```
