@@ -241,6 +241,26 @@ namespace Judge.Application {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 
+        ///
+        ///### Формат входных данных
+        ///
+        ///
+        ///### Формат выходных данных
+        ///
+        ///
+        ///### Пример
+        ///| input   | output |
+        ///|---------|--------|
+        ///.
+        /// </summary>
+        public static string StatementTemplate {
+            get {
+                return ResourceManager.GetString("StatementTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Не указан лейбл задачи.
         /// </summary>
         public static string TaskHaveNoLabel {

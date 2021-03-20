@@ -213,4 +213,18 @@
   <data name="OneLanguagePerTask" xml:space="preserve">
     <value>Один язык на задачу</value>
   </data>
+  <data name="StatementTemplate" xml:space="preserve">
+      <value>
+
+### Формат входных данных
+
+
+### Формат выходных данных
+
+
+### Пример
+| input   | output |
+|---------|--------|
+</value>
+  </data>
 </root>

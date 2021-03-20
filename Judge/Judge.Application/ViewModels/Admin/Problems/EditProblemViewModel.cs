@@ -8,6 +8,11 @@
         public long? Id { get; set; }
         public bool IsNewTask => this.Id == null;
 
+        public EditProblemViewModel()
+        {
+            this.Statement = Resources.StatementTemplate;
+        }
+
         [Required]
         [MaxLength(512)]
         [Display(ResourceType = typeof(Resources), Name = "TestsFolder")]
