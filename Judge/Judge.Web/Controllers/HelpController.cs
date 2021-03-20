@@ -1,19 +1,19 @@
-﻿using System.Web.Mvc;
-
-namespace Judge.Web.Controllers
+﻿namespace Judge.Web.Controllers
 {
-    public class HelpController : Controller
+    using System.Web.Mvc;
+
+    public sealed class HelpController : Controller
     {
         public ActionResult Index()
         {
-            var text = System.IO.File.ReadAllText(Server.MapPath("~/Content/Help/ru.md"));
-            return View((object)text);
+            var text = System.IO.File.ReadAllText(this.Server.MapPath("~/Content/Help/ru.md"));
+            return this.View((object)text);
         }
 
         public ActionResult About()
         {
-            var text = System.IO.File.ReadAllText(Server.MapPath("~/Content/About/ru.md"));
-            return View((object)text);
+            var text = System.IO.File.ReadAllText(this.Server.MapPath("~/Content/About/ru.md"));
+            return this.View((object)text);
         }
     }
 }

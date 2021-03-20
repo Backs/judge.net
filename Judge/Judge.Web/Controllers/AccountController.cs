@@ -1,29 +1,29 @@
-﻿using System.Web.Mvc;
-using Judge.Application.Interfaces;
-using Judge.Application.ViewModels.Account;
-using Microsoft.AspNet.Identity.Owin;
-
-namespace Judge.Web.Controllers
+﻿namespace Judge.Web.Controllers
 {
-    public class AccountController : Controller
+    using System.Web.Mvc;
+    using Judge.Application.Interfaces;
+    using Judge.Application.ViewModels.Account;
+    using Microsoft.AspNet.Identity.Owin;
+
+    public sealed class AccountController : Controller
     {
-        private readonly ISecurityService _securityService;
+        private readonly ISecurityService securityService;
 
         public AccountController(ISecurityService securityService)
         {
-            _securityService = securityService;
+            this.securityService = securityService;
         }
 
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
+            this.ViewBag.ReturnUrl = returnUrl;
+            return this.View();
         }
 
         public ActionResult Logout()
         {
-            _securityService.SignOut();
-            return RedirectToAction("Index", "Home");
+            this.securityService.SignOut();
+            return this.RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
@@ -31,25 +31,25 @@ namespace Judge.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginViewModel model, string returnUrl)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return View(model);
+                return this.View(model);
             }
            
-            var result = _securityService.SignIn(model.Email, model.Password, model.RememberMe);
+            var result = this.securityService.SignIn(model.Email, model.Password, model.RememberMe);
             if (result == SignInStatus.Success)
             {
-                return RedirectToLocal(returnUrl);
+                return this.RedirectToLocal(returnUrl);
             }
 
-            ModelState.AddModelError(string.Empty, Resources.IncorrectPassword);
-            return View(model);
+            this.ModelState.AddModelError(string.Empty, Resources.IncorrectPassword);
+            return this.View(model);
         }
 
         [HttpGet]
         public ActionResult Register()
         {
-            return View();
+            return this.View();
         }
 
         [HttpPost]
@@ -57,33 +57,33 @@ namespace Judge.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register(RegisterViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return View(model);
+                return this.View(model);
             }
 
-            var result = _securityService.Register(model);
+            var result = this.securityService.Register(model);
 
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error);
+                    this.ModelState.AddModelError(string.Empty, error);
                 }
 
-                return View(model);
+                return this.View(model);
             }
 
-            return RedirectToAction("Index", "Home");
+            return this.RedirectToAction("Index", "Home");
         }
 
         private ActionResult RedirectToLocal(string returnUrl)
         {
             if (returnUrl != null)
             {
-                return Redirect(returnUrl);
+                return this.Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return this.RedirectToAction("Index", "Home");
         }
     }
 }

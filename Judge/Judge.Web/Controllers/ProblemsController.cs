@@ -1,99 +1,102 @@
-﻿using System.Security.Authentication;
-using System.Web;
-using System.Web.Mvc;
-using Judge.Application.Interfaces;
-using Judge.Application.ViewModels;
-using Judge.Application.ViewModels.Submit;
-using Judge.Web.Services;
-using Microsoft.AspNet.Identity;
-
-namespace Judge.Web.Controllers
+﻿namespace Judge.Web.Controllers
 {
-    public class ProblemsController : Controller
+    using System.Security.Authentication;
+    using System.Web;
+    using System.Web.Mvc;
+    using Judge.Application.Interfaces;
+    using Judge.Application.ViewModels;
+    using Judge.Application.ViewModels.Submit;
+    using Judge.Web.Services;
+    using Microsoft.AspNet.Identity;
+
+    public sealed class ProblemsController : Controller
     {
-        private readonly IProblemsService _problemsService;
-        private readonly ISubmitSolutionService _submitSolutionService;
-        private readonly ISessionService _sessionService;
-        private int _pageSize = 20;
+        private readonly IProblemsService problemsService;
+        private readonly ISubmitSolutionService submitSolutionService;
+        private readonly ISessionService sessionService;
+        private readonly int pageSize = 20;
 
         public ProblemsController(IProblemsService problemsService, ISubmitSolutionService submitSolutionService, ISessionService sessionService)
         {
-            _problemsService = problemsService;
-            _submitSolutionService = submitSolutionService;
-            _sessionService = sessionService;
+            this.problemsService = problemsService;
+            this.submitSolutionService = submitSolutionService;
+            this.sessionService = sessionService;
         }
-
 
         public ActionResult Index(int? page)
         {
             long? userId = null;
-            if (User.Identity.IsAuthenticated)
+            if (this.User.Identity.IsAuthenticated)
             {
-                userId = User.Identity.GetUserId<long>();
+                userId = this.User.Identity.GetUserId<long>();
             }
-            var model = _problemsService.GetProblemsList(page ?? 1, _pageSize, userId, true);
-            return View(model);
+            var model = this.problemsService.GetProblemsList(page ?? 1, this.pageSize, userId, true);
+            return this.View(model);
         }
 
         public ActionResult Statement(long id)
         {
             var isAdmin = this.User.IsInRole("admin");
 
-            var model = _problemsService.GetStatement(id, isAdmin);
+            var model = this.problemsService.GetStatement(id, isAdmin);
             if (model == null)
-                return HttpNotFound();
+            {
+                return this.HttpNotFound();
+            }
 
-            return View(model);
+            return this.View(model);
         }
 
         [HttpGet]
         public PartialViewResult SubmitSolution(long problemId)
         {
-            var languages = _submitSolutionService.GetLanguages();
+            var languages = this.submitSolutionService.GetLanguages();
             var model = new SubmitSolutionViewModel
             {
                 Languages = languages,
                 ProblemId = problemId,
-                SelectedLanguage = _sessionService.GetSelectedLanguage()
+                SelectedLanguage = this.sessionService.GetSelectedLanguage()
             };
-            return PartialView("Submits/_SubmitSolution", model);
+            return this.PartialView("Submits/_SubmitSolution", model);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
         [Authorize]
         public ActionResult SubmitSolution(SubmitSolutionViewModel model)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 model.Success = true;
-                var userId = User.Identity.GetUserId<long>();
-                var userHost = Request.UserHostAddress;
-                var sessionId = Session.SessionID;
+                var userId = this.User.Identity.GetUserId<long>();
+                var userHost = this.Request.UserHostAddress;
+                var sessionId = this.Session.SessionID;
                 var userInfo = new UserInfo(userId, userHost, sessionId);
-                _submitSolutionService.SubmitSolution(model.ProblemId, model.SelectedLanguage, model.File, userInfo);
+                this.submitSolutionService.SubmitSolution(model.ProblemId, model.SelectedLanguage, model.File, userInfo);
 
-                _sessionService.SaveSelectedLanguage(model.SelectedLanguage);
+                this.sessionService.SaveSelectedLanguage(model.SelectedLanguage);
 
-                return Redirect(Request.UrlReferrer.ToString());
+                return this.Redirect(this.Request.UrlReferrer.ToString());
             }
 
             model.Success = false;
-            model.Languages = _submitSolutionService.GetLanguages();
-            return PartialView("Submits/_SubmitSolution", model);
+            model.Languages = this.submitSolutionService.GetLanguages();
+            return this.PartialView("Submits/_SubmitSolution", model);
         }
 
         [Authorize]
         public ActionResult Solution(long submitResultId)
         {
-            var userId = User.Identity.GetUserId<long>();
+            var userId = this.User.Identity.GetUserId<long>();
 
             try
             {
-                var model = _submitSolutionService.GetSolution(submitResultId, userId);
+                var model = this.submitSolutionService.GetSolution(submitResultId, userId);
                 if (model == null)
-                    return HttpNotFound();
+                {
+                    return this.HttpNotFound();
+                }
 
-                return View(model);
+                return this.View(model);
             }
             catch (AuthenticationException)
             {

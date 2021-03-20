@@ -13,7 +13,7 @@
     using Judge.Model.SubmitSolution;
 
     [Authorize(Roles = "admin")]
-    public class AdminController : Controller
+    public sealed class AdminController : Controller
     {
         private readonly IAdminService adminService;
         private readonly IProblemsService problemsService;

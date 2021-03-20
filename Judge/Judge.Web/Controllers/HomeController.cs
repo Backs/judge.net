@@ -1,12 +1,12 @@
-﻿using System.Web.Mvc;
-
-namespace Judge.Web.Controllers
+﻿namespace Judge.Web.Controllers
 {
-    public class HomeController : Controller
+    using System.Web.Mvc;
+
+    public sealed class HomeController : Controller
     {
         public ActionResult Index()
         {
-            return View();
+            return this.View();
         }
     }
 }

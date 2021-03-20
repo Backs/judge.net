@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Security.Authentication;
     using System.Security.Principal;
+    using System.Text.RegularExpressions;
     using System.Web;
     using Judge.Application.Interfaces;
     using Judge.Application.ViewModels;
@@ -17,6 +18,8 @@
 
     internal sealed class SubmitSolutionService : ISubmitSolutionService
     {
+        private static readonly Regex Regex = new Regex(@"\s+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         private readonly IUnitOfWorkFactory factory;
         private readonly IPrincipal principal;
 
@@ -92,7 +95,7 @@
             submit.ProblemId = problemId;
             submit.LanguageId = selectedLanguage;
             submit.UserId = userInfo.UserId;
-            submit.FileName = Path.GetFileName(file.FileName);
+            submit.FileName = GetFileName(file);
             submit.SourceCode = sourceCode;
             submit.UserHost = userInfo.Host;
             submit.SessionId = userInfo.SessionId;
@@ -103,6 +106,13 @@
                 submitRepository.Add(submit);
                 unitOfWork.Commit();
             }
+        }
+
+        private static string GetFileName(HttpPostedFileBase file)
+        {
+            var fileName = Path.GetFileName(file.FileName);
+
+            return Regex.Replace(fileName, "_");
         }
 
         public SolutionViewModel GetSolution(long submitResultId, long userId)
