@@ -1,9 +1,10 @@
-﻿using System.Diagnostics;
-using System.IO;
-using System.Linq;
-
-namespace Judge.Checker
+﻿namespace Judge.Checker
 {
+    using System;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Linq;
+    
     public sealed class Checker
     {
         private const string CheckerFileName = "check.exe";
@@ -37,20 +38,42 @@ namespace Judge.Checker
                 ErrorDialog = false
             };
 
-            CheckStatus exitCode;
-            string message;
+            var exitCode = 1;
+            var message = string.Empty;
 
             using (var p = new Process { StartInfo = startInfo })
             {
-                p.Start();
+                try
+                {
+                    p.Start();
 
-                p.WaitForExit(30 * 1000);
-                message = p.StandardOutput.ReadToEnd();
-                exitCode = (CheckStatus)p.ExitCode;
+                    p.WaitForExit(10 * 1000);
+
+                    p.OutputDataReceived += (s, e) => { message = e.Data; };
+
+                    p.ErrorDataReceived += (s, e) => { message = e.Data; };
+
+                    if (p.HasExited)
+                    {
+                        exitCode = p.ExitCode;
+                    }
+                }
+                catch
+                {
+                    exitCode = 1;
+                }
+                finally
+                {
+                    if (!p.HasExited)
+                    {
+                        p.Kill();
+                    }
+                }
             }
 
+            var checkStatus = !Enum.IsDefined(typeof(CheckStatus), exitCode) ? CheckStatus.WA : (CheckStatus)exitCode;
 
-            return new CheckResult(exitCode, message);
+            return new CheckResult(checkStatus, message);
         }
     }
 }
