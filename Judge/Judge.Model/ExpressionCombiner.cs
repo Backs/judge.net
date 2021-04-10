@@ -19,7 +19,7 @@
             return Expression.Lambda<Func<T, bool>>(binExp, newExp.Parameters);
         }
 
-        private class ParameterUpdateVisitor : ExpressionVisitor
+        private sealed class ParameterUpdateVisitor : ExpressionVisitor
         {
             private readonly ParameterExpression oldParameter;
             private readonly ParameterExpression newParameter;

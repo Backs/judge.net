@@ -21,7 +21,7 @@ namespace Judge.Data
         private ITaskNameRepository _taskNameRepository;
         private ITaskRepository _taskRepository;
         private IUserRepository _userRepository;
-        private IDbContextTransaction _transaction;
+        private readonly IDbContextTransaction _transaction;
 
         public UnitOfWork(DataContext context, bool startTransaction)
         {

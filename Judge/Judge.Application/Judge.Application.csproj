@@ -23,7 +23,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Judge.Data\Judge.Data.csproj" />
-    <ProjectReference Include="..\Judge.Model\Judge.Model.csproj" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Resources.resx">

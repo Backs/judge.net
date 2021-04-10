@@ -10,7 +10,7 @@
             this.elapsedTime = submitDateUtc - contestStartTime;
         }
 
-        private TimeSpan elapsedTime;
+        private readonly TimeSpan elapsedTime;
 
         public override string GetLabel()
         {

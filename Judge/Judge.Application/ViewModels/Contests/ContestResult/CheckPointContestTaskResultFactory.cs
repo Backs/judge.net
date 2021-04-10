@@ -5,7 +5,7 @@
     using Judge.Application.ViewModels.Contests.ContestsList;
     using Judge.Model.Contests;
 
-    internal class CheckPointContestTaskResultFactory : IContestTaskResultFactory
+    internal sealed class CheckPointContestTaskResultFactory : IContestTaskResultFactory
     {
         public ContestResultViewModel Convert(IEnumerable<ContestTask> tasks, IReadOnlyList<ContestResult> results,
         IDictionary<long, string> users, Contest contest)
