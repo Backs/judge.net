@@ -16,6 +16,8 @@
                 SubmitStatus.WrongAnswer => "Wrong answer",
                 SubmitStatus.Accepted => "Accepted",
                 SubmitStatus.ServerError => "Server error",
+                
+                SubmitStatus.TooEarly => "Too early submit",
                 _ => throw new ArgumentOutOfRangeException()
             };
         }

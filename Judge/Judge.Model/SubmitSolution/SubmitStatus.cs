@@ -9,6 +9,8 @@
         MemoryLimitExceeded = 4,
         WrongAnswer = 5,
         Accepted = 6,
-        ServerError = 7
+        ServerError = 7,
+        
+        TooEarly = 9900
     }
 }

@@ -9,6 +9,8 @@
         Dirt = 4,
         Points = 5,
         UnexpectedEOF = 8,
-        Partially = 16
+        Partially = 16,
+        
+        TooEarly = 9900
     }
 }

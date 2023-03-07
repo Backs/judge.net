@@ -1,25 +1,24 @@
 ﻿using Judge.Data;
-using Judge.Model.SubmitSolution;
 using NLog;
 
 namespace Judge.JudgeService
 {
     internal sealed class CheckService
     {
-        private readonly IJudgeService _service;
-        private readonly IUnitOfWorkFactory _unitOfWorkFactory;
+        private readonly IJudgeService service;
+        private readonly IUnitOfWorkFactory unitOfWorkFactory;
         private readonly ILogger logger;
 
         public CheckService(IJudgeService service, IUnitOfWorkFactory unitOfWorkFactory, ILogger logger)
         {
-            _service = service;
-            _unitOfWorkFactory = unitOfWorkFactory;
+            this.service = service;
+            this.unitOfWorkFactory = unitOfWorkFactory;
             this.logger = logger;
         }
 
         public void Check()
         {
-            using (var unitOfWork = _unitOfWorkFactory.GetUnitOfWork(true))
+            using (var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork(true))
             {
                 var repository = unitOfWork.SubmitResultRepository;
                 var submit = repository.DequeueUnchecked();
@@ -28,9 +27,9 @@ namespace Judge.JudgeService
 
                 using (NestedDiagnosticsLogicalContext.Push($"Submit-{submit.Id}"))
                 {
-                    this.logger.Info($"Dequeued submit");
+                    this.logger.Info("Dequeued submit");
 
-                    var result = _service.Check(submit);
+                    var result = this.service.Check(submit);
 
                     submit.PassedTests = result.TestsPassedCount;
                     submit.TotalBytes = result.PeakMemoryBytes;

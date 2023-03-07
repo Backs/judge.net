@@ -12,9 +12,9 @@ namespace Judge.Model.Entities
             IsSatisfiedBy = submit => submit.UserId == userId &&
                                       submit is ProblemSubmit &&
                                       submit.Results.Any(o => o.Status == SubmitStatus.MemoryLimitExceeded ||
-                                      o.Status == SubmitStatus.RuntimeError ||
-                                      o.Status == SubmitStatus.TimeLimitExceeded ||
-                                      o.Status == SubmitStatus.WrongAnswer);
+                                                              o.Status == SubmitStatus.RuntimeError ||
+                                                              o.Status == SubmitStatus.TimeLimitExceeded ||
+                                                              o.Status == SubmitStatus.WrongAnswer);
         }
         public Expression<Func<SubmitBase, bool>> IsSatisfiedBy { get; }
     }
