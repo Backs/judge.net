@@ -66,6 +66,8 @@ namespace Judge.JudgeService
                     return SubmitStatus.Accepted;
                 case Checker.CheckStatus.Fail:
                     return SubmitStatus.ServerError;
+                case Checker.CheckStatus.TooEarly:
+                    return SubmitStatus.TooEarly;
                 default:
                     return SubmitStatus.WrongAnswer;
             }

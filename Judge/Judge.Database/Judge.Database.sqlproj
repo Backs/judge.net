@@ -82,7 +82,6 @@
     <RefactorLog Include="Judge.Database.refactorlog" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Judge.Database.publish.xml" />
     <None Include="TempData.sql" />
     <None Include="dbo\Scripts\Post\AddUserName.sql" />
     <None Include="dbo\Scripts\Post\OpenTasks.sql" />
