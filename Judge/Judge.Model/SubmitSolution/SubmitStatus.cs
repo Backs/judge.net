@@ -11,6 +11,8 @@
         Accepted = 6,
         ServerError = 7,
         
-        TooEarly = 9900
+        TooEarly = 9900,
+        Unpolite = 9901,
+        TooManyLines = 9902
     }
 }

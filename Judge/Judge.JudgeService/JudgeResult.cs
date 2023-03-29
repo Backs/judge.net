@@ -68,6 +68,10 @@ namespace Judge.JudgeService
                     return SubmitStatus.ServerError;
                 case Checker.CheckStatus.TooEarly:
                     return SubmitStatus.TooEarly;
+                case Checker.CheckStatus.Unpolite:
+                    return SubmitStatus.Unpolite;
+                case Checker.CheckStatus.TooManyLines:
+                    return SubmitStatus.TooManyLines;
                 default:
                     return SubmitStatus.WrongAnswer;
             }
