@@ -48,6 +48,9 @@
                 var taskRepository = unitOfWork.ContestTaskRepository;
                 var submitResultRepository = unitOfWork.SubmitResultRepository;
 
+                if (!contest.IsOpened)
+                    return null;
+
                 var contestTasks = taskRepository.GetTasks(contestId).ToArray();
 
                 var solvedTasks = new HashSet<long>();
@@ -88,6 +91,9 @@
 
                 var contestRepository = unitOfWork.ContestsRepository;
                 var contest = contestRepository.Get(contestId);
+
+                if (!contest.IsOpened)
+                    return null;
 
                 return new ContestStatementViewModel
                 {
@@ -192,6 +198,9 @@
                 var userRepository = unitOfWork.UserRepository;
 
                 var contest = contestRepository.Get(id);
+                if (!contest.IsOpened)
+                    return null;
+                
                 var tasks = contestTaskRepository.GetTasks(id);
                 var results = contestResultRepository.Get(id).ToArray();
 

@@ -38,6 +38,9 @@
                 userId = this.User.Identity.GetUserId<long>();
             }
             var model = this.contestsService.GetTasks(id, userId);
+            if (model == null)
+                return this.HttpNotFound();
+            
             return this.View(model);
         }
 
@@ -58,6 +61,9 @@
         public ActionResult Results(int id)
         {
             var model = this.contestsService.GetResults(id);
+            if (model == null)
+                return this.HttpNotFound();
+            
             return this.View(model);
         }
 
