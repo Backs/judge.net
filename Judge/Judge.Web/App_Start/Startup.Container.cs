@@ -7,7 +7,6 @@ using Owin;
 using SimpleInjector;
 using SimpleInjector.Integration.Web;
 using SimpleInjector.Integration.Web.Mvc;
-using SimpleInjector.Lifestyles;
 
 namespace Judge.Web
 {

@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
@@ -21,9 +20,6 @@ namespace Judge.Web
                     // This is a security feature which is used when you change a password or add an external login to your account.     
                 }
             });
-
-            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
-            app.UseTwoFactorSignInCookie(DefaultAuthenticationTypes.TwoFactorCookie, TimeSpan.FromMinutes(5));
         }
     }
 }
