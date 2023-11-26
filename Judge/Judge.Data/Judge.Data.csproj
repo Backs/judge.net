@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{8D356F93-E347-46A4-93EB-1E3D581D5C59}</ProjectGuid>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyTitle>Judge.Data</AssemblyTitle>
     <Product>Judge.Data</Product>
     <Copyright>Copyright ©  2015</Copyright>
@@ -14,5 +14,10 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
     <PackageReference Include="SimpleInjector" Version="5.3.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>Judge.Tests</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
 </Project>
