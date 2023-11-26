@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Judge.Model;
 using Judge.Model.CheckSolution;
+using Microsoft.EntityFrameworkCore;
 using Task = Judge.Model.CheckSolution.Task;
 
 namespace Judge.Data.Repository
@@ -29,6 +32,21 @@ namespace Judge.Data.Repository
             return this.context.Set<Task>()
                 .Where(o => ids.Contains(o.Id))
                 .AsEnumerable();
+        }
+
+        public Task<Task[]> GetTasksAsync(ISpecification<Task> specification, int skip, int take)
+        {
+            IQueryable<Task> taskList = this.context.Set<Task>().Where(specification.IsSatisfiedBy).OrderBy(o => o.Id);
+            if (skip > 0)
+            {
+                taskList = taskList.Skip(skip);
+            }
+            return taskList.Take(take).ToArrayAsync();
+        }
+
+        public Task<int> CountAsync(ISpecification<Task> specification)
+        {
+            return this.context.Set<Task>().Where(specification.IsSatisfiedBy).CountAsync();
         }
     }
 }
