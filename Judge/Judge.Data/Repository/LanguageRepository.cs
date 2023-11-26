@@ -1,10 +1,10 @@
-﻿namespace Judge.Data.Repository
-{
-    using System.Collections.Generic;
-    using System.Linq;
-    using Judge.Model.Configuration;
-    using Judge.Model.Entities;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Judge.Model.Configuration;
+using Judge.Model.Entities;
 
+namespace Judge.Data.Repository
+{
     internal sealed class LanguageRepository : ILanguageRepository
     {
         private readonly DataContext context;

@@ -9,16 +9,16 @@ namespace Judge.Data.Repository
 {
     internal sealed class SubmitResultRepository : ISubmitResultRepository
     {
-        private readonly DataContext _context;
+        private readonly DataContext context;
 
         public SubmitResultRepository(DataContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
         public SubmitResult Get(long id)
         {
-            return _context.Set<SubmitResult>().Where(o => o.Id == id).Include(o => o.Submit).FirstOrDefault();
+            return this.context.Set<SubmitResult>().Where(o => o.Id == id).Include(o => o.Submit).FirstOrDefault();
         }
 
         public IEnumerable<SubmitResult> GetSubmits(ISpecification<SubmitResult> specification, int page, int pageSize)
@@ -28,7 +28,7 @@ namespace Judge.Data.Repository
             if (pageSize <= 0)
                 throw new ArgumentOutOfRangeException(nameof(pageSize));
 
-            var query = _context.Set<SubmitResult>() as IQueryable<SubmitResult>;
+            var query = this.context.Set<SubmitResult>() as IQueryable<SubmitResult>;
 
             query = query.Where(specification.IsSatisfiedBy);
 
@@ -48,7 +48,7 @@ namespace Judge.Data.Repository
 
         public IEnumerable<long> GetSolvedProblems(ISpecification<SubmitResult> specification)
         {
-            return _context.Set<SubmitResult>()
+            return this.context.Set<SubmitResult>()
                 .Where(specification.IsSatisfiedBy)
                 .Where(o => o.Status == SubmitStatus.Accepted)
                 .Select(o => o.Submit.ProblemId)
@@ -58,17 +58,17 @@ namespace Judge.Data.Repository
 
         public SubmitResult DequeueUnchecked()
         {
-            var check = _context.DequeueSubmitCheck();
+            var check = this.context.DequeueSubmitCheck();
 
             if (check == null) return null;
 
-            return _context.Set<SubmitResult>().Where(o => o.Id == check.SubmitResultId)
+            return this.context.Set<SubmitResult>().Where(o => o.Id == check.SubmitResultId)
                 .Include(o => o.Submit).First();
         }
 
         public int Count(ISpecification<SubmitResult> specification)
         {
-            var query = _context.Set<SubmitResult>()
+            var query = this.context.Set<SubmitResult>()
                 .Where(specification.IsSatisfiedBy);
 
             return query.Count();

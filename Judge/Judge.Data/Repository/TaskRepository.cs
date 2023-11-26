@@ -7,26 +7,26 @@ namespace Judge.Data.Repository
 {
     internal sealed class TaskRepository : ITaskRepository
     {
-        private readonly DataContext _context;
+        private readonly DataContext context;
 
         public TaskRepository(DataContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
         public Task Get(long problemId)
         {
-            return _context.Set<Task>().FirstOrDefault(o => o.Id == problemId);
+            return this.context.Set<Task>().FirstOrDefault(o => o.Id == problemId);
         }
 
         public void Add(Task problem)
         {
-            _context.Set<Task>().Add(problem);
+            this.context.Set<Task>().Add(problem);
         }
 
         public IEnumerable<Task> GetTasks(IEnumerable<long> ids)
         {
-            return _context.Set<Task>()
+            return this.context.Set<Task>()
                 .Where(o => ids.Contains(o.Id))
                 .AsEnumerable();
         }

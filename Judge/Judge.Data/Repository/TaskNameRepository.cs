@@ -8,11 +8,11 @@ namespace Judge.Data.Repository
 {
     internal sealed class TaskNameRepository : ITaskNameRepository
     {
-        private readonly DataContext _context;
+        private readonly DataContext context;
 
         public TaskNameRepository(DataContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
         public IEnumerable<TaskName> GetTasks(ISpecification<Task> specification, int page, int pageSize)
@@ -24,7 +24,7 @@ namespace Judge.Data.Repository
 
             var skip = (page - 1) * pageSize;
 
-            IQueryable<Task> taskList = _context.Set<Task>().Where(specification.IsSatisfiedBy).OrderBy(o => o.Id);
+            IQueryable<Task> taskList = this.context.Set<Task>().Where(specification.IsSatisfiedBy).OrderBy(o => o.Id);
             if (skip > 0)
             {
                 taskList = taskList.Skip(skip);
@@ -34,7 +34,7 @@ namespace Judge.Data.Repository
 
         public IEnumerable<TaskName> GetTasks(IEnumerable<long> tasks)
         {
-            return _context.Set<Task>()
+            return this.context.Set<Task>()
                 .Where(o => tasks.Contains(o.Id))
                 .Select(o => new TaskName { Id = o.Id, Name = o.Name, IsOpened = o.IsOpened })
                 .AsEnumerable();
@@ -43,13 +43,13 @@ namespace Judge.Data.Repository
         public int Count(bool openedOnly)
         {
             return openedOnly ?
-                _context.Set<Task>().Count(o => o.IsOpened == true) :
-                _context.Set<Task>().Count();
+                this.context.Set<Task>().Count(o => o.IsOpened == true) :
+                this.context.Set<Task>().Count();
         }
 
         public TaskName Get(long id)
         {
-            return _context.Set<Task>()
+            return this.context.Set<Task>()
                 .Where(o => o.Id == id)
                 .Select(o => new TaskName { Id = o.Id, Name = o.Name, IsOpened = o.IsOpened })
                 .FirstOrDefault();

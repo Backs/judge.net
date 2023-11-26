@@ -1,10 +1,10 @@
-﻿namespace Judge.Data.Repository
-{
-    using System.Collections.Generic;
-    using System.Linq;
-    using Judge.Model.Contests;
-    using Judge.Model.SubmitSolution;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Judge.Model.Contests;
+using Judge.Model.SubmitSolution;
 
+namespace Judge.Data.Repository
+{
     internal sealed class ContestResultRepository : IContestResultRepository
     {
         private readonly DataContext context;

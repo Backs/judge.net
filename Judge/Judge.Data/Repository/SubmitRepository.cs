@@ -8,26 +8,26 @@ namespace Judge.Data.Repository
 {
     internal sealed class SubmitRepository : ISubmitRepository
     {
-        private readonly DataContext _context;
+        private readonly DataContext context;
 
         public SubmitRepository(DataContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
         public void Add(SubmitBase item)
         {
-            _context.Set<SubmitBase>().Add(item);
+            this.context.Set<SubmitBase>().Add(item);
         }
 
         public SubmitBase Get(long submitId)
         {
-            return _context.Set<SubmitBase>().AsNoTracking().FirstOrDefault(o => o.Id == submitId);
+            return this.context.Set<SubmitBase>().AsNoTracking().FirstOrDefault(o => o.Id == submitId);
         }
 
         public IEnumerable<SubmitBase> Get(ISpecification<SubmitBase> specification)
         {
-            return _context.Set<SubmitBase>().AsNoTracking().Where(specification.IsSatisfiedBy).AsEnumerable();
+            return this.context.Set<SubmitBase>().AsNoTracking().Where(specification.IsSatisfiedBy).AsEnumerable();
         }
     }
 }
