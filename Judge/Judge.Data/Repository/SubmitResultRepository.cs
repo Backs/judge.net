@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Judge.Model;
 using Judge.Model.SubmitSolution;
 using Microsoft.EntityFrameworkCore;
@@ -50,10 +51,18 @@ namespace Judge.Data.Repository
         {
             return this.context.Set<SubmitResult>()
                 .Where(specification.IsSatisfiedBy)
-                .Where(o => o.Status == SubmitStatus.Accepted)
                 .Select(o => o.Submit.ProblemId)
                 .Distinct()
                 .AsEnumerable();
+        }
+
+        public Task<long[]> GetSolvedProblemsAsync(ISpecification<SubmitResult> specification)
+        {
+            return this.context.Set<SubmitResult>()
+                .Where(specification.IsSatisfiedBy)
+                .Select(o => o.Submit.ProblemId)
+                .Distinct()
+                .ToArrayAsync();
         }
 
         public SubmitResult DequeueUnchecked()

@@ -4,18 +4,18 @@ namespace Judge.Data
 {
     public sealed class DataContainerExtension
     {
-        private readonly string _connectionString;
-        private readonly Lifestyle _lifestyle;
+        private readonly string connectionString;
+        private readonly Lifestyle lifestyle;
 
         public DataContainerExtension(string connectionString, Lifestyle lifestyle)
         {
-            _connectionString = connectionString;
-            this._lifestyle = lifestyle;
+            this.connectionString = connectionString;
+            this.lifestyle = lifestyle;
         }
 
         public void Configure(Container container)
         {
-            container.Register<IUnitOfWorkFactory>(() => new UnitOfWorkFactory(_connectionString), _lifestyle);
+            container.Register<IUnitOfWorkFactory>(() => new UnitOfWorkFactory(this.connectionString), this.lifestyle);
         }
     }
 }
