@@ -10,51 +10,51 @@ namespace Judge.Data.Repository
 {
     internal sealed class UserRepository : IUserRepository
     {
-        private readonly DataContext _context;
+        private readonly DataContext context;
 
         public UserRepository(DataContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
         public User Get(long id)
         {
-            return BaseQuery().FirstOrDefault(o => o.Id == id);
+            return this.BaseQuery().FirstOrDefault(o => o.Id == id);
         }
 
         public void Add(User user)
         {
-            _context.Set<User>().Add(user);
+            this.context.Set<User>().Add(user);
         }
 
         public void Update(User user)
         {
-            _context.Entry(user).State = EntityState.Modified;
+            this.context.Entry(user).State = EntityState.Modified;
         }
 
         public void Delete(User user)
         {
-            _context.Set<User>().Remove(user);
+            this.context.Set<User>().Remove(user);
         }
 
         public User FindByName(string userName)
         {
-            return BaseQuery().FirstOrDefault(o => o.UserName == userName);
+            return this.BaseQuery().FirstOrDefault(o => o.UserName == userName);
         }
 
         public User FindByEmail(string email)
         {
-            return BaseQuery().FirstOrDefault(o => o.Email == email);
+            return this.BaseQuery().FirstOrDefault(o => o.Email == email);
         }
 
         public IEnumerable<User> Find(ISpecification<User> specification)
         {
-            return BaseQuery().Where(specification.IsSatisfiedBy);
+            return this.BaseQuery().Where(specification.IsSatisfiedBy);
         }
 
         private IIncludableQueryable<User, ICollection<UserRole>> BaseQuery()
         {
-            return _context.Set<User>().Include(o => o.UserRoles);
+            return this.context.Set<User>().Include(o => o.UserRoles);
         }
     }
 }

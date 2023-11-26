@@ -11,7 +11,7 @@
 
         public IUnitOfWork GetUnitOfWork()
         {
-            return GetUnitOfWork(false);
+            return this.GetUnitOfWork(false);
         }
 
         public IUnitOfWork GetUnitOfWork(bool startTransaction)
