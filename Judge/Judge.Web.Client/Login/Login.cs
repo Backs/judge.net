@@ -2,7 +2,7 @@
 
 namespace Judge.Web.Client.Login
 {
-    public class CreateToken
+    public class Login
     {
         [Required]
         public string Email { get; set; }

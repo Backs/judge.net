@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace Judge.Web.Api;
 
@@ -16,7 +17,33 @@ internal static class Program
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(option =>
+        {
+            option.SwaggerDoc("v1", new OpenApiInfo {Title = "Judge.NET", Version = "v1"});
+            option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                In = ParameterLocation.Header,
+                Description = "Please enter a valid token",
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http,
+                BearerFormat = "JWT",
+                Scheme = "Bearer"
+            });
+            option.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    System.Array.Empty<string>()
+                }
+            });
+        });
         builder.Services.AddServices();
 
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -30,12 +57,14 @@ internal static class Program
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = "issuer",
                     ValidAudience = "issuer",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("kjsnakgalksaldjfncskldjnjbfakldbdfjbvalskdbasjvbahvb"))
+                    IssuerSigningKey =
+                        new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes("kjsnakgalksaldjfncskldjnjbfakldbdfjbvalskdbasjvbahvb"))
                 };
             });
 
         builder.Services.AddAuthorization();
-        
+
         var app = builder.Build();
 
         if (app.Environment.IsDevelopment())

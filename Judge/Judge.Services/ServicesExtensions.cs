@@ -1,4 +1,5 @@
 ﻿using Judge.Data;
+using Microsoft.AspNet.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Judge.Services
@@ -9,6 +10,8 @@ namespace Judge.Services
         {
             services.AddData("Data Source=.;Initial Catalog=Judge;Integrated Security=True");
             services.AddSingleton<IProblemsService, ProblemsService>();
+            services.AddSingleton<ISecurityService, SecurityService>();
+            services.AddSingleton<IPasswordHasher, PasswordHasher>();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Judge.Model;
 using Judge.Model.Account;
 using Judge.Model.Entities;
@@ -45,6 +46,11 @@ namespace Judge.Data.Repository
         public User FindByEmail(string email)
         {
             return this.BaseQuery().FirstOrDefault(o => o.Email == email);
+        }
+
+        public Task<User> FindByEmailAsync(string email)
+        {
+            return this.BaseQuery().FirstOrDefaultAsync(o => o.Email == email);
         }
 
         public IEnumerable<User> Find(ISpecification<User> specification)
