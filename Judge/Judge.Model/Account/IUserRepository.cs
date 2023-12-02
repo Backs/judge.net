@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿#nullable enable
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Judge.Model.Entities;
 
 namespace Judge.Model.Account
@@ -16,6 +18,7 @@ namespace Judge.Model.Account
         User FindByName(string userName);
 
         User FindByEmail(string email);
+        Task<User?> FindByEmailAsync(string email);
 
         IEnumerable<User> Find(ISpecification<User> specification);
     }
