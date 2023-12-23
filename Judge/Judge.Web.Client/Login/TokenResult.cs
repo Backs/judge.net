@@ -1,7 +1,6 @@
-﻿namespace Judge.Web.Client.Login
+﻿namespace Judge.Web.Client.Login;
+
+public class TokenResult
 {
-    public class TokenResult
-    {
-        public string Token { get; set; }
-    }
+    public string Token { get; set; } = null!;
 }

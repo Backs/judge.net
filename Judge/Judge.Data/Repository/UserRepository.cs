@@ -18,9 +18,9 @@ namespace Judge.Data.Repository
             this.context = context;
         }
 
-        public User Get(long id)
+        public User? Get(long id)
         {
-            return this.BaseQuery().FirstOrDefault(o => o.Id == id);
+            return this.BaseQuery().FirstOrDefault(o => o!.Id == id);
         }
 
         public void Add(User user)
@@ -38,29 +38,34 @@ namespace Judge.Data.Repository
             this.context.Set<User>().Remove(user);
         }
 
-        public User FindByName(string userName)
+        public User? FindByName(string userName)
         {
-            return this.BaseQuery().FirstOrDefault(o => o.UserName == userName);
+            return this.BaseQuery().FirstOrDefault(o => o!.UserName == userName);
         }
 
-        public User FindByEmail(string email)
+        public User? FindByEmail(string email)
         {
-            return this.BaseQuery().FirstOrDefault(o => o.Email == email);
+            return this.BaseQuery().FirstOrDefault(o => o!.Email == email);
         }
 
-        public Task<User> FindByEmailAsync(string email)
+        public Task<User?> FindByEmailAsync(string email)
         {
-            return this.BaseQuery().FirstOrDefaultAsync(o => o.Email == email);
+            return this.BaseQuery().FirstOrDefaultAsync(o => o!.Email == email);
         }
 
         public IEnumerable<User> Find(ISpecification<User> specification)
         {
-            return this.BaseQuery().Where(specification.IsSatisfiedBy);
+            return this.BaseQuery().Where(specification.IsSatisfiedBy!)!;
         }
 
-        private IIncludableQueryable<User, ICollection<UserRole>> BaseQuery()
+        public Task<User?> GetAsync(long id)
         {
-            return this.context.Set<User>().Include(o => o.UserRoles);
+            return this.BaseQuery().FirstOrDefaultAsync(o => o!.Id == id);
+        }
+
+        private IIncludableQueryable<User?, ICollection<UserRole>> BaseQuery()
+        {
+            return this.context.Set<User?>().Include(o => o!.UserRoles);
         }
     }
 }

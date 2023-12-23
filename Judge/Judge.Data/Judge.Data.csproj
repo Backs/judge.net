@@ -4,6 +4,8 @@
     <AssemblyTitle>Judge.Data</AssemblyTitle>
     <Product>Judge.Data</Product>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <LangVersion>default</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Judge.Model\Judge.Model.csproj" />

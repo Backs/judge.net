@@ -46,6 +46,10 @@ internal static class Program
         });
         builder.Services.AddServices();
 
+        var key = builder.Configuration["AppSettings:SecurityKey"];
+        var issuer = builder.Configuration["AppSettings:Issuer"];
+        var audience = builder.Configuration["AppSettings:Audience"];
+
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
@@ -55,11 +59,9 @@ internal static class Program
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = "issuer",
-                    ValidAudience = "issuer",
-                    IssuerSigningKey =
-                        new SymmetricSecurityKey(
-                            Encoding.UTF8.GetBytes("kjsnakgalksaldjfncskldjnjbfakldbdfjbvalskdbasjvbahvb"))
+                    ValidIssuer = issuer,
+                    ValidAudience = audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
                 };
             });
 

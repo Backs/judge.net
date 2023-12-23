@@ -1,11 +1,10 @@
 ﻿using System;
 
-namespace Judge.Web.Client.Problems
+namespace Judge.Web.Client.Problems;
+
+public class ProblemsList
 {
-    public class ProblemsList
-    {
-        public ProblemInfo[] Items { get; set; } = Array.Empty<ProblemInfo>();
+    public ProblemInfo[] Items { get; set; } = Array.Empty<ProblemInfo>();
         
-        public int TotalCount { get; set; }
-    }
+    public int TotalCount { get; set; }
 }

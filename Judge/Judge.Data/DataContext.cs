@@ -145,7 +145,7 @@ namespace Judge.Data
             });
         }
 
-        public CheckQueue DequeueSubmitCheck()
+        public CheckQueue? DequeueSubmitCheck()
         {
             return this.Set<CheckQueue>().FromSqlRaw("EXEC dbo.DequeueSubmitCheck").AsEnumerable().FirstOrDefault();
         }
