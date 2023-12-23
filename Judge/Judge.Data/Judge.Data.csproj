@@ -3,6 +3,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyTitle>Judge.Data</AssemblyTitle>
     <Product>Judge.Data</Product>
+    <LangVersion>default</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Judge.Model\Judge.Model.csproj" />

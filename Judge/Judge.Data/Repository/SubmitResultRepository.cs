@@ -17,7 +17,7 @@ namespace Judge.Data.Repository
             this.context = context;
         }
 
-        public SubmitResult Get(long id)
+        public SubmitResult? Get(long id)
         {
             return this.context.Set<SubmitResult>().Where(o => o.Id == id).Include(o => o.Submit).FirstOrDefault();
         }
@@ -65,7 +65,7 @@ namespace Judge.Data.Repository
                 .ToArrayAsync();
         }
 
-        public SubmitResult DequeueUnchecked()
+        public SubmitResult? DequeueUnchecked()
         {
             var check = this.context.DequeueSubmitCheck();
 

@@ -7,7 +7,7 @@ namespace Judge.Model.Account
 {
     public interface IUserRepository
     {
-        User Get(long id);
+        User? Get(long id);
         
         void Add(User user);
         
@@ -15,11 +15,12 @@ namespace Judge.Model.Account
         
         void Delete(User user);
         
-        User FindByName(string userName);
+        User? FindByName(string userName);
 
-        User FindByEmail(string email);
+        User? FindByEmail(string email);
         Task<User?> FindByEmailAsync(string email);
 
         IEnumerable<User> Find(ISpecification<User> specification);
+        Task<User?> GetAsync(long id);
     }
 }

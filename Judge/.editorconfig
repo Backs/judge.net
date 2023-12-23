@@ -8,3 +8,5 @@ dotnet_style_qualification_for_event = true:warning
 dotnet_style_qualification_for_field = true:warning
 dotnet_style_qualification_for_method = true:warning
 dotnet_style_qualification_for_property = true:warning
+
+csharp_style_namespace_declarations=file_scoped:suggestion

@@ -2,39 +2,38 @@
 using Judge.Data;
 using Judge.Model.Entities;
 using Judge.Web.Client.Login;
-using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Identity;
 
-namespace Judge.Services
+namespace Judge.Services;
+
+internal sealed class SecurityService : ISecurityService
 {
-    internal sealed class SecurityService : ISecurityService
+    private readonly IUnitOfWorkFactory unitOfWorkFactory;
+    private readonly IPasswordHasher<User> passwordHasher;
+
+    public SecurityService(IUnitOfWorkFactory unitOfWorkFactory, IPasswordHasher<User> passwordHasher)
     {
-        private readonly IUnitOfWorkFactory unitOfWorkFactory;
-        private readonly IPasswordHasher passwordHasher;
+        this.unitOfWorkFactory = unitOfWorkFactory;
+        this.passwordHasher = passwordHasher;
+    }
 
-        public SecurityService(IUnitOfWorkFactory unitOfWorkFactory, IPasswordHasher passwordHasher)
+    public async Task<(AuthenticateResult, User?)> AuthenticateAsync(Login login)
+    {
+        await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
+        var user = await unitOfWork.UserRepository.FindByEmailAsync(login.Email);
+
+        if (user == null)
         {
-            this.unitOfWorkFactory = unitOfWorkFactory;
-            this.passwordHasher = passwordHasher;
+            return (AuthenticateResult.UserNotFound, null);
         }
 
-        public async Task<(AuthenticateResult, User?)> AuthenticateAsync(Login login)
+        var result = this.passwordHasher.VerifyHashedPassword(user, user.PasswordHash, login.Password);
+
+        if (result == PasswordVerificationResult.Failed)
         {
-            await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
-            var user = await unitOfWork.UserRepository.FindByEmailAsync(login.Email);
-
-            if (user == null)
-            {
-                return (AuthenticateResult.UserNotFound, null);
-            }
-
-            var result = this.passwordHasher.VerifyHashedPassword(user.PasswordHash, login.Password);
-
-            if (result == PasswordVerificationResult.Failed)
-            {
-                return (AuthenticateResult.PasswordVerificationFailed, null);
-            }
-
-            return (AuthenticateResult.Success, user);
+            return (AuthenticateResult.PasswordVerificationFailed, null);
         }
+
+        return (AuthenticateResult.Success, user);
     }
 }
