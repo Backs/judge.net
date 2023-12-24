@@ -10,5 +10,6 @@ namespace Judge.Model.CheckSolution
         IEnumerable<Task> GetTasks(IEnumerable<long> ids);
         Task<Task[]> GetTasksAsync(ISpecification<Task> specification, int skip, int take);
         Task<int> CountAsync(ISpecification<Task> specification);
+        Task<Task> GetAsync(long id);
     }
 }

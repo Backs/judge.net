@@ -22,7 +22,18 @@ public class ProblemsController : ControllerBase
     {
         query ??= new ProblemsQuery();
 
-        var result = await this.problemsService.GetProblemsAsync(this.User.TryGetUserId(), query);
+        var result = await this.problemsService.SearchAsync(this.User.TryGetUserId(), query);
+
+        return this.Ok(result);
+    }
+
+    [HttpGet("{id:long}")]
+    public async Task<IActionResult> GetProblem([FromRoute] long id)
+    {
+        var result = await this.problemsService.GetAsync(id);
+
+        if (result == null)
+            return this.NotFound();
 
         return this.Ok(result);
     }
