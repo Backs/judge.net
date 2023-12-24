@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using Judge.Services;
+using Judge.Web.Api.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,9 +22,7 @@ public class UsersController : ControllerBase
     [HttpGet("me")]
     public async Task<IActionResult> GetCurrentUser()
     {
-        var identity = this.User.Identity as ClaimsIdentity;
-        var id = long.Parse(identity!.FindFirst("id")!.Value);
-        var user = await this.usersService.GetUserAsync(id);
+        var user = await this.usersService.GetUserAsync(this.User.GetUserId());
         if (user == null)
             return this.NotFound();
 

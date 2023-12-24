@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Judge.Services;
+using Judge.Web.Api.Extensions;
 using Judge.Web.Client.Problems;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,7 +22,7 @@ public class ProblemsController : ControllerBase
     {
         query ??= new ProblemsQuery();
 
-        var result = await this.problemsService.GetProblemsAsync(query);
+        var result = await this.problemsService.GetProblemsAsync(this.User.TryGetUserId(), query);
 
         return this.Ok(result);
     }

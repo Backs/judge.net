@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Judge.Web.Client.Users;
 
-namespace Judge.Services
+namespace Judge.Services;
+
+public interface IUsersService
 {
-    public interface IUsersService
-    {
-        Task<User?> GetUserAsync(long id);
-    }
+    Task<User?> GetUserAsync(long id);
 }

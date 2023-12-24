@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Judge.Web.Client.Problems;
 
-namespace Judge.Services
+namespace Judge.Services;
+
+public interface IProblemsService
 {
-    public interface IProblemsService
-    {
-        Task<ProblemsList> GetProblemsAsync(ProblemsQuery query);
-    }
+    Task<ProblemsList> GetProblemsAsync(long? userId, ProblemsQuery query);
 }

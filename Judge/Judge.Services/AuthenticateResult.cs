@@ -1,10 +1,9 @@
-﻿namespace Judge.Services
+﻿namespace Judge.Services;
+
+public enum AuthenticateResult
 {
-    public enum AuthenticateResult
-    {
-        Unknown,
-        UserNotFound,
-        PasswordVerificationFailed,
-        Success
-    }
+    Unknown,
+    UserNotFound,
+    PasswordVerificationFailed,
+    Success
 }
