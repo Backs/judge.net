@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Judge.Data;
 using Judge.Model.Entities;
 using Judge.Web.Client.Login;
@@ -17,23 +18,25 @@ internal sealed class SecurityService : ISecurityService
         this.passwordHasher = passwordHasher;
     }
 
-    public async Task<(AuthenticateResult, User?)> AuthenticateAsync(Login login)
+    public async Task<Authentication> AuthenticateAsync(Login login)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
         var user = await unitOfWork.UserRepository.FindByEmailAsync(login.Email);
 
         if (user == null)
         {
-            return (AuthenticateResult.UserNotFound, null);
+            return Authentication.UserNotFound();
         }
 
         var result = this.passwordHasher.VerifyHashedPassword(user, user.PasswordHash, login.Password);
 
         if (result == PasswordVerificationResult.Failed)
         {
-            return (AuthenticateResult.PasswordVerificationFailed, null);
+            return Authentication.PasswordVerificationFailed();
         }
 
-        return (AuthenticateResult.Success, user);
+        return Authentication.Success(
+            new Web.Client.Users.User {Email = user.Email, Login = user.UserName, Id = user.Id},
+            user.UserRoles.Select(o => o.RoleName).ToArray());
     }
 }

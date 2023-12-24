@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,25 +29,30 @@ public class LoginController : ControllerBase
     [HttpPost("token")]
     public async Task<IActionResult> CreateToken([FromBody] Login login)
     {
-        var (authenticateResult, user) = await this.securityService.AuthenticateAsync(login);
+        var authentication = await this.securityService.AuthenticateAsync(login);
 
-        if (authenticateResult == AuthenticateResult.UserNotFound)
+        if (authentication.Result == AuthenticationResult.UserNotFound)
             return this.NotFound();
 
-        if (authenticateResult == AuthenticateResult.PasswordVerificationFailed)
+        if (authentication.Result == AuthenticationResult.PasswordVerificationFailed)
             return this.Unauthorized();
 
-        if (authenticateResult == AuthenticateResult.Success)
+        if (authentication.Result == AuthenticationResult.Success)
         {
             var key = Encoding.ASCII.GetBytes(this.configuration["AppSettings:SecurityKey"]);
+            var user = authentication.User;
+            var claims = new List<Claim>(4)
+            {
+                new Claim("Id", user!.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Login),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email)
+            };
+
+            claims.AddRange(authentication.Roles.Select(o => new Claim(ClaimTypes.Role, o)));
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim("Id", user!.Id.ToString()),
-                    new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.Email, user.Email)
-                }),
+                Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.Add(this.configuration.GetValue<TimeSpan>("AppSettings:Expires")),
                 Issuer = this.configuration["AppSettings:Issuer"],
                 Audience = this.configuration["AppSettings:Audience"],
