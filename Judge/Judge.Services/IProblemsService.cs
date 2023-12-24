@@ -5,5 +5,6 @@ namespace Judge.Services;
 
 public interface IProblemsService
 {
-    Task<ProblemsList> GetProblemsAsync(long? userId, ProblemsQuery query);
+    Task<ProblemsList> SearchAsync(long? userId, ProblemsQuery query);
+    Task<Problem?> GetAsync(long id);
 }

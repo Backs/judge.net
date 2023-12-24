@@ -17,7 +17,7 @@ namespace Judge.Data.Repository
             this.context = context;
         }
 
-        public Task Get(long problemId)
+        public Task? Get(long problemId)
         {
             return this.context.Set<Task>().FirstOrDefault(o => o.Id == problemId);
         }
@@ -47,6 +47,11 @@ namespace Judge.Data.Repository
         public Task<int> CountAsync(ISpecification<Task> specification)
         {
             return this.context.Set<Task>().Where(specification.IsSatisfiedBy).CountAsync();
+        }
+
+        public Task<Task> GetAsync(long id)
+        {
+            return this.context.Set<Task>().FirstOrDefaultAsync(o => o.Id == id);
         }
     }
 }

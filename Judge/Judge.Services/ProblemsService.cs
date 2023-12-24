@@ -18,7 +18,7 @@ internal sealed class ProblemsService : IProblemsService
         this.unitOfWorkFactory = unitOfWorkFactory;
     }
 
-    public async Task<ProblemsList> GetProblemsAsync(long? userId, ProblemsQuery query)
+    public async Task<ProblemsList> SearchAsync(long? userId, ProblemsQuery query)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork(false);
         var tasks = await unitOfWork.TaskRepository.GetTasksAsync(OpenedTasksSpecification.Instance, query.Skip,
@@ -46,6 +46,26 @@ internal sealed class ProblemsService : IProblemsService
         {
             Items = problems,
             TotalCount = totalCount
+        };
+    }
+
+    public async Task<Problem?> GetAsync(long id)
+    {
+        await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork(false);
+        var task = await unitOfWork.TaskRepository.GetAsync(id);
+
+        if (task == null)
+        {
+            return null;
+        }
+
+        return new Problem
+        {
+            Id = task.Id,
+            Name = task.Name,
+            Statement = task.Statement,
+            MemoryLimitBytes = task.MemoryLimitBytes,
+            TimeLimitMilliseconds = task.TimeLimitMilliseconds
         };
     }
 }
