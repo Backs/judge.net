@@ -2,10 +2,9 @@
 using Judge.Model.Entities;
 using Judge.Web.Client.Login;
 
-namespace Judge.Services
+namespace Judge.Services;
+
+public interface ISecurityService
 {
-    public interface ISecurityService
-    {
-        Task<(AuthenticateResult, User?)> AuthenticateAsync(Login login);
-    }
+    Task<(AuthenticateResult, User?)> AuthenticateAsync(Login login);
 }
