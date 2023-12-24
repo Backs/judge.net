@@ -1,6 +1,6 @@
 ﻿namespace Judge.Services;
 
-public enum AuthenticateResult
+public enum AuthenticationResult
 {
     Unknown,
     UserNotFound,
