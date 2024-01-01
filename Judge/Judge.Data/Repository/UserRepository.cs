@@ -7,65 +7,69 @@ using Judge.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 
-namespace Judge.Data.Repository
+namespace Judge.Data.Repository;
+
+internal sealed class UserRepository : IUserRepository
 {
-    internal sealed class UserRepository : IUserRepository
+    private readonly DataContext context;
+
+    public UserRepository(DataContext context)
     {
-        private readonly DataContext context;
+        this.context = context;
+    }
 
-        public UserRepository(DataContext context)
-        {
-            this.context = context;
-        }
+    public User? Get(long id)
+    {
+        return this.BaseQuery().FirstOrDefault(o => o!.Id == id);
+    }
 
-        public User? Get(long id)
-        {
-            return this.BaseQuery().FirstOrDefault(o => o!.Id == id);
-        }
+    public void Add(User user)
+    {
+        this.context.Set<User>().Add(user);
+    }
 
-        public void Add(User user)
-        {
-            this.context.Set<User>().Add(user);
-        }
+    public void Update(User user)
+    {
+        this.context.Entry(user).State = EntityState.Modified;
+    }
 
-        public void Update(User user)
-        {
-            this.context.Entry(user).State = EntityState.Modified;
-        }
+    public void Delete(User user)
+    {
+        this.context.Set<User>().Remove(user);
+    }
 
-        public void Delete(User user)
-        {
-            this.context.Set<User>().Remove(user);
-        }
+    public User? FindByName(string userName)
+    {
+        return this.BaseQuery().FirstOrDefault(o => o!.UserName == userName);
+    }
 
-        public User? FindByName(string userName)
-        {
-            return this.BaseQuery().FirstOrDefault(o => o!.UserName == userName);
-        }
+    public User? FindByEmail(string email)
+    {
+        return this.BaseQuery().FirstOrDefault(o => o!.Email == email);
+    }
 
-        public User? FindByEmail(string email)
-        {
-            return this.BaseQuery().FirstOrDefault(o => o!.Email == email);
-        }
+    public Task<User?> FindByEmailAsync(string email)
+    {
+        return this.BaseQuery().FirstOrDefaultAsync(o => o!.Email == email);
+    }
 
-        public Task<User?> FindByEmailAsync(string email)
-        {
-            return this.BaseQuery().FirstOrDefaultAsync(o => o!.Email == email);
-        }
+    public IEnumerable<User> Find(ISpecification<User> specification)
+    {
+        return this.BaseQuery().Where(specification.IsSatisfiedBy!)!;
+    }
 
-        public IEnumerable<User> Find(ISpecification<User> specification)
-        {
-            return this.BaseQuery().Where(specification.IsSatisfiedBy!)!;
-        }
+    public Task<User[]> SearchAsync(ISpecification<User> specification)
+    {
+        return this.BaseQuery().Where(specification.IsSatisfiedBy!).ToArrayAsync()!;
+    }
 
-        public Task<User?> GetAsync(long id)
-        {
-            return this.BaseQuery().FirstOrDefaultAsync(o => o!.Id == id);
-        }
+    public Task<User?> GetAsync(long id)
+    {
+        return this.BaseQuery().FirstOrDefaultAsync(o => o!.Id == id);
+    }
 
-        private IIncludableQueryable<User?, ICollection<UserRole>> BaseQuery()
-        {
-            return this.context.Set<User?>().Include(o => o!.UserRoles);
-        }
+    private IIncludableQueryable<User?, ICollection<UserRole>> BaseQuery()
+    {
+        return this.context.Set<User?>().Include(o => o!.UserRoles);
     }
 }

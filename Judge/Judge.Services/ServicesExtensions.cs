@@ -14,5 +14,6 @@ public static class ServicesExtensions
         services.AddSingleton<ISecurityService, SecurityService>();
         services.AddSingleton<IUsersService, UsersService>();
         services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
+        services.AddSingleton<ISubmitsService, SubmitsService>();
     }
 }

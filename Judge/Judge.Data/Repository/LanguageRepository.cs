@@ -1,44 +1,57 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Judge.Model.Configuration;
 using Judge.Model.Entities;
+using Microsoft.EntityFrameworkCore;
 
-namespace Judge.Data.Repository
+namespace Judge.Data.Repository;
+
+internal sealed class LanguageRepository : ILanguageRepository
 {
-    internal sealed class LanguageRepository : ILanguageRepository
+    private readonly DataContext context;
+
+    public LanguageRepository(DataContext context)
     {
-        private readonly DataContext context;
+        this.context = context;
+    }
 
-        public LanguageRepository(DataContext context)
+    public IEnumerable<Language> GetLanguages(bool activeOnly)
+    {
+        IQueryable<Language> query = this.context.Set<Language>();
+
+        if (activeOnly)
         {
-            this.context = context;
+            query = query.Where(o => o.IsHidden == false);
         }
 
-        public IEnumerable<Language> GetLanguages(bool activeOnly)
+        return query.OrderBy(o => o.Name).AsEnumerable();
+    }
+
+    public Task<Language[]> GetAllAsync(bool activeOnly)
+    {
+        IQueryable<Language> query = this.context.Set<Language>();
+
+        if (activeOnly)
         {
-            IQueryable<Language> query = this.context.Set<Language>();
-
-            if (activeOnly)
-            {
-                query = query.Where(o => o.IsHidden == false);
-            }
-
-            return query.OrderBy(o => o.Name).AsEnumerable();
+            query = query.Where(o => o.IsHidden == false);
         }
 
-        public Language Get(int id)
-        {
-            return this.context.Set<Language>().FirstOrDefault(o => o.Id == id);
-        }
+        return query.OrderBy(o => o.Name).ToArrayAsync();
+    }
 
-        public void Add(Language language)
-        {
-            this.context.Set<Language>().Add(language);
-        }
+    public Language? Get(int id)
+    {
+        return this.context.Set<Language>().FirstOrDefault(o => o.Id == id);
+    }
 
-        public void Delete(Language language)
-        {
-            this.context.Set<Language>().Remove(language);
-        }
+    public void Add(Language language)
+    {
+        this.context.Set<Language>().Add(language);
+    }
+
+    public void Delete(Language language)
+    {
+        this.context.Set<Language>().Remove(language);
     }
 }
