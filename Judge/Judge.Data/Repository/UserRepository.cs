@@ -58,9 +58,9 @@ internal sealed class UserRepository : IUserRepository
         return this.BaseQuery().Where(specification.IsSatisfiedBy!)!;
     }
 
-    public Task<User[]> SearchAsync(ISpecification<User> specification)
+    public async Task<IReadOnlyCollection<User>> SearchAsync(ISpecification<User> specification)
     {
-        return this.BaseQuery().Where(specification.IsSatisfiedBy!).ToArrayAsync()!;
+        return (await this.BaseQuery().Where(specification.IsSatisfiedBy!).ToListAsync())!;
     }
 
     public Task<User?> GetAsync(long id)

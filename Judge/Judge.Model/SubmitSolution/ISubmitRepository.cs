@@ -1,4 +1,6 @@
-﻿namespace Judge.Model.SubmitSolution
+﻿using System.Threading.Tasks;
+
+namespace Judge.Model.SubmitSolution
 {
     using System.Collections.Generic;
 
@@ -9,5 +11,6 @@
         SubmitBase Get(long submitId);
         
         IEnumerable<SubmitBase> Get(ISpecification<SubmitBase> specification);
+        Task<IReadOnlyCollection<SubmitBase>> SearchAsync(ISpecification<SubmitBase> specification);
     }
 }
