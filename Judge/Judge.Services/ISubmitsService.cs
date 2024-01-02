@@ -6,4 +6,6 @@ namespace Judge.Services;
 public interface ISubmitsService
 {
     public Task<SubmitsList> SearchAsync(SubmitsQuery query);
+
+    public Task SaveAsync(SubmitSolution submitSolution, SubmitUserInfo userInfo);
 }

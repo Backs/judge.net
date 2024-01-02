@@ -34,14 +34,14 @@ internal sealed class TaskRepository : ITaskRepository
             .AsEnumerable();
     }
 
-    public Task<Task[]> GetAsync(IEnumerable<long> ids)
+    public async Task<IReadOnlyCollection<Task>> GetAsync(IEnumerable<long> ids)
     {
-        return this.context.Set<Task>()
+        return await this.context.Set<Task>()
             .Where(o => ids.Contains(o.Id))
-            .ToArrayAsync();
+            .ToListAsync();
     }
 
-    public Task<Task[]> GetTasksAsync(ISpecification<Task> specification, int skip, int take)
+    public async Task<IReadOnlyCollection<Task>> GetTasksAsync(ISpecification<Task> specification, int skip, int take)
     {
         IQueryable<Task> taskList = this.context.Set<Task>().Where(specification.IsSatisfiedBy).OrderBy(o => o.Id);
         if (skip > 0)
@@ -49,7 +49,7 @@ internal sealed class TaskRepository : ITaskRepository
             taskList = taskList.Skip(skip);
         }
 
-        return taskList.Take(take).ToArrayAsync();
+        return await taskList.Take(take).ToListAsync();
     }
 
     public Task<int> CountAsync(ISpecification<Task> specification)

@@ -28,7 +28,7 @@ internal sealed class LanguageRepository : ILanguageRepository
         return query.OrderBy(o => o.Name).AsEnumerable();
     }
 
-    public Task<Language[]> GetAllAsync(bool activeOnly)
+    public async Task<IReadOnlyCollection<Language>> GetAllAsync(bool activeOnly)
     {
         IQueryable<Language> query = this.context.Set<Language>();
 
@@ -37,7 +37,7 @@ internal sealed class LanguageRepository : ILanguageRepository
             query = query.Where(o => o.IsHidden == false);
         }
 
-        return query.OrderBy(o => o.Name).ToArrayAsync();
+        return await query.OrderBy(o => o.Name).ToListAsync();
     }
 
     public Language? Get(int id)

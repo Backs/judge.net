@@ -47,7 +47,8 @@ internal sealed class SubmitResultRepository : ISubmitResultRepository
         return query.Include(o => o.Submit).AsEnumerable();
     }
 
-    public Task<SubmitResult[]> SearchAsync(ISpecification<SubmitResult> specification, int skip, int take)
+    public async Task<IReadOnlyCollection<SubmitResult>> SearchAsync(ISpecification<SubmitResult> specification,
+        int skip, int take)
     {
         IQueryable<SubmitResult> query = this.context.Set<SubmitResult>();
 
@@ -62,7 +63,7 @@ internal sealed class SubmitResultRepository : ISubmitResultRepository
 
         query = query.Take(take);
 
-        return query.Include(o => o.Submit).ToArrayAsync();
+        return await query.Include(o => o.Submit).ToListAsync();
     }
 
     public IEnumerable<long> GetSolvedProblems(ISpecification<SubmitResult> specification)
@@ -74,13 +75,13 @@ internal sealed class SubmitResultRepository : ISubmitResultRepository
             .AsEnumerable();
     }
 
-    public Task<long[]> GetSolvedProblemsAsync(ISpecification<SubmitResult> specification)
+    public async Task<IReadOnlyCollection<long>> GetSolvedProblemsAsync(ISpecification<SubmitResult> specification)
     {
-        return this.context.Set<SubmitResult>()
+        return await this.context.Set<SubmitResult>()
             .Where(specification.IsSatisfiedBy)
             .Select(o => o.Submit.ProblemId)
             .Distinct()
-            .ToArrayAsync();
+            .ToListAsync();
     }
 
     public SubmitResult? DequeueUnchecked()
