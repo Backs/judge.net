@@ -11,7 +11,8 @@ public sealed class SubmitResultInfo
     public int? PassedTests { get; set; }
     public long? TotalMilliseconds { get; set; }
     public long? TotalBytes { get; set; }
-
     public long ProblemId { get; set; }
     public string ProblemName { get; set; } = null!;
+    public long UserId { get; set; }
+    public string UserName { get; set; } = null!;
 }
