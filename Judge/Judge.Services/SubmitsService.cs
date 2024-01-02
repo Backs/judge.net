@@ -29,18 +29,20 @@ internal sealed class SubmitsService : ISubmitsService
         var userRepository = unitOfWork.UserRepository;
 
         var languages = await languageRepository.GetDictionaryAsync(false);
+        var specification = new AdminSearchSubmitsSpecification(null, null);
         var submits =
-            await submitResultRepository.SearchAsync(AllProblemsSpecification.Instance, query.Skip, query.Take);
+            await submitResultRepository.SearchAsync(specification, query.Skip, query.Take);
 
         var userSpecification = new UserListSpecification(submits.Select(o => o.Submit.UserId).Distinct());
         var tasks = await taskRepository.GetDictionaryAsync(submits.Select(o => o.Submit.ProblemId).Distinct());
         var users = await userRepository.GetDictionaryAsync(userSpecification);
 
         var items = submits.Select(o =>
-                SubmitsConverter.Convert(o, languages[o.Submit.LanguageId], tasks[o.Submit.ProblemId]))
+                SubmitsConverter.Convert(o, languages[o.Submit.LanguageId], tasks[o.Submit.ProblemId],
+                    users[o.Submit.UserId]))
             .ToArray();
 
-        var totalCount = await submitResultRepository.CountAsync(AllProblemsSpecification.Instance);
+        var totalCount = await submitResultRepository.CountAsync(specification);
         return new SubmitsList
         {
             Items = items,

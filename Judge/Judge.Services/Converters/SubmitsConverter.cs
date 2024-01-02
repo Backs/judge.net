@@ -9,7 +9,8 @@ namespace Judge.Services.Converters;
 
 internal static class SubmitsConverter
 {
-    public static Client.Submits.SubmitResultInfo Convert(SubmitResult submitResult, Language language, Task task)
+    public static Client.Submits.SubmitResultInfo Convert(SubmitResult submitResult, Language language, Task task,
+        User user)
     {
         var totalBytes = submitResult.TotalBytes != null
             ? Math.Min(submitResult.TotalBytes.Value, task.MemoryLimitBytes)
@@ -25,7 +26,9 @@ internal static class SubmitsConverter
             SubmitDate = submitResult.Submit.SubmitDateUtc,
             ProblemName = task.Name,
             ProblemId = task.Id,
-            Status = Convert(submitResult.Status)
+            Status = Convert(submitResult.Status),
+            UserId = user.Id,
+            UserName = user.UserName
         };
 
         if (submitResult.Status != SubmitStatus.CompilationError && submitResult.Status != SubmitStatus.ServerError)
