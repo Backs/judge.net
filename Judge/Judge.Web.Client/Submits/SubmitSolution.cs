@@ -18,9 +18,9 @@ public sealed class SubmitSolution : IValidatableObject
 
     IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
     {
-        if (this.ProblemId == null ^ !(this.ContestId == null && this.TaskLabel == null))
+        if (this.ProblemId == null ^ !(this.ContestId == null || this.TaskLabel == null))
         {
-            yield return new ValidationResult("You should set ProblemId or ContestId and TaskLabel");
+            yield return new ValidationResult("You should set ProblemId or ContestId and TaskLabel", new[] {"submit"});
         }
     }
 }
