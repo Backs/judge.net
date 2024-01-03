@@ -11,6 +11,7 @@ using Judge.Model.Entities;
 using Judge.Model.SubmitSolution;
 using Judge.Services.Converters;
 using Judge.Web.Client.Submits;
+using SubmitsQuery = Judge.Services.Model.SubmitsQuery;
 using Task = System.Threading.Tasks.Task;
 
 namespace Judge.Services;
@@ -38,8 +39,10 @@ internal sealed class SubmitsService : ISubmitsService
 
         var languages = await unitOfWork.LanguageRepository.GetDictionaryAsync(false);
         var specification = new SubmitsSpecification(
+            type: Convert(query.Type),
             contestId: query.ContestId,
-            problemId: query.ProblemId);
+            problemId: query.ProblemId,
+            userId: query.UserId);
 
         var submitResults = await unitOfWork.SubmitResultRepository.SearchAsync(specification, query.Skip, query.Take);
 
@@ -65,6 +68,15 @@ internal sealed class SubmitsService : ISubmitsService
             TotalCount = totalCount
         };
     }
+
+    private static SubmitsType Convert(Model.SubmitsType type) =>
+        type switch
+        {
+            Model.SubmitsType.All => SubmitsType.All,
+            Model.SubmitsType.Problem => SubmitsType.Problem,
+            Model.SubmitsType.Contest => SubmitsType.Contest,
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        };
 
     public async Task SaveAsync(SubmitSolution submitSolution, SubmitUserInfo userInfo)
     {
