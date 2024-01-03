@@ -15,4 +15,5 @@ public sealed class SubmitResultInfo
     public string ProblemName { get; set; } = null!;
     public long UserId { get; set; }
     public string UserName { get; set; } = null!;
+    public SubmitResultContestInfo? ContestInfo { get; set; }
 }

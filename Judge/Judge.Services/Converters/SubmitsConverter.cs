@@ -1,16 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Judge.Model.CheckSolution;
+using Judge.Model.Contests;
 using Judge.Model.Entities;
 using Judge.Model.SubmitSolution;
 using SubmitResult = Judge.Model.SubmitSolution.SubmitResult;
 using Client = Judge.Web.Client;
+using SubmitStatus = Judge.Model.SubmitSolution.SubmitStatus;
 
 namespace Judge.Services.Converters;
 
 internal static class SubmitsConverter
 {
-    public static Client.Submits.SubmitResultInfo Convert(SubmitResult submitResult, Language language, Task task,
-        User user)
+    public static Client.Submits.SubmitResultInfo Convert(
+        SubmitResult submitResult,
+        Language language,
+        Task task,
+        User user,
+        IReadOnlyCollection<ContestTask> contestTasks)
     {
         var totalBytes = submitResult.TotalBytes != null
             ? Math.Min(submitResult.TotalBytes.Value, task.MemoryLimitBytes)
@@ -39,6 +47,18 @@ internal static class SubmitsConverter
             {
                 submitResultInfo.PassedTests = submitResult.PassedTests;
             }
+        }
+
+        if (submitResult.Submit is ContestTaskSubmit contestTaskSubmit)
+        {
+            submitResultInfo.ContestInfo = new Client.Submits.SubmitResultContestInfo
+            {
+                ContestId = contestTaskSubmit.ContestId,
+                Label = contestTasks.FirstOrDefault(o =>
+                                o.ContestId == contestTaskSubmit.ContestId && o.TaskId == contestTaskSubmit.ProblemId)
+                            ?.TaskName ??
+                            "<unknown>"
+            };
         }
 
         return submitResultInfo;

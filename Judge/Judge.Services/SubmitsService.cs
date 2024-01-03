@@ -29,26 +29,36 @@ internal sealed class SubmitsService : ISubmitsService
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
 
-        var submitResultRepository = unitOfWork.SubmitResultRepository;
-        var languageRepository = unitOfWork.LanguageRepository;
-        var taskRepository = unitOfWork.TaskRepository;
-        var userRepository = unitOfWork.UserRepository;
+        if (query is {ContestId: not null, TaskLabel: not null, ProblemId: null})
+        {
+            var contestTask =
+                await unitOfWork.ContestTaskRepository.TryGetAsync(query.ContestId.Value, query.TaskLabel);
+            query.ProblemId = contestTask?.TaskId;
+        }
 
-        var languages = await languageRepository.GetDictionaryAsync(false);
-        var specification = new AdminSearchSubmitsSpecification(null, null);
-        var submits =
-            await submitResultRepository.SearchAsync(specification, query.Skip, query.Take);
+        var languages = await unitOfWork.LanguageRepository.GetDictionaryAsync(false);
+        var specification = new SubmitsSpecification(
+            contestId: query.ContestId,
+            problemId: query.ProblemId);
 
-        var userSpecification = new UserListSpecification(submits.Select(o => o.Submit.UserId).Distinct());
-        var tasks = await taskRepository.GetDictionaryAsync(submits.Select(o => o.Submit.ProblemId).Distinct());
-        var users = await userRepository.GetDictionaryAsync(userSpecification);
+        var submitResults = await unitOfWork.SubmitResultRepository.SearchAsync(specification, query.Skip, query.Take);
 
-        var items = submits.Select(o =>
+        var userSpecification = new UserListSpecification(submitResults.Select(o => o.Submit.UserId).Distinct());
+        var tasks = await unitOfWork.TaskRepository.GetDictionaryAsync(submitResults.Select(o => o.Submit.ProblemId)
+            .Distinct());
+        var users = await unitOfWork.UserRepository.GetDictionaryAsync(userSpecification);
+
+        var contestIds = submitResults.Select(o => o.Submit).OfType<ContestTaskSubmit>().Select(o => o.ContestId)
+            .Distinct();
+
+        var contestTasks = await unitOfWork.ContestTaskRepository.SearchAsync(contestIds);
+
+        var items = submitResults.Select(o =>
                 SubmitsConverter.Convert(o, languages[o.Submit.LanguageId], tasks[o.Submit.ProblemId],
-                    users[o.Submit.UserId]))
+                    users[o.Submit.UserId], contestTasks))
             .ToArray();
 
-        var totalCount = await submitResultRepository.CountAsync(specification);
+        var totalCount = await unitOfWork.SubmitResultRepository.CountAsync(specification);
         return new SubmitsList
         {
             Items = items,

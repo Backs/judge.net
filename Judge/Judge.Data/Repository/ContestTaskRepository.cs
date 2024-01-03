@@ -35,6 +35,13 @@ internal sealed class ContestTaskRepository : IContestTaskRepository
             .AsEnumerable();
     }
 
+    public async Task<IReadOnlyCollection<ContestTask>> SearchAsync(IEnumerable<int> contestIds)
+    {
+        return await this.context.Set<ContestTask>()
+            .Where(o => contestIds.Contains(o.Contest.Id))
+            .ToListAsync();
+    }
+
     public ContestTask? Get(int contestId, string label)
     {
         return this.context.Set<ContestTask>()
