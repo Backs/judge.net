@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Judge.Web.Client.Submits;
+using SubmitsQuery = Judge.Services.Model.SubmitsQuery;
 
 namespace Judge.Services;
 

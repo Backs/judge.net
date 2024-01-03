@@ -8,15 +8,23 @@
         public Expression<Func<SubmitResult, bool>> IsSatisfiedBy { get; } = t => true;
 
         public SubmitsSpecification(
+            SubmitsType type = SubmitsType.All,
             int? language = null,
             SubmitStatus? status = null,
             long? problemId = null,
             int? contestId = null,
-            int? userId = null)
+            long? userId = null)
         {
+            this.IsSatisfiedBy = type switch
+            {
+                SubmitsType.Contest => this.IsSatisfiedBy.And(t => t.Submit is ContestTaskSubmit),
+                SubmitsType.Problem => this.IsSatisfiedBy.And(t => t.Submit is ProblemSubmit),
+                _ => this.IsSatisfiedBy
+            };
+
             if (language != null)
             {
-                this.IsSatisfiedBy = t => t.Submit.LanguageId == language;
+                this.IsSatisfiedBy = this.IsSatisfiedBy.And(t => t.Submit.LanguageId == language);
             }
 
             if (status != null)
