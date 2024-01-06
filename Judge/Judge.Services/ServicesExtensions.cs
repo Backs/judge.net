@@ -7,13 +7,14 @@ namespace Judge.Services;
 
 public static class ServicesExtensions
 {
-    public static void AddServices(this IServiceCollection services)
+    public static void AddServices(this IServiceCollection services, string databaseConnectionString)
     {
-        services.AddData("Data Source=.;Initial Catalog=Judge;Integrated Security=True");
+        services.AddData(databaseConnectionString);
         services.AddSingleton<IProblemsService, ProblemsService>();
         services.AddSingleton<ISecurityService, SecurityService>();
         services.AddSingleton<IUsersService, UsersService>();
         services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
         services.AddSingleton<ISubmitsService, SubmitsService>();
+        services.AddSingleton<IContestsService, ContestsService>();
     }
 }

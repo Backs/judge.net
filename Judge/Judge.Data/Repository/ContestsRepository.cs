@@ -18,7 +18,8 @@ internal sealed class ContestsRepository : IContestsRepository
 
     public IEnumerable<Contest> GetList(ISpecification<Contest> specification)
     {
-        return this.context.Set<Contest>().Where(specification.IsSatisfiedBy).OrderByDescending(o => o.StartTime).AsEnumerable();
+        return this.context.Set<Contest>().Where(specification.IsSatisfiedBy).OrderByDescending(o => o.StartTime)
+            .AsEnumerable();
     }
 
     public Contest? Get(int id)
@@ -34,5 +35,21 @@ internal sealed class ContestsRepository : IContestsRepository
     public void Add(Contest contest)
     {
         this.context.Set<Contest>().Add(contest);
+    }
+
+    public async Task<IReadOnlyList<Contest>> SearchAsync(ISpecification<Contest> specification, int skip, int take)
+    {
+        IQueryable<Contest> query = this.context.Set<Contest>()
+            .Where(specification.IsSatisfiedBy)
+            .OrderByDescending(o => o.StartTime);
+
+        if (skip != 0)
+        {
+            query = query.Skip(skip);
+        }
+
+        query = query.Take(take);
+
+        return await query.ToListAsync();
     }
 }

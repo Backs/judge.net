@@ -50,7 +50,7 @@ internal static class Program
                 }
             });
         });
-        builder.Services.AddServices();
+        builder.Services.AddServices(builder.Configuration["AppSettings:DatabaseConnectionString"]);
 
         var key = builder.Configuration["AppSettings:SecurityKey"];
         var issuer = builder.Configuration["AppSettings:Issuer"];
