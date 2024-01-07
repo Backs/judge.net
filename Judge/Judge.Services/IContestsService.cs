@@ -5,5 +5,5 @@ namespace Judge.Services;
 
 public interface IContestsService
 {
-    Task<ContestsList> SearchAsync(ContestsQuery query);
+    Task<ContestsInfoList> SearchAsync(ContestsQuery query);
 }

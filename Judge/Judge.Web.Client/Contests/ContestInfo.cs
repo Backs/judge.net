@@ -2,7 +2,7 @@
 
 namespace Judge.Web.Client.Contests;
 
-public class Contest
+public class ContestInfo
 {
     public string Name { get; set; } = null!;
     public DateTime StartDate { get; set; }

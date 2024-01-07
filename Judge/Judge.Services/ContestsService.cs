@@ -16,13 +16,13 @@ internal sealed class ContestsService : IContestsService
         this.unitOfWorkFactory = unitOfWorkFactory;
     }
 
-    public async Task<Client.ContestsList> SearchAsync(Client.ContestsQuery query)
+    public async Task<Client.ContestsInfoList> SearchAsync(Client.ContestsQuery query)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
         var specification = AllContestsSpecification.Instance;
         var contests = await unitOfWork.ContestsRepository.SearchAsync(specification, query.Skip, query.Take);
 
-        var items = contests.Select(o => new Client.Contest
+        var items = contests.Select(o => new Client.ContestInfo
         {
             Name = o.Name,
             StartDate = o.StartTime,
@@ -30,7 +30,7 @@ internal sealed class ContestsService : IContestsService
             Status = GetStatus(o)
         }).ToArray();
 
-        return new Client.ContestsList { Items = items };
+        return new Client.ContestsInfoList { Items = items };
     }
 
     private static Client.ContestStatus GetStatus(Contest contest)
