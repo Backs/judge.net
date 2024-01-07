@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Judge.Services;
+using Judge.Web.Api.Extensions;
 using Judge.Web.Client.Contests;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,5 +25,16 @@ public class ContestsController : ControllerBase
         var result = await this.contestsService.SearchAsync(query);
 
         return this.Ok(result);
+    }
+
+    [HttpGet("{contestId:int}")]
+    public async Task<IActionResult> Get([FromRoute] int contestId)
+    {
+        var contest = await this.contestsService.GetAsync(contestId, this.User.TryGetUserId());
+
+        if (contest == null)
+            return this.NotFound();
+
+        return this.Ok(contest);
     }
 }

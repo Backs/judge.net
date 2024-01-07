@@ -33,35 +33,35 @@ internal sealed class SubmitsService : ISubmitsService
         if (query is {ContestId: not null, TaskLabel: not null, ProblemId: null})
         {
             var contestTask =
-                await unitOfWork.ContestTaskRepository.TryGetAsync(query.ContestId.Value, query.TaskLabel);
+                await unitOfWork.ContestTasks.TryGetAsync(query.ContestId.Value, query.TaskLabel);
             query.ProblemId = contestTask?.TaskId;
         }
 
-        var languages = await unitOfWork.LanguageRepository.GetDictionaryAsync(false);
+        var languages = await unitOfWork.Languages.GetDictionaryAsync(false);
         var specification = new SubmitsSpecification(
             type: Convert(query.Type),
             contestId: query.ContestId,
             problemId: query.ProblemId,
             userId: query.UserId);
 
-        var submitResults = await unitOfWork.SubmitResultRepository.SearchAsync(specification, query.Skip, query.Take);
+        var submitResults = await unitOfWork.SubmitResults.SearchAsync(specification, query.Skip, query.Take);
 
         var userSpecification = new UserListSpecification(submitResults.Select(o => o.Submit.UserId).Distinct());
-        var tasks = await unitOfWork.TaskRepository.GetDictionaryAsync(submitResults.Select(o => o.Submit.ProblemId)
+        var tasks = await unitOfWork.Tasks.GetDictionaryAsync(submitResults.Select(o => o.Submit.ProblemId)
             .Distinct());
-        var users = await unitOfWork.UserRepository.GetDictionaryAsync(userSpecification);
+        var users = await unitOfWork.Users.GetDictionaryAsync(userSpecification);
 
         var contestIds = submitResults.Select(o => o.Submit).OfType<ContestTaskSubmit>().Select(o => o.ContestId)
             .Distinct();
 
-        var contestTasks = await unitOfWork.ContestTaskRepository.SearchAsync(contestIds);
+        var contestTasks = await unitOfWork.ContestTasks.SearchAsync(contestIds);
 
         var items = submitResults.Select(o =>
                 SubmitsConverter.Convert(o, languages[o.Submit.LanguageId], tasks[o.Submit.ProblemId],
                     users[o.Submit.UserId], contestTasks))
             .ToArray();
 
-        var totalCount = await unitOfWork.SubmitResultRepository.CountAsync(specification);
+        var totalCount = await unitOfWork.SubmitResults.CountAsync(specification);
         return new SubmitsList
         {
             Items = items,
@@ -105,7 +105,7 @@ internal sealed class SubmitsService : ISubmitsService
         submit.UserHost = userInfo.Host;
 
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
-        unitOfWork.SubmitRepository.Add(submit);
+        unitOfWork.Submits.Add(submit);
         await unitOfWork.CommitAsync();
     }
 
@@ -113,7 +113,7 @@ internal sealed class SubmitsService : ISubmitsService
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
         var contestId = submitSolution.ContestId!.Value;
-        var contest = await unitOfWork.ContestsRepository.TryGetAsync(contestId);
+        var contest = await unitOfWork.Contests.TryGetAsync(contestId);
 
         if (contest == null)
             throw new InvalidOperationException("Contest not found");
@@ -124,7 +124,7 @@ internal sealed class SubmitsService : ISubmitsService
         if (DateTime.UtcNow >= contest.FinishTime)
             throw new InvalidOperationException("Contest finished");
 
-        var task = await unitOfWork.ContestTaskRepository.TryGetAsync(contestId, submitSolution.TaskLabel);
+        var task = await unitOfWork.ContestTasks.TryGetAsync(contestId, submitSolution.TaskLabel);
 
         if (task == null)
             throw new InvalidOperationException("Task not found");
@@ -134,10 +134,10 @@ internal sealed class SubmitsService : ISubmitsService
             return;
         }
 
-        var availableLanguages = (await unitOfWork.LanguageRepository.GetAllAsync(true)).Select(o => o.Id).ToHashSet();
+        var availableLanguages = (await unitOfWork.Languages.GetAllAsync(true)).Select(o => o.Id).ToHashSet();
 
         var submits =
-            await unitOfWork.SubmitRepository.SearchAsync(
+            await unitOfWork.Submits.SearchAsync(
                 new ContestUserSubmitsSpecification(userInfo.UserId, contestId));
         var prevSubmit = submits.FirstOrDefault(o => o.ProblemId == task.TaskId);
 
@@ -169,7 +169,7 @@ internal sealed class SubmitsService : ISubmitsService
         submit.SourceCode = sourceCode;
         submit.UserHost = userInfo.Host;
 
-        unitOfWork.SubmitRepository.Add(submit);
+        unitOfWork.Submits.Add(submit);
         await unitOfWork.CommitAsync();
     }
 

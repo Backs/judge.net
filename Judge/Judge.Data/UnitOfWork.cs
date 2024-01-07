@@ -53,31 +53,31 @@ namespace Judge.Data
             await this.context.SaveChangesAsync();
         }
 
-        public IContestResultRepository ContestResultRepository =>
+        public IContestResultRepository ContestResults =>
             this.contestResultRepository ??= new ContestResultRepository(this.context);
 
-        public IContestsRepository ContestsRepository =>
+        public IContestsRepository Contests =>
             this.contestsRepository ??= new ContestsRepository(this.context);
 
-        public IContestTaskRepository ContestTaskRepository =>
+        public IContestTaskRepository ContestTasks =>
             this.contestTaskRepository ??= new ContestTaskRepository(this.context);
 
-        public ILanguageRepository LanguageRepository =>
+        public ILanguageRepository Languages =>
             this.languageRepository ??= new LanguageRepository(this.context);
 
-        public ISubmitRepository SubmitRepository =>
+        public ISubmitRepository Submits =>
             this.submitRepository ??= new SubmitRepository(this.context);
 
-        public ISubmitResultRepository SubmitResultRepository =>
+        public ISubmitResultRepository SubmitResults =>
             this.submitResultRepository ??= new SubmitResultRepository(this.context);
 
-        public ITaskNameRepository TaskNameRepository =>
+        public ITaskNameRepository TaskNames =>
             this.taskNameRepository ??= new TaskNameRepository(this.context);
 
-        public ITaskRepository TaskRepository =>
+        public ITaskRepository Tasks =>
             this.taskRepository ??= new TaskRepository(this.context);
 
-        public IUserRepository UserRepository =>
+        public IUserRepository Users =>
             this.userRepository ??= new UserRepository(this.context);
 
         public async ValueTask DisposeAsync()

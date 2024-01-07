@@ -23,10 +23,10 @@
         {
             using (var uow = this.unitOfWorkFactory.GetUnitOfWork())
             {
-                var submitResultRepository = uow.SubmitResultRepository;
-                var languageRepository = uow.LanguageRepository;
-                var taskRepository = uow.TaskRepository;
-                var userRepository = uow.UserRepository;
+                var submitResultRepository = uow.SubmitResults;
+                var languageRepository = uow.Languages;
+                var taskRepository = uow.Tasks;
+                var userRepository = uow.Users;
 
                 var languages = languageRepository.GetLanguages(false).ToDictionary(o => o.Id, o => o.Name);
 
@@ -59,10 +59,10 @@
         {
             using (var uow = this.unitOfWorkFactory.GetUnitOfWork())
             {
-                var submitResultRepository = uow.SubmitResultRepository;
-                var languageRepository = uow.LanguageRepository;
-                var taskRepository = uow.TaskRepository;
-                var userRepository = uow.UserRepository;
+                var submitResultRepository = uow.SubmitResults;
+                var languageRepository = uow.Languages;
+                var taskRepository = uow.Tasks;
+                var userRepository = uow.Users;
 
                 var languages = languageRepository.GetLanguages(false).ToDictionary(o => o.Id, o => o.Name);
                 var submits = submitResultRepository.GetSubmits(ProblemsSpecification.Instance, page, pageSize).ToArray();

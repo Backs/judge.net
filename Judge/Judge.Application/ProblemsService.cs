@@ -30,8 +30,8 @@ namespace Judge.Application
 
             using (var unitOfWork = this.factory.GetUnitOfWork())
             {
-                var taskRepository = unitOfWork.TaskNameRepository;
-                var submitResultRepository = unitOfWork.SubmitResultRepository;
+                var taskRepository = unitOfWork.TaskNames;
+                var submitResultRepository = unitOfWork.SubmitResults;
 
                 var tasks = GetProblems(page, pageSize, taskRepository, openedOnly);
 
@@ -80,7 +80,7 @@ namespace Judge.Application
         {
             using (var unitOfWork = this.factory.GetUnitOfWork())
             {
-                var taskRepository = unitOfWork.TaskRepository;
+                var taskRepository = unitOfWork.Tasks;
                 var task = taskRepository.Get(id);
                 if (task == null)
                     return null;
@@ -106,7 +106,7 @@ namespace Judge.Application
         {
             using (var uow = this.factory.GetUnitOfWork())
             {
-                var taskRepository = uow.TaskNameRepository;
+                var taskRepository = uow.TaskNames;
                 return taskRepository.GetTasks(AllTasksSpecification.Instance, 1, int.MaxValue)
                     .Select(o => new ProblemItem
                     {

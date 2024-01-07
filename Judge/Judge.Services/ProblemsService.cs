@@ -21,16 +21,16 @@ internal sealed class ProblemsService : IProblemsService
     public async Task<ProblemsList> SearchAsync(long? userId, ProblemsQuery query)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork(false);
-        var tasks = await unitOfWork.TaskRepository.GetTasksAsync(OpenedTasksSpecification.Instance, query.Skip,
+        var tasks = await unitOfWork.Tasks.GetTasksAsync(OpenedTasksSpecification.Instance, query.Skip,
             query.Take);
 
-        var totalCount = await unitOfWork.TaskRepository.CountAsync(OpenedTasksSpecification.Instance);
+        var totalCount = await unitOfWork.Tasks.CountAsync(OpenedTasksSpecification.Instance);
 
         var solved = new HashSet<long>();
 
         if (userId != null)
         {
-            var userSolved = await unitOfWork.SubmitResultRepository.GetSolvedProblemsAsync(
+            var userSolved = await unitOfWork.SubmitResults.GetSolvedProblemsAsync(
                 new UserSolvedProblemsSpecification(userId.Value, tasks.Select(o => o.Id).ToImmutableHashSet()));
             solved.UnionWith(userSolved);
         }
@@ -52,7 +52,7 @@ internal sealed class ProblemsService : IProblemsService
     public async Task<Problem?> GetAsync(long id)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork(false);
-        var task = await unitOfWork.TaskRepository.GetAsync(id);
+        var task = await unitOfWork.Tasks.GetAsync(id);
 
         if (task == null)
         {

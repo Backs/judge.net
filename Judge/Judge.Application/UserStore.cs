@@ -24,7 +24,7 @@
         {
             using (var uow = this.unitOfWorkFactory.GetUnitOfWork())
             {
-                var userRepository = uow.UserRepository;
+                var userRepository = uow.Users;
                 userRepository.Add(user.User);
                 uow.Commit();
             }
@@ -36,7 +36,7 @@
         {
             using (var uow = this.unitOfWorkFactory.GetUnitOfWork())
             {
-                var userRepository = uow.UserRepository;
+                var userRepository = uow.Users;
                 userRepository.Update(user.User);
                 uow.Commit();
             }
@@ -48,7 +48,7 @@
         {
             using (var uow = this.unitOfWorkFactory.GetUnitOfWork())
             {
-                var userRepository = uow.UserRepository;
+                var userRepository = uow.Users;
                 userRepository.Delete(user.User);
                 uow.Commit();
             }
@@ -60,7 +60,7 @@
         {
             using (var uow = this.unitOfWorkFactory.GetUnitOfWork())
             {
-                var userRepository = uow.UserRepository;
+                var userRepository = uow.Users;
                 var result = userRepository.Get(userId);
 
                 return Task.FromResult(new ApplicationUser(result));
@@ -71,7 +71,7 @@
         {
             using (var uow = this.unitOfWorkFactory.GetUnitOfWork())
             {
-                var userRepository = uow.UserRepository;
+                var userRepository = uow.Users;
                 var result = userRepository.FindByName(userName);
 
                 return Task.FromResult(result == null ? null : new ApplicationUser(result));
@@ -183,7 +183,7 @@
         {
             using (var uow = this.unitOfWorkFactory.GetUnitOfWork())
             {
-                var userRepository = uow.UserRepository;
+                var userRepository = uow.Users;
                 var result = userRepository.FindByEmail(email);
 
                 return Task.FromResult(result == null ? null : new ApplicationUser(result));

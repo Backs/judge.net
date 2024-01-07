@@ -19,7 +19,7 @@
         {
             using (var uow = this.unitOfWorkFactory.GetUnitOfWork())
             {
-                var userRepository = uow.UserRepository;
+                var userRepository = uow.Users;
 
                 var user = userRepository.Get(id);
 
@@ -28,8 +28,8 @@
                     return null;
                 }
 
-                var submitRepository = uow.SubmitRepository;
-                var taskNameRepository = uow.TaskNameRepository;
+                var submitRepository = uow.Submits;
+                var taskNameRepository = uow.TaskNames;
 
                 var solvedTasks = submitRepository.Get(new UserSolvedSpecification(id)).Select(o => o.ProblemId).ToArray();
                 var unsolvedTasks = submitRepository.Get(new UserUnsolvedSpecification(id)).Select(o => o.ProblemId).ToArray();

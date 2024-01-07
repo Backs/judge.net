@@ -33,10 +33,10 @@ namespace Judge.Tests.Application.SubmitQueueServiceTests
             _taskRepository = MockRepository.GenerateMock<ITaskNameRepository>();
             _userRepository = MockRepository.GenerateMock<IUserRepository>();
 
-            unitOfWork.Stub(o => o.SubmitResultRepository).Return(_submitResultRepository);
-            unitOfWork.Stub(o => o.LanguageRepository).Return(languageRepository);
-            unitOfWork.Stub(o => o.TaskNameRepository).Return(_taskRepository);
-            unitOfWork.Stub(o => o.UserRepository).Return(_userRepository);
+            unitOfWork.Stub(o => o.SubmitResults).Return(_submitResultRepository);
+            unitOfWork.Stub(o => o.Languages).Return(languageRepository);
+            unitOfWork.Stub(o => o.TaskNames).Return(_taskRepository);
+            unitOfWork.Stub(o => o.Users).Return(_userRepository);
 
             unitOfWorkFactory.Stub(o => o.GetUnitOfWork()).Return(unitOfWork);
 

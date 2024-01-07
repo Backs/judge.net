@@ -30,7 +30,7 @@
         {
             using (var uow = this.factory.GetUnitOfWork())
             {
-                var repository = uow.LanguageRepository;
+                var repository = uow.Languages;
                 return repository.GetLanguages(false).Select(o => new LanguageEditViewModel
                     {
                         Id = o.Id,
@@ -51,7 +51,7 @@
         {
             using (var uow = this.factory.GetUnitOfWork())
             {
-                var repository = uow.LanguageRepository;
+                var repository = uow.Languages;
                 var databaseLanguages = repository.GetLanguages(false);
 
                 foreach (var databaseLanguage in databaseLanguages)
@@ -98,11 +98,11 @@
         {
             using (var uow = this.factory.GetUnitOfWork())
             {
-                var submitResultRepository = uow.SubmitResultRepository;
-                var languageRepository = uow.LanguageRepository;
-                var taskRepository = uow.TaskRepository;
-                var userRepository = uow.UserRepository;
-                var contestTaskRepository = uow.ContestTaskRepository;
+                var submitResultRepository = uow.SubmitResults;
+                var languageRepository = uow.Languages;
+                var taskRepository = uow.Tasks;
+                var userRepository = uow.Users;
+                var contestTaskRepository = uow.ContestTasks;
 
                 var languages = languageRepository.GetLanguages(false).ToDictionary(o => o.Id, o => o.Name);
                 var submits = submitResultRepository
@@ -124,7 +124,7 @@
         {
             using (var uow = this.factory.GetUnitOfWork())
             {
-                var taskRepository = uow.TaskRepository;
+                var taskRepository = uow.Tasks;
                 var task = taskRepository.Get(id);
                 return new EditProblemViewModel
                 {
@@ -143,7 +143,7 @@
         {
             using (var uow = this.factory.GetUnitOfWork())
             {
-                var taskRepository = uow.TaskRepository;
+                var taskRepository = uow.Tasks;
 
                 Task task;
                 if (model.Id != null)
@@ -172,8 +172,8 @@
         {
             using (var uow = this.factory.GetUnitOfWork())
             {
-                var contestRepository = uow.ContestsRepository;
-                var contestTaskRepository = uow.ContestTaskRepository;
+                var contestRepository = uow.Contests;
+                var contestTaskRepository = uow.ContestTasks;
 
                 var contest = contestRepository.Get(id);
                 var tasks = contestTaskRepository.GetTasks(id);
@@ -197,8 +197,8 @@
         {
             using (var uow = this.factory.GetUnitOfWork())
             {
-                var contestRepository = uow.ContestsRepository;
-                var contestTaskRepository = uow.ContestTaskRepository;
+                var contestRepository = uow.Contests;
+                var contestTaskRepository = uow.ContestTasks;
 
                 var contest = model.Id != null ? contestRepository.Get(model.Id.Value) : new Contest();
                 contest.FinishTime = model.FinishTime;
@@ -256,7 +256,7 @@
         {
             using (var uow = this.factory.GetUnitOfWork())
             {
-                var users = uow.UserRepository.Find(AllUsersSpecification.Instance);
+                var users = uow.Users.Find(AllUsersSpecification.Instance);
 
                 var result = new UserListViewModel
                 {
@@ -272,7 +272,7 @@
         {
             using (var uow = this.factory.GetUnitOfWork())
             {
-                var user = uow.UserRepository.Get(id);
+                var user = uow.Users.Get(id);
 
                 if (user == null)
                 {
