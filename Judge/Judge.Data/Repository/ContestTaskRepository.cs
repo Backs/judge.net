@@ -65,4 +65,13 @@ internal sealed class ContestTaskRepository : IContestTaskRepository
             .OrderBy(o => o.TaskName)
             .AsEnumerable();
     }
+
+    public async Task<IReadOnlyCollection<ContestTask>> SearchAsync(int contestId)
+    {
+        return await this.context.Set<ContestTask>()
+            .Include(o => o.Task)
+            .Where(o => o.ContestId == contestId)
+            .OrderBy(o => o.TaskName)
+            .ToListAsync();
+    }
 }

@@ -16,7 +16,7 @@ internal sealed class UsersService : IUsersService
     public async Task<User?> GetUserAsync(long id)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
-        var user = await unitOfWork.UserRepository.GetAsync(id);
+        var user = await unitOfWork.Users.GetAsync(id);
 
         if (user == null)
             return null;

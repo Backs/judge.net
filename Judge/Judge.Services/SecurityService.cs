@@ -21,7 +21,7 @@ internal sealed class SecurityService : ISecurityService
     public async Task<Authentication> AuthenticateAsync(Login login)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
-        var user = await unitOfWork.UserRepository.FindByEmailAsync(login.Email);
+        var user = await unitOfWork.Users.FindByEmailAsync(login.Email);
 
         if (user == null)
         {

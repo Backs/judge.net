@@ -33,7 +33,7 @@
         {
             using (var uow = this.factory.GetUnitOfWork())
             {
-                var languageRepository = uow.LanguageRepository;
+                var languageRepository = uow.Languages;
 
                 return languageRepository.GetLanguages(true).Select(o => new LanguageViewModel
                 {
@@ -47,10 +47,10 @@
         {
             using (var uow = this.factory.GetUnitOfWork())
             {
-                var languageRepository = uow.LanguageRepository;
-                var contestRepository = uow.ContestsRepository;
-                var submitRepository = uow.SubmitRepository;
-                var contestTaskRepository = uow.ContestTaskRepository;
+                var languageRepository = uow.Languages;
+                var contestRepository = uow.Contests;
+                var submitRepository = uow.Submits;
+                var contestTaskRepository = uow.ContestTasks;
 
                 var contest = contestRepository.Get(contestId);
                 var task = contestTaskRepository.Get(contestId, label);
@@ -102,7 +102,7 @@
 
             using (var unitOfWork = this.factory.GetUnitOfWork())
             {
-                var submitRepository = unitOfWork.SubmitRepository;
+                var submitRepository = unitOfWork.Submits;
                 submitRepository.Add(submit);
                 unitOfWork.Commit();
             }
@@ -119,8 +119,8 @@
         {
             using (var unitOfWork = this.factory.GetUnitOfWork())
             {
-                var submitResultRepository = unitOfWork.SubmitResultRepository;
-                var taskRepository = unitOfWork.TaskRepository;
+                var submitResultRepository = unitOfWork.SubmitResults;
+                var taskRepository = unitOfWork.Tasks;
 
                 var result = submitResultRepository.Get(submitResultId);
                 if (result == null)

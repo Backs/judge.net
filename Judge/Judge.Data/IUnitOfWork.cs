@@ -12,14 +12,14 @@ namespace Judge.Data
     {
         void Commit();
         Task CommitAsync();
-        IContestResultRepository ContestResultRepository { get; }
-        IContestsRepository ContestsRepository { get; }
-        IContestTaskRepository ContestTaskRepository { get; }
-        ILanguageRepository LanguageRepository { get; }
-        ISubmitRepository SubmitRepository { get; }
-        ISubmitResultRepository SubmitResultRepository { get; }
-        ITaskNameRepository TaskNameRepository { get; }
-        ITaskRepository TaskRepository { get; }
-        IUserRepository UserRepository { get; }
+        IContestResultRepository ContestResults { get; }
+        IContestsRepository Contests { get; }
+        IContestTaskRepository ContestTasks { get; }
+        ILanguageRepository Languages { get; }
+        ISubmitRepository Submits { get; }
+        ISubmitResultRepository SubmitResults { get; }
+        ITaskNameRepository TaskNames { get; }
+        ITaskRepository Tasks { get; }
+        IUserRepository Users { get; }
     }
 }
