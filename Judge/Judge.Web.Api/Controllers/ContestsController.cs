@@ -37,4 +37,15 @@ public class ContestsController : ControllerBase
 
         return this.Ok(contest);
     }
+
+    [HttpGet("{contestId:int}/results")]
+    public async Task<IActionResult> GetResults([FromRoute] int contestId)
+    {
+        var contest = await this.contestsService.GetResultAsync(contestId);
+
+        if (contest == null)
+            return this.NotFound();
+
+        return this.Ok(contest);
+    }
 }
