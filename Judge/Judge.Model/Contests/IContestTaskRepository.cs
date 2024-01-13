@@ -13,5 +13,6 @@ namespace Judge.Model.Contests
         Task<ContestTask> TryGetAsync(int contestId, string label);
         IEnumerable<ContestTask> GetTasks();
         Task<IReadOnlyCollection<ContestTask>> SearchAsync(int contestId);
+        Task<IReadOnlyCollection<ContestResult>> GetResultsAsync(long contestId);
     }
 }
