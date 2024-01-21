@@ -6,6 +6,7 @@ using Judge.Data;
 using Judge.Model.Account;
 using Judge.Model.Contests;
 using Judge.Model.Entities;
+using Judge.Services.Converters.Contests;
 using Client = Judge.Web.Client.Contests;
 
 namespace Judge.Services;
@@ -13,10 +14,12 @@ namespace Judge.Services;
 internal sealed class ContestsService : IContestsService
 {
     private readonly IUnitOfWorkFactory unitOfWorkFactory;
+    private readonly IContestConverterFactory contestConverterFactory;
 
-    public ContestsService(IUnitOfWorkFactory unitOfWorkFactory)
+    public ContestsService(IUnitOfWorkFactory unitOfWorkFactory, IContestConverterFactory contestConverterFactory)
     {
         this.unitOfWorkFactory = unitOfWorkFactory;
+        this.contestConverterFactory = contestConverterFactory;
     }
 
     public async Task<Client.ContestsInfoList> SearchAsync(Client.ContestsQuery query)
@@ -77,7 +80,8 @@ internal sealed class ContestsService : IContestsService
 
         var users = await GetUsersAsync(unitOfWork, contestResults);
 
-        result.Users = Convert(contest, contestTasks, contestResults, users);
+        var converter = this.contestConverterFactory.Get(contest.Rules);
+        result.Users = converter.Convert(contest, contestTasks, contestResults, users);
 
         return result;
     }
@@ -95,30 +99,6 @@ internal sealed class ContestsService : IContestsService
         var users = await unitOfWork.Users.SearchAsync(
             new UserListSpecification(contestResults.Select(o => o.UserId).Distinct()));
         return users.ToDictionary(o => o.Id);
-    }
-
-    private static Client.ContestUserResult[] Convert(Contest contest,
-        IReadOnlyDictionary<long, ContestTask> contestTasks,
-        IReadOnlyCollection<ContestResult> contestResults,
-        IReadOnlyDictionary<long, User> users)
-    {
-        var result = contestResults.Select(o => new Client.ContestUserResult
-        {
-            UserId = o.UserId,
-            UserName = users[o.UserId].UserName,
-            SolvedCount = o.TaskResults.Count(t => t.Solved),
-            Tasks = o.TaskResults.Select(t => new
-                {
-                    Label = contestTasks[t.ProblemId].TaskName,
-                    Result = new Client.ContestTaskResult
-                    {
-                        Attempts = t.Attempts
-                    }
-                }).OrderBy(t => t.Label)
-                .ToDictionary(t => t.Label, t => t.Result)
-        }).ToArray();
-
-        return result;
     }
 
     private static Client.ContestRules Convert(ContestRules contestRules) =>
