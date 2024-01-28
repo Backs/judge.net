@@ -113,4 +113,10 @@ internal sealed class SubmitResultRepository : ISubmitResultRepository
         return this.context.Set<SubmitResult>().Where(o => o.Id == id)
             .Include(o => o.Submit).FirstOrDefaultAsync();
     }
+
+    public async Task<SubmitResult> SaveAsync(SubmitResult submitResult)
+    {
+        var result = await this.context.Set<SubmitResult>().AddAsync(submitResult);
+        return result.Entity;
+    }
 }

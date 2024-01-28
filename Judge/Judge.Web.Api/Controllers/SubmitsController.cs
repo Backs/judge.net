@@ -88,4 +88,15 @@ public class SubmitsController : ControllerBase
 
         return this.Ok(result);
     }
+
+    [Authorize(AuthorizationPolicies.AdminPolicy)]
+    [HttpPost("submits/{id:long}/rejudge")]
+    public async Task<IActionResult> Rejudge([FromRoute] long id)
+    {
+        var result = await this.submitsService.RejudgeAsync(id);
+        if (result == null)
+            return this.NotFound();
+
+        return this.Ok(result);
+    }
 }
