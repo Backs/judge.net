@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Judge.Services;
 using Judge.Services.Model;
+using Judge.Web.Api.Authorization;
 using Judge.Web.Api.Extensions;
 using Judge.Web.Client.Submits;
 using Microsoft.AspNetCore.Authorization;
@@ -75,5 +76,16 @@ public class SubmitsController : ControllerBase
         }
 
         return this.Ok();
+    }
+
+    [Authorize(AuthorizationPolicies.AdminPolicy)]
+    [HttpGet("submits/{id:long}")]
+    public async Task<IActionResult> GetSubmit([FromRoute] long id)
+    {
+        var result = await this.submitsService.GetResultAsync(id);
+        if (result == null)
+            return this.NotFound();
+
+        return this.Ok(result);
     }
 }

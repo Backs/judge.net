@@ -1,7 +1,10 @@
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Serialization;
 using Judge.Services;
+using Judge.Web.Api.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,7 +28,7 @@ internal static class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(option =>
         {
-            option.SwaggerDoc("v1", new OpenApiInfo {Title = "Judge.NET", Version = "v1"});
+            option.SwaggerDoc("v1", new OpenApiInfo { Title = "Judge.NET", Version = "v1" });
             option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,
@@ -71,7 +74,14 @@ internal static class Program
                 };
             });
 
-        builder.Services.AddAuthorization();
+        builder.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy(AuthorizationPolicies.AdminPolicy,
+                policy =>
+                {
+                    policy.Requirements.Add(new ClaimsAuthorizationRequirement(ClaimTypes.Role, new[] { "admin" }));
+                });
+        });
 
         var app = builder.Build();
 

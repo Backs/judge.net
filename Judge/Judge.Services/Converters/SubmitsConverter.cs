@@ -13,23 +13,24 @@ namespace Judge.Services.Converters;
 
 internal static class SubmitsConverter
 {
-    public static Client.Submits.SubmitResultInfo Convert(
+    public static T Convert<T>(
         SubmitResult submitResult,
         Language language,
         Task task,
         User user,
         IReadOnlyCollection<ContestTask> contestTasks)
+        where T : Client.Submits.SubmitResultInfo, new()
     {
         var totalBytes = submitResult.TotalBytes != null
             ? Math.Min(submitResult.TotalBytes.Value, task.MemoryLimitBytes)
-            : (int?) null;
+            : (int?)null;
         var totalMilliseconds = submitResult.TotalMilliseconds != null
             ? Math.Min(submitResult.TotalMilliseconds.Value, task.TimeLimitMilliseconds)
-            : (int?) null;
+            : (int?)null;
 
-        var submitResultInfo = new Client.Submits.SubmitResultInfo
+        var submitResultInfo = new T
         {
-            SubmitId = submitResult.Submit.Id,
+            SubmitId = submitResult.Id,
             Language = language.Name,
             SubmitDate = submitResult.Submit.SubmitDateUtc,
             ProblemName = task.Name,
@@ -57,7 +58,7 @@ internal static class SubmitsConverter
                 Label = contestTasks.FirstOrDefault(o =>
                                 o.ContestId == contestTaskSubmit.ContestId && o.TaskId == contestTaskSubmit.ProblemId)
                             ?.TaskName ??
-                            "<unknown>"
+                        "<unknown>"
             };
         }
 

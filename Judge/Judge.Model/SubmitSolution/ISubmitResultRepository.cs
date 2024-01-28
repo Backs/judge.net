@@ -17,5 +17,6 @@ namespace Judge.Model.SubmitSolution
         SubmitResult DequeueUnchecked();
         int Count(ISpecification<SubmitResult> specification);
         Task<int> CountAsync(ISpecification<SubmitResult> specification);
+        Task<SubmitResult> GetAsync(long id);
     }
 }
