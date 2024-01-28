@@ -9,4 +9,6 @@ public interface ISubmitsService
     public Task<SubmitsList> SearchAsync(SubmitsQuery query);
 
     public Task SaveAsync(SubmitSolution submitSolution, SubmitUserInfo userInfo);
+
+    public Task<SubmitResultExtendedInfo?> GetResultAsync(long id);
 }

@@ -2,7 +2,7 @@
 
 namespace Judge.Web.Client.Submits;
 
-public sealed class SubmitResultInfo
+public class SubmitResultInfo
 {
     public long SubmitId { get; set; }
     public DateTime SubmitDate { get; set; }

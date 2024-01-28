@@ -107,4 +107,10 @@ internal sealed class SubmitResultRepository : ISubmitResultRepository
         return this.context.Set<SubmitResult>()
             .Where(specification.IsSatisfiedBy).CountAsync();
     }
+
+    public Task<SubmitResult> GetAsync(long id)
+    {
+        return this.context.Set<SubmitResult>().Where(o => o.Id == id)
+            .Include(o => o.Submit).FirstOrDefaultAsync();
+    }
 }
