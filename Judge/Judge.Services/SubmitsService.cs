@@ -181,31 +181,29 @@ internal sealed class SubmitsService : ISubmitsService
         if (task == null)
             throw new InvalidOperationException("Task not found");
 
-        if (!contest.OneLanguagePerTask)
+        if (contest.OneLanguagePerTask)
         {
-            return;
-        }
+            var availableLanguages = (await unitOfWork.Languages.GetAllAsync(true)).Select(o => o.Id).ToHashSet();
 
-        var availableLanguages = (await unitOfWork.Languages.GetAllAsync(true)).Select(o => o.Id).ToHashSet();
+            var submits =
+                await unitOfWork.Submits.SearchAsync(
+                    new ContestUserSubmitsSpecification(userInfo.UserId, contestId));
+            var prevSubmit = submits.FirstOrDefault(o => o.ProblemId == task.TaskId);
 
-        var submits =
-            await unitOfWork.Submits.SearchAsync(
-                new ContestUserSubmitsSpecification(userInfo.UserId, contestId));
-        var prevSubmit = submits.FirstOrDefault(o => o.ProblemId == task.TaskId);
+            if (prevSubmit == null)
+            {
+                var usedLanguages = submits.Select(o => o.LanguageId).ToHashSet();
+                availableLanguages.ExceptWith(usedLanguages);
+            }
+            else
+            {
+                availableLanguages = availableLanguages.Where(o => o == prevSubmit.LanguageId).ToHashSet();
+            }
 
-        if (prevSubmit == null)
-        {
-            var usedLanguages = submits.Select(o => o.LanguageId).ToHashSet();
-            availableLanguages.ExceptWith(usedLanguages);
-        }
-        else
-        {
-            availableLanguages = availableLanguages.Where(o => o == prevSubmit.LanguageId).ToHashSet();
-        }
-
-        if (!availableLanguages.Contains(submitSolution.LanguageId))
-        {
-            throw new InvalidOperationException("Language not available");
+            if (!availableLanguages.Contains(submitSolution.LanguageId))
+            {
+                throw new InvalidOperationException("Language not available");
+            }
         }
 
         using var sr = new StreamReader(submitSolution.File.OpenReadStream());
