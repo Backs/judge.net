@@ -11,4 +11,5 @@ public interface ISubmitsService
     public Task SaveAsync(SubmitSolution submitSolution, SubmitUserInfo userInfo);
 
     public Task<SubmitResultExtendedInfo?> GetResultAsync(long id);
+    Task<SubmitResultExtendedInfo?> RejudgeAsync(long id);
 }

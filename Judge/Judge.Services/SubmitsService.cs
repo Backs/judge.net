@@ -124,6 +124,22 @@ internal sealed class SubmitsService : ISubmitsService
         return result;
     }
 
+    public async Task<Client.Submits.SubmitResultExtendedInfo?> RejudgeAsync(long id)
+    {
+        await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
+        var submitResult = await unitOfWork.SubmitResults.GetAsync(id);
+
+        if (submitResult == null)
+            return null;
+
+        var newSubmitResult = new SubmitResult(submitResult.Submit);
+        newSubmitResult = await unitOfWork.SubmitResults.SaveAsync(newSubmitResult);
+
+        await unitOfWork.CommitAsync();
+
+        return await this.GetResultAsync(newSubmitResult.Id);
+    }
+
     private async Task SaveSubmitAsync(Client.Submits.SubmitSolution submitSolution,
         Client.Submits.SubmitUserInfo userInfo)
     {
