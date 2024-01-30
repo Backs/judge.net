@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Judge.Services;
+using Judge.Web.Api.Authorization;
 using Judge.Web.Api.Extensions;
 using Judge.Web.Client.Problems;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Judge.Web.Api.Controllers;
@@ -18,7 +20,7 @@ public class ProblemsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetProblems([FromQuery] ProblemsQuery? query)
+    public async Task<IActionResult> Search([FromQuery] ProblemsQuery? query)
     {
         query ??= new ProblemsQuery();
 
@@ -28,9 +30,21 @@ public class ProblemsController : ControllerBase
     }
 
     [HttpGet("{id:long}")]
-    public async Task<IActionResult> GetProblem([FromRoute] long id)
+    public async Task<IActionResult> Get([FromRoute] long id)
     {
         var result = await this.problemsService.GetAsync(id);
+
+        if (result == null)
+            return this.NotFound();
+
+        return this.Ok(result);
+    }
+
+    [Authorize(AuthorizationPolicies.AdminPolicy)]
+    [HttpPut]
+    public async Task<IActionResult> Save([FromBody] EditProblem problem)
+    {
+        var result = await this.problemsService.SaveAsync(problem);
 
         if (result == null)
             return this.NotFound();
