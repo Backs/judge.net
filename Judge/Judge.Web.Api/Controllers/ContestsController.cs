@@ -38,6 +38,16 @@ public class ContestsController : ControllerBase
         return this.Ok(contest);
     }
 
+    [HttpPost]
+    public async Task<IActionResult> Save([FromBody] EditContest contest)
+    {
+        var result = await this.contestsService.SaveAsync(contest);
+        if (result == null)
+            return this.NotFound();
+
+        return this.Ok(result);
+    }
+
     [HttpGet("{contestId:int}/results")]
     public async Task<IActionResult> GetResults([FromRoute] int contestId)
     {
