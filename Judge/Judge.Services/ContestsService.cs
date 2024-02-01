@@ -86,6 +86,46 @@ internal sealed class ContestsService : IContestsService
         return result;
     }
 
+    public async Task<Client.EditContest?> SaveAsync(Client.EditContest editContest)
+    {
+        await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
+
+        Contest contest;
+        if (editContest.Id != null)
+        {
+            contest = await unitOfWork.Contests.TryGetAsync(editContest.Id.Value);
+            if (contest == null)
+                return null;
+        }
+        else
+        {
+            contest = new Contest();
+        }
+
+        contest.StartTime = editContest.StartTime;
+        contest.FinishTime = editContest.FinishTime;
+        contest.CheckPointTime = editContest.CheckPointTime;
+        contest.OneLanguagePerTask = editContest.OneLanguagePerTask;
+        contest.IsOpened = editContest.IsOpened;
+        contest.Rules = Convert(editContest.Rules);
+
+        if (editContest.Id == null)
+            unitOfWork.Contests.Add(contest);
+
+        await unitOfWork.CommitAsync();
+
+        throw new NotImplementedException();
+    }
+
+    private static ContestRules Convert(Client.ContestRules rules) =>
+        rules switch
+        {
+            Client.ContestRules.Acm => ContestRules.Acm,
+            Client.ContestRules.Points => ContestRules.Points,
+            Client.ContestRules.CheckPoint => ContestRules.CheckPoint,
+            _ => throw new ArgumentOutOfRangeException(nameof(rules), rules, null)
+        };
+
     private static async Task<IReadOnlyDictionary<long, ContestTask>> GetContestTasksAsync(int id,
         IUnitOfWork unitOfWork)
     {
@@ -114,6 +154,7 @@ internal sealed class ContestsService : IContestsService
         where T : Client.ContestInfo, new() =>
         new()
         {
+            Id = contest.Id,
             Name = contest.Name,
             StartDate = contest.StartTime,
             Duration = contest.FinishTime - contest.StartTime,
