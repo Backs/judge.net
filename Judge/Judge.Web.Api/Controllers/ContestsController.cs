@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Judge.Services;
+using Judge.Web.Api.Authorization;
 using Judge.Web.Api.Extensions;
 using Judge.Web.Client.Contests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Judge.Web.Api.Controllers;
@@ -38,7 +40,8 @@ public class ContestsController : ControllerBase
         return this.Ok(contest);
     }
 
-    [HttpPost]
+    [Authorize(AuthorizationPolicies.AdminPolicy)]
+    [HttpPut]
     public async Task<IActionResult> Save([FromBody] EditContest contest)
     {
         var result = await this.contestsService.SaveAsync(contest);
