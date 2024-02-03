@@ -4,6 +4,9 @@ namespace Judge.Web.Client.Problems;
 
 public class ProblemsQuery
 {
+    [MinLength(2)]
+    public string? Name { get; set; }
+    
     [Range(0, int.MaxValue)]
     public int Skip { get; set; }
 

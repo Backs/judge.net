@@ -22,10 +22,11 @@ internal sealed class ProblemsService : IProblemsService
     public async Task<Client.ProblemsList> SearchAsync(long? userId, Client.ProblemsQuery query)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork(false);
-        var tasks = await unitOfWork.Tasks.GetTasksAsync(OpenedTasksSpecification.Instance, query.Skip,
+        var specification = new OpenedTasksSpecification(query.Name);
+        var tasks = await unitOfWork.Tasks.GetTasksAsync(specification, query.Skip,
             query.Take);
 
-        var totalCount = await unitOfWork.Tasks.CountAsync(OpenedTasksSpecification.Instance);
+        var totalCount = await unitOfWork.Tasks.CountAsync(specification);
 
         var solved = new HashSet<long>();
 
