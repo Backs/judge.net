@@ -112,9 +112,44 @@ internal sealed class ContestsService : IContestsService
         if (editContest.Id == null)
             unitOfWork.Contests.Add(contest);
 
+        var databaseTasks = editContest.Id != null
+            ? await unitOfWork.ContestTasks.SearchAsync(editContest.Id.Value)
+            : Array.Empty<ContestTask>();
+
+        foreach (var databaseTask in databaseTasks)
+        {
+            var task = editContest.Tasks.FirstOrDefault(o => o.ProblemId == databaseTask.Task.Id);
+            if (task == null)
+            {
+                unitOfWork.ContestTasks.Delete(databaseTask);
+                continue;
+            }
+
+            databaseTask.TaskName = task.Label;
+        }
+
+        foreach (var task in editContest.Tasks)
+        {
+            var databaseTask = databaseTasks.FirstOrDefault(o => o.Task?.Id == task.ProblemId);
+            if (databaseTask == null)
+            {
+                databaseTask = new ContestTask
+                {
+                    Contest = contest,
+                    TaskId = task.ProblemId,
+                    TaskName = task.Label
+                };
+                unitOfWork.ContestTasks.Add(databaseTask);
+            }
+
+            databaseTask.TaskName = task.Label;
+        }
+
         await unitOfWork.CommitAsync();
 
-        throw new NotImplementedException();
+        editContest.Id = contest.Id;
+
+        return editContest;
     }
 
     private static ContestRules Convert(Client.ContestRules rules) =>
