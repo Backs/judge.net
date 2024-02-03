@@ -58,9 +58,25 @@ internal sealed class UserRepository : IUserRepository
         return this.BaseQuery().Where(specification.IsSatisfiedBy!)!;
     }
 
-    public async Task<IReadOnlyCollection<User>> SearchAsync(ISpecification<User> specification)
+    public async Task<IReadOnlyCollection<User>> SearchAsync(ISpecification<User> specification, int skip = 0,
+        int take = int.MaxValue)
     {
-        return (await this.BaseQuery().Where(specification.IsSatisfiedBy!).ToListAsync())!;
+        IQueryable<User> query = this.BaseQuery().Where(specification.IsSatisfiedBy!)
+            .OrderBy(o => o!.Id)!;
+
+        if (skip != 0)
+        {
+            query = query.Skip(skip);
+        }
+
+        query = query.Take(take);
+
+        return await query.ToListAsync();
+    }
+
+    public Task<int> CountAsync(ISpecification<User> specification)
+    {
+        return this.context.Set<User?>().CountAsync(specification.IsSatisfiedBy!);
     }
 
     public Task<User?> GetAsync(long id)

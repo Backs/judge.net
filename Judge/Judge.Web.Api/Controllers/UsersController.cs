@@ -1,7 +1,7 @@
-﻿using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Judge.Services;
 using Judge.Web.Api.Extensions;
+using Judge.Web.Client.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,5 +27,15 @@ public class UsersController : ControllerBase
             return this.NotFound();
 
         return this.Ok(user);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Search([FromQuery] UsersQuery? query)
+    {
+        query ??= new UsersQuery();
+
+        var result = await this.usersService.SearchAsync(query);
+
+        return this.Ok(result);
     }
 }
