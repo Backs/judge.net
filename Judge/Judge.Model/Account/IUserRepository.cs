@@ -21,7 +21,8 @@ namespace Judge.Model.Account
         Task<User?> FindByEmailAsync(string email);
 
         IEnumerable<User> Find(ISpecification<User> specification);
-        Task<IReadOnlyCollection<User>> SearchAsync(ISpecification<User> specification);
+        Task<IReadOnlyCollection<User>> SearchAsync(ISpecification<User> specification, int skip = 0, int take = int.MaxValue);
+        Task<int> CountAsync(ISpecification<User> specification);
         Task<User?> GetAsync(long id);
     }
 }
