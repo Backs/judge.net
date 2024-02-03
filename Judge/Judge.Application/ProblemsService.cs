@@ -55,7 +55,7 @@ namespace Judge.Application
                 {
                     ProblemsCount = count,
                     Pagination = new ViewModels.PaginationViewModel
-                        {CurrentPage = page, PageSize = pageSize, TotalPages = (count + pageSize - 1) / pageSize}
+                        { CurrentPage = page, PageSize = pageSize, TotalPages = (count + pageSize - 1) / pageSize }
                 };
             }
         }
@@ -64,7 +64,7 @@ namespace Judge.Application
             bool openedOnly)
         {
             var specification = openedOnly
-                ? (ISpecification<Task>) OpenedTasksSpecification.Instance
+                ? (ISpecification<Task>)new OpenedTasksSpecification()
                 : AllTasksSpecification.Instance;
             var tasks = taskRepository.GetTasks(specification, page, pageSize)
                 .Select(o => new ProblemItem
