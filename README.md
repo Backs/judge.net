@@ -24,11 +24,16 @@ Can be used for organization local programming competitions.
       <add name="DataBaseConnection" connectionString="Data Source=.;Initial Catalog=Judge;Integrated Security=True" providerName="System.Data.SqlClient" />
     </connectionStrings>
     ```
-- Judge.JudgeService. Set `appSettings`:
-  - `WorkingDirectory` - path to directory, where Judge.JudgeService will run solutions,
-  - `StoragePath` - root path to directory with tests.
-  - `RunnerPath` - path to `run.exe` application - runs solutions and checks limits (can be found in judge.net\Judge\Judge.Runner\run-x64\run.exe).
-
+- Judge.JudgeService. Configure `App.config`:
+  - Set `appSettings`:
+    - `WorkingDirectory` - path to directory, where Judge.JudgeService will run solutions,
+    - `StoragePath` - root path to directory with tests.
+    - `RunnerPath` - path to `run.exe` application - runs solutions and checks limits (can be found in judge.net\Judge\Judge.Runner\run-x64\run.exe).
+  - Set connection string to SQL Server (same as web application):
+    ```
+    <connectionStrings>
+      <add name="DataBaseConnection" connectionString="Data Source=.;Initial Catalog=Judge;Integrated Security=True" providerName="System.Data.SqlClient" />
+    </connectionStrings>
 ### Add new problem
 - Create new folder in `StoragePath`
   - Add input files as `01`, `02`, `03`, ...
