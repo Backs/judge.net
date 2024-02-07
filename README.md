@@ -1,8 +1,10 @@
 # judge.net
 Programming contests system.
 
+Can be used for organization local programming competitions.
+
 ## Features
-- Problems archive.
+- Problems archive
 - Scheduling of contests with different rules:
   - ACM-like
   - Points-based
@@ -36,3 +38,6 @@ Programming contests system.
 
 # Contributing
 [CONTRIBUTING.md](CONTRIBUTING.md)
+
+# Help
+If you need any help, feel free to write [me](mailto:rogatnev.sergey@gmail.com).
