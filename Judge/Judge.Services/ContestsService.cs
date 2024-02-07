@@ -30,7 +30,11 @@ internal sealed class ContestsService : IContestsService
 
         var items = contests.Select(Convert<Client.ContestInfo>).ToArray();
 
-        return new Client.ContestsInfoList { Items = items };
+        return new Client.ContestsInfoList
+        {
+            Items = items,
+            TotalCount = items.Length
+        };
     }
 
     public async Task<Client.Contest?> GetAsync(int id, long? userId)
