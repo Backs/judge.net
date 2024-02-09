@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -8,6 +10,7 @@ using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
 namespace Judge.Web.Api;
@@ -25,10 +28,18 @@ internal static class Program
             });
 
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen(option =>
+        builder.Services.AddSwaggerGen(options =>
         {
-            option.SwaggerDoc("v1", new OpenApiInfo { Title = "Judge.NET", Version = "v1" });
-            option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            options.MapType<TimeSpan>(() => new OpenApiSchema
+            {
+                Type = "string",
+                Example = new OpenApiString("00:00:00")
+            });
+            options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "Judge.Web.Api.xml"));
+            options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "Judge.Web.Client.xml"));
+
+            options.SwaggerDoc("v1", new OpenApiInfo { Title = "Judge.NET", Version = "v1" });
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,
                 Description = "Please enter a valid token",
@@ -37,7 +48,7 @@ internal static class Program
                 BearerFormat = "JWT",
                 Scheme = "Bearer"
             });
-            option.AddSecurityRequirement(new OpenApiSecurityRequirement
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
                 {
                     new OpenApiSecurityScheme
@@ -83,7 +94,7 @@ internal static class Program
         });
 
         var app = builder.Build();
-        
+
         app.UseSwagger();
         app.UseSwaggerUI();
 

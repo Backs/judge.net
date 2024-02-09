@@ -106,6 +106,7 @@ internal sealed class ContestsService : IContestsService
             contest = new Contest();
         }
 
+        contest.Name = editContest.Name;
         contest.StartTime = editContest.StartTime;
         contest.FinishTime = editContest.FinishTime;
         contest.CheckPointTime = editContest.CheckPointTime;
