@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Judge.Services;
 using Judge.Web.Api.Authorization;
+using Judge.Web.Api.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Builder;
@@ -59,11 +60,12 @@ internal static class Program
                             Id = "Bearer"
                         }
                     },
-                    System.Array.Empty<string>()
+                    Array.Empty<string>()
                 }
             });
         });
         builder.Services.AddServices(builder.Configuration["AppSettings:DatabaseConnectionString"]);
+        builder.Services.AddTransient<ErrorHandlerMiddleware>();
 
         var key = builder.Configuration["AppSettings:SecurityKey"];
         var issuer = builder.Configuration["AppSettings:Issuer"];
@@ -95,6 +97,7 @@ internal static class Program
 
         var app = builder.Build();
 
+        app.UseMiddleware<ErrorHandlerMiddleware>();
         app.UseSwagger();
         app.UseSwaggerUI();
 
