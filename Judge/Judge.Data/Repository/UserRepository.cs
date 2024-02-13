@@ -53,6 +53,11 @@ internal sealed class UserRepository : IUserRepository
         return this.BaseQuery().FirstOrDefaultAsync(o => o!.Email == email);
     }
 
+    public Task<User?> FindByLoginASync(string login)
+    {
+        return this.BaseQuery().FirstOrDefaultAsync(o => o!.UserName == login);
+    }
+
     public IEnumerable<User> Find(ISpecification<User> specification)
     {
         return this.BaseQuery().Where(specification.IsSatisfiedBy!)!;

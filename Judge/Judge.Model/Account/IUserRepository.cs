@@ -19,6 +19,7 @@ namespace Judge.Model.Account
 
         User? FindByEmail(string email);
         Task<User?> FindByEmailAsync(string email);
+        Task<User?> FindByLoginASync(string login);
 
         IEnumerable<User> Find(ISpecification<User> specification);
         Task<IReadOnlyCollection<User>> SearchAsync(ISpecification<User> specification, int skip = 0, int take = int.MaxValue);
