@@ -61,7 +61,7 @@ public class LoginController : ControllerBase
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var jwtToken = tokenHandler.WriteToken(token);
-            return this.Ok(new TokenResult { Token = jwtToken });
+            return this.Ok(new LoginResult { Token = jwtToken });
         }
 
         return this.BadRequest();
