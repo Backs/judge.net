@@ -27,7 +27,7 @@ internal sealed class SubmitsService : ISubmitsService
         this.unitOfWorkFactory = unitOfWorkFactory;
     }
 
-    public async Task<Client.Submits.SubmitsList> SearchAsync(SubmitsQuery query)
+    public async Task<Client.Submits.SubmitResultsList> SearchAsync(SubmitsQuery query)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
 
@@ -64,7 +64,7 @@ internal sealed class SubmitsService : ISubmitsService
             .ToArray();
 
         var totalCount = await unitOfWork.SubmitResults.CountAsync(specification);
-        return new Client.Submits.SubmitsList
+        return new Client.Submits.SubmitResultsList
         {
             Items = items,
             TotalCount = totalCount
@@ -176,7 +176,7 @@ internal sealed class SubmitsService : ISubmitsService
         if (DateTime.UtcNow >= contest.FinishTime)
             throw new InvalidOperationException("Contest finished");
 
-        var task = await unitOfWork.ContestTasks.TryGetAsync(contestId, submitSolution.TaskLabel);
+        var task = await unitOfWork.ContestTasks.TryGetAsync(contestId, submitSolution.ProblemLabel);
 
         if (task == null)
             throw new InvalidOperationException("Task not found");

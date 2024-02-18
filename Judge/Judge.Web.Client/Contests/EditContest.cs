@@ -6,7 +6,7 @@ using System.Linq;
 namespace Judge.Web.Client.Contests;
 
 /// <summary>
-/// Create or edit contest
+/// Creates or edit contest
 /// </summary>
 public class EditContest : IValidatableObject
 {
@@ -46,9 +46,9 @@ public class EditContest : IValidatableObject
     public ContestRules Rules { get; set; }
 
     /// <summary>
-    /// Contest tasks
+    /// Contest problems
     /// </summary>
-    public EditContestTask[] Tasks { get; set; } = Array.Empty<EditContestTask>();
+    public EditContestProblem[] Problems { get; set; } = Array.Empty<EditContestProblem>();
 
     /// <summary>
     /// If true, only one language can be used for every task
@@ -62,11 +62,11 @@ public class EditContest : IValidatableObject
 
     IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
     {
-        var duplicated = this.Tasks.GroupBy(o => o.Label).Where(o => o.Count() > 1).Select(o => o.Key).ToArray();
+        var duplicated = this.Problems.GroupBy(o => o.Label).Where(o => o.Count() > 1).Select(o => o.Key).ToArray();
         if (duplicated.Length != 0)
         {
             yield return new ValidationResult($"Duplicated labels: {string.Join("; ", duplicated)}",
-                new[] { nameof(this.Tasks) });
+                new[] { nameof(this.Problems) });
         }
 
         if (this.Rules == ContestRules.CheckPoint ^ this.CheckPointTime != null)

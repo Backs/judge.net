@@ -123,7 +123,7 @@ internal sealed class ContestsService : IContestsService
 
         foreach (var databaseTask in databaseTasks)
         {
-            var task = editContest.Tasks.FirstOrDefault(o => o.ProblemId == databaseTask.Task.Id);
+            var task = editContest.Problems.FirstOrDefault(o => o.ProblemId == databaseTask.Task.Id);
             if (task == null)
             {
                 unitOfWork.ContestTasks.Delete(databaseTask);
@@ -133,7 +133,7 @@ internal sealed class ContestsService : IContestsService
             databaseTask.TaskName = task.Label;
         }
 
-        foreach (var task in editContest.Tasks)
+        foreach (var task in editContest.Problems)
         {
             var databaseTask = databaseTasks.FirstOrDefault(o => o.Task?.Id == task.ProblemId);
             if (databaseTask == null)

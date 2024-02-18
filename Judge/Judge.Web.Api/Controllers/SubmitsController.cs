@@ -6,11 +6,15 @@ using Judge.Web.Api.Authorization;
 using Judge.Web.Api.Extensions;
 using Judge.Web.Client.Submits;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SubmitsQuery = Judge.Web.Client.Submits.SubmitsQuery;
 
 namespace Judge.Web.Api.Controllers;
 
+/// <summary>
+/// Submits
+/// </summary>
 [ApiController]
 public class SubmitsController : ControllerBase
 {
@@ -21,7 +25,11 @@ public class SubmitsController : ControllerBase
         this.submitsService = submitsService;
     }
 
+    /// <summary>
+    /// Search submits
+    /// </summary>
     [HttpGet("submits")]
+    [ProducesResponseType(typeof(SubmitResultsList), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetSubmits([FromQuery] SubmitsQuery? query)
     {
         query ??= new SubmitsQuery();
@@ -32,16 +40,24 @@ public class SubmitsController : ControllerBase
             Skip = query.Skip,
             Take = query.Take,
             ContestId = query.ContestId,
-            TaskLabel = query.TaskLabel
+            TaskLabel = query.ProblemLabel
         };
         var result = await this.submitsService.SearchAsync(submitsQuery);
 
         return this.Ok(result);
     }
 
+    /// <summary>
+    /// Get submit results for problem
+    /// </summary>
+    /// <param name="problemId">Problem id</param>
+    /// <param name="skip">Submit results to skip</param>
+    /// <param name="take">Submit result to take</param>
+    /// <returns></returns>
     [Authorize]
     [HttpGet("problems/{problemId:long}/submits")]
-    public async Task<IActionResult> GetTaskSubmits(
+    [ProducesResponseType(typeof(SubmitResultsList), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetProblemSubmits(
         [FromRoute] long problemId,
         [FromQuery] int skip = 0,
         [FromQuery] int take = 20)
@@ -60,8 +76,14 @@ public class SubmitsController : ControllerBase
         return this.Ok(result);
     }
 
+    /// <summary>
+    /// Submit solution
+    /// </summary>
+    /// <param name="submitSolution"><inheritdoc cref="Judge.Web.Client.Submits.SubmitSolution"/></param>
     [Authorize]
     [HttpPut("submits")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> SubmitSolution([FromForm] SubmitSolution submitSolution)
     {
         var userId = this.User.GetUserId();
@@ -78,8 +100,13 @@ public class SubmitsController : ControllerBase
         return this.Ok();
     }
 
+    /// <summary>
+    /// Get submit result by id
+    /// </summary>
+    /// <param name="id">Submit result id</param>
     [Authorize(AuthorizationPolicies.AdminPolicy)]
     [HttpGet("submits/{id:long}")]
+    [ProducesResponseType(typeof(SubmitResultExtendedInfo), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetSubmit([FromRoute] long id)
     {
         var result = await this.submitsService.GetResultAsync(id);
@@ -89,8 +116,13 @@ public class SubmitsController : ControllerBase
         return this.Ok(result);
     }
 
+    /// <summary>
+    /// Rejudge submit
+    /// </summary>
+    /// <param name="id">Submit result id</param>
     [Authorize(AuthorizationPolicies.AdminPolicy)]
     [HttpPost("submits/{id:long}/rejudge")]
+    [ProducesResponseType(typeof(SubmitResultExtendedInfo), StatusCodes.Status200OK)]
     public async Task<IActionResult> Rejudge([FromRoute] long id)
     {
         var result = await this.submitsService.RejudgeAsync(id);

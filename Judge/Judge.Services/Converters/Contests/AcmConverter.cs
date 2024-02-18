@@ -10,7 +10,7 @@ internal sealed class AcmConverter : BaseContestConverter
 
     protected override IComparer<Client.ContestUserResult> Comparer { get; } = new ContestTaskResultComparer();
 
-    protected override Client.ContestTaskResult ConvertContestTaskResult(Contest contest,
+    protected override Client.ContestProblemResult ConvertContestTaskResult(Contest contest,
         ContestTaskResult contestTaskResult)
     {
         var elapsedTime = contestTaskResult.SubmitDateUtc - contest.StartTime;
@@ -20,7 +20,7 @@ internal sealed class AcmConverter : BaseContestConverter
             points = (contestTaskResult.Attempts - 1) * 20 + (int)elapsedTime.TotalMinutes;
         }
 
-        return new Client.ContestTaskResult
+        return new Client.ContestProblemResult
         {
             Solved = contestTaskResult.Solved,
             Points = points,
