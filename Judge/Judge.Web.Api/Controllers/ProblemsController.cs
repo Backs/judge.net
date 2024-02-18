@@ -12,7 +12,7 @@ namespace Judge.Web.Api.Controllers;
 /// <summary>
 /// Problems
 /// </summary>
-[Route("problems")]
+[Route("api/problems")]
 [ApiController]
 public class ProblemsController : ControllerBase
 {

@@ -14,7 +14,7 @@ namespace Judge.Web.Api.Controllers;
 /// Users 
 /// </summary>
 [Authorize]
-[Route("users")]
+[Route("api/users")]
 [ApiController]
 public class UsersController : ControllerBase
 {
