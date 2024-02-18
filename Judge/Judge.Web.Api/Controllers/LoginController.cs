@@ -17,7 +17,7 @@ namespace Judge.Web.Api.Controllers;
 /// <summary>
 /// Login
 /// </summary>
-[Route("login")]
+[Route("api/login")]
 [ApiController]
 public class LoginController : ControllerBase
 {
