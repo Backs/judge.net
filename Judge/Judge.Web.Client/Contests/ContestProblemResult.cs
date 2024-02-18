@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 namespace Judge.Web.Client.Contests;
 
 /// <summary>
-/// Contest task result
+/// Contest problem result
 /// </summary>
-public class ContestTaskResult
+public class ContestProblemResult
 {
     /// <summary>
     /// Task points
@@ -15,18 +15,18 @@ public class ContestTaskResult
     public int Points { get; set; }
 
     /// <summary>
-    /// Total task attempts
+    /// Total problem attempts
     /// </summary>
     [Required]
     public int Attempts { get; set; }
 
     /// <summary>
-    /// Task solve time
+    /// Problem solve time
     /// </summary>
     public TimeSpan? Time { get; set; }
 
     /// <summary>
-    /// Task solved
+    /// Problem solved by user
     /// </summary>
     [Required]
     public bool Solved { get; set; }

@@ -28,7 +28,7 @@ public class ContestUserResult
 
     /// <inheritdoc cref="Judge.Web.Client.Contests.ContestUserResult"/>
     [Required]
-    public Dictionary<string, ContestTaskResult> Tasks { get; set; } = new();
+    public Dictionary<string, ContestProblemResult> Tasks { get; set; } = new();
 
     /// <summary>
     /// Total solved tasks

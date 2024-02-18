@@ -7,12 +7,16 @@ using System.Text;
 using System.Threading.Tasks;
 using Judge.Services;
 using Judge.Web.Client.Login;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Judge.Web.Api.Controllers;
 
+/// <summary>
+/// Login
+/// </summary>
 [Route("login")]
 [ApiController]
 public class LoginController : ControllerBase
@@ -26,7 +30,12 @@ public class LoginController : ControllerBase
         this.configuration = configuration;
     }
 
+    /// <summary>
+    /// Create authorization token
+    /// </summary>
+    /// <param name="login"><inheritdoc cref="Judge.Web.Client.Login.Login"/></param>
     [HttpPost("token")]
+    [ProducesResponseType(typeof(LoginResult), StatusCodes.Status200OK)]
     public async Task<IActionResult> CreateToken([FromBody] Login login)
     {
         var (authenticationResult, user, roles) = await this.securityService.AuthenticateAsync(login);
@@ -35,7 +44,7 @@ public class LoginController : ControllerBase
             return this.NotFound();
 
         if (authenticationResult == AuthenticationResult.PasswordVerificationFailed)
-            return this.Unauthorized();
+            return this.BadRequest();
 
         if (authenticationResult == AuthenticationResult.Success)
         {

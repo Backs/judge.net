@@ -1,5 +1,8 @@
 ﻿namespace Judge.Web.Client.Submits;
 
+/// <summary>
+/// Contest information
+/// </summary>
 public sealed class SubmitResultContestInfo
 {
     /// <summary>

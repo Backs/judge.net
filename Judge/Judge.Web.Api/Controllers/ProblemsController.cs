@@ -4,10 +4,14 @@ using Judge.Web.Api.Authorization;
 using Judge.Web.Api.Extensions;
 using Judge.Web.Client.Problems;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Judge.Web.Api.Controllers;
 
+/// <summary>
+/// Problems
+/// </summary>
 [Route("problems")]
 [ApiController]
 public class ProblemsController : ControllerBase
@@ -19,7 +23,11 @@ public class ProblemsController : ControllerBase
         this.problemsService = problemsService;
     }
 
+    /// <summary>
+    /// Search problems
+    /// </summary>
     [HttpGet]
+    [ProducesResponseType(typeof(ProblemsList), StatusCodes.Status200OK)]
     public async Task<IActionResult> Search([FromQuery] ProblemsQuery? query)
     {
         query ??= new ProblemsQuery();
@@ -29,7 +37,12 @@ public class ProblemsController : ControllerBase
         return this.Ok(result);
     }
 
+    /// <summary>
+    /// Get problem by id
+    /// </summary>
+    /// <param name="id">Problem id</param>
     [HttpGet("{id:long}")]
+    [ProducesResponseType(typeof(Problem), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get([FromRoute] long id)
     {
         var result = await this.problemsService.GetAsync(id);
@@ -40,8 +53,13 @@ public class ProblemsController : ControllerBase
         return this.Ok(result);
     }
 
+    /// <summary>
+    /// Crate or edit new problem
+    /// </summary>
+    /// <param name="problem"></param>
     [Authorize(AuthorizationPolicies.AdminPolicy)]
     [HttpPut]
+    [ProducesResponseType(typeof(EditProblem), StatusCodes.Status200OK)]
     public async Task<IActionResult> Save([FromBody] EditProblem problem)
     {
         var result = await this.problemsService.SaveAsync(problem);

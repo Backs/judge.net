@@ -57,6 +57,6 @@ public abstract class BaseContestConverter : IContestConverter
         return result;
     }
 
-    protected abstract Client.ContestTaskResult ConvertContestTaskResult(Contest contest,
+    protected abstract Client.ContestProblemResult ConvertContestTaskResult(Contest contest,
         ContestTaskResult contestTaskResult);
 }

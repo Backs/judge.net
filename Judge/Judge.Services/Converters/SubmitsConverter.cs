@@ -30,7 +30,7 @@ internal static class SubmitsConverter
 
         var submitResultInfo = new T
         {
-            SubmitId = submitResult.Id,
+            SubmitResultId = submitResult.Id,
             Language = language.Name,
             SubmitDate = submitResult.Submit.SubmitDateUtc,
             ProblemName = task.Name,
