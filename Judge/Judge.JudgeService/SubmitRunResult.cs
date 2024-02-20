@@ -15,6 +15,6 @@ namespace Judge.JudgeService
         public CheckStatus CheckStatus { get; set; }
         public string CheckMessage { get; set; }
 
-        public bool RunSuccess => RunStatus == RunStatus.Success && CheckStatus == CheckStatus.OK;
+        public bool RunSuccess => this.RunStatus == RunStatus.Success && this.CheckStatus == CheckStatus.OK;
     }
 }

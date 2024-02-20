@@ -5,6 +5,7 @@ using System.Linq;
 using Judge.Checker;
 using Judge.Compiler;
 using Judge.Data;
+using Judge.JudgeService.Settings;
 using Judge.Model.CheckSolution;
 using Judge.Model.Entities;
 using Judge.Model.SubmitSolution;
@@ -18,15 +19,18 @@ namespace Judge.JudgeService
     {
         private readonly IUnitOfWorkFactory unitOfWorkFactory;
         private readonly ILogger logger;
+        private readonly CustomProblemSettings customProblemSettings;
 
-        private readonly string _workingDirectory = ConfigurationManager.AppSettings["WorkingDirectory"];
-        private readonly string _storagePath = ConfigurationManager.AppSettings["StoragePath"];
-        private readonly string _runnerPath = ConfigurationManager.AppSettings["RunnerPath"];
+        private readonly string workingDirectory = ConfigurationManager.AppSettings["WorkingDirectory"];
+        private readonly string storagePath = ConfigurationManager.AppSettings["StoragePath"];
+        private readonly string runnerPath = ConfigurationManager.AppSettings["RunnerPath"];
 
-        public JudgeServiceImplementation(IUnitOfWorkFactory unitOfWorkFactory, ILogger logger)
+        public JudgeServiceImplementation(IUnitOfWorkFactory unitOfWorkFactory, ILogger logger,
+            CustomProblemSettings customProblemSettings)
         {
             this.unitOfWorkFactory = unitOfWorkFactory;
             this.logger = logger;
+            this.customProblemSettings = customProblemSettings;
         }
 
         private CompileResult Compile(Language language, string fileName, string sourceCode)
@@ -49,21 +53,21 @@ namespace Judge.JudgeService
                 FileName = fileName,
                 SourceCode = sourceCode
             };
-            return compiler.Compile(compileSource, _workingDirectory);
+            return compiler.Compile(compileSource, this.workingDirectory);
         }
 
         private void CopyChecker(Task task)
         {
-            var path = Path.Combine(_storagePath, task.TestsFolder, "check.exe");
+            var path = Path.Combine(this.storagePath, task.TestsFolder, "check.exe");
             if (File.Exists(path))
             {
-                File.Copy(path, Path.Combine(_workingDirectory, "check.exe"));
+                File.Copy(path, Path.Combine(this.workingDirectory, "check.exe"));
             }
         }
 
         public JudgeResult Check(SubmitResult submitResult)
         {
-            CreateWorkingDirectory();
+            this.CreateWorkingDirectory();
 
             Language language;
             Task task;
@@ -76,30 +80,31 @@ namespace Judge.JudgeService
             CompileResult compileResult;
             if (language.IsCompilable)
             {
-                compileResult = Compile(language, submitResult.Submit.FileName, submitResult.Submit.SourceCode);
+                compileResult = this.Compile(language, submitResult.Submit.FileName, submitResult.Submit.SourceCode);
                 this.logger.Info($"Compile result: {compileResult.CompileStatus}");
             }
             else
             {
-                File.WriteAllText(Path.Combine(_workingDirectory, submitResult.Submit.FileName),
+                File.WriteAllText(Path.Combine(this.workingDirectory, submitResult.Submit.FileName),
                     submitResult.Submit.SourceCode);
                 compileResult = CompileResult.GetEmpty(submitResult.Submit.FileName);
             }
 
             ICollection<SubmitRunResult> results = null;
-            SubmitRunResult lastRunResult = null;
 
             if (compileResult.CompileStatus == CompileStatus.Success)
             {
-                var runString = GetRunString(language, compileResult.FileName);
-                this.logger.Info($"Run string: {runString}");
-
-                CopyChecker(task);
-                results = Run(task, runString);
-                lastRunResult = results.Last();
+                results = this.GetCustomProblemSettingsRunResults(submitResult, task);
             }
 
-            RemoveWorkingDirectory();
+            if (results == null && compileResult.CompileStatus == CompileStatus.Success)
+            {
+                results = this.GetSubmitRunResults(language, task, compileResult.FileName);
+            }
+
+            var lastRunResult = results?.Last();
+
+            this.RemoveWorkingDirectory();
 
             return new JudgeResult
             {
@@ -116,6 +121,41 @@ namespace Judge.JudgeService
             };
         }
 
+        private ICollection<SubmitRunResult> GetCustomProblemSettingsRunResults(SubmitResult submitResult, Task task)
+        {
+            if (submitResult.Submit is ContestTaskSubmit contestTaskSubmit)
+            {
+                var contestSettings = this.customProblemSettings.Contests.Contest.FirstOrDefault(o =>
+                    o.Id == contestTaskSubmit.ContestId);
+                var problemSettings =
+                    contestSettings?.Problem.FirstOrDefault(o => o.ProblemId == contestTaskSubmit.ProblemId);
+
+                if (problemSettings != null && problemSettings.Language != submitResult.Submit.LanguageId)
+                {
+                    return new[]
+                    {
+                        new SubmitRunResult
+                        {
+                            RunStatus = RunStatus.Success,
+                            CheckStatus = CheckStatus.WrongLanguage
+                        }
+                    };
+                }
+            }
+
+            return null;
+        }
+
+        private ICollection<SubmitRunResult> GetSubmitRunResults(Language language,
+            Task task, string fileName)
+        {
+            var runString = GetRunString(language, fileName);
+            this.logger.Info($"Run string: {runString}");
+
+            this.CopyChecker(task);
+            return this.Run(task, runString);
+        }
+
         private static string GetRunString(Language language, string compileResultFileName)
         {
             var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(compileResultFileName);
@@ -125,12 +165,12 @@ namespace Judge.JudgeService
 
         private void RemoveWorkingDirectory()
         {
-            if (Directory.Exists(_workingDirectory))
+            if (Directory.Exists(this.workingDirectory))
             {
                 //TODO: remove directory with retry
                 try
                 {
-                    Directory.Delete(_workingDirectory, true);
+                    Directory.Delete(this.workingDirectory, true);
                 }
                 catch
                 {
@@ -141,11 +181,11 @@ namespace Judge.JudgeService
 
         private ICollection<SubmitRunResult> Run(Task task, string runString)
         {
-            var inputFiles = GetInputFiles(task);
+            var inputFiles = this.GetInputFiles(task);
             var results = new List<SubmitRunResult>(10);
             foreach (var input in inputFiles)
             {
-                var runResult = Run(task, input, runString);
+                var runResult = this.Run(task, input, runString);
                 results.Add(runResult);
                 if (!runResult.RunSuccess)
                 {
@@ -158,8 +198,8 @@ namespace Judge.JudgeService
 
         private SubmitRunResult Run(Task task, string input, string runString)
         {
-            var runService = new RunService(_runnerPath, _workingDirectory);
-            var configuration = new Configuration(runString, _workingDirectory, task.TimeLimitMilliseconds,
+            var runService = new RunService(this.runnerPath, this.workingDirectory);
+            var configuration = new Configuration(runString, this.workingDirectory, task.TimeLimitMilliseconds,
                 task.MemoryLimitBytes);
             configuration.InputFile = input;
             configuration.OutputFile = "output.txt"; //TODO
@@ -181,7 +221,7 @@ namespace Judge.JudgeService
 
             if (runResult.RunStatus == RunStatus.Success)
             {
-                var checkAnswerResult = CheckAnswer(configuration);
+                var checkAnswerResult = this.CheckAnswer(configuration);
                 result.CheckMessage = checkAnswerResult.Message;
                 result.CheckStatus = checkAnswerResult.CheckStatus;
             }
@@ -193,7 +233,7 @@ namespace Judge.JudgeService
         {
             var checker = new Checker.Checker();
             var answerFileName = configuration.InputFile + ".a";
-            var checkResult = checker.Check(_workingDirectory, configuration.InputFile, configuration.OutputFile,
+            var checkResult = checker.Check(this.workingDirectory, configuration.InputFile, configuration.OutputFile,
                 answerFileName);
 
             this.logger.Info(
@@ -204,15 +244,15 @@ namespace Judge.JudgeService
 
         private IEnumerable<string> GetInputFiles(Task task)
         {
-            var path = Path.Combine(_storagePath, task.TestsFolder);
+            var path = Path.Combine(this.storagePath, task.TestsFolder);
             return Directory.EnumerateFiles(path, "*.", SearchOption.AllDirectories)
                 .OrderBy(Path.GetFileName, FileNameComparer.Instance);
         }
 
         private void CreateWorkingDirectory()
         {
-            RemoveWorkingDirectory();
-            Directory.CreateDirectory(_workingDirectory);
+            this.RemoveWorkingDirectory();
+            Directory.CreateDirectory(this.workingDirectory);
         }
 
         private sealed class FileNameComparer : IComparer<string>

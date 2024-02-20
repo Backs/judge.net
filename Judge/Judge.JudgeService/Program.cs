@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
 using System.Threading;
+using System.Xml;
+using System.Xml.Serialization;
 using Judge.Data;
+using Judge.JudgeService.Settings;
 using NLog;
 using SimpleInjector;
 using SimpleInjector.Lifestyles;
@@ -18,6 +22,20 @@ namespace Judge.JudgeService
             container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
 
             var connectionString = ConfigurationManager.ConnectionStrings["DataBaseConnection"].ConnectionString;
+            var customProblemSettingsPath = ConfigurationManager.AppSettings["CustomProblemSettingsPath"];
+
+            var settings = CustomProblemSettings.Empty;
+            if (File.Exists(customProblemSettingsPath))
+            {
+                settings = GetCustomProblemSettings(customProblemSettingsPath);
+            }
+            else
+            {
+                logger.Warn("No custom problem settings found");
+            }
+
+            container.RegisterInstance(settings);
+
             new DataContainerExtension(connectionString, Lifestyle.Scoped).Configure(container);
 
             container.Register<IJudgeService, JudgeServiceImplementation>(Lifestyle.Scoped);
@@ -44,6 +62,7 @@ namespace Judge.JudgeService
                     Console.WriteLine(ex);
                     Console.ResetColor();
                 }
+
                 if (Console.KeyAvailable)
                     break;
 
@@ -51,6 +70,17 @@ namespace Judge.JudgeService
             }
 
             logger.Info("Service stopped");
+        }
+
+        private static CustomProblemSettings GetCustomProblemSettings(string customProblemSettingsPath)
+        {
+            var serializer = new XmlSerializer(typeof(CustomProblemSettings));
+
+            using (var sr = new StreamReader(customProblemSettingsPath))
+            using (var xmlReader = new XmlTextReader(sr))
+            {
+                return (CustomProblemSettings)serializer.Deserialize(xmlReader);
+            }
         }
     }
 }
