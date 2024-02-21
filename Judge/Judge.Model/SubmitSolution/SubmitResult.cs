@@ -8,9 +8,9 @@
         }
         public SubmitResult(SubmitBase submit)
         {
-            CheckQueue = new CheckQueue();
-            Status = SubmitStatus.Pending;
-            Submit = submit;
+            this.CheckQueue = new CheckQueue();
+            this.Status = SubmitStatus.Pending;
+            this.Submit = submit;
         }
 
         public long Id { get; internal set; }
