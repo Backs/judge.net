@@ -4,7 +4,7 @@ namespace Judge.Model.CheckSolution
 {
     public sealed class Task
     {
-        private string _name;
+        private string name;
         public long Id { get; private set; }
         public string TestsFolder { get; set; }
         public int TimeLimitMilliseconds { get; set; }
@@ -12,13 +12,8 @@ namespace Judge.Model.CheckSolution
 
         public string Name
         {
-            get { return _name; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException(nameof(value));
-                _name = value;
-            }
+            get => this.name;
+            set => this.name = value ?? throw new ArgumentNullException(nameof(value));
         }
 
         public DateTime CreationDateUtc { get; private set; }

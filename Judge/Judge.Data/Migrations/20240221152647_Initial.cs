@@ -16,13 +16,13 @@ namespace Judge.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
-                    StartTime = table.Column<DateTime>(nullable: false),
-                    FinishTime = table.Column<DateTime>(nullable: false),
-                    FreezeTime = table.Column<DateTime>(nullable: true),
+                    Name = table.Column<string>(maxLength: 128, nullable: true),
+                    StartTime = table.Column<DateTime>(type: "datetime", nullable: false),
+                    FinishTime = table.Column<DateTime>(type: "datetime", nullable: false),
+                    FreezeTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     IsOpened = table.Column<bool>(nullable: false),
                     Rules = table.Column<int>(nullable: false),
-                    CheckPointTime = table.Column<DateTime>(nullable: true),
+                    CheckPointTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     OneLanguagePerTask = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -36,13 +36,13 @@ namespace Judge.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 128, nullable: true),
+                    Description = table.Column<string>(maxLength: 1024, nullable: true),
                     IsCompilable = table.Column<bool>(nullable: false),
-                    CompilerPath = table.Column<string>(nullable: true),
-                    CompilerOptionsTemplate = table.Column<string>(nullable: true),
-                    OutputFileTemplate = table.Column<string>(nullable: true),
-                    RunStringFormat = table.Column<string>(nullable: true),
+                    CompilerPath = table.Column<string>(maxLength: 1024, nullable: true),
+                    CompilerOptionsTemplate = table.Column<string>(maxLength: 512, nullable: true),
+                    OutputFileTemplate = table.Column<string>(maxLength: 512, nullable: true),
+                    RunStringFormat = table.Column<string>(maxLength: 512, nullable: true),
                     IsHidden = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -56,11 +56,11 @@ namespace Judge.Data.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TestsFolder = table.Column<string>(nullable: true),
+                    TestsFolder = table.Column<string>(maxLength: 512, nullable: true),
                     TimeLimitMilliseconds = table.Column<int>(nullable: false),
                     MemoryLimitBytes = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    CreationDateUtc = table.Column<DateTime>(nullable: false),
+                    Name = table.Column<string>(maxLength: 256, nullable: true),
+                    CreationDateUtc = table.Column<DateTime>(type: "datetime", nullable: false),
                     Statement = table.Column<string>(nullable: true),
                     IsOpened = table.Column<bool>(nullable: false)
                 },
@@ -75,9 +75,9 @@ namespace Judge.Data.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    PasswordHash = table.Column<string>(nullable: true)
+                    UserName = table.Column<string>(maxLength: 256, nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: true),
+                    PasswordHash = table.Column<string>(maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -92,13 +92,13 @@ namespace Judge.Data.Migrations
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<long>(nullable: false),
-                    FileName = table.Column<string>(nullable: true),
+                    FileName = table.Column<string>(maxLength: 256, nullable: true),
                     LanguageId = table.Column<int>(nullable: false),
                     SourceCode = table.Column<string>(nullable: true),
-                    SubmitDateUtc = table.Column<DateTime>(nullable: false),
+                    SubmitDateUtc = table.Column<DateTime>(type: "datetime", nullable: false),
                     ProblemId = table.Column<long>(nullable: false),
-                    UserHost = table.Column<string>(nullable: true),
-                    SessionId = table.Column<string>(nullable: true),
+                    UserHost = table.Column<string>(maxLength: 64, nullable: true),
+                    SessionId = table.Column<string>(maxLength: 32, nullable: true),
                     SubmitType = table.Column<byte>(nullable: false),
                     ContestId = table.Column<int>(nullable: true)
                 },
@@ -112,7 +112,7 @@ namespace Judge.Data.Migrations
                 columns: table => new
                 {
                     ContestId = table.Column<int>(nullable: false),
-                    TaskName = table.Column<string>(nullable: false),
+                    TaskName = table.Column<string>(maxLength: 5, nullable: false),
                     TaskId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
@@ -138,7 +138,7 @@ namespace Judge.Data.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleName = table.Column<string>(nullable: true),
+                    RoleName = table.Column<string>(maxLength: 32, nullable: true),
                     UserId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
@@ -165,8 +165,8 @@ namespace Judge.Data.Migrations
                     TotalBytes = table.Column<int>(nullable: true),
                     TotalMilliseconds = table.Column<int>(nullable: true),
                     CompileOutput = table.Column<string>(nullable: true),
-                    RunDescription = table.Column<string>(nullable: true),
-                    RunOutput = table.Column<string>(nullable: true)
+                    RunDescription = table.Column<string>(maxLength: 4096, nullable: true),
+                    RunOutput = table.Column<string>(maxLength: 4096, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -186,7 +186,7 @@ namespace Judge.Data.Migrations
                 columns: table => new
                 {
                     SubmitResultId = table.Column<long>(nullable: false),
-                    CreationDateUtc = table.Column<DateTime>(nullable: false)
+                    CreationDateUtc = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -215,22 +215,6 @@ namespace Judge.Data.Migrations
                 schema: "dbo",
                 table: "SubmitResults",
                 column: "SubmitId");
-
-            migrationBuilder.Sql(@"CREATE PROCEDURE [dbo].[DequeueSubmitCheck]
-AS
-BEGIN
-
-	;WITH CTE(SubmitResultId, CreationDateUtc)
-	AS
-	(
-		SELECT TOP 1 *
-		FROM dbo.CheckQueue cq WITH(UPDLOCK, READPAST)
-		ORDER BY cq.CreationDateUtc
-	)
-	DELETE CTE
-	OUTPUT
-		DELETED.*
-END");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -264,8 +248,6 @@ END");
             migrationBuilder.DropTable(
                 name: "Submits",
                 schema: "dbo");
-
-            migrationBuilder.Sql("DROP PROCEDURE [dbo].[DequeueSubmitCheck]");
         }
     }
 }

@@ -28,6 +28,12 @@ namespace Judge.Data
             {
                 builder.HasKey(o => o.Id);
                 builder.ToTable("Languages");
+                builder.Property(o => o.CompilerPath).HasMaxLength(1024);
+                builder.Property(o => o.Description).HasMaxLength(1024);
+                builder.Property(o => o.Name).HasMaxLength(128);
+                builder.Property(o => o.CompilerOptionsTemplate).HasMaxLength(512);
+                builder.Property(o => o.OutputFileTemplate).HasMaxLength(512);
+                builder.Property(o => o.RunStringFormat).HasMaxLength(512);
             });
 
             modelBuilder.Entity<User>(builder =>
@@ -36,6 +42,9 @@ namespace Judge.Data
                 builder.HasMany(o => o.UserRoles)
                     .WithOne()
                     .HasForeignKey(o => o.UserId);
+                builder.Property(o => o.Email).HasMaxLength(256);
+                builder.Property(o => o.PasswordHash).HasMaxLength(256);
+                builder.Property(o => o.UserName).HasMaxLength(256);
 
                 builder.ToTable("Users");
             });
@@ -43,11 +52,11 @@ namespace Judge.Data
             modelBuilder.Entity<SubmitBase>(builder =>
             {
                 builder.HasKey(o => o.Id);
-                builder.Property(o => o.Id).UseIdentityColumn();
-                builder.Property(o => o.SubmitDateUtc).ValueGeneratedOnAdd();
+                builder.Property(o => o.SubmitDateUtc).ValueGeneratedOnAdd().HasColumnType("datetime");
                 builder.Property<byte>("SubmitType");
 
-                builder.HasDiscriminator<byte>(@"SubmitType").HasValue<ProblemSubmit>(1)
+                builder.HasDiscriminator<byte>("SubmitType")
+                    .HasValue<ProblemSubmit>(1)
                     .HasValue<ContestTaskSubmit>(2);
 
                 builder.HasMany(o => o.Results)
@@ -55,12 +64,17 @@ namespace Judge.Data
                     .HasForeignKey("SubmitId");
 
                 builder.ToTable("Submits", "dbo");
+
+                builder.Property(o => o.FileName).HasMaxLength(256);
+                builder.Property(o => o.UserHost).HasMaxLength(64);
+                builder.Property(o => o.SessionId).HasMaxLength(32);
             });
 
             modelBuilder.Entity<CheckQueue>(builder =>
             {
                 builder.HasKey(o => o.SubmitResultId);
-                builder.Property(o => o.CreationDateUtc).ValueGeneratedOnAdd();
+                builder.Property(o => o.CreationDateUtc).ValueGeneratedOnAdd()
+                    .HasColumnType("datetime");
 
                 builder.ToTable("CheckQueue", "dbo");
             });
@@ -68,9 +82,10 @@ namespace Judge.Data
             modelBuilder.Entity<SubmitResult>(builder =>
             {
                 builder.HasKey(o => o.Id);
-                builder.Property(o => o.Id).UseIdentityColumn();
 
                 builder.HasOne(o => o.CheckQueue).WithOne();
+                builder.Property(o => o.RunDescription).HasMaxLength(4096);
+                builder.Property(o => o.RunOutput).HasMaxLength(4096);
 
                 builder.ToTable("SubmitResults", "dbo");
             });
@@ -78,8 +93,10 @@ namespace Judge.Data
             modelBuilder.Entity<Task>(builder =>
             {
                 builder.HasKey(o => o.Id);
-                builder.Property(o => o.Id).UseIdentityColumn();
-                builder.Property(o => o.CreationDateUtc).ValueGeneratedOnAdd();
+                builder.Property(o => o.CreationDateUtc).ValueGeneratedOnAdd()
+                    .HasColumnType("datetime");
+                builder.Property(o => o.TestsFolder).HasMaxLength(512);
+                builder.Property(o => o.Name).HasMaxLength(256);
 
                 builder.ToTable("Tasks");
             });
@@ -87,13 +104,17 @@ namespace Judge.Data
             modelBuilder.Entity<Contest>(builder =>
             {
                 builder.HasKey(o => o.Id);
-                builder.Property(o => o.Id).UseIdentityColumn();
+                builder.Property(o => o.Name).HasMaxLength(128);
+                builder.Property(o => o.FinishTime).HasColumnType("datetime");
+                builder.Property(o => o.FreezeTime).HasColumnType("datetime");
+                builder.Property(o => o.CheckPointTime).HasColumnType("datetime");
+                builder.Property(o => o.StartTime).HasColumnType("datetime");
                 builder.ToTable("Contests");
             });
 
             modelBuilder.Entity<ContestTask>(builder =>
             {
-                builder.HasKey(o => new {o.ContestId, o.TaskName});
+                builder.HasKey(o => new { o.ContestId, o.TaskName });
 
                 builder.HasOne(o => o.Task)
                     .WithMany()
@@ -103,12 +124,15 @@ namespace Judge.Data
                     .WithMany()
                     .HasForeignKey(o => o.ContestId);
 
+                builder.Property(o => o.TaskName).HasMaxLength(5);
+
                 builder.ToTable("ContestTasks");
             });
 
             modelBuilder.Entity<UserRole>(builder =>
             {
                 builder.HasKey(o => o.Id);
+                builder.Property(o => o.RoleName).HasMaxLength(32);
 
                 builder.ToTable("UserRoles");
             });
