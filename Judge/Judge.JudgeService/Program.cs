@@ -2,19 +2,18 @@
 using System.Configuration;
 using System.IO;
 using System.Threading;
-using System.Xml;
-using System.Xml.Serialization;
 using Judge.Data;
 using Judge.JudgeService.Settings;
+using Newtonsoft.Json;
 using NLog;
 using SimpleInjector;
 using SimpleInjector.Lifestyles;
 
 namespace Judge.JudgeService
 {
-    class Program
+    public static class Program
     {
-        static void Main(string[] args)
+        public static void Main()
         {
             ILogger logger = LogManager.GetLogger("Judge");
 
@@ -74,12 +73,12 @@ namespace Judge.JudgeService
 
         private static CustomProblemSettings GetCustomProblemSettings(string customProblemSettingsPath)
         {
-            var serializer = new XmlSerializer(typeof(CustomProblemSettings));
+            var serializer = JsonSerializer.Create(new JsonSerializerSettings());
 
             using (var sr = new StreamReader(customProblemSettingsPath))
-            using (var xmlReader = new XmlTextReader(sr))
+            using (var jsonTextReader = new JsonTextReader(sr))
             {
-                return (CustomProblemSettings)serializer.Deserialize(xmlReader);
+                return serializer.Deserialize<CustomProblemSettings>(jsonTextReader);
             }
         }
     }

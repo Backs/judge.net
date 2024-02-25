@@ -94,7 +94,7 @@ namespace Judge.JudgeService
 
             if (compileResult.CompileStatus == CompileStatus.Success)
             {
-                results = this.GetCustomProblemSettingsRunResults(submitResult, task);
+                results = this.GetCustomProblemSettingsRunResults(submitResult);
             }
 
             if (results == null && compileResult.CompileStatus == CompileStatus.Success)
@@ -121,16 +121,15 @@ namespace Judge.JudgeService
             };
         }
 
-        private ICollection<SubmitRunResult> GetCustomProblemSettingsRunResults(SubmitResult submitResult, Task task)
+        private ICollection<SubmitRunResult> GetCustomProblemSettingsRunResults(SubmitResult submitResult)
         {
             if (submitResult.Submit is ContestTaskSubmit contestTaskSubmit)
             {
-                var contestSettings = this.customProblemSettings.Contests.Contest.FirstOrDefault(o =>
-                    o.Id == contestTaskSubmit.ContestId);
+                var contestSettings = this.customProblemSettings.Contests.TryGetValue(contestTaskSubmit.ContestId);
                 var problemSettings =
-                    contestSettings?.Problem.FirstOrDefault(o => o.ProblemId == contestTaskSubmit.ProblemId);
+                    contestSettings?.Problems.TryGetValue(contestTaskSubmit.ProblemId);
 
-                if (problemSettings != null && problemSettings.Language != submitResult.Submit.LanguageId)
+                if (problemSettings?.Language != null && problemSettings.Language != submitResult.Submit.LanguageId)
                 {
                     return new[]
                     {
