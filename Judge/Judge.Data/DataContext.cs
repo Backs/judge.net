@@ -52,7 +52,10 @@ namespace Judge.Data
             modelBuilder.Entity<SubmitBase>(builder =>
             {
                 builder.HasKey(o => o.Id);
-                builder.Property(o => o.SubmitDateUtc).ValueGeneratedOnAdd().HasColumnType("datetime");
+                builder.Property(o => o.SubmitDateUtc)
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("datetime");
                 builder.Property<byte>("SubmitType");
 
                 builder.HasDiscriminator<byte>("SubmitType")
@@ -73,7 +76,9 @@ namespace Judge.Data
             modelBuilder.Entity<CheckQueue>(builder =>
             {
                 builder.HasKey(o => o.SubmitResultId);
-                builder.Property(o => o.CreationDateUtc).ValueGeneratedOnAdd()
+                builder.Property(o => o.CreationDateUtc)
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd()
                     .HasColumnType("datetime");
 
                 builder.ToTable("CheckQueue", "dbo");
@@ -93,7 +98,9 @@ namespace Judge.Data
             modelBuilder.Entity<Task>(builder =>
             {
                 builder.HasKey(o => o.Id);
-                builder.Property(o => o.CreationDateUtc).ValueGeneratedOnAdd()
+                builder.Property(o => o.CreationDateUtc)
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd()
                     .HasColumnType("datetime");
                 builder.Property(o => o.TestsFolder).HasMaxLength(512);
                 builder.Property(o => o.Name).HasMaxLength(256);

@@ -20,6 +20,7 @@
                 SubmitStatus.TooEarly => "Too early submit",
                 SubmitStatus.Unpolite => "Unpolite solution, be polite, please",
                 SubmitStatus.TooManyLines => "Too many lines for such a simple task",
+                SubmitStatus.WrongLanguage => "Wrong language for this task",
                 _ => throw new ArgumentOutOfRangeException()
             };
         }

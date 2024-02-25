@@ -16,25 +16,25 @@ namespace Judge.JudgeService
         public string Description { get; set; }
         public string Output { get; set; }
         public int TestRunsCount { get; set; }
-        public int TestsPassedCount => GetStatus() == SubmitStatus.Accepted ? TestRunsCount : TestRunsCount - 1;
+        public int TestsPassedCount => this.GetStatus() == SubmitStatus.Accepted ? this.TestRunsCount : this.TestRunsCount - 1;
         public CheckStatus? CheckStatus { get; set; }
         public int? TimePassedMilliseconds { get; set; }
 
         public SubmitStatus GetStatus()
         {
-            if (CompileResult.CompileStatus == CompileStatus.CompilerNotFound)
+            if (this.CompileResult.CompileStatus == CompileStatus.CompilerNotFound)
             {
                 return SubmitStatus.ServerError;
             }
 
-            if (CompileResult.CompileStatus == CompileStatus.Error)
+            if (this.CompileResult.CompileStatus == CompileStatus.Error)
             {
                 return SubmitStatus.CompilationError;
             }
-            if (RunStatus == null)
+            if (this.RunStatus == null)
                 throw new InvalidOperationException();
 
-            switch (RunStatus.Value)
+            switch (this.RunStatus.Value)
             {
                 case Runner.RunStatus.TimeLimitExceeded:
                     return SubmitStatus.TimeLimitExceeded;
@@ -49,7 +49,7 @@ namespace Judge.JudgeService
                 case Runner.RunStatus.IdlenessLimitExceeded:
                     return SubmitStatus.TimeLimitExceeded;
                 case Runner.RunStatus.Success:
-                    return GetCheckStatus();
+                    return this.GetCheckStatus();
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -57,10 +57,10 @@ namespace Judge.JudgeService
 
         private SubmitStatus GetCheckStatus()
         {
-            if (CheckStatus == null)
+            if (this.CheckStatus == null)
                 throw new InvalidOperationException();
 
-            switch (CheckStatus.Value)
+            switch (this.CheckStatus.Value)
             {
                 case Checker.CheckStatus.OK:
                     return SubmitStatus.Accepted;
@@ -72,6 +72,8 @@ namespace Judge.JudgeService
                     return SubmitStatus.Unpolite;
                 case Checker.CheckStatus.TooManyLines:
                     return SubmitStatus.TooManyLines;
+                case Checker.CheckStatus.WrongLanguage:
+                    return SubmitStatus.WrongLanguage;
                 default:
                     return SubmitStatus.WrongAnswer;
             }
