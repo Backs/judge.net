@@ -3,6 +3,7 @@
     <TargetFramework>net48</TargetFramework>
     <AssemblyTitle>Judge.Data</AssemblyTitle>
     <Product>Judge.Data</Product>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Judge.Model\Judge.Model.csproj" />
