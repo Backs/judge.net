@@ -5,7 +5,7 @@ using System.Linq;
 using Judge.Checker;
 using Judge.Compiler;
 using Judge.Data;
-using Judge.JudgeService.Settings;
+using Judge.JudgeService.CustomCheckers;
 using Judge.Model.CheckSolution;
 using Judge.Model.Entities;
 using Judge.Model.SubmitSolution;
@@ -19,18 +19,18 @@ namespace Judge.JudgeService
     {
         private readonly IUnitOfWorkFactory unitOfWorkFactory;
         private readonly ILogger logger;
-        private readonly CustomProblemSettings customProblemSettings;
+        private readonly ICustomCheckerService customCheckerService;
 
         private readonly string workingDirectory = ConfigurationManager.AppSettings["WorkingDirectory"];
         private readonly string storagePath = ConfigurationManager.AppSettings["StoragePath"];
         private readonly string runnerPath = ConfigurationManager.AppSettings["RunnerPath"];
 
-        public JudgeServiceImplementation(IUnitOfWorkFactory unitOfWorkFactory, ILogger logger,
-            CustomProblemSettings customProblemSettings)
+        public JudgeServiceImplementation(IUnitOfWorkFactory unitOfWorkFactory,
+            ICustomCheckerService customCheckerService, ILogger logger)
         {
             this.unitOfWorkFactory = unitOfWorkFactory;
             this.logger = logger;
-            this.customProblemSettings = customProblemSettings;
+            this.customCheckerService = customCheckerService;
         }
 
         private CompileResult Compile(Language language, string fileName, string sourceCode)
@@ -94,7 +94,7 @@ namespace Judge.JudgeService
 
             if (compileResult.CompileStatus == CompileStatus.Success)
             {
-                results = this.GetCustomProblemSettingsRunResults(submitResult);
+                results = this.customCheckerService.Check(submitResult);
             }
 
             if (results == null && compileResult.CompileStatus == CompileStatus.Success)
@@ -119,30 +119,6 @@ namespace Judge.JudgeService
                 TestRunsCount = results?.Count ?? 0,
                 CheckStatus = lastRunResult?.CheckStatus
             };
-        }
-
-        private ICollection<SubmitRunResult> GetCustomProblemSettingsRunResults(SubmitResult submitResult)
-        {
-            if (submitResult.Submit is ContestTaskSubmit contestTaskSubmit)
-            {
-                var contestSettings = this.customProblemSettings.Contests.TryGetValue(contestTaskSubmit.ContestId);
-                var problemSettings =
-                    contestSettings?.Problems.TryGetValue(contestTaskSubmit.ProblemId);
-
-                if (problemSettings?.Language != null && problemSettings.Language != submitResult.Submit.LanguageId)
-                {
-                    return new[]
-                    {
-                        new SubmitRunResult
-                        {
-                            RunStatus = RunStatus.Success,
-                            CheckStatus = CheckStatus.WrongLanguage
-                        }
-                    };
-                }
-            }
-
-            return null;
         }
 
         private ICollection<SubmitRunResult> GetSubmitRunResults(Language language,

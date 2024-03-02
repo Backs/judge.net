@@ -3,6 +3,7 @@ using System.Configuration;
 using System.IO;
 using System.Threading;
 using Judge.Data;
+using Judge.JudgeService.CustomCheckers;
 using Judge.JudgeService.Settings;
 using Newtonsoft.Json;
 using NLog;
@@ -39,6 +40,9 @@ namespace Judge.JudgeService
 
             container.Register<IJudgeService, JudgeServiceImplementation>(Lifestyle.Scoped);
             container.Register<CheckService>(Lifestyle.Scoped);
+            container.Collection.Register<ICustomChecker>(
+                new[] { typeof(LanguageChecker), typeof(ForbiddenCharsChecker) }, Lifestyle.Singleton);
+            container.Register<ICustomCheckerService, CustomCheckerService>(Lifestyle.Singleton);
             container.RegisterInstance(logger);
 
             logger.Info("Service started");
