@@ -1,4 +1,6 @@
-﻿namespace Judge.Application
+﻿using System.Security.Principal;
+
+namespace Judge.Application
 {
     using System;
     using System.Collections.Generic;
@@ -21,10 +23,12 @@
     internal sealed class ContestsService : IContestsService
     {
         private readonly IUnitOfWorkFactory factory;
+        private readonly IPrincipal principal;
 
-        public ContestsService(IUnitOfWorkFactory factory)
+        public ContestsService(IUnitOfWorkFactory factory, IPrincipal principal)
         {
             this.factory = factory;
+            this.principal = principal;
         }
 
         public ContestsListViewModel GetContests(bool showAll)
@@ -33,7 +37,9 @@
             {
                 var repository = unitOfWork.ContestsRepository;
 
-                var specification = showAll ? (ISpecification<Contest>)AllContestsSpecification.Instance : OpenedContestsSpecification.Instance;
+                var specification = showAll
+                    ? (ISpecification<Contest>)AllContestsSpecification.Instance
+                    : OpenedContestsSpecification.Instance;
                 var items = repository.GetList(specification).Select(o => new ContestItem(o)).ToArray();
                 return new ContestsListViewModel(items);
             }
@@ -48,7 +54,10 @@
                 var taskRepository = unitOfWork.ContestTaskRepository;
                 var submitResultRepository = unitOfWork.SubmitResultRepository;
 
-                if (!contest.IsOpened)
+                var hasPermission = this.principal.IsInRole("admin")
+                                    || this.principal.IsInRole("tester");
+
+                if (!hasPermission && !contest.IsOpened)
                     return null;
 
                 var contestTasks = taskRepository.GetTasks(contestId).ToArray();
@@ -57,20 +66,22 @@
 
                 if (userId != null)
                 {
-                    var solvedProblems = submitResultRepository.GetSolvedProblems(new UserContestSolvedProblemsSpecification(contestId, userId.Value, contestTasks.Select(o => o.Task.Id)));
+                    var solvedProblems = submitResultRepository.GetSolvedProblems(
+                        new UserContestSolvedProblemsSpecification(contestId, userId.Value,
+                            contestTasks.Select(o => o.Task.Id)));
 
                     solvedTasks.UnionWith(solvedProblems);
                 }
 
                 var items = contestTasks.Select(o => new ContestTaskItem
-                {
-                    Label = o.TaskName,
-                    Name = o.Task.Name,
-                    ProblemId = o.Task.Id,
-                    Solved = solvedTasks.Contains(o.Task.Id)
-                })
-                .OrderBy(o => o.Label)
-                .ToArray();
+                    {
+                        Label = o.TaskName,
+                        Name = o.Task.Name,
+                        ProblemId = o.Task.Id,
+                        Solved = solvedTasks.Contains(o.Task.Id)
+                    })
+                    .OrderBy(o => o.Label)
+                    .ToArray();
 
                 return new ContestTasksViewModel(items)
                 {
@@ -92,7 +103,10 @@
                 var contestRepository = unitOfWork.ContestsRepository;
                 var contest = contestRepository.Get(contestId);
 
-                if (!contest.IsOpened)
+                var hasPermission = this.principal.IsInRole("admin")
+                                    || this.principal.IsInRole("tester");
+
+                if (!hasPermission && !contest.IsOpened)
                     return null;
 
                 return new ContestStatementViewModel
@@ -109,7 +123,8 @@
             }
         }
 
-        public void SubmitSolution(int contestId, string label, int selectedLanguage, HttpPostedFileBase file, UserInfo userInfo)
+        public void SubmitSolution(int contestId, string label, int selectedLanguage, HttpPostedFileBase file,
+            UserInfo userInfo)
         {
             if (file == null)
                 throw new ArgumentNullException(nameof(file));
@@ -171,7 +186,9 @@
 
                 var user = userRepository.Get(userId);
 
-                var items = submits.Select(o => new SubmitQueueItem(o, languages[o.Submit.LanguageId], task.Task, user.UserName) { ResultsEnabled = true })
+                var items = submits.Select(o =>
+                        new SubmitQueueItem(o, languages[o.Submit.LanguageId], task.Task, user.UserName)
+                            { ResultsEnabled = true })
                     .ToArray();
 
                 var model = new ContestSubmitQueueViewModel(items)
@@ -198,9 +215,12 @@
                 var userRepository = unitOfWork.UserRepository;
 
                 var contest = contestRepository.Get(id);
-                if (!contest.IsOpened)
+                var hasPermission = this.principal.IsInRole("admin")
+                                    || this.principal.IsInRole("tester");
+
+                if (!hasPermission && !contest.IsOpened)
                     return null;
-                
+
                 var tasks = contestTaskRepository.GetTasks(id);
                 var results = contestResultRepository.Get(id).ToArray();
 

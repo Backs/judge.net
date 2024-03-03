@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Claims;
 using Judge.Application;
 using Judge.Application.Interfaces;
 using Judge.Application.ViewModels.Contests.ContestsList;
@@ -33,7 +34,7 @@ namespace Judge.Tests.Application.ContestsServiceTests
 
             factory.Stub(o => o.GetUnitOfWork()).Return(unitOfWork);
 
-            _service = new ContestsService(factory);
+            _service = new ContestsService(factory, new ClaimsPrincipal());
         }
 
         [Test]

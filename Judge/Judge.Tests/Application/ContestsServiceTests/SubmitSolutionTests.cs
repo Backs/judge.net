@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Claims;
 using Judge.Application;
 using Judge.Application.Interfaces;
 using Judge.Application.ViewModels;
@@ -33,7 +34,7 @@ namespace Judge.Tests.Application.ContestsServiceTests
 
             factory.Stub(o => o.GetUnitOfWork()).Return(unitOfWork);
 
-            _service = new ContestsService(factory);
+            _service = new ContestsService(factory, new ClaimsPrincipal());
         }
 
         [Test]
@@ -46,7 +47,8 @@ namespace Judge.Tests.Application.ContestsServiceTests
             };
             _contestsRepository.Stub(o => o.Get(1)).Return(contest);
             var userInfo = new UserInfo(9, null, null);
-            var ex = Assert.Throws<InvalidOperationException>(() => _service.SubmitSolution(1, "A", 2, new FakeHttpPostedFileBase(), userInfo));
+            var ex = Assert.Throws<InvalidOperationException>(() =>
+                _service.SubmitSolution(1, "A", 2, new FakeHttpPostedFileBase(), userInfo));
 
             Assert.That(ex.Message, Is.EqualTo("Task not found"));
         }
@@ -62,7 +64,8 @@ namespace Judge.Tests.Application.ContestsServiceTests
             _contestsRepository.Stub(o => o.Get(1)).Return(contest);
 
             var userInfo = new UserInfo(9, null, null);
-            var ex = Assert.Throws<InvalidOperationException>(() => _service.SubmitSolution(1, "A", 2, new FakeHttpPostedFileBase(), userInfo));
+            var ex = Assert.Throws<InvalidOperationException>(() =>
+                _service.SubmitSolution(1, "A", 2, new FakeHttpPostedFileBase(), userInfo));
 
             Assert.That(ex.Message, Is.EqualTo("Contest not started"));
         }
@@ -78,7 +81,8 @@ namespace Judge.Tests.Application.ContestsServiceTests
             _contestsRepository.Stub(o => o.Get(1)).Return(contest);
 
             var userInfo = new UserInfo(9, null, null);
-            var ex = Assert.Throws<InvalidOperationException>(() => _service.SubmitSolution(1, "A", 2, new FakeHttpPostedFileBase(), userInfo));
+            var ex = Assert.Throws<InvalidOperationException>(() =>
+                _service.SubmitSolution(1, "A", 2, new FakeHttpPostedFileBase(), userInfo));
 
             Assert.That(ex.Message, Is.EqualTo("Contest finished"));
         }
