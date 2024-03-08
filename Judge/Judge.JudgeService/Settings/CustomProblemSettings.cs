@@ -7,6 +7,8 @@ namespace Judge.JudgeService.Settings
         public int? Language { get; set; }
 
         public string ForbiddenChars { get; set; }
+
+        public string[] ForbiddenStrings { get; set; }
     }
 
     public class ContestSettings

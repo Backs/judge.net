@@ -41,7 +41,8 @@ namespace Judge.JudgeService
             container.Register<IJudgeService, JudgeServiceImplementation>(Lifestyle.Scoped);
             container.Register<CheckService>(Lifestyle.Scoped);
             container.Collection.Register<ICustomChecker>(
-                new[] { typeof(LanguageChecker), typeof(ForbiddenCharsChecker) }, Lifestyle.Singleton);
+                new[] { typeof(LanguageChecker), typeof(ForbiddenCharsChecker), typeof(ForbiddenStringsChecker) },
+                Lifestyle.Singleton);
             container.Register<ICustomCheckerService, CustomCheckerService>(Lifestyle.Singleton);
             container.RegisterInstance(logger);
 
