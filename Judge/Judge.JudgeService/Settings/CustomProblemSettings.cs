@@ -9,6 +9,8 @@ namespace Judge.JudgeService.Settings
         public string ForbiddenChars { get; set; }
 
         public string[] ForbiddenStrings { get; set; }
+
+        public int? MaxSourceCodeLength { get; set; }
     }
 
     public class ContestSettings

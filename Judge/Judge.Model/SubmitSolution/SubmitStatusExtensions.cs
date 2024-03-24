@@ -16,7 +16,8 @@
                 SubmitStatus.WrongAnswer => "Wrong answer",
                 SubmitStatus.Accepted => "Accepted",
                 SubmitStatus.ServerError => "Server error",
-                
+                SubmitStatus.PresentationError => "Presentation error",
+
                 SubmitStatus.TooEarly => "Too early submit",
                 SubmitStatus.Unpolite => "Unpolite solution, be polite, please",
                 SubmitStatus.TooManyLines => "Too many lines for such a simple task",

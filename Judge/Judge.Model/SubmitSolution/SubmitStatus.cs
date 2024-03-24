@@ -10,7 +10,8 @@
         WrongAnswer = 5,
         Accepted = 6,
         ServerError = 7,
-        
+        PresentationError,
+
         TooEarly = 9900,
         Unpolite = 9901,
         TooManyLines = 9902,

@@ -64,6 +64,8 @@ namespace Judge.JudgeService
             {
                 case Checker.CheckStatus.OK:
                     return SubmitStatus.Accepted;
+                case Checker.CheckStatus.PE:
+                    return SubmitStatus.PresentationError;
                 case Checker.CheckStatus.Fail:
                     return SubmitStatus.ServerError;
                 case Checker.CheckStatus.TooEarly:
