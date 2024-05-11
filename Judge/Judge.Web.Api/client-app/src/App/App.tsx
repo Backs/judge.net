@@ -1,32 +1,44 @@
 import React from 'react';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import {Breadcrumb, Layout, Menu, theme} from 'antd';
+import {Router} from "./Router.tsx";
+import {MenuProps} from "antd/lib";
 
-const { Header, Content, Footer } = Layout;
-
-const items = new Array(3).fill(null).map((_, index) => ({
-    key: index + 1,
-    label: `nav ${index + 1}`,
-}));
+const {Header, Content, Footer} = Layout;
 
 const App: React.FC = () => {
     const {
-        token: { colorBgContainer, borderRadiusLG },
+        token: {colorBgContainer, borderRadiusLG},
     } = theme.useToken();
+
+    type MenuItem = Required<MenuProps>['items'][number];
+
+    const items: MenuItem[] = [
+        {
+            label: (<a href="/">Home</a>),
+            key: 'home',
+        },
+        {
+            label: (<a href="/problems">Problems</a>),
+            key: 'problems',
+        }
+    ];
 
     return (
         <Layout>
-            <Header style={{ display: 'flex', alignItems: 'center' }}>
-                <div className="demo-logo" />
+            <Header style={{display: 'flex', alignItems: 'center'}}>
+                <div className="demo-logo"/>
                 <Menu
                     theme="dark"
                     mode="horizontal"
                     defaultSelectedKeys={['2']}
                     items={items}
-                    style={{ flex: 1, minWidth: 0 }}
-                />
+                    style={{flex: 1, minWidth: 0}}
+                >
+
+                </Menu>
             </Header>
-            <Content style={{ padding: '0 48px' }}>
-                <Breadcrumb style={{ margin: '16px 0' }}>
+            <Content style={{padding: '0 48px'}}>
+                <Breadcrumb style={{margin: '16px 0'}}>
                     <Breadcrumb.Item>Home</Breadcrumb.Item>
                     <Breadcrumb.Item>List</Breadcrumb.Item>
                     <Breadcrumb.Item>App</Breadcrumb.Item>
@@ -39,10 +51,10 @@ const App: React.FC = () => {
                         borderRadius: borderRadiusLG,
                     }}
                 >
-                    Content
+                    <Router/>
                 </div>
             </Content>
-            <Footer style={{ textAlign: 'center' }}>
+            <Footer style={{textAlign: 'center'}}>
                 Ant Design ©{new Date().getFullYear()} Created by Ant UED
             </Footer>
         </Layout>
