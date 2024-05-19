@@ -1,4 +1,6 @@
-﻿namespace Judge.Web.Client.Login;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Judge.Web.Client.Login;
 
 /// <summary>
 /// Login result
@@ -8,5 +10,6 @@ public class LoginResult
     /// <summary>
     /// Authentication token
     /// </summary>
+    [Required]
     public string Token { get; set; } = null!;
 }

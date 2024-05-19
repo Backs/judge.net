@@ -1,4 +1,6 @@
-﻿namespace Judge.Web.Client.Submits;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Judge.Web.Client.Submits;
 
 /// <summary>
 /// Submit result information
@@ -8,6 +10,7 @@ public sealed class SubmitResultExtendedInfo : SubmitResultInfo
     /// <summary>
     /// Source code of solution
     /// </summary>
+    [Required]
     public string SourceCode { get; set; } = null!;
     
     /// <summary>

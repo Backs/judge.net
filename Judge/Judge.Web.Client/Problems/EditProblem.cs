@@ -46,5 +46,6 @@ public class EditProblem
     /// <summary>
     /// Is problem opened in archive
     /// </summary>
+    [Required]
     public bool IdOpened { get; set; }
 }
