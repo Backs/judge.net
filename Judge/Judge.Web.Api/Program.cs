@@ -95,6 +95,8 @@ internal static class Program
                 });
         });
 
+        builder.Services.AddCors();
+        
         var app = builder.Build();
 
         app.UseMiddleware<ErrorHandlerMiddleware>();
@@ -108,6 +110,11 @@ internal static class Program
         app.UseAuthorization();
 
         app.MapControllers();
+        app.UseCors(policy => policy
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowAnyOrigin());
+
 
         app.MapFallbackToFile("index.html");
 
