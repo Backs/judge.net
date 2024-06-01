@@ -2,7 +2,7 @@
 import {useParams} from "react-router-dom";
 import {Api, Problem} from "../../api/Api.ts";
 import Title from "antd/lib/typography/Title";
-import {Flex} from "antd";
+import {Flex, Spin} from "antd";
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from "rehype-raw";
@@ -11,8 +11,9 @@ import {convertBytesToMegabytes, convertMsToSeconds} from "../../helpers/formatt
 import {handleError} from "../../helpers/handleError.ts";
 
 export const ProblemDetail: React.FC = () => {
-    const {problemId} = useParams()
-    const [problem, setProblem] = useState<Problem>()
+    const {problemId} = useParams();
+    const [problem, setProblem] = useState<Problem>();
+    const [isLoading, setLoading] = useState(true);
     const api = new Api();
 
 
@@ -20,6 +21,7 @@ export const ProblemDetail: React.FC = () => {
         const fetchData = async () => {
             const response = await api.api.problemsDetail(Number(problemId));
             setProblem(response.data);
+            setLoading(false);
         }
 
         try {
@@ -36,20 +38,21 @@ export const ProblemDetail: React.FC = () => {
 
 
     return (
-        <>
-            <Title>{problem?.name}</Title>
-            <Flex gap="small" vertical>
-                <div>
-                    Time limit, seconds: {convertMsToSeconds(problem?.timeLimitMilliseconds)}
-                </div>
-                <div>
-                    Memory limit, megabytes: {convertBytesToMegabytes(problem?.memoryLimitBytes)}
-                </div>
-                <Markdown
-                    className={styles.markdown}
-                    remarkPlugins={[remarkGfm]}
-                    rehypePlugins={[rehypeRaw]}>{problem?.statement}</Markdown>
-            </Flex>
-        </>
+        isLoading ? <Spin tip="Loading" size="large"/> :
+            <>
+                <Title>{problem?.name}</Title>
+                <Flex gap="small" vertical>
+                    <div>
+                        Time limit, seconds: {convertMsToSeconds(problem?.timeLimitMilliseconds)}
+                    </div>
+                    <div>
+                        Memory limit, megabytes: {convertBytesToMegabytes(problem?.memoryLimitBytes)}
+                    </div>
+                    <Markdown
+                        className={styles.markdown}
+                        remarkPlugins={[remarkGfm]}
+                        rehypePlugins={[rehypeRaw]}>{problem?.statement}</Markdown>
+                </Flex>
+            </>
     );
 };

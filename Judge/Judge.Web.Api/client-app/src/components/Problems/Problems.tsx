@@ -6,7 +6,7 @@ import {handleError} from "../../helpers/handleError.ts";
 
 interface ProblemItem {
     id: number,
-    name: Element,
+    name: any,
     solved: boolean
 }
 
@@ -14,7 +14,7 @@ export const Problems: React.FC = () => {
     const [problemsList, setProblemsList] = useState<ProblemItem[]>([]);
     const [searchParams, setSearchParams] = useSearchParams();
     const [total, setTotal] = useState(0);
-    const [isLoading, setLoading] = useState(false);
+    const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -25,8 +25,8 @@ export const Problems: React.FC = () => {
             const skip = (Number(pageParam) - 1) * Number(sizeParam);
             const response = await api.api.problemsList({Skip: skip, Take: Number(sizeParam)});
             const items = response.data.items;
-            
-            const result = items.map(p => ({
+
+            const result: ProblemItem[] = items.map(p => ({
                 id: p.id,
                 name: <Link to={p.id.toString()}>{p.name}</Link>,
                 solved: p.solved
