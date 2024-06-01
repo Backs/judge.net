@@ -1,5 +1,5 @@
 import React from 'react';
-import {Breadcrumb, Layout, Menu, theme} from 'antd';
+import {Layout, Menu, theme} from 'antd';
 import {Router} from "./Router.tsx";
 import {MenuProps} from "antd/lib";
 
@@ -38,11 +38,6 @@ const App: React.FC = () => {
                 </Menu>
             </Header>
             <Content style={{padding: '0 48px'}}>
-                <Breadcrumb style={{margin: '16px 0'}}>
-                    <Breadcrumb.Item>Home</Breadcrumb.Item>
-                    <Breadcrumb.Item>List</Breadcrumb.Item>
-                    <Breadcrumb.Item>App</Breadcrumb.Item>
-                </Breadcrumb>
                 <div
                     style={{
                         background: colorBgContainer,
