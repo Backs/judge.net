@@ -1,10 +1,16 @@
 import React, {useState, useEffect} from "react";
-import {Api, ProblemInfo} from "../../api/Api.ts";
+import {Api} from "../../api/Api.ts";
 import {Pagination, Table} from "antd";
-import {useSearchParams} from "react-router-dom";
+import {Link, useSearchParams} from "react-router-dom";
+
+interface ProblemItem {
+    id: number,
+    name: Element,
+    solved: boolean
+}
 
 export const Problems: React.FC = () => {
-    const [problemsList, setProblemsList] = useState<ProblemInfo[]>([]);
+    const [problemsList, setProblemsList] = useState<ProblemItem[]>([]);
     const [searchParams, setSearchParams] = useSearchParams();
     const [total, setTotal] = useState(0);
     const [isLoading, setLoading] = useState(false);
@@ -20,7 +26,12 @@ export const Problems: React.FC = () => {
             const items = response.data.items;
 
             if (response.data) {
-                setProblemsList(items);
+                const result = items.map(p => ({
+                    id: p.id,
+                    name: <Link to={p.id.toString()}>{p.name}</Link>,
+                    solved: p.solved
+                }));
+                setProblemsList(result);
                 setTotal(response.data.totalCount);
             }
             setLoading(false);
