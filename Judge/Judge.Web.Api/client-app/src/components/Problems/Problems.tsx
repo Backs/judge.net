@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import {Api} from "../../api/Api.ts";
 import {Pagination, Table} from "antd";
 import {Link, useSearchParams} from "react-router-dom";
+import {handleError} from "../../helpers/handleError.ts";
 
 interface ProblemItem {
     id: number,
@@ -24,20 +25,23 @@ export const Problems: React.FC = () => {
             const skip = (Number(pageParam) - 1) * Number(sizeParam);
             const response = await api.api.problemsList({Skip: skip, Take: Number(sizeParam)});
             const items = response.data.items;
+            
+            const result = items.map(p => ({
+                id: p.id,
+                name: <Link to={p.id.toString()}>{p.name}</Link>,
+                solved: p.solved
+            }));
+            setProblemsList(result);
+            setTotal(response.data.totalCount);
 
-            if (response.data) {
-                const result = items.map(p => ({
-                    id: p.id,
-                    name: <Link to={p.id.toString()}>{p.name}</Link>,
-                    solved: p.solved
-                }));
-                setProblemsList(result);
-                setTotal(response.data.totalCount);
-            }
             setLoading(false);
         };
 
-        fetchData();
+        try {
+            fetchData().catch(e => handleError(e));
+        } catch (e) {
+            handleError(e);
+        }
     }, [searchParams]);
 
     const columns = [

@@ -8,6 +8,7 @@ import remarkGfm from 'remark-gfm'
 import rehypeRaw from "rehype-raw";
 import styles from "../../styles/Markdown.module.css";
 import {convertBytesToMegabytes, convertMsToSeconds} from "../../helpers/formatters.ts";
+import {handleError} from "../../helpers/handleError.ts";
 
 export const ProblemDetail: React.FC = () => {
     const {problemId} = useParams()
@@ -18,12 +19,14 @@ export const ProblemDetail: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             const response = await api.api.problemsDetail(Number(problemId));
-            if (response.data) {
-                setProblem(response.data);
-            }
+            setProblem(response.data);
         }
 
-        fetchData();
+        try {
+            fetchData().catch(e => handleError(e));
+        } catch (e) {
+            handleError(e);
+        }
     }, [problemId]);
 
     useEffect(() => {
