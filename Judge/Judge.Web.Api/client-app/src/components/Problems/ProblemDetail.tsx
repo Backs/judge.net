@@ -40,12 +40,12 @@ export const ProblemDetail: React.FC = () => {
     return (
         isLoading ? <Spin tip="Loading" size="large"/> :
             <>
-                <Title>{problem?.name}</Title>
+                <Title style={{textAlign: 'center'}}>{problem?.name}</Title>
                 <Flex gap="small" vertical>
-                    <div>
+                    <div style={{textAlign: 'center'}}>
                         Time limit, seconds: {convertMsToSeconds(problem?.timeLimitMilliseconds)}
                     </div>
-                    <div>
+                    <div style={{textAlign: 'center'}}>
                         Memory limit, megabytes: {convertBytesToMegabytes(problem?.memoryLimitBytes)}
                     </div>
                     <Markdown
