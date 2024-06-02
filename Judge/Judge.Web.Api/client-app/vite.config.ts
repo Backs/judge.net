@@ -16,6 +16,9 @@ export default defineConfig({
             '@': '/src',
         },
     },
+    optimizeDeps: {
+        exclude: ['js-big-decimal']
+    },
     server: {
         host: 'localhost',
         port: 44402,

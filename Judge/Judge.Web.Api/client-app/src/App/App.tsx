@@ -20,6 +20,10 @@ const App: React.FC = () => {
         {
             label: (<a href="/problems">Problems</a>),
             key: 'problems',
+        },
+        {
+            label: (<a href="/login">Login</a>),
+            key: 'login'
         }
     ];
 
