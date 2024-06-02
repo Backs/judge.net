@@ -1,6 +1,6 @@
 ﻿import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {Api, Problem} from "../../api/Api.ts";
+import {Api, Problem} from "../../api/Judge.ts";
 import Title from "antd/lib/typography/Title";
 import {Flex, Spin} from "antd";
 import Markdown from 'react-markdown'
@@ -24,11 +24,7 @@ export const ProblemDetail: React.FC = () => {
             setLoading(false);
         }
 
-        try {
-            fetchData().catch(e => handleError(e));
-        } catch (e) {
-            handleError(e);
-        }
+        fetchData().catch(e => handleError(e));
     }, [problemId]);
 
     useEffect(() => {

@@ -1,7 +1,7 @@
 ﻿import React from "react";
 import {LockOutlined, MailOutlined} from '@ant-design/icons';
 import {Button, Form, Input} from "antd";
-import {Api} from "../api/Api.ts";
+import {Api} from "../api/Judge.ts";
 
 export const Login: React.FC = () => {
 

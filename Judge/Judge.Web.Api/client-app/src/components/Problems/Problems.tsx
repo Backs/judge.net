@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Api} from "../../api/Api.ts";
+import {Api} from "../../api/Judge.ts";
 import {Pagination, Table} from "antd";
 import {Link, useSearchParams} from "react-router-dom";
 import {handleError} from "../../helpers/handleError.ts";
@@ -37,11 +37,7 @@ export const Problems: React.FC = () => {
             setLoading(false);
         };
 
-        try {
-            fetchData().catch(e => handleError(e));
-        } catch (e) {
-            handleError(e);
-        }
+        fetchData().catch(e => handleError(e));
     }, [searchParams]);
 
     const columns = [
