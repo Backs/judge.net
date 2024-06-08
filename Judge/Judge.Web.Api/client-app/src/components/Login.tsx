@@ -5,12 +5,12 @@ import {judgeApi} from "../api/JudgeApi.ts";
 import {useNavigate} from "react-router-dom";
 
 export const Login: React.FC = () => {
-
+    const navigate = useNavigate();
     const onFinish = async (values: any) => {
         const api = judgeApi();
         const token = await api.api.loginTokenCreate({email: values.email, password: values.password});
         localStorage.setItem("token", token.data.token);
-        const navigate = useNavigate();
+
         navigate("/problems");
         
     };
