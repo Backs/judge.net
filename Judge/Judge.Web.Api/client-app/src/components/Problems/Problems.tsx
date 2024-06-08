@@ -6,7 +6,7 @@ import {judgeApi} from "../../api/JudgeApi.ts";
 import {CheckOutlined} from '@ant-design/icons';
 
 interface ProblemItem {
-    id: number,
+    key: number,
     name: any,
     solved: any
 }
@@ -28,9 +28,9 @@ export const Problems: React.FC = () => {
             const items = response.data.items;
 
             const result: ProblemItem[] = items.map(p => ({
-                id: p.id,
+                key: p.id,
                 name: <Link to={p.id.toString()}>{p.name}</Link>,
-                solved: p.solved && <CheckOutlined />
+                solved: p.solved && <CheckOutlined/>
             }));
             setProblemsList(result);
             setTotal(response.data.totalCount);
@@ -44,8 +44,8 @@ export const Problems: React.FC = () => {
     const columns = [
         {
             title: 'Id',
-            dataIndex: 'id',
-            key: 'id',
+            dataIndex: 'key',
+            key: 'key',
         },
         {
             title: 'Name',
