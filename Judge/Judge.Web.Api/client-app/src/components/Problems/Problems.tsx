@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from "react";
-import {Api} from "../../api/Judge.ts";
 import {Pagination, Table} from "antd";
 import {Link, useSearchParams} from "react-router-dom";
 import {handleError} from "../../helpers/handleError.ts";
+import {judgeApi} from "../../api/JudgeApi.ts";
+import {CheckOutlined} from '@ant-design/icons';
 
 interface ProblemItem {
     id: number,
     name: any,
-    solved: boolean
+    solved: any
 }
 
 export const Problems: React.FC = () => {
@@ -19,7 +20,7 @@ export const Problems: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
-            const api = new Api();
+            const api = judgeApi();
             const pageParam = searchParams.get("page") || 1;
             const sizeParam = searchParams.get("size") || 10;
             const skip = (Number(pageParam) - 1) * Number(sizeParam);
@@ -29,7 +30,7 @@ export const Problems: React.FC = () => {
             const result: ProblemItem[] = items.map(p => ({
                 id: p.id,
                 name: <Link to={p.id.toString()}>{p.name}</Link>,
-                solved: p.solved
+                solved: p.solved && <CheckOutlined />
             }));
             setProblemsList(result);
             setTotal(response.data.totalCount);

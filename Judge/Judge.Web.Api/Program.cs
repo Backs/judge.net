@@ -96,7 +96,7 @@ internal static class Program
         });
 
         builder.Services.AddCors();
-        
+
         var app = builder.Build();
 
         app.UseMiddleware<ErrorHandlerMiddleware>();

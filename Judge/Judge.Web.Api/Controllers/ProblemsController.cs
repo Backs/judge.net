@@ -3,6 +3,7 @@ using Judge.Services;
 using Judge.Web.Api.Authorization;
 using Judge.Web.Api.Extensions;
 using Judge.Web.Client.Problems;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,7 @@ public class ProblemsController : ControllerBase
     /// </summary>
     [HttpGet]
     [ProducesResponseType(typeof(ProblemsList), StatusCodes.Status200OK)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> Search([FromQuery] ProblemsQuery? query)
     {
         query ??= new ProblemsQuery();

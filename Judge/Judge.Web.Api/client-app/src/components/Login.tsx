@@ -1,14 +1,18 @@
 ﻿import React from "react";
 import {LockOutlined, MailOutlined} from '@ant-design/icons';
 import {Button, Form, Input} from "antd";
-import {Api} from "../api/Judge.ts";
+import {judgeApi} from "../api/JudgeApi.ts";
+import {useNavigate} from "react-router-dom";
 
 export const Login: React.FC = () => {
 
     const onFinish = async (values: any) => {
-        const api = new Api();
+        const api = judgeApi();
         const token = await api.api.loginTokenCreate({email: values.email, password: values.password});
-        console.log('Received values of form: ', token.data);
+        localStorage.setItem("token", token.data.token);
+        const navigate = useNavigate();
+        navigate("/problems");
+        
     };
     return (
         <Form

@@ -1,6 +1,6 @@
 ﻿import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {Api, Problem} from "../../api/Judge.ts";
+import {Problem} from "../../api/Api.ts";
 import Title from "antd/lib/typography/Title";
 import {Flex, Spin} from "antd";
 import Markdown from 'react-markdown'
@@ -9,14 +9,14 @@ import rehypeRaw from "rehype-raw";
 import styles from "../../styles/Markdown.module.css";
 import {convertBytesToMegabytes, convertMsToSeconds} from "../../helpers/formatters.ts";
 import {handleError} from "../../helpers/handleError.ts";
+import {judgeApi} from "../../api/JudgeApi.ts";
 
 export const ProblemDetail: React.FC = () => {
     const {problemId} = useParams();
     const [problem, setProblem] = useState<Problem>();
     const [isLoading, setLoading] = useState(true);
-    const api = new Api();
-
-
+    const api = judgeApi();
+    
     useEffect(() => {
         const fetchData = async () => {
             const response = await api.api.problemsDetail(Number(problemId));
