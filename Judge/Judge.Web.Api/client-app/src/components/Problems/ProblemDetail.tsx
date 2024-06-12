@@ -12,6 +12,7 @@ import {handleError} from "../../helpers/handleError.ts";
 import {judgeApi} from "../../api/JudgeApi.ts";
 import {useSelector} from "react-redux";
 import {UserState} from "../../userSlice.ts";
+import {SubmitProblem} from "./SubmitProblem.tsx";
 
 export const ProblemDetail: React.FC = () => {
     const {problemId} = useParams();
@@ -52,9 +53,8 @@ export const ProblemDetail: React.FC = () => {
                         className={styles.markdown}
                         remarkPlugins={[remarkGfm]}
                         rehypePlugins={[rehypeRaw]}>{problem?.statement}</Markdown>
-                    <div>
-                        {user?.login}
-                    </div>
+
+                    {user && problem && <SubmitProblem languages={problem.languages}/>}
                 </Flex>
             </>
     );
