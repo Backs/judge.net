@@ -10,13 +10,18 @@ import styles from "../../styles/Markdown.module.css";
 import {convertBytesToMegabytes, convertMsToSeconds} from "../../helpers/formatters.ts";
 import {handleError} from "../../helpers/handleError.ts";
 import {judgeApi} from "../../api/JudgeApi.ts";
+import {useSelector} from "react-redux";
+import {UserState} from "../../userSlice.ts";
 
 export const ProblemDetail: React.FC = () => {
     const {problemId} = useParams();
     const [problem, setProblem] = useState<Problem>();
     const [isLoading, setLoading] = useState(true);
     const api = judgeApi();
-    
+
+    const {user}: UserState = useSelector((state: any) => state.user)
+    console.log(user);
+
     useEffect(() => {
         const fetchData = async () => {
             const response = await api.api.problemsDetail(Number(problemId));
@@ -31,7 +36,6 @@ export const ProblemDetail: React.FC = () => {
         if (problem?.name)
             document.title = `${problem?.name} - Judge.NET`;
     }, [problem]);
-
 
     return (
         isLoading ? <Spin tip="Loading" size="large"/> :
@@ -48,6 +52,9 @@ export const ProblemDetail: React.FC = () => {
                         className={styles.markdown}
                         remarkPlugins={[remarkGfm]}
                         rehypePlugins={[rehypeRaw]}>{problem?.statement}</Markdown>
+                    <div>
+                        {user?.login}
+                    </div>
                 </Flex>
             </>
     );

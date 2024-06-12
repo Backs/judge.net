@@ -1,7 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {useDispatch} from 'react-redux';
 import {Layout, Menu, theme} from 'antd';
 import {Router} from "./Router.tsx";
 import {MenuProps} from "antd/lib";
+import {judgeApi} from "../api/JudgeApi.ts";
+import {setUser} from "../userSlice.ts";
 
 const {Header, Content, Footer} = Layout;
 
@@ -9,6 +12,20 @@ const App: React.FC = () => {
     const {
         token: {colorBgContainer, borderRadiusLG},
     } = theme.useToken();
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const api = judgeApi();
+            const response = await api.api.usersMeList();
+            const user = response.data;
+            
+            dispatch(setUser(user));
+        };
+
+        fetchData();
+    }, []);
 
     type MenuItem = Required<MenuProps>['items'][number];
 
