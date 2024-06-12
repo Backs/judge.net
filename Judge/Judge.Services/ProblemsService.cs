@@ -55,6 +55,7 @@ internal sealed class ProblemsService : IProblemsService
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork(false);
         var task = await unitOfWork.Tasks.GetAsync(id);
+        var languages = await unitOfWork.Languages.GetAllAsync(true);
 
         if (task == null)
         {
@@ -67,7 +68,12 @@ internal sealed class ProblemsService : IProblemsService
             Name = task.Name,
             Statement = task.Statement,
             MemoryLimitBytes = task.MemoryLimitBytes,
-            TimeLimitMilliseconds = task.TimeLimitMilliseconds
+            TimeLimitMilliseconds = task.TimeLimitMilliseconds,
+            Languages = languages.Select(o => new Client.ProblemLanguage
+            {
+                Id = o.Id,
+                Name = o.Name
+            }).ToArray()
         };
     }
 

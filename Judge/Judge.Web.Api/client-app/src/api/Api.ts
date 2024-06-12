@@ -339,6 +339,8 @@ export interface Problem {
    * @minLength 1
    */
   statement: string;
+  /** Available languages */
+  languages: ProblemLanguage[];
 }
 
 export interface ProblemDetails {
@@ -365,6 +367,16 @@ export interface ProblemInfo {
   name: string;
   /** Is problem solve by current user */
   solved: boolean;
+}
+
+export interface ProblemLanguage {
+  /**
+   * Id
+   * @format int32
+   */
+  id?: number;
+  /** Language name */
+  name?: string | null;
 }
 
 /** Problem list */
