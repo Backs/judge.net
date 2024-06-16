@@ -54,7 +54,7 @@ export const ProblemDetail: React.FC = () => {
                         remarkPlugins={[remarkGfm]}
                         rehypePlugins={[rehypeRaw]}>{problem?.statement}</Markdown>
 
-                    {user && problem && <SubmitProblem languages={problem.languages}/>}
+                    {user && problem && <SubmitProblem languages={problem.languages} problemId={problem.id}/>}
                 </Flex>
             </>
     );
