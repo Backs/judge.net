@@ -1,4 +1,4 @@
-export function convertMsToSeconds(value: number | undefined): string {
+export function convertMsToSeconds(value: number | undefined | null): string {
     if (!value)
         return "";
 
@@ -9,7 +9,7 @@ export function convertMsToSeconds(value: number | undefined): string {
     return Number.format(value / 1000);
 }
 
-export function convertBytesToMegabytes(value: number | undefined): string {
+export function convertBytesToMegabytes(value: number | undefined | null): string {
     if (!value)
         return "";
 

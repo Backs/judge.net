@@ -13,6 +13,7 @@ import {judgeApi} from "../../api/JudgeApi.ts";
 import {useSelector} from "react-redux";
 import {UserState} from "../../userSlice.ts";
 import {SubmitProblem} from "./SubmitProblem.tsx";
+import {ProblemSubmits} from "./ProblemSubmits.tsx";
 
 export const ProblemDetail: React.FC = () => {
     const {problemId} = useParams();
@@ -21,7 +22,6 @@ export const ProblemDetail: React.FC = () => {
     const api = judgeApi();
 
     const {user}: UserState = useSelector((state: any) => state.user)
-    console.log(user);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -55,6 +55,7 @@ export const ProblemDetail: React.FC = () => {
                         rehypePlugins={[rehypeRaw]}>{problem?.statement}</Markdown>
 
                     {user && problem && <SubmitProblem languages={problem.languages} problemId={problem.id}/>}
+                    {user && problem && <ProblemSubmits problemId={problem.id} userId={user.id}/>}
                 </Flex>
             </>
     );

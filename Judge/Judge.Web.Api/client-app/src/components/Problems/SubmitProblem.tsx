@@ -4,7 +4,6 @@ import {Button, Flex, Select, Upload, UploadProps} from "antd";
 import {UploadOutlined} from '@ant-design/icons';
 import {judgeApi} from "../../api/JudgeApi.ts";
 import {handleError} from "../../helpers/handleError.ts";
-import {AxiosError} from "axios";
 import {RcFile} from "antd/es/upload";
 
 export interface SubmitProblemProps {
@@ -20,41 +19,56 @@ export const SubmitProblem: React.FC<SubmitProblemProps> = (props) => {
         label: p.name
     }));
 
-    const [file, setFile] = useState<RcFile>();
+    const [fileList, setFileList] = useState<RcFile[]>();
     const [languageId, setLanguageId] = useState<number>();
-    const [isUpdating, setUpdating] = useState<boolean>();
+    const [isUpdating, setUpdating] = useState<boolean>(false);
 
     const uploadProps: UploadProps = {
         onRemove: () => {
-            setFile(undefined);
+            setFileList([]);
         },
         beforeUpload: (file) => {
-            setFile(file);
+            setFileList([file]);
             return false;
         },
-        maxCount: 1
+        maxCount: 1,
+        fileList: fileList
     };
 
     const submitSolution = async () => {
         setUpdating(true);
         const api = judgeApi();
-        const data = {
-            File: file!,
-            ProblemId: props.problemId,
-            LanguageId: languageId!,
-            ProblemLabel: props.problemLabel,
-            ContestId: props.contestId
+        const data: {
+            File: File,
+            LanguageId: number,
+            ProblemId?: number,
+            ContestId?: number,
+            ProblemLabel?: string
+        } = {
+            File: fileList![0],
+            LanguageId: languageId!
         };
-        
-        try {
-            const response = await api.api.submitsSubmitsUpdate(data)
-            console.log(response);
 
-        } catch (e: AxiosError) {
-            handleError(e);
+        if (props.problemId) {
+            data.ProblemId = props.problemId;
+        }
+        if (props.contestId) {
+            data.ContestId = props.contestId;
+        }
+        if (props.problemLabel) {
+            data.ProblemLabel = props.problemLabel;
         }
 
-        setUpdating(false);
+
+        try {
+            await api.api.submitsSubmitsUpdate(data);
+            setFileList([]);
+        } catch (e: any) {
+            handleError(e);
+        } finally {
+            setUpdating(false);
+        }
+
     }
 
     return (
@@ -66,7 +80,7 @@ export const SubmitProblem: React.FC<SubmitProblemProps> = (props) => {
             </Upload>
             <Button
                 type="primary"
-                disabled={!file || !languageId || isUpdating}
+                disabled={!fileList?.length || !languageId || isUpdating}
                 onClick={submitSolution}
             >
                 Submit
