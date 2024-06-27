@@ -11,9 +11,9 @@ using Judge.Model.Contests;
 using Judge.Model.Entities;
 using Judge.Model.SubmitSolution;
 using Judge.Services.Converters;
+using Judge.Web.Client.Submits;
 using Client = Judge.Web.Client;
 using SubmitsQuery = Judge.Services.Model.SubmitsQuery;
-using Task = System.Threading.Tasks.Task;
 
 namespace Judge.Services;
 
@@ -80,16 +80,14 @@ internal sealed class SubmitsService : ISubmitsService
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
 
-    public async Task SaveAsync(Client.Submits.SubmitSolution submitSolution, Client.Submits.SubmitUserInfo userInfo)
+    public async Task<long> SaveAsync(SubmitSolution submitSolution, SubmitUserInfo userInfo)
     {
         if (submitSolution.ContestId != null)
         {
-            await this.SaveContestSubmitAsync(submitSolution, userInfo);
+            return await this.SaveContestSubmitAsync(submitSolution, userInfo);
         }
-        else
-        {
-            await this.SaveSubmitAsync(submitSolution, userInfo);
-        }
+
+        return await this.SaveSubmitAsync(submitSolution, userInfo);
     }
 
     public async Task<Client.Submits.SubmitResultExtendedInfo?> GetResultAsync(long id)
@@ -140,7 +138,7 @@ internal sealed class SubmitsService : ISubmitsService
         return await this.GetResultAsync(newSubmitResult.Id);
     }
 
-    private async Task SaveSubmitAsync(Client.Submits.SubmitSolution submitSolution,
+    private async Task<long> SaveSubmitAsync(Client.Submits.SubmitSolution submitSolution,
         Client.Submits.SubmitUserInfo userInfo)
     {
         using var sr = new StreamReader(submitSolution.File.OpenReadStream());
@@ -158,9 +156,11 @@ internal sealed class SubmitsService : ISubmitsService
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
         unitOfWork.Submits.Add(submit);
         await unitOfWork.CommitAsync();
+
+        return submit.Id;
     }
 
-    private async Task SaveContestSubmitAsync(Client.Submits.SubmitSolution submitSolution,
+    private async Task<long> SaveContestSubmitAsync(Client.Submits.SubmitSolution submitSolution,
         Client.Submits.SubmitUserInfo userInfo)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
@@ -221,6 +221,7 @@ internal sealed class SubmitsService : ISubmitsService
 
         unitOfWork.Submits.Add(submit);
         await unitOfWork.CommitAsync();
+        return submit.Id;
     }
 
     private static string GetFileName(string fileName)

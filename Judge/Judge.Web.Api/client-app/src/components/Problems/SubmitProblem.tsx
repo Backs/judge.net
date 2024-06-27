@@ -10,7 +10,8 @@ export interface SubmitProblemProps {
     languages: ProblemLanguage[],
     problemId?: number,
     contestId?: number,
-    problemLabel?: string
+    problemLabel?: string,
+    onSubmit?: (submitId: number) => void
 }
 
 export const SubmitProblem: React.FC<SubmitProblemProps> = (props) => {
@@ -61,8 +62,11 @@ export const SubmitProblem: React.FC<SubmitProblemProps> = (props) => {
 
 
         try {
-            await api.api.submitsSubmitsUpdate(data);
+            const response = await api.api.submitsSubmitsUpdate(data);
             setFileList([]);
+            if (props.onSubmit) {
+                props.onSubmit(response.data.id);
+            }
         } catch (e: any) {
             handleError(e);
         } finally {

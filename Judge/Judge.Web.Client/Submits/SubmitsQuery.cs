@@ -18,7 +18,12 @@ public class SubmitsQuery
     /// Problem label
     /// </summary>
     public string? ProblemLabel { get; set; }
-    
+
+    /// <summary>
+    /// User id
+    /// </summary>
+    public long? UserId { get; set; }
+
     /// <summary>
     /// Submits to skip
     /// </summary>

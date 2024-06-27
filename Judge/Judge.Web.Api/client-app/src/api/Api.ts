@@ -540,6 +540,15 @@ export interface SubmitResultsList {
   totalCount: number;
 }
 
+/** Submit solution result */
+export interface SubmitSolutionResult {
+  /**
+   * Submit id
+   * @format int64
+   */
+  id: number;
+}
+
 export enum SubmitStatus {
   Pending = "Pending",
   CompilationError = "CompilationError",
@@ -938,6 +947,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         /** Problem label */
         ProblemLabel?: string;
         /**
+         * User id
+         * @format int64
+         */
+        UserId?: number;
+        /**
          * Submits to skip
          * @format int32
          * @min 0
@@ -999,12 +1013,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       },
       params: RequestParams = {},
     ) =>
-      this.request<void, ProblemDetails>({
+      this.request<SubmitSolutionResult, ProblemDetails>({
         path: `/api/submits/submits`,
         method: "PUT",
         body: data,
         secure: true,
         type: ContentType.FormData,
+        format: "json",
         ...params,
       }),
 

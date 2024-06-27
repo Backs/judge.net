@@ -41,7 +41,8 @@ public class SubmitsController : ControllerBase
             Skip = query.Skip,
             Take = query.Take,
             ContestId = query.ContestId,
-            TaskLabel = query.ProblemLabel
+            TaskLabel = query.ProblemLabel,
+            UserId = query.UserId
         };
         var result = await this.submitsService.SearchAsync(submitsQuery);
 
@@ -83,7 +84,7 @@ public class SubmitsController : ControllerBase
     /// <param name="submitSolution"><inheritdoc cref="Judge.Web.Client.Submits.SubmitSolution"/></param>
     [Authorize]
     [HttpPut("submits")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SubmitSolutionResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> SubmitSolution([FromForm] SubmitSolution submitSolution)
     {
@@ -91,14 +92,13 @@ public class SubmitsController : ControllerBase
         var userInfo = new SubmitUserInfo(userId, this.Request.Host.ToString());
         try
         {
-            await this.submitsService.SaveAsync(submitSolution, userInfo);
+            var id = await this.submitsService.SaveAsync(submitSolution, userInfo);
+            return this.Ok(new SubmitSolutionResult { Id = id });
         }
         catch (InvalidOperationException ex)
         {
             return this.BadRequest(ex.Message);
         }
-
-        return this.Ok();
     }
 
     /// <summary>

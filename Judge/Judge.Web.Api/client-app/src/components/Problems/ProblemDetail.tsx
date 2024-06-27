@@ -19,6 +19,7 @@ export const ProblemDetail: React.FC = () => {
     const {problemId} = useParams();
     const [problem, setProblem] = useState<Problem>();
     const [isLoading, setLoading] = useState(true);
+    const [lastSubmitId, setLastSubmitId] = useState<number>();
     const api = judgeApi();
 
     const {user}: UserState = useSelector((state: any) => state.user)
@@ -54,8 +55,10 @@ export const ProblemDetail: React.FC = () => {
                         remarkPlugins={[remarkGfm]}
                         rehypePlugins={[rehypeRaw]}>{problem?.statement}</Markdown>
 
-                    {user && problem && <SubmitProblem languages={problem.languages} problemId={problem.id}/>}
-                    {user && problem && <ProblemSubmits problemId={problem.id} userId={user.id}/>}
+                    {user && problem && <SubmitProblem languages={problem.languages} problemId={problem.id}
+                                                       onSubmit={(submitId) => setLastSubmitId(submitId)}/>}
+                    {user && problem &&
+                        <ProblemSubmits problemId={problem.id} userId={user.id} lastSubmitId={lastSubmitId}/>}
                 </Flex>
             </>
     );

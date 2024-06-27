@@ -8,7 +8,7 @@ public interface ISubmitsService
 {
     public Task<SubmitResultsList> SearchAsync(SubmitsQuery query);
 
-    public Task SaveAsync(SubmitSolution submitSolution, SubmitUserInfo userInfo);
+    public Task<long> SaveAsync(SubmitSolution submitSolution, SubmitUserInfo userInfo);
 
     public Task<SubmitResultExtendedInfo?> GetResultAsync(long id);
     Task<SubmitResultExtendedInfo?> RejudgeAsync(long id);

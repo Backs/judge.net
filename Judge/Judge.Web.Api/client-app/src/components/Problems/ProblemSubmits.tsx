@@ -9,7 +9,8 @@ export interface ProblemSubmitsProps {
     problemId?: number,
     contestId?: number,
     problemLabel?: string
-    userId?: number
+    userId?: number,
+    lastSubmitId?: number
 }
 
 interface SubmitInfo {
@@ -35,6 +36,7 @@ export const ProblemSubmits: React.FC<ProblemSubmitsProps> = (props) => {
             ProblemId?: number,
             ContestId?: number,
             ProblemLabel?: string,
+            UserId?: number,
             Skip: number,
             Take: number
         } = {
@@ -50,6 +52,9 @@ export const ProblemSubmits: React.FC<ProblemSubmitsProps> = (props) => {
         }
         if (props.problemLabel) {
             data.ProblemLabel = props.problemLabel;
+        }
+        if (props.userId) {
+            data.UserId = props.userId;
         }
 
         const fetchData = async () => {
@@ -82,12 +87,12 @@ export const ProblemSubmits: React.FC<ProblemSubmitsProps> = (props) => {
 
         fetchData().catch(e => handleError(e));
 
-        const interval = setInterval(() => fetchData(), 5000)
+        const interval = setInterval(() => fetchData().catch(e => handleError(e)), 5000)
         return () => {
             clearInterval(interval);
         }
 
-    }, [pageNumber]);
+    }, [pageNumber, props.lastSubmitId]);
 
     const columns = [
         {
