@@ -30,6 +30,7 @@ public class ProblemsController : ControllerBase
     [HttpGet]
     [ProducesResponseType(typeof(ProblemsList), StatusCodes.Status200OK)]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [AllowAnonymous]
     public async Task<IActionResult> Search([FromQuery] ProblemsQuery? query)
     {
         query ??= new ProblemsQuery();

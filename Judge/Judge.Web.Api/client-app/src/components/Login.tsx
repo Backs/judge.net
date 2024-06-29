@@ -5,6 +5,8 @@ import {judgeApi} from "../api/JudgeApi.ts";
 import {useNavigate} from "react-router-dom";
 import {handleError} from "../helpers/handleError.ts";
 import {Typography} from 'antd';
+import {setUser} from "../userSlice.ts";
+import {useDispatch} from "react-redux";
 
 const {Text} = Typography;
 
@@ -12,12 +14,21 @@ export const Login: React.FC = () => {
     const navigate = useNavigate();
     const [isLoading, setLoading] = useState<boolean>();
     const [errors, setErrors] = useState<React.ReactNode[]>();
+    const dispatch = useDispatch();
+
     const onFinish = async (values: any) => {
         setLoading(true);
-        const api = judgeApi();
+        let api = judgeApi();
+        
         try {
             const token = await api.api.loginTokenCreate({email: values.email, password: values.password});
             localStorage.setItem("token", token.data.token);
+
+            api = judgeApi(token.data.token);
+            const response = await api.api.usersMeList();
+            const user = response.data;
+
+            dispatch(setUser(user));
 
             navigate("/problems");
         } catch (e: any) {
@@ -38,26 +49,29 @@ export const Login: React.FC = () => {
         <Row justify="center" align="middle">
             <Col span={6}>
                 <Form
-                    name="normal_login"
                     className="login-form"
                     initialValues={{remember: true}}
                     onFinish={onFinish}
                     layout="vertical"
+                    autoComplete="on"
+                    preserve={true}
                 >
                     <Form.Item
                         name="email"
                         rules={[{required: true, message: 'Please input your Email!'}]}
                     >
-                        <Input prefix={<MailOutlined className="site-form-item-icon"/>} placeholder="Email"/>
+                        <Input prefix={<MailOutlined className="site-form-item-icon"/>} placeholder="Email"
+                               autoComplete="email"/>
                     </Form.Item>
                     <Form.Item
                         name="password"
                         rules={[{required: true, message: 'Please input your Password!'}]}
                     >
-                        <Input
+                        <Input.Password
                             prefix={<LockOutlined className="site-form-item-icon"/>}
                             type="password"
                             placeholder="Password"
+                            autoComplete="current-password"
                         />
                     </Form.Item>
                     <Form.Item>
@@ -65,6 +79,7 @@ export const Login: React.FC = () => {
                             Log in
                         </Button>
                     </Form.Item>
+                    Or <a href="/register">register now!</a>
                     <Form.ErrorList errors={errors}/>
                 </Form>
             </Col>

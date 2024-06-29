@@ -40,7 +40,7 @@ export const ProblemDetail: React.FC = () => {
     }, [problem]);
 
     return (
-        isLoading ? <Spin tip="Loading" size="large"/> :
+        isLoading ? <Spin size="large"/> :
             <>
                 <Title style={{textAlign: 'center'}}>{problem?.name}</Title>
                 <Flex gap="small" vertical>
