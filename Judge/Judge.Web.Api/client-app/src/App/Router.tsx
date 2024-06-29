@@ -6,6 +6,7 @@ import NotFound from "../components/NotFound.tsx";
 import {Main} from "../components/Main/Main.tsx";
 import {Login} from "../components/Login.tsx";
 import {Register} from "../components/Register.tsx";
+import {Submits} from "../components/Problems/Submits.tsx";
 
 export const Router: React.FC = () => {
     return (
@@ -13,9 +14,10 @@ export const Router: React.FC = () => {
             <Routes>
                 <Route path="/" element={<Main/>}/>
                 <Route path="/login" element={<Login/>}/>
-                <Route path="/register" element={<Register />} />
+                <Route path="/register" element={<Register/>}/>
                 <Route path="/problems" element={<Problems/>}/>
                 <Route path="/problems/:problemId" element={<ProblemDetail/>}/>
+                <Route path="/submits" element={<Submits/>}/>
                 <Route path="/notFound" element={<NotFound/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>

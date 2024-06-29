@@ -2,8 +2,8 @@
 import {handleError} from "../../helpers/handleError.ts";
 import {judgeApi} from "../../api/JudgeApi.ts";
 import {Pagination, Table, Tag} from "antd";
-import {SubmitStatus} from "../../api/Api.ts";
 import {convertBytesToMegabytes, convertMsToSeconds} from "../../helpers/formatters.ts";
+import {getColor, getStatusText} from "../../helpers/submitStatusHelper.ts";
 
 export interface ProblemSubmitsProps {
     problemId?: number,
@@ -61,21 +61,11 @@ export const ProblemSubmits: React.FC<ProblemSubmitsProps> = (props) => {
             setLoading(true);
             const response = await api.api.submitsSubmitsList(data);
 
-            function getColor(status: SubmitStatus) {
-                switch (status) {
-                    case SubmitStatus.Accepted:
-                        return "success";
-                    case SubmitStatus.Pending:
-                        return "processing";
-                }
-                return "error";
-            }
-
             const results: SubmitInfo[] = response.data.items.map(p => ({
                 key: p.submitResultId,
                 language: p.language,
                 passedTests: p.passedTests,
-                status: <Tag bordered={false} color={getColor(p.status)}>{p.status}</Tag>,
+                status: <Tag bordered={false} color={getColor(p.status)}>{getStatusText(p.status)}</Tag>,
                 submitDate: p.submitDate,
                 totalBytes: convertBytesToMegabytes(p.totalBytes),
                 totalMilliseconds: convertMsToSeconds(p.totalMilliseconds),

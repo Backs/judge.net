@@ -41,6 +41,10 @@ const App: React.FC = () => {
             key: 'problems',
         },
         {
+            label: (<a href="/submits">Submits</a>),
+            key: 'submits',
+        },
+        {
             label: user?.login || (<a href="/login">Login</a>),
             key: 'login'
         }
