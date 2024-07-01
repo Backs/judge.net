@@ -4,13 +4,17 @@ import {judgeApi} from "../../api/JudgeApi.ts";
 import {Pagination, Table, Tag} from "antd";
 import {convertBytesToMegabytes, convertMsToSeconds} from "../../helpers/formatters.ts";
 import {getColor, getStatusText} from "../../helpers/submitStatusHelper.ts";
+import {defaultColumns, extendedColumns} from "../../helpers/submitsColumns.ts";
+import {SubmitResultInfo} from "../../api/Api.ts";
 
 export interface ProblemSubmitsProps {
     problemId?: number,
     contestId?: number,
     problemLabel?: string
     userId?: number,
-    lastSubmitId?: number
+    lastSubmitId?: number,
+    pageSize: number,
+    extended?: boolean,
 }
 
 interface SubmitInfo {
@@ -21,6 +25,8 @@ interface SubmitInfo {
     passedTests?: number | null;
     totalMilliseconds?: string;
     totalBytes?: string;
+    userName?: string,
+    problem: any,
 }
 
 export const ProblemSubmits: React.FC<ProblemSubmitsProps> = (props) => {
@@ -29,6 +35,15 @@ export const ProblemSubmits: React.FC<ProblemSubmitsProps> = (props) => {
     const [total, setTotal] = useState<number>(0);
     const [pageNumber, setPageNumber] = useState<number>(1);
     const [isLoading, setLoading] = useState<boolean>(true);
+    const [pageSize, setPageSize] = useState<number>(props.pageSize);
+
+    const getProblemLink = (submit: SubmitResultInfo): any => {
+        if (submit.contestInfo) {
+            return <a
+                href={`contests/${submit.contestInfo.contestId}/${submit.contestInfo.label}`}>{submit.problemName}</a>
+        }
+        return <a href={`problems/${submit.problemId}`}>{submit.problemName}</a>
+    }
 
     useEffect(() => {
 
@@ -40,8 +55,8 @@ export const ProblemSubmits: React.FC<ProblemSubmitsProps> = (props) => {
             Skip: number,
             Take: number
         } = {
-            Skip: (pageNumber - 1) * 5,
-            Take: 5
+            Skip: (pageNumber - 1) * pageSize,
+            Take: pageSize
         };
 
         if (props.problemId) {
@@ -69,6 +84,8 @@ export const ProblemSubmits: React.FC<ProblemSubmitsProps> = (props) => {
                 submitDate: p.submitDate,
                 totalBytes: convertBytesToMegabytes(p.totalBytes),
                 totalMilliseconds: convertMsToSeconds(p.totalMilliseconds),
+                userName: p.userName,
+                problem: getProblemLink(p)
             }));
             setSubmits(results);
             setTotal(response.data.totalCount);
@@ -82,45 +99,18 @@ export const ProblemSubmits: React.FC<ProblemSubmitsProps> = (props) => {
             clearInterval(interval);
         }
 
-    }, [pageNumber, props.lastSubmitId]);
+    }, [pageNumber, props.lastSubmitId, pageSize]);
 
-    const columns = [
-        {
-            title: 'Date',
-            dataIndex: 'submitDate',
-            key: 'submitResultId',
-        },
-        {
-            title: 'Language',
-            dataIndex: 'language',
-            key: 'submitResultId'
-        },
-        {
-            title: 'Status',
-            dataIndex: 'status',
-            key: 'submitResultId',
-        },
-        {
-            title: 'Tests passed',
-            dataIndex: 'passedTests',
-            key: 'submitResultId',
-        },
-        {
-            title: 'Time, s',
-            dataIndex: 'totalMilliseconds',
-            key: 'submitResultId',
-        },
-        {
-            title: 'Memory, Mb',
-            dataIndex: 'totalBytes',
-            key: 'submitResultId',
-        }
-    ];
+    const columns = props.extended ? extendedColumns : defaultColumns;
 
     return (
         <div>
             <Table dataSource={submits} columns={columns} pagination={false} loading={isLoading}/>
             <Pagination defaultCurrent={1} total={total}
-                        defaultPageSize={5} onChange={(page: number) => setPageNumber(page)}/>
+                        defaultPageSize={pageSize}
+                        onChange={(page: number, size: number) => {
+                            setPageNumber(page);
+                            setPageSize(size);
+                        }}/>
         </div>);
 };

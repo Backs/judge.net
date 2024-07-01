@@ -34,7 +34,6 @@ internal static class SubmitsConverter
             Language = language.Name,
             SubmitDate = submitResult.Submit.SubmitDateUtc,
             ProblemName = task.Name,
-            ProblemId = task.Id,
             Status = Convert(submitResult.Status),
             UserId = user.Id,
             UserName = user.UserName
@@ -61,6 +60,10 @@ internal static class SubmitsConverter
                         "<unknown>"
             };
         }
+        else
+        {
+            submitResultInfo.ProblemId = task.Id;
+        }
 
         return submitResultInfo;
     }
@@ -80,6 +83,8 @@ internal static class SubmitsConverter
             SubmitStatus.TooEarly => Client.Submits.SubmitStatus.TooEarly,
             SubmitStatus.Unpolite => Client.Submits.SubmitStatus.Unpolite,
             SubmitStatus.TooManyLines => Client.Submits.SubmitStatus.TooManyLines,
+            SubmitStatus.PresentationError => Client.Submits.SubmitStatus.PresentationError,
+            SubmitStatus.WrongLanguage => Client.Submits.SubmitStatus.WrongLanguage,
             _ => throw new ArgumentOutOfRangeException(nameof(status), status, null)
         };
     }

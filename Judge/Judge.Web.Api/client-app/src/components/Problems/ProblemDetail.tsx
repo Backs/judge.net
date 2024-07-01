@@ -58,7 +58,7 @@ export const ProblemDetail: React.FC = () => {
                     {user && problem && <SubmitProblem languages={problem.languages} problemId={problem.id}
                                                        onSubmit={(submitId) => setLastSubmitId(submitId)}/>}
                     {user && problem &&
-                        <ProblemSubmits problemId={problem.id} userId={user.id} lastSubmitId={lastSubmitId}/>}
+                        <ProblemSubmits pageSize={5} problemId={problem.id} userId={user.id} lastSubmitId={lastSubmitId}/>}
                 </Flex>
             </>
     );

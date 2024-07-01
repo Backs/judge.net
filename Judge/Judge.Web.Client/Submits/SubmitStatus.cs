@@ -58,5 +58,16 @@ public enum SubmitStatus
     /// Too many lines
     /// </summary>
     /// <remarks>Use for fun contest</remarks>
-    TooManyLines
+    TooManyLines,
+    
+    /// <summary>
+    /// Wrong language
+    /// </summary>
+    /// <remarks>Use for fun contest</remarks>
+    WrongLanguage,
+    
+    /// <summary>
+    /// Presentation error
+    /// </summary>
+    PresentationError
 }

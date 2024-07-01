@@ -2,6 +2,9 @@
 
 export const getColor = (status: SubmitStatus) => {
     switch (status) {
+        case SubmitStatus.CompilationError:
+        case SubmitStatus.ServerError:
+            return "warning";
         case SubmitStatus.Accepted:
             return "success";
         case SubmitStatus.Pending:
@@ -12,6 +15,10 @@ export const getColor = (status: SubmitStatus) => {
 
 export const getStatusText = (status: SubmitStatus) => {
     switch (status) {
+        case SubmitStatus.WrongLanguage:
+            return "Wrong language";
+        case SubmitStatus.PresentationError:
+            return "Presentation error";
         case SubmitStatus.Pending:
             return "Pending...";
         case SubmitStatus.CompilationError:

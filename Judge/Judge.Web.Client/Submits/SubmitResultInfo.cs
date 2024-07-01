@@ -50,8 +50,7 @@ public class SubmitResultInfo
     /// <summary>
     /// Problem id
     /// </summary>
-    [Required]
-    public long ProblemId { get; set; }
+    public long? ProblemId { get; set; }
 
     /// <summary>
     /// Problem name

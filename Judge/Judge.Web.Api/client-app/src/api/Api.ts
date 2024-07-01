@@ -441,7 +441,7 @@ export interface SubmitResultExtendedInfo {
    * Problem id
    * @format int64
    */
-  problemId: number;
+  problemId?: number | null;
   /**
    * Problem name
    * @minLength 1
@@ -509,7 +509,7 @@ export interface SubmitResultInfo {
    * Problem id
    * @format int64
    */
-  problemId: number;
+  problemId?: number | null;
   /**
    * Problem name
    * @minLength 1
@@ -561,6 +561,8 @@ export enum SubmitStatus {
   TooEarly = "TooEarly",
   Unpolite = "Unpolite",
   TooManyLines = "TooManyLines",
+  WrongLanguage = "WrongLanguage",
+  PresentationError = "PresentationError",
 }
 
 /** User information */
