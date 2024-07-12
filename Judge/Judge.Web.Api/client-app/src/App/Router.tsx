@@ -7,6 +7,7 @@ import {Main} from "../components/Main/Main.tsx";
 import {Login} from "../components/Login.tsx";
 import {Register} from "../components/Register.tsx";
 import {Submits} from "../components/Problems/Submits.tsx";
+import {Contests} from "../components/Contests/Contests.tsx";
 
 export const Router: React.FC = () => {
     return (
@@ -18,6 +19,7 @@ export const Router: React.FC = () => {
                 <Route path="/problems" element={<Problems/>}/>
                 <Route path="/problems/:problemId" element={<ProblemDetail/>}/>
                 <Route path="/submits" element={<Submits/>}/>
+                <Route path="/contests" element={<Contests/>}/>
                 <Route path="/notFound" element={<NotFound/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>

@@ -27,13 +27,14 @@ internal sealed class ContestsService : IContestsService
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
         var specification = AllContestsSpecification.Instance;
         var contests = await unitOfWork.Contests.SearchAsync(specification, query.Skip, query.Take);
+        var totalCount = await unitOfWork.Contests.CountAsync(specification);
 
         var items = contests.Select(Convert<Client.ContestInfo>).ToArray();
 
         return new Client.ContestsInfoList
         {
             Items = items,
-            TotalCount = items.Length
+            TotalCount = totalCount
         };
     }
 
@@ -197,7 +198,7 @@ internal sealed class ContestsService : IContestsService
             Id = contest.Id,
             Name = contest.Name,
             StartDate = contest.StartTime,
-            Duration = contest.FinishTime - contest.StartTime,
+            Duration = (contest.FinishTime - contest.StartTime),
             Status = GetStatus(contest)
         };
 

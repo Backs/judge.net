@@ -10,5 +10,6 @@ namespace Judge.Model.Contests
         Task<Contest> TryGetAsync(int id);
         void Add(Contest contest);
         Task<IReadOnlyList<Contest>> SearchAsync(ISpecification<Contest> specification, int skip, int take);
+        Task<int> CountAsync(ISpecification<Contest> specification);
     }
 }

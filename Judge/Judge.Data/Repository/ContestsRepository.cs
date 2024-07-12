@@ -52,4 +52,12 @@ internal sealed class ContestsRepository : IContestsRepository
 
         return await query.ToListAsync();
     }
+
+    public Task<int> CountAsync(ISpecification<Contest> specification)
+    {
+        var query = this.context.Set<Contest>()
+            .Where(specification.IsSatisfiedBy);
+
+        return query.CountAsync();
+    }
 }
