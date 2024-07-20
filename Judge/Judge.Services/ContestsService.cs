@@ -7,6 +7,7 @@ using Judge.Model.Account;
 using Judge.Model.Contests;
 using Judge.Model.Entities;
 using Judge.Services.Converters.Contests;
+using Judge.Web.Client.Problems;
 using Client = Judge.Web.Client.Contests;
 
 namespace Judge.Services;
@@ -156,6 +157,34 @@ internal sealed class ContestsService : IContestsService
         editContest.Id = contest.Id;
 
         return editContest;
+    }
+
+    public async Task<Problem?> GetProblemAsync(int contestId, string label)
+    {
+        await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
+        var problem = await unitOfWork.ContestTasks.TryGetAsync(contestId, label);
+        var languages = await unitOfWork.Languages.GetAllAsync(true);
+
+        if (problem == null)
+        {
+            return null;
+        }
+
+        var task = problem.Task;
+
+        return new Problem
+        {
+            Id = task.Id,
+            Name = task.Name,
+            Statement = task.Statement,
+            MemoryLimitBytes = task.MemoryLimitBytes,
+            TimeLimitMilliseconds = task.TimeLimitMilliseconds,
+            Languages = languages.Select(o => new ProblemLanguage
+            {
+                Id = o.Id,
+                Name = o.Name
+            }).ToArray()
+        };
     }
 
     private static ContestRules Convert(Client.ContestRules rules) =>

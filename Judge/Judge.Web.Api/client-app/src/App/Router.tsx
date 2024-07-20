@@ -8,6 +8,8 @@ import {Login} from "../components/Login.tsx";
 import {Register} from "../components/Register.tsx";
 import {Submits} from "../components/Problems/Submits.tsx";
 import {Contests} from "../components/Contests/Contests.tsx";
+import {ContestDetails} from "../components/Contests/ContestDetails.tsx";
+import {ContestProblemDetail} from "../components/Contests/ContestProblemDetail.tsx";
 
 export const Router: React.FC = () => {
     return (
@@ -20,6 +22,8 @@ export const Router: React.FC = () => {
                 <Route path="/problems/:problemId" element={<ProblemDetail/>}/>
                 <Route path="/submits" element={<Submits/>}/>
                 <Route path="/contests" element={<Contests/>}/>
+                <Route path="/contests/:contestId" element={<ContestDetails/>}/>
+                <Route path="/contests/:contestId/:label" element={<ContestProblemDetail/>}/>
                 <Route path="/notFound" element={<NotFound/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>

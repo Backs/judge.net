@@ -811,6 +811,26 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Contests
+     * @name ContestsDetail2
+     * @summary Get contest problem
+     * @request GET:/api/contests/{contestId}/{label}
+     * @originalName contestsDetail
+     * @duplicate
+     * @secure
+     */
+    contestsDetail2: (contestId: number, label: string, params: RequestParams = {}) =>
+      this.request<Problem, any>({
+        path: `/api/contests/${contestId}/${label}`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Contests
      * @name ContestsResultsDetail
      * @summary Get contest results
      * @request GET:/api/contests/{contestId}/results

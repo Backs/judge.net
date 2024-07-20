@@ -3,6 +3,7 @@ using Judge.Services;
 using Judge.Web.Api.Authorization;
 using Judge.Web.Api.Extensions;
 using Judge.Web.Client.Contests;
+using Judge.Web.Client.Problems;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -52,6 +53,23 @@ public class ContestsController : ControllerBase
             return this.NotFound();
 
         return this.Ok(contest);
+    }
+
+    /// <summary>
+    /// Get contest problem
+    /// </summary>
+    /// <param name="contestId">Contest id</param>
+    /// <param name="label">Problem label</param>
+    [HttpGet("{contestId:int}/{label}")]
+    [ProducesResponseType(typeof(Problem), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetProblem([FromRoute] int contestId, [FromRoute] string label)
+    {
+        var problem = await this.contestsService.GetProblemAsync(contestId, label);
+
+        if (problem == null)
+            return this.NotFound();
+
+        return this.Ok(problem);
     }
 
     /// <summary>
