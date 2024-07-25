@@ -4,7 +4,7 @@ import {judgeApi} from "../../api/JudgeApi.ts";
 import {Pagination, Table, Tag} from "antd";
 import {convertBytesToMegabytes, convertMsToSeconds} from "../../helpers/formatters.ts";
 import {getColor, getStatusText} from "../../helpers/submitStatusHelper.ts";
-import {defaultColumns, extendedColumns} from "../../helpers/submitsColumns.ts";
+import {defaultColumns, extendedColumns, SubmitInfo} from "../../helpers/submitsColumns.ts";
 import {SubmitResultInfo} from "../../api/Api.ts";
 
 export interface ProblemSubmitsProps {
@@ -15,18 +15,6 @@ export interface ProblemSubmitsProps {
     lastSubmitId?: number,
     pageSize: number,
     extended?: boolean,
-}
-
-interface SubmitInfo {
-    key: number,
-    submitDate: string;
-    language: string;
-    status: any;
-    passedTests?: number | null;
-    totalMilliseconds?: string;
-    totalBytes?: string;
-    userName?: string,
-    problem: any,
 }
 
 export const ProblemSubmits: React.FC<ProblemSubmitsProps> = (props) => {

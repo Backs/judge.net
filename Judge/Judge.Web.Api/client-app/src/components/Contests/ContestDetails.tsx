@@ -6,6 +6,7 @@ import {Contest} from "../../api/Api.ts";
 import {Flex, Spin, Table} from "antd";
 import Title from "antd/lib/typography/Title";
 import {CheckOutlined} from "@ant-design/icons";
+import {ColumnType} from "antd/lib/table";
 
 interface ContestTaskItem {
     key: string,
@@ -31,7 +32,7 @@ export const ContestDetails: React.FC = () => {
                 name: <Link to={p.label}>{p.name}</Link>,
                 solved: p.solved && <CheckOutlined/>
             }));
-            
+
             setTasks(tasks);
             setContest(response.data);
 
@@ -43,7 +44,7 @@ export const ContestDetails: React.FC = () => {
         fetchData().catch(e => handleError(e));
     }, [contestId]);
 
-    const columns = [
+    const columns: ColumnType<ContestTaskItem>[] = [
         {
             title: 'Label',
             dataIndex: 'label',
@@ -58,6 +59,7 @@ export const ContestDetails: React.FC = () => {
             title: 'Solved',
             dataIndex: 'solved',
             key: 'key',
+            align: 'center'
         }
     ];
 

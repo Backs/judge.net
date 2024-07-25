@@ -4,6 +4,7 @@ import {Link, useSearchParams} from "react-router-dom";
 import {handleError} from "../../helpers/handleError.ts";
 import {judgeApi} from "../../api/JudgeApi.ts";
 import {CheckOutlined} from '@ant-design/icons';
+import {ColumnType} from "antd/lib/table";
 
 interface ProblemItem {
     key: number,
@@ -41,7 +42,7 @@ export const Problems: React.FC = () => {
         fetchData().catch(e => handleError(e));
     }, [searchParams]);
 
-    const columns = [
+    const columns: ColumnType<ProblemItem>[] = [
         {
             title: 'Id',
             dataIndex: 'key',
@@ -56,6 +57,7 @@ export const Problems: React.FC = () => {
             title: 'Solved',
             dataIndex: 'solved',
             key: 'solved',
+            align: 'center'
         },
     ];
 

@@ -4,6 +4,7 @@ import {judgeApi} from "../../api/JudgeApi.ts";
 import {handleError} from "../../helpers/handleError.ts";
 import {getColor, getStatusTest} from "../../helpers/contestStatusHelper.ts";
 import {Pagination, Table, Tag} from "antd";
+import {ColumnType} from "antd/lib/table";
 
 interface ContestItem {
     key: number;
@@ -46,11 +47,12 @@ export const Contests: React.FC = () => {
         fetchData().catch(e => handleError(e));
     }, [searchParams]);
 
-    const columns = [
+    const columns: ColumnType<ContestItem>[] = [
         {
             title: 'Id',
             dataIndex: 'key',
             key: 'key',
+            align: 'right'
         },
         {
             title: 'Name',
@@ -66,11 +68,13 @@ export const Contests: React.FC = () => {
             title: 'Start date',
             dataIndex: 'startDate',
             key: 'key',
+            align: 'right'
         },
         {
             title: 'Duration',
             dataIndex: 'duration',
             key: 'key',
+            align: 'right'
         }
     ];
 

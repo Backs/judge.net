@@ -1,8 +1,23 @@
-﻿export const defaultColumns = [
+﻿import {ColumnType} from "antd/lib/table";
+
+export interface SubmitInfo {
+    key: number,
+    submitDate: string;
+    language: string;
+    status: any;
+    passedTests?: number | null;
+    totalMilliseconds?: string;
+    totalBytes?: string;
+    userName?: string,
+    problem: any,
+}
+
+export const defaultColumns: ColumnType<SubmitInfo>[] = [
     {
         title: 'Date',
         dataIndex: 'submitDate',
         key: 'submitResultId',
+        align: 'right'
     },
     {
         title: 'Language',
@@ -18,24 +33,28 @@
         title: 'Tests passed',
         dataIndex: 'passedTests',
         key: 'submitResultId',
+        align: 'right'
     },
     {
         title: 'Time, s',
         dataIndex: 'totalMilliseconds',
         key: 'submitResultId',
+        align: 'right'
     },
     {
         title: 'Memory, Mb',
         dataIndex: 'totalBytes',
         key: 'submitResultId',
+        align: 'right'
     }
 ];
 
-export const extendedColumns = [
+export const extendedColumns: ColumnType<SubmitInfo>[] = [
     {
         title: 'Date',
         dataIndex: 'submitDate',
         key: 'submitResultId',
+        align: 'right'
     },
     {
         title: 'User name',
@@ -61,15 +80,18 @@ export const extendedColumns = [
         title: 'Tests passed',
         dataIndex: 'passedTests',
         key: 'submitResultId',
+        align: 'right'
     },
     {
         title: 'Time, s',
         dataIndex: 'totalMilliseconds',
         key: 'submitResultId',
+        align: 'right'
     },
     {
         title: 'Memory, Mb',
         dataIndex: 'totalBytes',
         key: 'submitResultId',
+        align: 'right'
     }
 ];
