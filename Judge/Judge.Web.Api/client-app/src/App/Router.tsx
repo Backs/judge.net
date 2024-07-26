@@ -10,6 +10,7 @@ import {Submits} from "../components/Problems/Submits.tsx";
 import {Contests} from "../components/Contests/Contests.tsx";
 import {ContestDetails} from "../components/Contests/ContestDetails.tsx";
 import {ContestProblemDetail} from "../components/Contests/ContestProblemDetail.tsx";
+import {ContestStandings} from "../components/Contests/ContestStandings.tsx";
 
 export const Router: React.FC = () => {
     return (
@@ -23,6 +24,7 @@ export const Router: React.FC = () => {
                 <Route path="/submits" element={<Submits/>}/>
                 <Route path="/contests" element={<Contests/>}/>
                 <Route path="/contests/:contestId" element={<ContestDetails/>}/>
+                <Route path="/contests/:contestId/standings" element={<ContestStandings/>}/>
                 <Route path="/contests/:contestId/:label" element={<ContestProblemDetail/>}/>
                 <Route path="/notFound" element={<NotFound/>}/>
                 <Route path="*" element={<NotFound/>}/>

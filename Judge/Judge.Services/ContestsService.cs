@@ -89,6 +89,12 @@ internal sealed class ContestsService : IContestsService
         var converter = this.contestConverterFactory.Get(contest.Rules);
         result.Users = converter.Convert(contest, contestTasks, contestResults, users);
 
+        result.Tasks = contestTasks.Values.Select(o => new Client.ContestTask
+        {
+            Name = o.Task.Name,
+            Label = o.TaskName
+        }).ToArray();
+
         return result;
     }
 
