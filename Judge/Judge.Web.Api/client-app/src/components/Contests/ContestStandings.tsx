@@ -5,22 +5,14 @@ import {handleError} from "../../helpers/handleError.ts";
 import {ColumnType} from "antd/lib/table";
 import {Flex, Table} from "antd";
 import Title from "antd/lib/typography/Title";
-import {ContestProblemResult, ContestResult, ContestUserResult} from "../../api/Api.ts";
-
-interface Row {
-    position: number,
-    userName: string,
-    solvedCount: number,
-    points: number,
-
-    [key: string]: any
-}
+import {ContestResult} from "../../api/Api.ts";
+import {convertUserResult, ContestResultRow} from "../../helpers/contestResultHelper.tsx";
 
 export const ContestStandings: React.FC = () => {
     const {contestId} = useParams();
     const [isLoading, setLoading] = useState(true);
-    const [columns, setColumns] = useState<ColumnType<Row>[]>([]);
-    const [results, setResults] = useState<Row[]>([]);
+    const [columns, setColumns] = useState<ColumnType<ContestResultRow>[]>([]);
+    const [results, setResults] = useState<ContestResultRow[]>([]);
     const [contest, setContest] = useState<ContestResult>();
 
     const api = judgeApi();
@@ -31,7 +23,7 @@ export const ContestStandings: React.FC = () => {
 
             setContest(response.data);
 
-            const columns: ColumnType<Row>[] = [
+            const columns: ColumnType<ContestResultRow>[] = [
                 {
                     title: 'Position',
                     dataIndex: 'position',
@@ -49,7 +41,7 @@ export const ContestStandings: React.FC = () => {
                 dataIndex: t.label,
                 key: 'key',
                 align: 'center'
-            } as ColumnType<Row>));
+            } as ColumnType<ContestResultRow>));
 
             columns.push(...problems);
             columns.push(
@@ -69,34 +61,7 @@ export const ContestStandings: React.FC = () => {
 
             document.title = `${response.data.name} - Judge.NET`;
 
-            const formatTaskResult = (taskResult: ContestProblemResult) => {
-                if (taskResult.solved && taskResult.attempts === 1) {
-                    return "+";
-                } else if (taskResult.solved) {
-                    return `+${taskResult.attempts}`;
-                } else {
-                    return `-${taskResult.attempts}`
-                }
-
-            }
-            const convertUserResult = (userResult: ContestUserResult) => {
-                const row: Row =
-                    {
-                        position: userResult.position,
-                        userName: userResult.userName,
-                        solvedCount: userResult.solvedCount,
-                        points: userResult.points
-                    };
-
-                for (let label in userResult.tasks) {
-                    const task = userResult.tasks[label];
-
-                    row[label] = formatTaskResult(task);
-                }
-                return row;
-            }
-
-            const userResults = response.data.users.map(convertUserResult);
+            const userResults = response.data.users.map(t => convertUserResult(response.data.rules, t));
 
             setResults(userResults);
 
@@ -106,16 +71,22 @@ export const ContestStandings: React.FC = () => {
         fetchData().catch(e => handleError(e));
     }, [contestId]);
 
-    return (<div>
+    return (<Flex gap="small" vertical>
         <Title style={{textAlign: 'center'}}>{contest?.name}</Title>
-        <Flex gap="small" vertical>
-            <div style={{textAlign: 'center'}}>
-                Start date: {contest?.startDate}
-            </div>
-            <div style={{textAlign: 'center'}}>
-                Duration: {contest?.duration}
-            </div>
-        </Flex>
-        <Table dataSource={results} columns={columns} pagination={false} loading={isLoading}/>
-    </div>)
+        <div style={{textAlign: 'center'}}>
+            Start date: {contest?.startDate}
+        </div>
+        <div style={{textAlign: 'center'}}>
+            Duration: {contest?.duration}
+        </div>
+        <div style={{textAlign: 'center'}}>
+            <Link to="./..">Problems</Link>
+        </div>
+        <Table
+            dataSource={results}
+            columns={columns}
+            pagination={false}
+            loading={isLoading}
+        />
+    </Flex>)
 };

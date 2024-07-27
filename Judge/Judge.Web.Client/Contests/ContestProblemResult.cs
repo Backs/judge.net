@@ -23,7 +23,7 @@ public class ContestProblemResult
     /// <summary>
     /// Problem solve time
     /// </summary>
-    public TimeSpan? Time { get; set; }
+    public string Time { get; set; }
 
     /// <summary>
     /// Problem solved by user

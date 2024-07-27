@@ -19,13 +19,17 @@ internal sealed class AcmConverter : BaseContestConverter
         {
             points = (contestTaskResult.Attempts - 1) * 20 + (int)elapsedTime.TotalMinutes;
         }
+        
+        var hours = (int)elapsedTime.TotalHours;
+        var minutes = elapsedTime.Minutes;
+        var time =  $"{hours}:{minutes:00}";
 
         return new Client.ContestProblemResult
         {
             Solved = contestTaskResult.Solved,
             Points = points,
             Attempts = contestTaskResult.Attempts,
-            Time = elapsedTime
+            Time = time
         };
     }
 

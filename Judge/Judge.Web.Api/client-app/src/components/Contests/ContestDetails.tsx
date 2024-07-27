@@ -63,17 +63,19 @@ export const ContestDetails: React.FC = () => {
         }
     ];
 
-    return (isLoading ? <Spin size="large"/> : <>
-            <Title style={{textAlign: 'center'}}>{contest?.name}</Title>
+    return (isLoading ? <Spin size="large"/> :
             <Flex gap="small" vertical>
+                <Title style={{textAlign: 'center'}}>{contest?.name}</Title>
                 <div style={{textAlign: 'center'}}>
                     Start date: {contest?.startDate}
                 </div>
                 <div style={{textAlign: 'center'}}>
                     Duration: {contest?.duration}
                 </div>
+                <div style={{textAlign: 'center'}}>
+                    <Link to="standings">Standings</Link>
+                </div>
+                <Table dataSource={tasks} columns={columns} pagination={false} loading={isLoading}/>
             </Flex>
-            <Table dataSource={tasks} columns={columns} pagination={false} loading={isLoading}/>
-        </>
     );
 }

@@ -20,12 +20,16 @@ internal sealed class CheckPointsConverter : BaseContestConverter
         {
             points = (contestTaskResult.Attempts - 1) * 20 + (int)diff.TotalMinutes;
         }
+        
+        var hours = (int)diff.TotalHours;
+        var minutes = diff.Minutes;
+        var time =  $"{hours}:{minutes:00}";
 
         return new Client.ContestProblemResult
         {
             Points = points,
             Attempts = contestTaskResult.Attempts,
-            Time = diff,
+            Time = time,
             Solved = contestTaskResult.Solved
         };
     }
