@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {Contest, ContestStatus, Problem} from "../../api/Api.ts";
 import Title from "antd/lib/typography/Title";
-import {Flex, Spin} from "antd";
+import {Alert, Flex, Spin} from "antd";
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from "rehype-raw";
@@ -46,7 +46,7 @@ export const ContestProblemDetail: React.FC = () => {
     return (
         isLoading ? <Spin size="large"/> :
             <>
-                <Title style={{textAlign: 'center'}}>{contest?.name}: {problem?.name}</Title>
+                <Title style={{textAlign: 'center'}}><Link to="./..">{contest?.name}</Link>: {problem?.name}</Title>
                 <Flex gap="small" vertical>
                     <div style={{textAlign: 'center'}}>
                         Time limit, seconds: {convertMsToSeconds(problem?.timeLimitMilliseconds)}
@@ -58,6 +58,14 @@ export const ContestProblemDetail: React.FC = () => {
                         className={styles.markdown}
                         remarkPlugins={[remarkGfm]}
                         rehypePlugins={[rehypeRaw]}>{problem?.statement}</Markdown>
+
+                    {contest?.status === ContestStatus.Completed &&
+                        <Alert message="Contest is over. You can not submit solutions." type="warning"/>
+                    }
+
+                    {contest?.status === ContestStatus.Planned &&
+                        <Alert message="Contest has not started yet. You can not submit solutions." type="warning"/>
+                    }
 
                     {contest?.status === ContestStatus.Running && user && problem &&
                         <SubmitProblem languages={problem.languages} problemId={problem.id}

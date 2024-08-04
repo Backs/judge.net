@@ -3,10 +3,11 @@ import {Link, useParams} from "react-router-dom";
 import {handleError} from "../../helpers/handleError.ts";
 import {judgeApi} from "../../api/JudgeApi.ts";
 import {Contest} from "../../api/Api.ts";
-import {Flex, Spin, Table} from "antd";
+import {Flex, Spin, Table, Tag} from "antd";
 import Title from "antd/lib/typography/Title";
 import {CheckOutlined} from "@ant-design/icons";
 import {ColumnType} from "antd/lib/table";
+import {getColor, getStatusTest} from "../../helpers/contestStatusHelper.ts";
 
 interface ContestTaskItem {
     key: string,
@@ -72,6 +73,11 @@ export const ContestDetails: React.FC = () => {
                 <div style={{textAlign: 'center'}}>
                     Duration: {contest?.duration}
                 </div>
+                {contest &&
+                    <div style={{textAlign: 'center'}}>
+                        <Tag bordered={false} color={getColor(contest.status)}>{getStatusTest(contest.status)}</Tag>
+                    </div>
+                }
                 <div style={{textAlign: 'center'}}>
                     <Link to="standings">Standings</Link>
                 </div>
