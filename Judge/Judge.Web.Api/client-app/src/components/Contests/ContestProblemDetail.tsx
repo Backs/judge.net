@@ -68,11 +68,12 @@ export const ContestProblemDetail: React.FC = () => {
                     }
 
                     {contest?.status === ContestStatus.Running && user && problem &&
-                        <SubmitProblem languages={problem.languages} problemId={problem.id}
+                        <SubmitProblem languages={problem.languages} contestId={contest.id}
+                                       problemLabel={label}
                                        onSubmit={(submitId) => setLastSubmitId(submitId)}/>}
                     {contest?.status === ContestStatus.Running && user && problem &&
-                        <ProblemSubmits pageSize={5} problemId={problem.id} userId={user.id}
-                                        lastSubmitId={lastSubmitId}/>}
+                        <ProblemSubmits pageSize={5} problemLabel={label} userId={user.id}
+                                        lastSubmitId={lastSubmitId} contestId={contest.id}/>}
                 </Flex>
             </>
     );
