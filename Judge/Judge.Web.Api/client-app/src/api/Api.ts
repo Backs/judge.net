@@ -74,10 +74,7 @@ export interface ContestProblemResult {
    * @format int32
    */
   attempts: number;
-  /**
-   * Problem solve time
-   * @example "00:00:00"
-   */
+  /** Problem solve time */
   time?: string | null;
   /** Problem solved by user */
   solved: boolean;
@@ -459,6 +456,8 @@ export interface SubmitResultExtendedInfo {
   userName: string;
   /** Contest information */
   contestInfo?: SubmitResultContestInfo;
+  /** Compilation error */
+  compileOutput?: string | null;
   /**
    * Source code of solution
    * @minLength 1
@@ -527,6 +526,8 @@ export interface SubmitResultInfo {
   userName: string;
   /** Contest information */
   contestInfo?: SubmitResultContestInfo;
+  /** Compilation error */
+  compileOutput?: string | null;
 }
 
 /** Submit results list */
@@ -949,12 +950,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Submits
-     * @name SubmitsSubmitsList
+     * @name SubmitsList
      * @summary Search submits
-     * @request GET:/api/submits/submits
+     * @request GET:/api/submits
      * @secure
      */
-    submitsSubmitsList: (
+    submitsList: (
       query?: {
         /**
          * Problem id
@@ -991,7 +992,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       params: RequestParams = {},
     ) =>
       this.request<SubmitResultsList, any>({
-        path: `/api/submits/submits`,
+        path: `/api/submits`,
         method: "GET",
         query: query,
         secure: true,
@@ -1003,12 +1004,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Submits
-     * @name SubmitsSubmitsUpdate
+     * @name SubmitsUpdate
      * @summary Submit solution
-     * @request PUT:/api/submits/submits
+     * @request PUT:/api/submits
      * @secure
      */
-    submitsSubmitsUpdate: (
+    submitsUpdate: (
       data: {
         /**
          * File with solution
@@ -1036,7 +1037,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       params: RequestParams = {},
     ) =>
       this.request<SubmitSolutionResult, ProblemDetails>({
-        path: `/api/submits/submits`,
+        path: `/api/submits`,
         method: "PUT",
         body: data,
         secure: true,
@@ -1049,12 +1050,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Submits
-     * @name SubmitsProblemsSubmitsDetail
+     * @name ProblemsSubmitsDetail
      * @summary Get submit results for problem
-     * @request GET:/api/submits/problems/{problemId}/submits
+     * @request GET:/api/problems/{problemId}/submits
      * @secure
      */
-    submitsProblemsSubmitsDetail: (
+    problemsSubmitsDetail: (
       problemId: number,
       query?: {
         /**
@@ -1073,7 +1074,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       params: RequestParams = {},
     ) =>
       this.request<SubmitResultsList, any>({
-        path: `/api/submits/problems/${problemId}/submits`,
+        path: `/api/problems/${problemId}/submits`,
         method: "GET",
         query: query,
         secure: true,
@@ -1085,14 +1086,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Submits
-     * @name SubmitsSubmitsDetail
+     * @name SubmitsDetail
      * @summary Get submit result by id
-     * @request GET:/api/submits/submits/{id}
+     * @request GET:/api/submits/{id}
      * @secure
      */
-    submitsSubmitsDetail: (id: number, params: RequestParams = {}) =>
+    submitsDetail: (id: number, params: RequestParams = {}) =>
       this.request<SubmitResultExtendedInfo, any>({
-        path: `/api/submits/submits/${id}`,
+        path: `/api/submits/${id}`,
         method: "GET",
         secure: true,
         format: "json",
@@ -1103,14 +1104,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Submits
-     * @name SubmitsSubmitsRejudgeCreate
+     * @name SubmitsRejudgeCreate
      * @summary Rejudge submit
-     * @request POST:/api/submits/submits/{id}/rejudge
+     * @request POST:/api/submits/{id}/rejudge
      * @secure
      */
-    submitsSubmitsRejudgeCreate: (id: number, params: RequestParams = {}) =>
+    submitsRejudgeCreate: (id: number, params: RequestParams = {}) =>
       this.request<SubmitResultExtendedInfo, any>({
-        path: `/api/submits/submits/${id}/rejudge`,
+        path: `/api/submits/${id}/rejudge`,
         method: "POST",
         secure: true,
         format: "json",

@@ -15,7 +15,7 @@ namespace Judge.Web.Api.Controllers;
 /// <summary>
 /// Submits
 /// </summary>
-[Route("api/submits")]
+[Route("api")]
 [ApiController]
 public class SubmitsController : ControllerBase
 {

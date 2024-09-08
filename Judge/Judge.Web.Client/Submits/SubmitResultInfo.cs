@@ -72,4 +72,9 @@ public class SubmitResultInfo
 
     /// <inheritdoc cref="Judge.Web.Client.Submits.SubmitResultContestInfo"/>
     public SubmitResultContestInfo? ContestInfo { get; set; }
+
+    /// <summary>
+    /// Compilation error
+    /// </summary>
+    public string? CompileOutput { get; set; }
 }

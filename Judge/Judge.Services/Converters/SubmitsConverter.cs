@@ -36,7 +36,8 @@ internal static class SubmitsConverter
             ProblemName = task.Name,
             Status = Convert(submitResult.Status),
             UserId = user.Id,
-            UserName = user.UserName
+            UserName = user.UserName,
+            CompileOutput = submitResult.Status == SubmitStatus.CompilationError ? submitResult.CompileOutput : null,
         };
 
         if (submitResult.Status != SubmitStatus.CompilationError && submitResult.Status != SubmitStatus.ServerError)

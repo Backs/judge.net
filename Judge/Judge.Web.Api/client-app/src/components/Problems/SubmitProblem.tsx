@@ -62,7 +62,7 @@ export const SubmitProblem: React.FC<SubmitProblemProps> = (props) => {
 
 
         try {
-            const response = await api.api.submitsSubmitsUpdate(data);
+            const response = await api.api.submitsUpdate(data);
             setFileList([]);
             if (props.onSubmit) {
                 props.onSubmit(response.data.id);

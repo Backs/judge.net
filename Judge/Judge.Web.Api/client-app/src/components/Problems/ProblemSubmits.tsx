@@ -1,11 +1,11 @@
 ﻿import React, {useEffect, useState} from "react";
 import {handleError} from "../../helpers/handleError.ts";
 import {judgeApi} from "../../api/JudgeApi.ts";
-import {Pagination, Table, Tag} from "antd";
+import {Modal, Pagination, Table, Tag} from "antd";
 import {convertBytesToMegabytes, convertMsToSeconds} from "../../helpers/formatters.ts";
 import {getColor, getStatusText} from "../../helpers/submitStatusHelper.ts";
 import {defaultColumns, extendedColumns, SubmitInfo} from "../../helpers/submitsColumns.ts";
-import {SubmitResultInfo} from "../../api/Api.ts";
+import {SubmitResultInfo, SubmitStatus} from "../../api/Api.ts";
 
 export interface ProblemSubmitsProps {
     problemId?: number,
@@ -31,6 +31,24 @@ export const ProblemSubmits: React.FC<ProblemSubmitsProps> = (props) => {
                 href={`contests/${submit.contestInfo.contestId}/${submit.contestInfo.label}`}>{submit.problemName}</a>
         }
         return <a href={`problems/${submit.problemId}`}>{submit.problemName}</a>
+    }
+
+    const getStatus = (p: SubmitResultInfo): any => {
+        if (p.status == SubmitStatus.CompilationError && p.compileOutput) {
+            return <span>
+                <Tag bordered={false} color={getColor(p.status)}>{getStatusText(p.status)}</Tag>
+                <Tag color="blue" style={{cursor: 'pointer'}} onClick={_ => {
+                    Modal.info({
+                        title: 'Compilation errors',
+                        content: p.compileOutput,
+                        closable: true,
+                        width: "800px",
+                        style: {whiteSpace: "pre-wrap"}
+                    });
+                }}>Show error</Tag>
+            </span>;
+        }
+        return <Tag bordered={false} color={getColor(p.status)}>{getStatusText(p.status)}</Tag>;
     }
 
     useEffect(() => {
@@ -62,13 +80,13 @@ export const ProblemSubmits: React.FC<ProblemSubmitsProps> = (props) => {
 
         const fetchData = async () => {
             setLoading(true);
-            const response = await api.api.submitsSubmitsList(data);
+            const response = await api.api.submitsList(data);
 
             const results: SubmitInfo[] = response.data.items.map(p => ({
                 key: p.submitResultId,
                 language: p.language,
                 passedTests: p.passedTests,
-                status: <Tag bordered={false} color={getColor(p.status)}>{getStatusText(p.status)}</Tag>,
+                status: getStatus(p),
                 submitDate: p.submitDate,
                 totalBytes: convertBytesToMegabytes(p.totalBytes),
                 totalMilliseconds: convertMsToSeconds(p.totalMilliseconds),
