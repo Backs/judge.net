@@ -33,6 +33,10 @@ export const ProblemSubmits: React.FC<ProblemSubmitsProps> = (props) => {
         return <a href={`problems/${submit.problemId}`}>{submit.problemName}</a>
     }
 
+    const getSubmitResultLink = (submit: SubmitResultInfo): any => {
+        return <a href={`submit-results/${submit.submitResultId}`}>{submit.submitDate}</a>
+    }
+
     const getStatus = (p: SubmitResultInfo): any => {
         if (p.status == SubmitStatus.CompilationError && p.compileOutput) {
             return <span>
@@ -87,7 +91,7 @@ export const ProblemSubmits: React.FC<ProblemSubmitsProps> = (props) => {
                 language: p.language,
                 passedTests: p.passedTests,
                 status: getStatus(p),
-                submitDate: p.submitDate,
+                submitDate: getSubmitResultLink(p),
                 totalBytes: convertBytesToMegabytes(p.totalBytes),
                 totalMilliseconds: convertMsToSeconds(p.totalMilliseconds),
                 userName: p.userName,

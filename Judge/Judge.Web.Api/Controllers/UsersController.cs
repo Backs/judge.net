@@ -12,7 +12,6 @@ namespace Judge.Web.Api.Controllers;
 /// <summary>
 /// Users 
 /// </summary>
-[Authorize]
 [Route("api/users")]
 [ApiController]
 public class UsersController : ControllerBase
@@ -29,6 +28,7 @@ public class UsersController : ControllerBase
     /// <summary>
     /// Get current user information
     /// </summary>
+    [Authorize]
     [HttpGet("me")]
     [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetCurrentUser()
