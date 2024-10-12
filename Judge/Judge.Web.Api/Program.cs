@@ -64,6 +64,8 @@ internal static class Program
                 }
             });
         });
+
+        builder.Services.AddHttpContextAccessor();
         builder.Services.AddServices(builder.Configuration["AppSettings:DatabaseConnectionString"]);
         builder.Services.AddTransient<ErrorHandlerMiddleware>();
 

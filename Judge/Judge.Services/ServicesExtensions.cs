@@ -1,5 +1,6 @@
 ﻿using Judge.Data;
 using Judge.Model.Entities;
+using Judge.Services.Converters;
 using Judge.Services.Converters.Contests;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,5 +19,6 @@ public static class ServicesExtensions
         services.AddSingleton<ISubmitsService, SubmitsService>();
         services.AddSingleton<IContestsService, ContestsService>();
         services.AddSingleton<IContestConverterFactory, ContestConverterFactory>();
+        services.AddSingleton<ISubmitsConverter, SubmitsConverter>();
     }
 }

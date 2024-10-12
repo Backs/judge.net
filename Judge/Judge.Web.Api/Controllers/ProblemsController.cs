@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Judge.Services;
 using Judge.Web.Api.Authorization;
-using Judge.Web.Api.Extensions;
 using Judge.Web.Client.Problems;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;

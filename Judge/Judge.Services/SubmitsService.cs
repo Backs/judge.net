@@ -11,7 +11,6 @@ using Judge.Model.Contests;
 using Judge.Model.Entities;
 using Judge.Model.SubmitSolution;
 using Judge.Services.Converters;
-using Judge.Web.Client.Submits;
 using Client = Judge.Web.Client;
 using SubmitsQuery = Judge.Services.Model.SubmitsQuery;
 
@@ -21,13 +20,15 @@ internal sealed class SubmitsService : ISubmitsService
 {
     private static readonly Regex WhitespaceRegex = new Regex(@"\s+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
     private readonly IUnitOfWorkFactory unitOfWorkFactory;
+    private readonly ISubmitsConverter submitsConverter;
 
-    public SubmitsService(IUnitOfWorkFactory unitOfWorkFactory)
+    public SubmitsService(IUnitOfWorkFactory unitOfWorkFactory, ISubmitsConverter submitsConverter)
     {
         this.unitOfWorkFactory = unitOfWorkFactory;
+        this.submitsConverter = submitsConverter;
     }
 
-    public async Task<Client.Submits.SubmitResultsList> SearchAsync(SubmitsQuery query)
+    public async Task<Client.Submits.SubmitResultsList> SearchAsync(SubmitsQuery query, long? currentUserId)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
 
@@ -57,10 +58,10 @@ internal sealed class SubmitsService : ISubmitsService
 
         var contestTasks = await unitOfWork.ContestTasks.SearchAsync(contestIds);
 
-        var items = submitResults.Select(o =>
-                SubmitsConverter.Convert<Client.Submits.SubmitResultInfo>(o, languages[o.Submit.LanguageId],
-                    tasks[o.Submit.ProblemId],
-                    users[o.Submit.UserId], contestTasks))
+        var items = submitResults.Select(o => this.submitsConverter.Convert<Client.Submits.SubmitResultInfo>(o,
+                languages[o.Submit.LanguageId],
+                tasks[o.Submit.ProblemId],
+                users[o.Submit.UserId], contestTasks))
             .ToArray();
 
         var totalCount = await unitOfWork.SubmitResults.CountAsync(specification);
@@ -80,7 +81,8 @@ internal sealed class SubmitsService : ISubmitsService
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
 
-    public async Task<long> SaveAsync(SubmitSolution submitSolution, SubmitUserInfo userInfo)
+    public async Task<long> SaveAsync(Client.Submits.SubmitSolution submitSolution,
+        Client.Submits.SubmitUserInfo userInfo)
     {
         if (submitSolution.ContestId != null)
         {
@@ -90,7 +92,7 @@ internal sealed class SubmitsService : ISubmitsService
         return await this.SaveSubmitAsync(submitSolution, userInfo);
     }
 
-    public async Task<Client.Submits.SubmitResultExtendedInfo?> GetResultAsync(long id)
+    public async Task<Client.Submits.SubmitResultExtendedInfo?> GetResultAsync(long id, long? currentUserId)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
         var submitResult = await unitOfWork.SubmitResults.GetAsync(id);
@@ -109,10 +111,11 @@ internal sealed class SubmitsService : ISubmitsService
             _ => Array.Empty<ContestTask>()
         };
 
-        var result = SubmitsConverter.Convert<Client.Submits.SubmitResultExtendedInfo>(submitResult,
+        var result = this.submitsConverter.Convert<Client.Submits.SubmitResultExtendedInfo>(submitResult,
             languages[submitResult.Submit.LanguageId],
             task,
-            user!, contestTasks);
+            user!,
+            contestTasks);
 
         result.SourceCode = submitResult.Submit.SourceCode;
         result.CompilerOutput = submitResult.CompileOutput;
@@ -122,7 +125,7 @@ internal sealed class SubmitsService : ISubmitsService
         return result;
     }
 
-    public async Task<Client.Submits.SubmitResultExtendedInfo?> RejudgeAsync(long id)
+    public async Task<Client.Submits.SubmitResultExtendedInfo?> RejudgeAsync(long id, long? currentUserId)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
         var submitResult = await unitOfWork.SubmitResults.GetAsync(id);
@@ -135,7 +138,7 @@ internal sealed class SubmitsService : ISubmitsService
 
         await unitOfWork.CommitAsync();
 
-        return await this.GetResultAsync(newSubmitResult.Id);
+        return await this.GetResultAsync(newSubmitResult.Id, currentUserId);
     }
 
     private async Task<long> SaveSubmitAsync(Client.Submits.SubmitSolution submitSolution,

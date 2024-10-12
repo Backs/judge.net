@@ -1,8 +1,8 @@
 ﻿using System.Security.Claims;
 
-namespace Judge.Web.Api.Extensions;
+namespace Judge.Services;
 
-internal static class ClaimsPrincipalExtensions
+public static class ClaimsPrincipalExtensions
 {
     public static long GetUserId(this ClaimsPrincipal claimsPrincipal)
     {

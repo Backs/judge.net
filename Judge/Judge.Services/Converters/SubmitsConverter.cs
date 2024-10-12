@@ -1,19 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using Judge.Model.CheckSolution;
 using Judge.Model.Contests;
 using Judge.Model.Entities;
 using Judge.Model.SubmitSolution;
+using Microsoft.AspNetCore.Http;
 using SubmitResult = Judge.Model.SubmitSolution.SubmitResult;
 using Client = Judge.Web.Client;
 using SubmitStatus = Judge.Model.SubmitSolution.SubmitStatus;
 
 namespace Judge.Services.Converters;
 
-internal static class SubmitsConverter
+internal sealed class SubmitsConverter : ISubmitsConverter
 {
-    public static T Convert<T>(
+    private readonly IHttpContextAccessor contextAccessor;
+
+    public SubmitsConverter(IHttpContextAccessor contextAccessor)
+    {
+        this.contextAccessor = contextAccessor;
+    }
+
+
+    public T Convert<T>(
         SubmitResult submitResult,
         Language language,
         Task task,
@@ -28,6 +38,10 @@ internal static class SubmitsConverter
             ? Math.Min(submitResult.TotalMilliseconds.Value, task.TimeLimitMilliseconds)
             : (int?)null;
 
+        var currentUser = contextAccessor.HttpContext.User;
+        var currentUserId = currentUser?.TryGetUserId();
+        var isAdmin = currentUser?.HasClaim(ClaimTypes.Role, "admin") == true;
+
         var submitResultInfo = new T
         {
             SubmitResultId = submitResult.Id,
@@ -37,7 +51,10 @@ internal static class SubmitsConverter
             Status = Convert(submitResult.Status),
             UserId = user.Id,
             UserName = user.UserName,
-            CompileOutput = submitResult.Status == SubmitStatus.CompilationError ? submitResult.CompileOutput : null,
+            CompileOutput = (isAdmin || submitResult.Submit.UserId == currentUserId) &&
+                            submitResult.Status == SubmitStatus.CompilationError
+                ? submitResult.CompileOutput
+                : null,
         };
 
         if (submitResult.Status != SubmitStatus.CompilationError && submitResult.Status != SubmitStatus.ServerError)

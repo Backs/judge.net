@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Judge.Services;
 using Judge.Services.Model;
 using Judge.Web.Api.Authorization;
-using Judge.Web.Api.Extensions;
 using Judge.Web.Client.Submits;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -44,7 +43,7 @@ public class SubmitsController : ControllerBase
             TaskLabel = query.ProblemLabel,
             UserId = query.UserId
         };
-        var result = await this.submitsService.SearchAsync(submitsQuery);
+        var result = await this.submitsService.SearchAsync(submitsQuery, this.User.TryGetUserId());
 
         return this.Ok(result);
     }
@@ -73,7 +72,7 @@ public class SubmitsController : ControllerBase
             Take = take
         };
 
-        var result = await this.submitsService.SearchAsync(query);
+        var result = await this.submitsService.SearchAsync(query, this.User.TryGetUserId());
 
         return this.Ok(result);
     }
@@ -110,7 +109,7 @@ public class SubmitsController : ControllerBase
     [ProducesResponseType(typeof(SubmitResultExtendedInfo), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetSubmit([FromRoute] long id)
     {
-        var result = await this.submitsService.GetResultAsync(id);
+        var result = await this.submitsService.GetResultAsync(id, this.User.TryGetUserId());
         if (result == null)
             return this.NotFound();
 
@@ -126,7 +125,7 @@ public class SubmitsController : ControllerBase
     [ProducesResponseType(typeof(SubmitResultExtendedInfo), StatusCodes.Status200OK)]
     public async Task<IActionResult> Rejudge([FromRoute] long id)
     {
-        var result = await this.submitsService.RejudgeAsync(id);
+        var result = await this.submitsService.RejudgeAsync(id, this.User.TryGetUserId());
         if (result == null)
             return this.NotFound();
 

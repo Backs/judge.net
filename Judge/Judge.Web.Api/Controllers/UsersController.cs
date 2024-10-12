@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Judge.Services;
 using Judge.Services.Model;
-using Judge.Web.Api.Extensions;
 using Judge.Web.Client.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
