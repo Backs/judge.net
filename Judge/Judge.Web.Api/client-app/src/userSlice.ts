@@ -1,8 +1,8 @@
 ﻿import {createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {User} from "./api/Api.ts";
+import {CurrentUser} from "./api/Api.ts";
 
 export interface UserState {
-    user: User | null
+    user: CurrentUser | null
 }
 
 const initialState: UserState = {
@@ -13,7 +13,7 @@ export const userSlice = createSlice({
     name: 'user',
     initialState: initialState,
     reducers: {
-        setUser: (state, action: PayloadAction<User>) => {
+        setUser: (state, action: PayloadAction<CurrentUser>) => {
             state.user = action.payload
         },
         removeUser: (state) => {

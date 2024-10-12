@@ -5,6 +5,6 @@ namespace Judge.Services;
 
 public interface IUsersService
 {
-    Task<User?> GetUserAsync(long id);
+    Task<CurrentUser?> GetUserAsync(long id);
     Task<UsersList> SearchAsync(UsersQuery query);
 }

@@ -199,6 +199,26 @@ export interface CreateUser {
   password: string;
 }
 
+export interface CurrentUser {
+  /**
+   * User id
+   * @format int64
+   */
+  id: number;
+  /**
+   * User login
+   * @minLength 1
+   */
+  login: string;
+  /**
+   * User email
+   * @minLength 1
+   */
+  email: string;
+  /** User roles */
+  roles: string[];
+}
+
 /** Creates or edit contest */
 export interface EditContest {
   /**
@@ -675,6 +695,9 @@ export class HttpClient<SecurityDataType = unknown> {
   }
 
   protected createFormData(input: Record<string, unknown>): FormData {
+    if (input instanceof FormData) {
+      return input;
+    }
     return Object.keys(input || {}).reduce((formData, key) => {
       const property = input[key];
       const propertyContent: any[] = property instanceof Array ? property : [property];
@@ -717,7 +740,7 @@ export class HttpClient<SecurityDataType = unknown> {
       ...requestParams,
       headers: {
         ...(requestParams.headers || {}),
-        ...(type && type !== ContentType.FormData ? { "Content-Type": type } : {}),
+        ...(type ? { "Content-Type": type } : {}),
       },
       params: query,
       responseType: responseFormat,
@@ -1128,7 +1151,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     usersMeList: (params: RequestParams = {}) =>
-      this.request<User, any>({
+      this.request<CurrentUser, any>({
         path: `/api/users/me`,
         method: "GET",
         secure: true,

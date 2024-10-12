@@ -15,7 +15,7 @@ internal sealed class UsersService : IUsersService
         this.unitOfWorkFactory = unitOfWorkFactory;
     }
 
-    public async Task<User?> GetUserAsync(long id)
+    public async Task<CurrentUser?> GetUserAsync(long id)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
         var user = await unitOfWork.Users.GetAsync(id);
@@ -23,11 +23,12 @@ internal sealed class UsersService : IUsersService
         if (user == null)
             return null;
 
-        return new User
+        return new CurrentUser
         {
             Id = user.Id,
             Email = user.Email,
-            Login = user.UserName
+            Login = user.UserName,
+            Roles = user.UserRoles.Select(o => o.RoleName).ToArray()
         };
     }
 

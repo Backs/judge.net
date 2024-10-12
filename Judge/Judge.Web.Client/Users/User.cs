@@ -5,7 +5,7 @@ namespace Judge.Web.Client.Users;
 /// <summary>
 /// User information
 /// </summary>
-public sealed class User
+public class User
 {
     /// <summary>
     /// User id

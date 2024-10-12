@@ -30,7 +30,7 @@ public class UsersController : ControllerBase
     /// </summary>
     [Authorize]
     [HttpGet("me")]
-    [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CurrentUser), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetCurrentUser()
     {
         var user = await this.usersService.GetUserAsync(this.User.GetUserId());

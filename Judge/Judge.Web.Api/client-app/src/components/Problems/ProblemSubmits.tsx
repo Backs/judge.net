@@ -34,7 +34,7 @@ export const ProblemSubmits: React.FC<ProblemSubmitsProps> = (props) => {
     }
 
     const getSubmitResultLink = (submit: SubmitResultInfo): any => {
-        return <a href={`submit-results/${submit.submitResultId}`}>{submit.submitDate}</a>
+        return <a href={`/submit-results/${submit.submitResultId}`}>{submit.submitDate}</a>
     }
 
     const getStatus = (p: SubmitResultInfo): any => {
