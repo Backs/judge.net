@@ -6,6 +6,8 @@ import {convertBytesToMegabytes, convertMsToSeconds} from "../../helpers/formatt
 import {getColor, getStatusText} from "../../helpers/submitStatusHelper.ts";
 import {defaultColumns, extendedColumns, SubmitInfo} from "../../helpers/submitsColumns.ts";
 import {SubmitResultInfo, SubmitStatus} from "../../api/Api.ts";
+import {UserState} from "../../userSlice.ts";
+import {useSelector} from "react-redux";
 
 export interface ProblemSubmitsProps {
     problemId?: number,
@@ -25,6 +27,9 @@ export const ProblemSubmits: React.FC<ProblemSubmitsProps> = (props) => {
     const [isLoading, setLoading] = useState<boolean>(true);
     const [pageSize, setPageSize] = useState<number>(props.pageSize);
 
+    const {user}: UserState = useSelector((state: any) => state.user)
+    const isAdmin = user?.roles.includes("admin") || false;
+
     const getProblemLink = (submit: SubmitResultInfo): any => {
         if (submit.contestInfo) {
             return <a
@@ -34,7 +39,10 @@ export const ProblemSubmits: React.FC<ProblemSubmitsProps> = (props) => {
     }
 
     const getSubmitResultLink = (submit: SubmitResultInfo): any => {
-        return <a href={`/submit-results/${submit.submitResultId}`}>{submit.submitDate}</a>
+        if (isAdmin) {
+            return <a href={`/submit-results/${submit.submitResultId}`}>{submit.submitDate}</a>
+        }
+        return submit.submitDate;
     }
 
     const getStatus = (p: SubmitResultInfo): any => {
@@ -109,7 +117,7 @@ export const ProblemSubmits: React.FC<ProblemSubmitsProps> = (props) => {
             clearInterval(interval);
         }
 
-    }, [pageNumber, props.lastSubmitId, pageSize]);
+    }, [pageNumber, props.lastSubmitId, pageSize, user]);
 
     const columns = props.extended ? extendedColumns : defaultColumns;
 

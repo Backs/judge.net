@@ -29,6 +29,20 @@ const App: React.FC = () => {
         });
     }, []);
 
+    const logout = () => {
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+    }
+
+    const subMenu = [];
+    if (user?.roles.includes("admin")) {
+        subMenu.push({label: (<a href="/administration">Administration</a>), key: 'Administration'});
+    }
+    if (user?.login) {
+        subMenu.push({label: 'Logout', key: 'Logout', onClick: logout});
+    }
+
+
     type MenuItem = Required<MenuProps>['items'][number];
 
     const items: MenuItem[] = [
@@ -50,7 +64,8 @@ const App: React.FC = () => {
         },
         {
             label: user?.login || (<a href="/login">Login</a>),
-            key: 'login'
+            key: 'login',
+            children: subMenu,
         }
     ];
 
