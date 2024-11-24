@@ -307,6 +307,49 @@ export interface EditProblem {
   idOpened: boolean;
 }
 
+/** Language */
+export interface Language {
+  /**
+   * Id
+   * @format int32
+   */
+  id: number;
+  /**
+   * Language name
+   * @minLength 1
+   */
+  name: string;
+  /**
+   * Language description
+   * @minLength 1
+   */
+  description: string;
+  /** Is language compilable */
+  isCompilable: boolean;
+  /** Compiler path */
+  compilerPath?: string | null;
+  /** Compiler options template */
+  compilerOptionsTemplate?: string | null;
+  /**
+   * Executable file template
+   * @minLength 1
+   */
+  outputFileTemplate: string;
+  /**
+   * Run string template
+   * @minLength 1
+   */
+  runStringTemplate: string;
+  /** Is hidden */
+  isHidden: boolean;
+}
+
+/** Language list */
+export interface LanguageList {
+  /** Languages */
+  items: Language[];
+}
+
 /** Login information */
 export interface Login {
   /**
@@ -756,6 +799,23 @@ export class HttpClient<SecurityDataType = unknown> {
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
   api = {
+    /**
+     * No description
+     *
+     * @tags Admin
+     * @name AdminLanguagesList
+     * @request GET:/api/admin/languages
+     * @secure
+     */
+    adminLanguagesList: (params: RequestParams = {}) =>
+      this.request<LanguageList, any>({
+        path: `/api/admin/languages`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
     /**
      * No description
      *
