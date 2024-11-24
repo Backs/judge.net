@@ -14,6 +14,7 @@ import {ContestStandings} from "../components/Contests/ContestStandings.tsx";
 import {SubmitResultInfo} from "../components/Problems/SubmitResultInfo.tsx";
 import {Administration} from "../components/Administration/Administration.tsx";
 import {Languages} from "../components/Administration/Languages.tsx";
+import {ProblemEdit} from "../components/Administration/ProblemEdit.tsx";
 
 export const Router: React.FC = () => {
     return (
@@ -24,6 +25,7 @@ export const Router: React.FC = () => {
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/problems" element={<Problems/>}/>
                 <Route path="/problems/:problemId" element={<ProblemDetail/>}/>
+                <Route path="/problems/:problemId/edit" element={<ProblemEdit/>}/>
                 <Route path="/submits" element={<Submits/>}/>
                 <Route path="/submit-results/:submitResultId" element={<SubmitResultInfo/>}/>
                 <Route path="/contests" element={<Contests/>}/>

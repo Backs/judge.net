@@ -77,6 +77,26 @@ internal sealed class ProblemsService : IProblemsService
         };
     }
 
+    public async Task<Client.EditProblem?> GetEditableAsync(long id)
+    {
+        await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork(false);
+
+        var task = await unitOfWork.Tasks.GetAsync(id);
+        if (task == null)
+            return null;
+
+        return new Client.EditProblem
+        {
+            Id = task.Id,
+            Name = task.Name,
+            Statement = task.Statement,
+            MemoryLimitBytes = task.MemoryLimitBytes,
+            TestsFolder = task.TestsFolder,
+            IsOpened = task.IsOpened,
+            TimeLimitMilliseconds = task.TimeLimitMilliseconds
+        };
+    }
+
     public async Task<Client.EditProblem?> SaveAsync(Client.EditProblem problem)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork(false);
@@ -96,7 +116,7 @@ internal sealed class ProblemsService : IProblemsService
         task.Statement = problem.Statement;
         task.MemoryLimitBytes = problem.MemoryLimitBytes;
         task.TimeLimitMilliseconds = problem.TimeLimitMilliseconds;
-        task.IsOpened = problem.IdOpened;
+        task.IsOpened = problem.IsOpened;
         task.TestsFolder = problem.TestsFolder;
 
         if (problem.Id == null)
@@ -111,7 +131,7 @@ internal sealed class ProblemsService : IProblemsService
             Statement = task.Statement,
             MemoryLimitBytes = task.MemoryLimitBytes,
             TestsFolder = task.TestsFolder,
-            IdOpened = task.IsOpened,
+            IsOpened = task.IsOpened,
             TimeLimitMilliseconds = task.TimeLimitMilliseconds
         };
     }

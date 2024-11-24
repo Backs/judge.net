@@ -58,13 +58,31 @@ public class ProblemsController : ControllerBase
     /// <summary>
     /// Crate or edit new problem
     /// </summary>
-    /// <param name="problem"></param>
+    /// <param name="problem">Problem to save</param>
     [Authorize(AuthorizationPolicies.AdminPolicy)]
     [HttpPut]
     [ProducesResponseType(typeof(EditProblem), StatusCodes.Status200OK)]
     public async Task<IActionResult> Save([FromBody] EditProblem problem)
     {
         var result = await this.problemsService.SaveAsync(problem);
+
+        if (result == null)
+            return this.NotFound();
+
+        return this.Ok(result);
+    }
+
+    /// <summary>
+    /// Get editable problem by id
+    /// </summary>
+    /// <param name="id">Problem id</param>
+    /// <returns></returns>
+    [Authorize(AuthorizationPolicies.AdminPolicy)]
+    [HttpGet("{id:long}/editable")]
+    [ProducesResponseType(typeof(EditProblem), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetEditable([FromRoute] long id)
+    {
+        var result = await this.problemsService.GetEditableAsync(id);
 
         if (result == null)
             return this.NotFound();

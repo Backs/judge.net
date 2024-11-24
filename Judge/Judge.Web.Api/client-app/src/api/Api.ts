@@ -304,7 +304,7 @@ export interface EditProblem {
    */
   testsFolder: string;
   /** Is problem opened in archive */
-  idOpened: boolean;
+  isOpened: boolean;
 }
 
 /** Language */
@@ -1023,6 +1023,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     problemsDetail: (id: number, params: RequestParams = {}) =>
       this.request<Problem, any>({
         path: `/api/problems/${id}`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Problems
+     * @name ProblemsEditableDetail
+     * @summary Get editable problem by id
+     * @request GET:/api/problems/{id}/editable
+     * @secure
+     */
+    problemsEditableDetail: (id: number, params: RequestParams = {}) =>
+      this.request<EditProblem, any>({
+        path: `/api/problems/${id}/editable`,
         method: "GET",
         secure: true,
         format: "json",
