@@ -12,6 +12,8 @@ import {ContestDetails} from "../components/Contests/ContestDetails.tsx";
 import {ContestProblemDetail} from "../components/Contests/ContestProblemDetail.tsx";
 import {ContestStandings} from "../components/Contests/ContestStandings.tsx";
 import {SubmitResultInfo} from "../components/Problems/SubmitResultInfo.tsx";
+import {Administration} from "../components/Administration/Administration.tsx";
+import {Languages} from "../components/Administration/Languages.tsx";
 
 export const Router: React.FC = () => {
     return (
@@ -28,6 +30,8 @@ export const Router: React.FC = () => {
                 <Route path="/contests/:contestId" element={<ContestDetails/>}/>
                 <Route path="/contests/:contestId/standings" element={<ContestStandings/>}/>
                 <Route path="/contests/:contestId/:label" element={<ContestProblemDetail/>}/>
+                <Route path="/administration" element={<Administration/>}/>
+                <Route path="/administration/languages" element={<Languages/>}/>
                 <Route path="/notFound" element={<NotFound/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>
