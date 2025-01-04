@@ -9,6 +9,32 @@
  * ---------------------------------------------------------------
  */
 
+export interface AllProblemInfo {
+  /**
+   * Problem id
+   * @format int64
+   */
+  id: number;
+  /**
+   * Problem name
+   * @minLength 1
+   */
+  name: string;
+  /** Is problem opened for everyone */
+  isOpened: boolean;
+}
+
+/** Problem list */
+export interface AllProblemsList {
+  /** Problems info */
+  items: AllProblemInfo[];
+  /**
+   * Total count of problems
+   * @format int32
+   */
+  totalCount: number;
+}
+
 /** Contest */
 export interface Contest {
   /**
@@ -811,6 +837,38 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<LanguageList, any>({
         path: `/api/admin/languages`,
         method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Admin
+     * @name AdminProblemsList
+     * @request GET:/api/admin/problems
+     * @secure
+     */
+    adminProblemsList: (
+      query?: {
+        /**
+         * @format int32
+         * @default 0
+         */
+        skip?: number;
+        /**
+         * @format int32
+         * @default 100
+         */
+        take?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<AllProblemsList, any>({
+        path: `/api/admin/problems`,
+        method: "GET",
+        query: query,
         secure: true,
         format: "json",
         ...params,

@@ -5,16 +5,25 @@ import {UserState} from "../../userSlice.ts";
 import {useSelector} from "react-redux";
 import {handleError} from "../../helpers/handleError.ts";
 import {judgeApi} from "../../api/JudgeApi.ts";
-import {Form, Input, Spin, Switch} from "antd";
+import {Button, Form, Input, Spin, Switch} from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import Markdown from "react-markdown";
 import styles from "../../styles/Markdown.module.css";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
+import {problemTemplate} from "../../helpers/problemsHelper.ts";
 
 export const ProblemEdit: React.FC = () => {
     const {problemId} = useParams();
-    const [problem, setProblem] = useState<EditProblem>();
+    const [problem, setProblem] = useState<EditProblem>({
+        isOpened: false,
+        memoryLimitBytes: 104857600,
+        name: "",
+        statement: problemTemplate,
+        testsFolder: "",
+        timeLimitMilliseconds: 1000,
+        id: null
+    });
     const [isLoading, setLoading] = useState(true);
     const navigate = useNavigate();
     const api = judgeApi();
@@ -29,14 +38,29 @@ export const ProblemEdit: React.FC = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await api.api.problemsEditableDetail(Number(problemId));
-            setProblem(response.data);
-            form.setFieldsValue(response.data)
+            if (problemId) {
+                const response = await api.api.problemsEditableDetail(Number(problemId));
+                setProblem(response.data);
+                form.setFieldsValue(response.data);
+            } else {
+                form.setFieldsValue(problem);
+            }
             setLoading(false);
         }
 
         fetchData().catch(e => handleError(e));
     }, [problemId, form]);
+
+    const saveProblem = async () => {
+        setLoading(true);
+
+        const response = await api.api.problemsUpdate(problem)
+
+        navigate(`/problems/${response.data.id}/edit`, {replace: true});
+
+        setLoading(false);
+    }
+
 
     return (
         isLoading ? <Spin size="large"/> :
@@ -64,7 +88,10 @@ export const ProblemEdit: React.FC = () => {
                         <Switch/>
                     </Form.Item>
                     <Form.Item label="Statement" name="statement">
-                        <TextArea rows={20}/>
+                        <TextArea rows={20} style={{fontFamily: 'monospace'}}/>
+                    </Form.Item>
+                    <Form.Item>
+                        <Button type="primary" onClick={saveProblem}>Save</Button>
                     </Form.Item>
                 </Form>
                 <Markdown

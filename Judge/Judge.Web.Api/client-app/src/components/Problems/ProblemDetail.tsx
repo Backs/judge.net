@@ -14,6 +14,7 @@ import {useSelector} from "react-redux";
 import {UserState} from "../../userSlice.ts";
 import {SubmitProblem} from "./SubmitProblem.tsx";
 import {ProblemSubmits} from "./ProblemSubmits.tsx";
+import {EditOutlined} from "@ant-design/icons";
 
 export const ProblemDetail: React.FC = () => {
     const {problemId} = useParams();
@@ -23,6 +24,7 @@ export const ProblemDetail: React.FC = () => {
     const api = judgeApi();
 
     const {user}: UserState = useSelector((state: any) => state.user)
+    const isAdmin = user?.roles.includes("admin") || false;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -42,7 +44,7 @@ export const ProblemDetail: React.FC = () => {
     return (
         isLoading ? <Spin size="large"/> :
             <>
-                <Title style={{textAlign: 'center'}}>{problem?.name}</Title>
+                <Title style={{textAlign: 'center'}}>{problem?.name} {isAdmin && <a href={`${problemId}/edit`}><EditOutlined /></a>}</Title>
                 <Flex gap="small" vertical>
                     <div style={{textAlign: 'center'}}>
                         Time limit, seconds: {convertMsToSeconds(problem?.timeLimitMilliseconds)}

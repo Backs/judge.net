@@ -16,11 +16,13 @@ namespace Judge.Web.Api.Controllers;
 [ApiController]
 public class AdminController : ControllerBase
 {
-    private ILanguageService languageService;
+    private readonly ILanguageService languageService;
+    private readonly IProblemsService problemsService;
 
-    public AdminController(ILanguageService languageService)
+    public AdminController(ILanguageService languageService, IProblemsService problemsService)
     {
         this.languageService = languageService;
+        this.problemsService = problemsService;
     }
 
 
@@ -29,6 +31,14 @@ public class AdminController : ControllerBase
     public async Task<IActionResult> GetLanguages()
     {
         var result = await this.languageService.GetListAsync();
+        return this.Ok(result);
+    }
+
+    [HttpGet("problems")]
+    [ProducesResponseType(typeof(AllProblemsList), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetProblems([FromQuery] int skip = 0, [FromQuery] int take = 100)
+    {
+        var result = await this.problemsService.GetAllAsync(skip, take);
         return this.Ok(result);
     }
 }

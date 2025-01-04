@@ -12,7 +12,11 @@ export const buildMenu = (user: CurrentUser | null): MenuItem[] => {
             children: [{
                 label: (<a href="/administration/languages">Languages</a>),
                 key: 'languages',
-            }]
+            },
+                {
+                    label: (<a href="/administration/problems">Problems</a>),
+                    key: 'problems',
+                }]
         };
 
         subMenu.push(items);

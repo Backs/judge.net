@@ -6,6 +6,7 @@ using Judge.Data;
 using Judge.Model.CheckSolution;
 using Judge.Model.SubmitSolution;
 using Client = Judge.Web.Client.Problems;
+using Admin = Judge.Web.Client.Admin;
 using Task = Judge.Model.CheckSolution.Task;
 
 namespace Judge.Services;
@@ -45,6 +46,28 @@ internal sealed class ProblemsService : IProblemsService
         }).ToArray();
 
         return new Client.ProblemsList
+        {
+            Items = problems,
+            TotalCount = totalCount
+        };
+    }
+
+    public async Task<Admin.AllProblemsList> GetAllAsync(int skip, int take)
+    {
+        await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork(false);
+        var specification = AllTasksSpecification.Instance;
+        var tasks = await unitOfWork.Tasks.GetTasksAsync(specification, skip, take);
+
+        var totalCount = await unitOfWork.Tasks.CountAsync(specification);
+
+        var problems = tasks.Select(o => new Admin.AllProblemInfo
+        {
+            Id = o.Id,
+            Name = o.Name,
+            IsOpened = o.IsOpened
+        }).ToArray();
+
+        return new Admin.AllProblemsList
         {
             Items = problems,
             TotalCount = totalCount
