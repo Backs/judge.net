@@ -1,6 +1,6 @@
 ﻿namespace Judge.Model.Contests
 {
-    public enum ContestRules : int
+    public enum ContestRules
     {
         Acm = 0,
         Points = 1,

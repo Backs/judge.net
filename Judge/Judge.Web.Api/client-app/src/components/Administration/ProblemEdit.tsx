@@ -97,7 +97,9 @@ export const ProblemEdit: React.FC = () => {
                 <Markdown
                     className={styles.markdown}
                     remarkPlugins={[remarkGfm]}
-                    rehypePlugins={[rehypeRaw]}>{problem?.statement}</Markdown>
+                    rehypePlugins={[rehypeRaw]}
+                    remarkRehypeOptions={{allowDangerousHtml: true}}
+                >{problem?.statement}</Markdown>
             </>
     );
 }

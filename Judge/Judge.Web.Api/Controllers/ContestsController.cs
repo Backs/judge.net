@@ -70,6 +70,23 @@ public class ContestsController : ControllerBase
 
         return this.Ok(problem);
     }
+    
+    /// <summary>
+    /// Get editable contest information
+    /// </summary>
+    /// <param name="contestId">Contest id</param>
+    [Authorize(AuthorizationPolicies.AdminPolicy)]
+    [HttpGet("{contestId:int}/editable")]
+    [ProducesResponseType(typeof(EditContest), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetEditable([FromRoute] int contestId)
+    {
+        var contest = await this.contestsService.GetEditableAsync(contestId);
+
+        if (contest == null)
+            return this.NotFound();
+
+        return this.Ok(contest);
+    }
 
     /// <summary>
     /// Create or update contest information

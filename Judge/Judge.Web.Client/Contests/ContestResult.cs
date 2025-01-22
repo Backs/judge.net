@@ -5,10 +5,6 @@ namespace Judge.Web.Client.Contests;
 
 public class ContestResult : Contest
 {
-    /// <inheritdoc cref="Judge.Web.Client.Contests.ContestRules"/>
-    [Required]
-    public ContestRules Rules { get; set; }
-
     /// <inheritdoc cref="Judge.Web.Client.Contests.ContestUserResult"/>
     [Required]
     public ContestUserResult[] Users { get; set; } = Array.Empty<ContestUserResult>();

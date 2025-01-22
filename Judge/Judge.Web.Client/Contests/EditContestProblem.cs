@@ -11,11 +11,17 @@ public class EditContestProblem
     /// Problem id
     /// </summary>
     [Required]
-    public int ProblemId { get; set; }
+    public long ProblemId { get; set; }
     
     /// <summary>
     /// Problem label in contest
     /// </summary>
     [Required]
     public string Label { get; set; } = null!;
+
+    /// <summary>
+    /// Problem name
+    /// </summary>
+    [Required]
+    public string Name { get; set; } = null!;
 }

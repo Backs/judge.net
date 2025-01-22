@@ -9,14 +9,19 @@ export const buildMenu = (user: CurrentUser | null): MenuItem[] => {
         const items = {
             label: (<a href="/administration">Administration</a>),
             key: 'Administration',
-            children: [{
-                label: (<a href="/administration/languages">Languages</a>),
-                key: 'languages',
-            },
+            children: [
                 {
-                    label: (<a href="/administration/problems">Problems</a>),
-                    key: 'problems',
-                }]
+                label: (<a href="/administration/languages">Languages</a>),
+                key: 'admin-languages',
+            },
+            {
+                label: (<a href="/administration/problems">Problems</a>),
+                key: 'admin-problems',
+            },
+            {
+                label: (<a href="/administration/contests">Contests</a>),
+                key: 'admin-contests',
+            }]
         };
 
         subMenu.push(items);

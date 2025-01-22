@@ -35,4 +35,8 @@ public class ContestInfo
     /// <inheritdoc cref="Judge.Web.Client.Contests.ContestStatus"/>
     [Required]
     public ContestStatus Status { get; set; }
+
+    /// <inheritdoc cref="Judge.Web.Client.Contests.ContestRules"/>
+    [Required]
+    public ContestRules Rules { get; set; }
 }

@@ -55,7 +55,9 @@ export const ProblemDetail: React.FC = () => {
                     <Markdown
                         className={styles.markdown}
                         remarkPlugins={[remarkGfm]}
-                        rehypePlugins={[rehypeRaw]}>{problem?.statement}</Markdown>
+                        rehypePlugins={[rehypeRaw]}
+                        remarkRehypeOptions={{allowDangerousHtml: true}}
+                    >{problem?.statement}</Markdown>
 
                     {user && problem && <SubmitProblem languages={problem.languages} problemId={problem.id}
                                                        onSubmit={(submitId) => setLastSubmitId(submitId)}/>}

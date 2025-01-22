@@ -9,6 +9,7 @@ public interface IContestsService
 {
     Task<ContestsInfoList> SearchAsync(ContestsQuery query);
     Task<Contest?> GetAsync(int id, long? userId);
+    Task<EditContest?> GetEditableAsync(int id);
     Task<ContestResult?> GetResultAsync(int id);
     Task<EditContest?> SaveAsync(EditContest editContest);
     Task<Problem?> GetProblemAsync(int contestId, string label);

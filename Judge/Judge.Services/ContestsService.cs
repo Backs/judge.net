@@ -71,6 +71,37 @@ internal sealed class ContestsService : IContestsService
         return result;
     }
 
+    public async Task<Client.EditContest?> GetEditableAsync(int id)
+    {
+        await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
+        var contest = await unitOfWork.Contests.TryGetAsync(id);
+        if (contest == null)
+            return null;
+
+        var tasks = await unitOfWork.ContestTasks.SearchAsync(id);
+
+
+        var result = new Client.EditContest
+        {
+            Name = contest.Name,
+            Id = contest.Id,
+            StartTime = contest.StartTime,
+            FinishTime = contest.FinishTime,
+            Rules = GetRules(contest.Rules),
+            Problems = tasks.Select(o => new Client.EditContestProblem
+            {
+                ProblemId = o.TaskId,
+                Label = o.TaskName,
+                Name = o.Task.Name
+            }).ToArray(),
+            IsOpened = contest.IsOpened,
+            CheckPointTime = contest.CheckPointTime,
+            OneLanguagePerTask = contest.OneLanguagePerTask
+        };
+
+        return result;
+    }
+
     public async Task<Client.ContestResult?> GetResultAsync(int id)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
@@ -234,7 +265,17 @@ internal sealed class ContestsService : IContestsService
             Name = contest.Name,
             StartDate = contest.StartTime,
             Duration = (contest.FinishTime - contest.StartTime),
-            Status = GetStatus(contest)
+            Status = GetStatus(contest),
+            Rules = GetRules(contest.Rules)
+        };
+
+    private static Client.ContestRules GetRules(ContestRules contestRules) =>
+        contestRules switch
+        {
+            ContestRules.Acm => Client.ContestRules.Acm,
+            ContestRules.Points => Client.ContestRules.Points,
+            ContestRules.CheckPoint => Client.ContestRules.CheckPoint,
+            _ => throw new ArgumentOutOfRangeException(nameof(contestRules), contestRules, null)
         };
 
     private static Client.ContestStatus GetStatus(Contest contest)

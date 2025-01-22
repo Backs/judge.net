@@ -16,6 +16,8 @@ import {Administration} from "../components/Administration/Administration.tsx";
 import {Languages} from "../components/Administration/Languages.tsx";
 import {ProblemEdit} from "../components/Administration/ProblemEdit.tsx";
 import {AllProblems} from "../components/Administration/AllProblems.tsx";
+import {AllContests} from "../components/Administration/AllContests.tsx";
+import {ContestEdit} from "../components/Administration/ContestEdit.tsx";
 
 export const Router: React.FC = () => {
     return (
@@ -32,11 +34,14 @@ export const Router: React.FC = () => {
                 <Route path="/submit-results/:submitResultId" element={<SubmitResultInfo/>}/>
                 <Route path="/contests" element={<Contests/>}/>
                 <Route path="/contests/:contestId" element={<ContestDetails/>}/>
+                <Route path="/contests/:contestId/edit" element={<ContestEdit/>}/>
+                <Route path="/contests/new" element={<ContestEdit/>}/>
                 <Route path="/contests/:contestId/standings" element={<ContestStandings/>}/>
                 <Route path="/contests/:contestId/:label" element={<ContestProblemDetail/>}/>
                 <Route path="/administration" element={<Administration/>}/>
                 <Route path="/administration/languages" element={<Languages/>}/>
                 <Route path="/administration/problems" element={<AllProblems/>}/>
+                <Route path="/administration/contests" element={<AllContests/>}/>
                 <Route path="/notFound" element={<NotFound/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>

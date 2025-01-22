@@ -59,6 +59,8 @@ export interface Contest {
   duration: string;
   /** Contest status */
   status: ContestStatus;
+  /** Contest rules */
+  rules: ContestRules;
   tasks: ContestTask[];
 }
 
@@ -86,6 +88,8 @@ export interface ContestInfo {
   duration: string;
   /** Contest status */
   status: ContestStatus;
+  /** Contest rules */
+  rules: ContestRules;
 }
 
 /** Contest problem result */
@@ -129,9 +133,9 @@ export interface ContestResult {
   duration: string;
   /** Contest status */
   status: ContestStatus;
-  tasks: ContestTask[];
   /** Contest rules */
   rules: ContestRules;
+  tasks: ContestTask[];
   users: ContestUserResult[];
 }
 
@@ -287,7 +291,7 @@ export interface EditContest {
 export interface EditContestProblem {
   /**
    * Problem id
-   * @format int32
+   * @format int64
    */
   problemId: number;
   /**
@@ -295,6 +299,11 @@ export interface EditContestProblem {
    * @minLength 1
    */
   label: string;
+  /**
+   * Problem name
+   * @minLength 1
+   */
+  name: string;
 }
 
 /** Creates or edit problem */
@@ -963,6 +972,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     contestsDetail2: (contestId: number, label: string, params: RequestParams = {}) =>
       this.request<Problem, any>({
         path: `/api/contests/${contestId}/${label}`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Contests
+     * @name ContestsEditableDetail
+     * @summary Get editable contest information
+     * @request GET:/api/contests/{contestId}/editable
+     * @secure
+     */
+    contestsEditableDetail: (contestId: number, params: RequestParams = {}) =>
+      this.request<EditContest, any>({
+        path: `/api/contests/${contestId}/editable`,
         method: "GET",
         secure: true,
         format: "json",
