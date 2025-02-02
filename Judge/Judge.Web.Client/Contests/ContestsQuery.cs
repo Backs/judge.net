@@ -8,6 +8,11 @@ namespace Judge.Web.Client.Contests;
 public class ContestsQuery
 {
     /// <summary>
+    /// Search contests with finish date in the future
+    /// </summary>
+    public bool UpcomingOnly { get; set; }
+
+    /// <summary>
     /// Contests to skip
     /// </summary>
     [Range(0, int.MaxValue)]

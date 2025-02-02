@@ -894,6 +894,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     contestsList: (
       query?: {
+        /** Search contests with finish date in the future */
+        UpcomingOnly?: boolean;
         /**
          * Contests to skip
          * @format int32

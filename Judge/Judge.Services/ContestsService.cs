@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Judge.Data;
+using Judge.Model;
 using Judge.Model.Account;
 using Judge.Model.Contests;
 using Judge.Model.Entities;
@@ -26,7 +27,10 @@ internal sealed class ContestsService : IContestsService
     public async Task<Client.ContestsInfoList> SearchAsync(Client.ContestsQuery query)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
-        var specification = AllContestsSpecification.Instance;
+        ISpecification<Contest> specification = query.UpcomingOnly
+            ? new UpcomingContestSpecification(DateTime.UtcNow)
+            : AllContestsSpecification.Instance;
+
         var contests = await unitOfWork.Contests.SearchAsync(specification, query.Skip, query.Take);
         var totalCount = await unitOfWork.Contests.CountAsync(specification);
 
