@@ -1,16 +1,17 @@
-﻿namespace Judge.Application
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Judge.Application.Interfaces;
-    using Judge.Application.ViewModels.Problems.ProblemsList;
-    using Judge.Application.ViewModels.Problems.Statement;
-    using Judge.Data;
-    using Judge.Model;
-    using Judge.Model.CheckSolution;
-    using Judge.Model.SubmitSolution;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
+using Judge.Application.Interfaces;
+using Judge.Application.ViewModels.Problems.ProblemsList;
+using Judge.Application.ViewModels.Problems.Statement;
+using Judge.Data;
+using Judge.Model;
+using Judge.Model.CheckSolution;
+using Judge.Model.SubmitSolution;
 
+namespace Judge.Application
+{
     internal sealed class ProblemsService : IProblemsService
     {
         private readonly IUnitOfWorkFactory factory;
@@ -29,8 +30,8 @@
 
             using (var unitOfWork = this.factory.GetUnitOfWork())
             {
-                var taskRepository = unitOfWork.TaskNameRepository;
-                var submitResultRepository = unitOfWork.SubmitResultRepository;
+                var taskRepository = unitOfWork.TaskNames;
+                var submitResultRepository = unitOfWork.SubmitResults;
 
                 var tasks = GetProblems(page, pageSize, taskRepository, openedOnly);
 
@@ -40,7 +41,9 @@
 
                 if (userId != null)
                 {
-                    solvedTasks.UnionWith(submitResultRepository.GetSolvedProblems(new UserSolvedProblemsSpecification(userId.Value, tasks.Select(o => o.Id))));
+                    solvedTasks.UnionWith(submitResultRepository.GetSolvedProblems(
+                        new UserSolvedProblemsSpecification(userId.Value,
+                            tasks.Select(o => o.Id).ToImmutableHashSet())));
                 }
 
                 foreach (var item in tasks)
@@ -51,15 +54,18 @@
                 return new ProblemsListViewModel(tasks)
                 {
                     ProblemsCount = count,
-                    Pagination = new ViewModels.PaginationViewModel { CurrentPage = page, PageSize = pageSize, TotalPages = (count + pageSize - 1) / pageSize }
+                    Pagination = new ViewModels.PaginationViewModel
+                        { CurrentPage = page, PageSize = pageSize, TotalPages = (count + pageSize - 1) / pageSize }
                 };
-
             }
         }
 
-        private static ProblemItem[] GetProblems(int page, int pageSize, ITaskNameRepository taskRepository, bool openedOnly)
+        private static ProblemItem[] GetProblems(int page, int pageSize, ITaskNameRepository taskRepository,
+            bool openedOnly)
         {
-            var specification = openedOnly ? (ISpecification<Task>)OpenedTasksSpecification.Instance : AllTasksSpecification.Instance;
+            var specification = openedOnly
+                ? (ISpecification<Task>)new OpenedTasksSpecification()
+                : AllTasksSpecification.Instance;
             var tasks = taskRepository.GetTasks(specification, page, pageSize)
                 .Select(o => new ProblemItem
                 {
@@ -74,7 +80,7 @@
         {
             using (var unitOfWork = this.factory.GetUnitOfWork())
             {
-                var taskRepository = unitOfWork.TaskRepository;
+                var taskRepository = unitOfWork.Tasks;
                 var task = taskRepository.Get(id);
                 if (task == null)
                     return null;
@@ -100,7 +106,7 @@
         {
             using (var uow = this.factory.GetUnitOfWork())
             {
-                var taskRepository = uow.TaskNameRepository;
+                var taskRepository = uow.TaskNames;
                 return taskRepository.GetTasks(AllTasksSpecification.Instance, 1, int.MaxValue)
                     .Select(o => new ProblemItem
                     {

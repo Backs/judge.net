@@ -22,7 +22,7 @@
         {
             if (!this.Solved) return 0;
 
-            var result = MaxScore - ((this.Attempts - 1) * Penalty);
+            var result = MaxScore - (this.Attempts - 1) * Penalty;
             return result <= 0 ? MinScore : result;
 
         }

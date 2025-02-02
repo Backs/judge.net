@@ -16,7 +16,8 @@ namespace Judge.Data.Repository
 
         public IEnumerable<ContestResult> Get(long contestId)
         {
-            var contestTasks = this.context.Set<ContestTask>().Where(o => o.ContestId == contestId).Select(o => o.TaskId)
+            var contestTasks = this.context.Set<ContestTask>().Where(o => o.ContestId == contestId)
+                .Select(o => o.TaskId)
                 .ToArray();
 
             var result = this.context.Set<ContestTaskSubmit>()
@@ -40,14 +41,17 @@ namespace Judge.Data.Repository
                     TaskResults = o.GroupBy(p => p.ProblemId).Select(p => new
                     {
                         ProblemId = p.Key,
-                        SubmitResults = p.Select(s => s.Results.OrderByDescending(t => t.Id).FirstOrDefault()) //only last judge result
-                                         .Where(s => s != null && s.Status != SubmitStatus.ServerError && s.Status != SubmitStatus.Pending && s.Status != SubmitStatus.CompilationError)
-                                         .Select(s => new
-                                         {
-                                             s.Id,
-                                             s.Status,
-                                             s.SubmitDateUtc
-                                         }).OrderBy(s => s.Id).ToArray()
+                        SubmitResults = p
+                            .Select(s =>
+                                s.Results.OrderByDescending(t => t.Id).FirstOrDefault()) //only last judge result
+                            .Where(s => s != null && s.Status != SubmitStatus.ServerError &&
+                                        s.Status != SubmitStatus.Pending && s.Status != SubmitStatus.CompilationError)
+                            .Select(s => new
+                            {
+                                s.Id,
+                                s.Status,
+                                s.SubmitDateUtc
+                            }).OrderBy(s => s.Id).ToArray()
                     })
                 })
                 .Select(o => new
@@ -68,9 +72,11 @@ namespace Judge.Data.Repository
                     {
                         Solved = t.Solved,
                         ProblemId = t.ProblemId,
-                        Attempts = t.FirstSuccess == null ? t.SubmitResults.Length : t.SubmitResults.Count(s => s.Id <= t.FirstSuccess.Id),
+                        Attempts = t.FirstSuccess == null
+                            ? t.SubmitResults.Length
+                            : t.SubmitResults.Count(s => s.Id <= t.FirstSuccess.Id),
                         SubmitDateUtc = t.FirstSuccess?.SubmitDateUtc ?? t.SubmitResults.Last().SubmitDateUtc
-                    })
+                    }).ToArray()
                 })
                 .Where(t => t.TaskResults.Any());
             return result.AsEnumerable();

@@ -73,8 +73,8 @@ namespace Judge.JudgeService
             Task task;
             using (var uow = this.unitOfWorkFactory.GetUnitOfWork())
             {
-                language = uow.LanguageRepository.Get(submitResult.Submit.LanguageId);
-                task = uow.TaskRepository.Get(submitResult.Submit.ProblemId);
+                language = uow.Languages.Get(submitResult.Submit.LanguageId);
+                task = uow.Tasks.Get(submitResult.Submit.ProblemId);
             }
 
             CompileResult compileResult;

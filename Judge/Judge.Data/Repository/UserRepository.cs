@@ -1,60 +1,96 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Judge.Model;
 using Judge.Model.Account;
 using Judge.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 
-namespace Judge.Data.Repository
+namespace Judge.Data.Repository;
+
+internal sealed class UserRepository : IUserRepository
 {
-    internal sealed class UserRepository : IUserRepository
+    private readonly DataContext context;
+
+    public UserRepository(DataContext context)
     {
-        private readonly DataContext context;
+        this.context = context;
+    }
 
-        public UserRepository(DataContext context)
+    public User? Get(long id)
+    {
+        return this.BaseQuery().FirstOrDefault(o => o!.Id == id);
+    }
+
+    public void Add(User user)
+    {
+        this.context.Set<User>().Add(user);
+    }
+
+    public void Update(User user)
+    {
+        this.context.Entry(user).State = EntityState.Modified;
+    }
+
+    public void Delete(User user)
+    {
+        this.context.Set<User>().Remove(user);
+    }
+
+    public User? FindByName(string userName)
+    {
+        return this.BaseQuery().FirstOrDefault(o => o!.UserName == userName);
+    }
+
+    public User? FindByEmail(string email)
+    {
+        return this.BaseQuery().FirstOrDefault(o => o!.Email == email);
+    }
+
+    public Task<User?> FindByEmailAsync(string email)
+    {
+        return this.BaseQuery().FirstOrDefaultAsync(o => o!.Email == email);
+    }
+
+    public Task<User?> FindByLoginASync(string login)
+    {
+        return this.BaseQuery().FirstOrDefaultAsync(o => o!.UserName == login);
+    }
+
+    public IEnumerable<User> Find(ISpecification<User> specification)
+    {
+        return this.BaseQuery().Where(specification.IsSatisfiedBy!)!;
+    }
+
+    public async Task<IReadOnlyCollection<User>> SearchAsync(ISpecification<User> specification, int skip = 0,
+        int take = int.MaxValue)
+    {
+        IQueryable<User> query = this.BaseQuery().Where(specification.IsSatisfiedBy!)
+            .OrderBy(o => o!.Id)!;
+
+        if (skip != 0)
         {
-            this.context = context;
+            query = query.Skip(skip);
         }
 
-        public User Get(long id)
-        {
-            return this.BaseQuery().FirstOrDefault(o => o.Id == id);
-        }
+        query = query.Take(take);
 
-        public void Add(User user)
-        {
-            this.context.Set<User>().Add(user);
-        }
+        return await query.ToListAsync();
+    }
 
-        public void Update(User user)
-        {
-            this.context.Entry(user).State = EntityState.Modified;
-        }
+    public Task<int> CountAsync(ISpecification<User> specification)
+    {
+        return this.context.Set<User?>().CountAsync(specification.IsSatisfiedBy!);
+    }
 
-        public void Delete(User user)
-        {
-            this.context.Set<User>().Remove(user);
-        }
+    public Task<User?> GetAsync(long id)
+    {
+        return this.BaseQuery().FirstOrDefaultAsync(o => o!.Id == id);
+    }
 
-        public User FindByName(string userName)
-        {
-            return this.BaseQuery().FirstOrDefault(o => o.UserName == userName);
-        }
-
-        public User FindByEmail(string email)
-        {
-            return this.BaseQuery().FirstOrDefault(o => o.Email == email);
-        }
-
-        public IEnumerable<User> Find(ISpecification<User> specification)
-        {
-            return this.BaseQuery().Where(specification.IsSatisfiedBy);
-        }
-
-        private IIncludableQueryable<User, ICollection<UserRole>> BaseQuery()
-        {
-            return this.context.Set<User>().Include(o => o.UserRoles);
-        }
+    private IIncludableQueryable<User?, ICollection<UserRole>> BaseQuery()
+    {
+        return this.context.Set<User?>().Include(o => o!.UserRoles);
     }
 }

@@ -20,7 +20,7 @@ namespace Judge.JudgeService
         {
             using (var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork(true))
             {
-                var repository = unitOfWork.SubmitResultRepository;
+                var repository = unitOfWork.SubmitResults;
                 var submit = repository.DequeueUnchecked();
                 if (submit == null)
                     return;

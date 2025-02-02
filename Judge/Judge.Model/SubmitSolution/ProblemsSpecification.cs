@@ -3,13 +3,13 @@ using System.Linq.Expressions;
 
 namespace Judge.Model.SubmitSolution
 {
-    public sealed class AllProblemsSpecification : ISpecification<SubmitResult>
+    public sealed class ProblemsSpecification : ISpecification<SubmitResult>
     {
-        private AllProblemsSpecification()
+        private ProblemsSpecification()
         {
             
         }
-        public static ISpecification<SubmitResult> Instance { get; } = new AllProblemsSpecification();
+        public static ISpecification<SubmitResult> Instance { get; } = new ProblemsSpecification();
         public Expression<Func<SubmitResult, bool>> IsSatisfiedBy => t => t.Submit is ProblemSubmit;
     }
 }

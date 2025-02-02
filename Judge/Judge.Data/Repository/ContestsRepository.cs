@@ -1,32 +1,63 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Judge.Model;
 using Judge.Model.Contests;
+using Microsoft.EntityFrameworkCore;
 
-namespace Judge.Data.Repository
+namespace Judge.Data.Repository;
+
+internal sealed class ContestsRepository : IContestsRepository
 {
-    internal sealed class ContestsRepository : IContestsRepository
+    private readonly DataContext context;
+
+    public ContestsRepository(DataContext context)
     {
-        private readonly DataContext context;
+        this.context = context;
+    }
 
-        public ContestsRepository(DataContext context)
+    public IEnumerable<Contest> GetList(ISpecification<Contest> specification)
+    {
+        return this.context.Set<Contest>().Where(specification.IsSatisfiedBy).OrderByDescending(o => o.StartTime)
+            .AsEnumerable();
+    }
+
+    public Contest? Get(int id)
+    {
+        return this.context.Set<Contest>().FirstOrDefault(o => o.Id == id);
+    }
+
+    public Task<Contest?> TryGetAsync(int id)
+    {
+        return this.context.Set<Contest>().FirstOrDefaultAsync(o => o.Id == id)!;
+    }
+
+    public void Add(Contest contest)
+    {
+        this.context.Set<Contest>().Add(contest);
+    }
+
+    public async Task<IReadOnlyList<Contest>> SearchAsync(ISpecification<Contest> specification, int skip, int take)
+    {
+        IQueryable<Contest> query = this.context.Set<Contest>()
+            .Where(specification.IsSatisfiedBy)
+            .OrderByDescending(o => o.StartTime);
+
+        if (skip != 0)
         {
-            this.context = context;
+            query = query.Skip(skip);
         }
 
-        public IEnumerable<Contest> GetList(ISpecification<Contest> specification)
-        {
-            return this.context.Set<Contest>().Where(specification.IsSatisfiedBy).OrderByDescending(o => o.StartTime).AsEnumerable();
-        }
+        query = query.Take(take);
 
-        public Contest Get(int id)
-        {
-            return this.context.Set<Contest>().FirstOrDefault(o => o.Id == id);
-        }
+        return await query.ToListAsync();
+    }
 
-        public void Add(Contest contest)
-        {
-            this.context.Set<Contest>().Add(contest);
-        }
+    public Task<int> CountAsync(ISpecification<Contest> specification)
+    {
+        var query = this.context.Set<Contest>()
+            .Where(specification.IsSatisfiedBy);
+
+        return query.CountAsync();
     }
 }

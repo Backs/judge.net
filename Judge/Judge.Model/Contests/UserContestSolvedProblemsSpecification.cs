@@ -10,17 +10,20 @@ namespace Judge.Model.Contests
     {
         public UserContestSolvedProblemsSpecification(int contestId, long userId, IEnumerable<long> problems)
         {
-            ContestId = contestId;
-            UserId = userId;
-            Problems = problems.Distinct().ToArray();
+            this.contestId = contestId;
+            this.userId = userId;
+            this.problems = problems.Distinct().ToArray();
         }
 
-        public long[] Problems { get; }
-        public long UserId { get; }
-        public int ContestId { get; }
+        private readonly long[] problems;
+        private readonly long userId;
+        private readonly int contestId;
+
         public Expression<Func<SubmitResult, bool>> IsSatisfiedBy => o => o.Submit is ContestTaskSubmit &&
-                                                                          ((ContestTaskSubmit)o.Submit).ContestId == ContestId &&
-                                                                          o.Submit.UserId == UserId &&
-                                                                          Problems.Contains(o.Submit.ProblemId);
+                                                                          ((ContestTaskSubmit)o.Submit).ContestId ==
+                                                                          this.contestId &&
+                                                                          o.Submit.UserId == this.userId &&
+                                                                          o.Status == SubmitStatus.Accepted &&
+                                                                          this.problems.Contains(o.Submit.ProblemId);
     }
 }

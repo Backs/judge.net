@@ -23,10 +23,10 @@
         {
             using (var uow = this.unitOfWorkFactory.GetUnitOfWork())
             {
-                var submitResultRepository = uow.SubmitResultRepository;
-                var languageRepository = uow.LanguageRepository;
-                var taskRepository = uow.TaskRepository;
-                var userRepository = uow.UserRepository;
+                var submitResultRepository = uow.SubmitResults;
+                var languageRepository = uow.Languages;
+                var taskRepository = uow.Tasks;
+                var userRepository = uow.Users;
 
                 var languages = languageRepository.GetLanguages(false).ToDictionary(o => o.Id, o => o.Name);
 
@@ -59,13 +59,13 @@
         {
             using (var uow = this.unitOfWorkFactory.GetUnitOfWork())
             {
-                var submitResultRepository = uow.SubmitResultRepository;
-                var languageRepository = uow.LanguageRepository;
-                var taskRepository = uow.TaskRepository;
-                var userRepository = uow.UserRepository;
+                var submitResultRepository = uow.SubmitResults;
+                var languageRepository = uow.Languages;
+                var taskRepository = uow.Tasks;
+                var userRepository = uow.Users;
 
                 var languages = languageRepository.GetLanguages(false).ToDictionary(o => o.Id, o => o.Name);
-                var submits = submitResultRepository.GetSubmits(AllProblemsSpecification.Instance, page, pageSize).ToArray();
+                var submits = submitResultRepository.GetSubmits(ProblemsSpecification.Instance, page, pageSize).ToArray();
 
                 var userSpecification = new UserListSpecification(submits.Select(o => o.Submit.UserId).Distinct());
                 var tasks = taskRepository.GetTasks(submits.Select(o => o.Submit.ProblemId).Distinct()).ToDictionary(o => o.Id);
@@ -78,7 +78,7 @@
                     ResultsEnabled = userId == o.Submit.UserId || hasPermission
                 }).ToArray();
 
-                var count = submitResultRepository.Count(AllProblemsSpecification.Instance);
+                var count = submitResultRepository.Count(ProblemsSpecification.Instance);
 
                 var model = new SubmitQueueViewModel(items)
                 {

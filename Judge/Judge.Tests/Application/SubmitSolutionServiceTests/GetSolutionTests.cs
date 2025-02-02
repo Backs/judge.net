@@ -26,8 +26,8 @@ namespace Judge.Tests.Application.SubmitSolutionServiceTests
 
             _taskRepository = MockRepository.GenerateMock<ITaskNameRepository>();
             _submitResultRepository = MockRepository.GenerateMock<ISubmitResultRepository>();
-            unitOfWork.Stub(o => o.TaskNameRepository).Return(_taskRepository);
-            unitOfWork.Stub(o => o.SubmitResultRepository).Return(_submitResultRepository);
+            unitOfWork.Stub(o => o.TaskNames).Return(_taskRepository);
+            unitOfWork.Stub(o => o.SubmitResults).Return(_submitResultRepository);
 
             var principal = MockRepository.GenerateMock<IPrincipal>();
             _service = new SubmitSolutionService(factory, principal);

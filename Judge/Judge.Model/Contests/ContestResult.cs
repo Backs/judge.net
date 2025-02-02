@@ -6,6 +6,6 @@
     {
         public long UserId { get; set; }
 
-        public IEnumerable<ContestTaskResult> TaskResults { get; set; }
+        public ContestTaskResult[] TaskResults { get; set; }
     }
 }

@@ -1,77 +1,122 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Judge.Model;
 using Judge.Model.SubmitSolution;
 using Microsoft.EntityFrameworkCore;
 
-namespace Judge.Data.Repository
+namespace Judge.Data.Repository;
+
+internal sealed class SubmitResultRepository : ISubmitResultRepository
 {
-    internal sealed class SubmitResultRepository : ISubmitResultRepository
+    private readonly DataContext context;
+
+    public SubmitResultRepository(DataContext context)
     {
-        private readonly DataContext context;
+        this.context = context;
+    }
 
-        public SubmitResultRepository(DataContext context)
+    public SubmitResult? Get(long id)
+    {
+        return this.context.Set<SubmitResult>().Where(o => o.Id == id).Include(o => o.Submit).FirstOrDefault();
+    }
+
+    public IEnumerable<SubmitResult> GetSubmits(ISpecification<SubmitResult> specification, int page, int pageSize)
+    {
+        if (page <= 0)
+            throw new ArgumentOutOfRangeException(nameof(page));
+        if (pageSize <= 0)
+            throw new ArgumentOutOfRangeException(nameof(pageSize));
+
+        var query = this.context.Set<SubmitResult>() as IQueryable<SubmitResult>;
+
+        query = query.Where(specification.IsSatisfiedBy);
+
+        query = query.OrderByDescending(o => o.Id);
+
+        var skip = (page - 1) * pageSize;
+
+        if (skip > 0)
         {
-            this.context = context;
+            query = query.Skip(skip);
         }
 
-        public SubmitResult Get(long id)
+        query = query.Take(pageSize);
+
+        return query.Include(o => o.Submit).AsEnumerable();
+    }
+
+    public async Task<IReadOnlyCollection<SubmitResult>> SearchAsync(ISpecification<SubmitResult> specification,
+        int skip, int take)
+    {
+        IQueryable<SubmitResult> query = this.context.Set<SubmitResult>();
+
+        query = query.Where(specification.IsSatisfiedBy);
+
+        query = query.OrderByDescending(o => o.Id);
+
+        if (skip > 0)
         {
-            return this.context.Set<SubmitResult>().Where(o => o.Id == id).Include(o => o.Submit).FirstOrDefault();
+            query = query.Skip(skip);
         }
 
-        public IEnumerable<SubmitResult> GetSubmits(ISpecification<SubmitResult> specification, int page, int pageSize)
-        {
-            if (page <= 0)
-                throw new ArgumentOutOfRangeException(nameof(page));
-            if (pageSize <= 0)
-                throw new ArgumentOutOfRangeException(nameof(pageSize));
+        query = query.Take(take);
 
-            var query = this.context.Set<SubmitResult>() as IQueryable<SubmitResult>;
+        return await query.Include(o => o.Submit).ToListAsync();
+    }
 
-            query = query.Where(specification.IsSatisfiedBy);
+    public IEnumerable<long> GetSolvedProblems(ISpecification<SubmitResult> specification)
+    {
+        return this.context.Set<SubmitResult>()
+            .Where(specification.IsSatisfiedBy)
+            .Select(o => o.Submit.ProblemId)
+            .Distinct()
+            .AsEnumerable();
+    }
 
-            query = query.OrderByDescending(o => o.Id);
+    public async Task<IReadOnlyCollection<long>> GetSolvedProblemsAsync(ISpecification<SubmitResult> specification)
+    {
+        return await this.context.Set<SubmitResult>()
+            .Where(specification.IsSatisfiedBy)
+            .Select(o => o.Submit.ProblemId)
+            .Distinct()
+            .ToListAsync();
+    }
 
-            var skip = (page - 1) * pageSize;
+    public SubmitResult? DequeueUnchecked()
+    {
+        var check = this.context.DequeueSubmitCheck();
 
-            if (skip > 0)
-            {
-                query = query.Skip(skip);
-            }
+        if (check == null) return null;
 
-            query = query.Take(pageSize);
+        return this.context.Set<SubmitResult>().Where(o => o.Id == check.SubmitResultId)
+            .Include(o => o.Submit).First();
+    }
 
-            return query.Include(o => o.Submit).AsEnumerable();
-        }
+    public int Count(ISpecification<SubmitResult> specification)
+    {
+        var query = this.context.Set<SubmitResult>()
+            .Where(specification.IsSatisfiedBy);
 
-        public IEnumerable<long> GetSolvedProblems(ISpecification<SubmitResult> specification)
-        {
-            return this.context.Set<SubmitResult>()
-                .Where(specification.IsSatisfiedBy)
-                .Where(o => o.Status == SubmitStatus.Accepted)
-                .Select(o => o.Submit.ProblemId)
-                .Distinct()
-                .AsEnumerable();
-        }
+        return query.Count();
+    }
 
-        public SubmitResult DequeueUnchecked()
-        {
-            var check = this.context.DequeueSubmitCheck();
+    public Task<int> CountAsync(ISpecification<SubmitResult> specification)
+    {
+        return this.context.Set<SubmitResult>()
+            .Where(specification.IsSatisfiedBy).CountAsync();
+    }
 
-            if (check == null) return null;
+    public Task<SubmitResult> GetAsync(long id)
+    {
+        return this.context.Set<SubmitResult>().Where(o => o.Id == id)
+            .Include(o => o.Submit).FirstOrDefaultAsync();
+    }
 
-            return this.context.Set<SubmitResult>().Where(o => o.Id == check.SubmitResultId)
-                .Include(o => o.Submit).First();
-        }
-
-        public int Count(ISpecification<SubmitResult> specification)
-        {
-            var query = this.context.Set<SubmitResult>()
-                .Where(specification.IsSatisfiedBy);
-
-            return query.Count();
-        }
+    public async Task<SubmitResult> SaveAsync(SubmitResult submitResult)
+    {
+        var result = await this.context.Set<SubmitResult>().AddAsync(submitResult);
+        return result.Entity;
     }
 }

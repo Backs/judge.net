@@ -30,20 +30,20 @@
         {
             using (var uow = this.factory.GetUnitOfWork())
             {
-                var repository = uow.LanguageRepository;
+                var repository = uow.Languages;
                 return repository.GetLanguages(false).Select(o => new LanguageEditViewModel
-                {
-                    Id = o.Id,
-                    CompilerOptionsTemplate = o.CompilerOptionsTemplate,
-                    CompilerPath = o.CompilerPath,
-                    Description = o.Description,
-                    IsCompilable = o.IsCompilable,
-                    IsHidden = o.IsHidden,
-                    Name = o.Name,
-                    OutputFileTemplate = o.OutputFileTemplate,
-                    RunStringFormat = o.RunStringFormat
-                })
-                .ToList();
+                    {
+                        Id = o.Id,
+                        CompilerOptionsTemplate = o.CompilerOptionsTemplate,
+                        CompilerPath = o.CompilerPath,
+                        Description = o.Description,
+                        IsCompilable = o.IsCompilable,
+                        IsHidden = o.IsHidden,
+                        Name = o.Name,
+                        OutputFileTemplate = o.OutputFileTemplate,
+                        RunStringFormat = o.RunStringFormat
+                    })
+                    .ToList();
             }
         }
 
@@ -51,7 +51,7 @@
         {
             using (var uow = this.factory.GetUnitOfWork())
             {
-                var repository = uow.LanguageRepository;
+                var repository = uow.Languages;
                 var databaseLanguages = repository.GetLanguages(false);
 
                 foreach (var databaseLanguage in databaseLanguages)
@@ -89,6 +89,7 @@
 
                     repository.Add(databaseLanguage);
                 }
+
                 uow.Commit();
             }
         }
@@ -97,17 +98,19 @@
         {
             using (var uow = this.factory.GetUnitOfWork())
             {
-                var submitResultRepository = uow.SubmitResultRepository;
-                var languageRepository = uow.LanguageRepository;
-                var taskRepository = uow.TaskRepository;
-                var userRepository = uow.UserRepository;
-                var contestTaskRepository = uow.ContestTaskRepository;
+                var submitResultRepository = uow.SubmitResults;
+                var languageRepository = uow.Languages;
+                var taskRepository = uow.Tasks;
+                var userRepository = uow.Users;
+                var contestTaskRepository = uow.ContestTasks;
 
                 var languages = languageRepository.GetLanguages(false).ToDictionary(o => o.Id, o => o.Name);
-                var submits = submitResultRepository.GetSubmits(new AdminSearchSubmitsSpecification(language, status), 1, 100).ToArray();
+                var submits = submitResultRepository
+                    .GetSubmits(new SubmitsSpecification(language: language, status: status), 1, 100).ToArray();
 
                 var userSpecification = new UserListSpecification(submits.Select(o => o.Submit.UserId).Distinct());
-                var tasks = taskRepository.GetTasks(submits.Select(o => o.Submit.ProblemId).Distinct()).ToDictionary(o => o.Id);
+                var tasks = taskRepository.GetTasks(submits.Select(o => o.Submit.ProblemId).Distinct())
+                    .ToDictionary(o => o.Id);
                 var users = userRepository.Find(userSpecification).ToDictionary(o => o.Id, o => o.UserName);
 
                 var contestTasks = contestTaskRepository.GetTasks().ToArray();
@@ -121,7 +124,7 @@
         {
             using (var uow = this.factory.GetUnitOfWork())
             {
-                var taskRepository = uow.TaskRepository;
+                var taskRepository = uow.Tasks;
                 var task = taskRepository.Get(id);
                 return new EditProblemViewModel
                 {
@@ -140,7 +143,7 @@
         {
             using (var uow = this.factory.GetUnitOfWork())
             {
-                var taskRepository = uow.TaskRepository;
+                var taskRepository = uow.Tasks;
 
                 Task task;
                 if (model.Id != null)
@@ -152,6 +155,7 @@
                     task = new Task();
                     taskRepository.Add(task);
                 }
+
                 task.IsOpened = model.IsOpened;
                 task.MemoryLimitBytes = model.MemoryLimitBytes;
                 task.Name = model.Name;
@@ -168,8 +172,8 @@
         {
             using (var uow = this.factory.GetUnitOfWork())
             {
-                var contestRepository = uow.ContestsRepository;
-                var contestTaskRepository = uow.ContestTaskRepository;
+                var contestRepository = uow.Contests;
+                var contestTaskRepository = uow.ContestTasks;
 
                 var contest = contestRepository.Get(id);
                 var tasks = contestTaskRepository.GetTasks(id);
@@ -182,7 +186,7 @@
                     IsOpened = contest.IsOpened,
                     Name = contest.Name,
                     StartTime = contest.StartTime,
-                    Rules = (ContestRules)contest.Rules,
+                    Rules = (ContestRules) contest.Rules,
                     OneLanguagePerTask = contest.OneLanguagePerTask,
                     Tasks = tasks.Select(o => new TaskEditViewModel(o)).ToList()
                 };
@@ -193,8 +197,8 @@
         {
             using (var uow = this.factory.GetUnitOfWork())
             {
-                var contestRepository = uow.ContestsRepository;
-                var contestTaskRepository = uow.ContestTaskRepository;
+                var contestRepository = uow.Contests;
+                var contestTaskRepository = uow.ContestTasks;
 
                 var contest = model.Id != null ? contestRepository.Get(model.Id.Value) : new Contest();
                 contest.FinishTime = model.FinishTime;
@@ -202,7 +206,7 @@
                 contest.Name = model.Name;
                 contest.StartTime = model.StartTime;
                 contest.CheckPointTime = model.CheckPointTime;
-                contest.Rules = (Model.Contests.ContestRules)model.Rules;
+                contest.Rules = (Model.Contests.ContestRules) model.Rules;
                 contest.OneLanguagePerTask = model.OneLanguagePerTask;
 
                 if (model.Id == null)
@@ -239,6 +243,7 @@
                         };
                         contestTaskRepository.Add(databaseTask);
                     }
+
                     databaseTask.TaskName = task.Label;
                 }
 
@@ -251,11 +256,12 @@
         {
             using (var uow = this.factory.GetUnitOfWork())
             {
-                var users = uow.UserRepository.Find(AllUsersSpecification.Instance);
+                var users = uow.Users.Find(AllUsersSpecification.Instance);
 
                 var result = new UserListViewModel
                 {
-                    Users = users.Select(o => new UserListItem { Id = o.Id, Email = o.Email, UserName = o.UserName }).ToArray()
+                    Users = users.Select(o => new UserListItem {Id = o.Id, Email = o.Email, UserName = o.UserName})
+                        .ToArray()
                 };
 
                 return result;
@@ -266,14 +272,14 @@
         {
             using (var uow = this.factory.GetUnitOfWork())
             {
-                var user = uow.UserRepository.Get(id);
+                var user = uow.Users.Get(id);
 
                 if (user == null)
                 {
                     return null;
                 }
 
-                return new UserEditViewModel { Id = user.Id, Email = user.Email, UserName = user.UserName };
+                return new UserEditViewModel {Id = user.Id, Email = user.Email, UserName = user.UserName};
             }
         }
 
@@ -292,9 +298,11 @@
             if (submitResult.Submit is ContestTaskSubmit contestTaskSubmit)
             {
                 taskLabel = contestTasks.FirstOrDefault(o => o.ContestId == contestTaskSubmit.ContestId &&
-                                                 o.Task.Id == contestTaskSubmit.ProblemId)?.TaskName ?? "deleted";
+                                                             o.Task.Id == contestTaskSubmit.ProblemId)?.TaskName ??
+                            "deleted";
                 contestId = contestTaskSubmit.ContestId;
             }
+
             var language = languages[submitResult.Submit.LanguageId];
             var task = tasks[submitResult.Submit.ProblemId];
             var userName = users[submitResult.Submit.UserId];

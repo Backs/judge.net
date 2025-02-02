@@ -1,0 +1,1 @@
+﻿npx swagger-typescript-api -p http://localhost:5034/swagger/v1/swagger.json -o ./src/api -n Api.ts --axios --disable-throw-on-error --debug

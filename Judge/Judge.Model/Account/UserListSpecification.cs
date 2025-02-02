@@ -10,7 +10,7 @@ namespace Judge.Model.Account
     {
         public UserListSpecification(IEnumerable<long> users)
         {
-            IsSatisfiedBy = u => users.Contains(u.Id);
+            this.IsSatisfiedBy = u => users.Contains(u.Id);
         }
 
         public Expression<Func<User, bool>> IsSatisfiedBy { get; }

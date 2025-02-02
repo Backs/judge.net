@@ -35,7 +35,7 @@ namespace Judge.Application
         {
             using (var unitOfWork = this.factory.GetUnitOfWork())
             {
-                var repository = unitOfWork.ContestsRepository;
+                var repository = unitOfWork.Contests;
 
                 var specification = showAll
                     ? (ISpecification<Contest>)AllContestsSpecification.Instance
@@ -49,10 +49,10 @@ namespace Judge.Application
         {
             using (var unitOfWork = this.factory.GetUnitOfWork())
             {
-                var contestRepository = unitOfWork.ContestsRepository;
+                var contestRepository = unitOfWork.Contests;
                 var contest = contestRepository.Get(contestId);
-                var taskRepository = unitOfWork.ContestTaskRepository;
-                var submitResultRepository = unitOfWork.SubmitResultRepository;
+                var taskRepository = unitOfWork.ContestTasks;
+                var submitResultRepository = unitOfWork.SubmitResults;
 
                 var hasPermission = this.principal.IsInRole("admin")
                                     || this.principal.IsInRole("tester");
@@ -94,13 +94,13 @@ namespace Judge.Application
         {
             using (var unitOfWork = this.factory.GetUnitOfWork())
             {
-                var contestTaskRepository = unitOfWork.ContestTaskRepository;
+                var contestTaskRepository = unitOfWork.ContestTasks;
 
                 var task = contestTaskRepository.Get(contestId, label);
                 if (task == null)
                     return null;
 
-                var contestRepository = unitOfWork.ContestsRepository;
+                var contestRepository = unitOfWork.Contests;
                 var contest = contestRepository.Get(contestId);
 
                 var hasPermission = this.principal.IsInRole("admin")
@@ -137,14 +137,14 @@ namespace Judge.Application
 
             using (var unitOfWork = this.factory.GetUnitOfWork())
             {
-                var contest = unitOfWork.ContestsRepository.Get(contestId);
+                var contest = unitOfWork.Contests.Get(contestId);
                 if (DateTime.UtcNow < contest.StartTime)
                     throw new InvalidOperationException("Contest not started");
 
                 if (DateTime.UtcNow >= contest.FinishTime)
                     throw new InvalidOperationException("Contest finished");
 
-                var task = unitOfWork.ContestTaskRepository.Get(contestId, label);
+                var task = unitOfWork.ContestTasks.Get(contestId, label);
 
                 if (task == null)
                     throw new InvalidOperationException("Task not found");
@@ -160,7 +160,7 @@ namespace Judge.Application
                 submit.UserHost = userInfo.Host;
                 submit.SessionId = userInfo.SessionId;
 
-                var submitRepository = unitOfWork.SubmitRepository;
+                var submitRepository = unitOfWork.Submits;
                 submitRepository.Add(submit);
                 unitOfWork.Commit();
             }
@@ -170,10 +170,10 @@ namespace Judge.Application
         {
             using (var uow = this.factory.GetUnitOfWork())
             {
-                var submitResultRepository = uow.SubmitResultRepository;
-                var languageRepository = uow.LanguageRepository;
-                var userRepository = uow.UserRepository;
-                var contestTaskRepository = uow.ContestTaskRepository;
+                var submitResultRepository = uow.SubmitResults;
+                var languageRepository = uow.Languages;
+                var userRepository = uow.Users;
+                var contestTaskRepository = uow.ContestTasks;
 
                 var task = contestTaskRepository.Get(contestId, label);
 
@@ -209,10 +209,10 @@ namespace Judge.Application
         {
             using (var unitOfWork = this.factory.GetUnitOfWork())
             {
-                var contestResultRepository = unitOfWork.ContestResultRepository;
-                var contestTaskRepository = unitOfWork.ContestTaskRepository;
-                var contestRepository = unitOfWork.ContestsRepository;
-                var userRepository = unitOfWork.UserRepository;
+                var contestResultRepository = unitOfWork.ContestResults;
+                var contestTaskRepository = unitOfWork.ContestTasks;
+                var contestRepository = unitOfWork.Contests;
+                var userRepository = unitOfWork.Users;
 
                 var contest = contestRepository.Get(id);
                 var hasPermission = this.principal.IsInRole("admin")
