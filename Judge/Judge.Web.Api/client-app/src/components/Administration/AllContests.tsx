@@ -87,6 +87,9 @@ export const AllContests: React.FC = () => {
 
     return (
         <div>
+            <a href="/contests/new">Create new</a>
+            <br />
+            <br />
             <Table dataSource={contestList} columns={columns} pagination={false} loading={isLoading}/>
             <Pagination defaultCurrent={Number(searchParams.get("page"))} total={total}
                         defaultPageSize={Number(searchParams.get("size"))} onChange={(pageNumber, pageSize) => {

@@ -1,7 +1,7 @@
 ﻿import {useNavigate, useParams} from "react-router-dom";
 import {judgeApi} from "../../api/JudgeApi.ts";
 import React, {useEffect, useState} from "react";
-import {Button, Modal, DatePicker, Form, Input, Select, Space, Spin, Switch, Flex} from "antd";
+import {Button, Modal, DatePicker, Form, Input, Select, Space, Spin, Switch, Flex, Row, Col} from "antd";
 import {handleError} from "../../helpers/handleError.ts";
 import {ContestRules, EditContest, EditContestProblem, ProblemInfo} from "../../api/Api.ts";
 import dayjs from 'dayjs';
@@ -59,8 +59,7 @@ export const ContestEdit: React.FC = () => {
         setLoading(true);
         setContest(values);
         try {
-            console.log(contest);
-            const response = await api.api.contestsUpdate(contest);
+            const response = await api.api.contestsUpdate(values);
 
             navigate(`/contests/${response.data.id}/edit`, {replace: true});
         } catch (e: any) {
@@ -133,18 +132,19 @@ export const ContestEdit: React.FC = () => {
     };
 
     return (isLoading ? <Spin size="large"/> :
-        <>
-            <Modal title="Edit problem"
-                   open={isModalOpen}
-                   onCancel={onCloseModal}
-                   onOk={onSaveModal}
-            >
-                <Flex vertical gap={20}>
-                    <Input maxLength={10}
-                           value={editProblem?.label}
-                           onChange={e => onChangeLabel(e.target.value)}
-                    />
-                    <Select
+        <Row>
+            <Col span={12}>
+                <Modal title="Edit problem"
+                       open={isModalOpen}
+                       onCancel={onCloseModal}
+                       onOk={onSaveModal}
+                >
+                    <Flex vertical gap={20}>
+                        <Input maxLength={10}
+                               value={editProblem?.label}
+                               onChange={e => onChangeLabel(e.target.value)}
+                        />
+                        <Select
                             showSearch
                             value={editProblem?.problemId}
                             labelRender={_ => editProblem?.name}
@@ -155,87 +155,89 @@ export const ContestEdit: React.FC = () => {
                                 value: d.id,
                                 label: d.name,
                             }))}
-                    />
-                </Flex>
-            </Modal>
-            <Form
-                form={form}
-                layout="horizontal"
-                onFinish={onFinish}
-            >
-                <Form.Item name="id">
-                    <Input type="hidden" value={contest.id?.toString()}/>
-                </Form.Item>
-                <Form.Item label="Name" name="name">
-                    <Input max={200}/>
-                </Form.Item>
-                <Form.Item label="Rules" name="rules">
-                    <Select>
-                        <Select.Option value="Acm">Acm</Select.Option>
-                        <Select.Option value="Points">Points</Select.Option>
-                        <Select.Option value="CheckPoint">CheckPoint</Select.Option>
-                    </Select>
-                </Form.Item>
-                <Form.Item label="Start time" name="startTime"
-                           getValueProps={(value) => ({value: value ? dayjs(value) : ""})}>
-                    <DatePicker allowClear={false} showTime/>
-                </Form.Item>
-                <Form.Item label="Finish time" name="finishTime"
-                           getValueProps={(value) => ({value: value ? dayjs(value) : ""})}>
-                    <DatePicker allowClear={false} showTime/>
-                </Form.Item>
-                {contest.rules === ContestRules.CheckPoint &&
-                    <Form.Item label="Check point time" name="checkPointTime"
+                        />
+                    </Flex>
+                </Modal>
+                <Form
+                    form={form}
+                    layout="horizontal"
+                    onFinish={onFinish}
+                >
+                    <Form.Item name="id">
+                        <Input type="hidden" value={contest.id?.toString()}/>
+                    </Form.Item>
+                    <Form.Item label="Name" name="name">
+                        <Input max={200}/>
+                    </Form.Item>
+                    <Form.Item label="Rules" name="rules">
+                        <Select>
+                            <Select.Option value="Acm">Acm</Select.Option>
+                            <Select.Option value="Points">Points</Select.Option>
+                            <Select.Option value="CheckPoint">CheckPoint</Select.Option>
+                        </Select>
+                    </Form.Item>
+                    <Form.Item label="Start time" name="startTime"
                                getValueProps={(value) => ({value: value ? dayjs(value) : ""})}>
                         <DatePicker allowClear={false} showTime/>
-                    </Form.Item>}
-                <Form.Item label="One language per task" name="oneLanguagePerTask">
-                    <Switch/>
-                </Form.Item>
-                <Form.Item label="Is opened" name="isOpened">
-                    <Switch/>
-                </Form.Item>
-                <Form.List name="problems">
-                    {(fields, {add, remove}) => (
-                        <>
-                            {fields.map(({key, name, ...restField}) => (
-                                <Space key={key} style={{display: 'flex', marginBottom: 8}} align="baseline">
-                                    <Form.Item
-                                        {...restField}
-                                        required={true}
-                                        name={[name, 'label']}
-                                    >
-                                        <Input disabled={true}/>
-                                    </Form.Item>
-                                    <Form.Item
-                                        {...restField}
-                                        required={true}
-                                        name={[name, 'name']}
-                                    >
-                                        <Input disabled={true} style={{width: 200}}/>
-                                    </Form.Item>
-                                    <EditOutlined onClick={() => onEditProblem(name)}/>
-                                    <MinusCircleOutlined onClick={() => {
-                                        onRemoveProblem(name);
-                                        remove(name);
-                                    }}/>
-                                </Space>
-                            ))}
-                            <Form.Item>
-                                <Button type="dashed" onClick={() => {
-                                    onAddProblem();
-                                    add();
-                                }} block icon={<PlusOutlined/>}>
-                                    Add problem
-                                </Button>
-                            </Form.Item>
-                        </>
+                    </Form.Item>
+                    <Form.Item label="Finish time" name="finishTime"
+                               getValueProps={(value) => ({value: value ? dayjs(value) : ""})}>
+                        <DatePicker allowClear={false} showTime/>
+                    </Form.Item>
+                    {contest.rules === ContestRules.CheckPoint &&
+                        <Form.Item label="Check point time" name="checkPointTime"
+                                   getValueProps={(value) => ({value: value ? dayjs(value) : ""})}>
+                            <DatePicker allowClear={false} showTime/>
+                        </Form.Item>}
+                    <Form.Item label="One language per task" name="oneLanguagePerTask">
+                        <Switch/>
+                    </Form.Item>
+                    <Form.Item label="Is opened" name="isOpened">
+                        <Switch/>
+                    </Form.Item>
+                    <Form.List name="problems">
+                        {(fields, {add, remove}) => (
+                            <>
+                                {fields.map(({key, name, ...restField}) => (
+                                    <Space key={key} style={{display: 'flex', marginBottom: 8}} align="baseline">
+                                        <Form.Item
+                                            {...restField}
+                                            required={true}
+                                            name={[name, 'label']}
+                                        >
+                                            <Input disabled={true}/>
+                                        </Form.Item>
+                                        <Form.Item
+                                            {...restField}
+                                            required={true}
+                                            name={[name, 'name']}
+                                        >
+                                            <Input disabled={true} style={{width: 200}}/>
+                                        </Form.Item>
+                                        <EditOutlined onClick={() => onEditProblem(name)}/>
+                                        <MinusCircleOutlined onClick={() => {
+                                            onRemoveProblem(name);
+                                            remove(name);
+                                        }}/>
+                                    </Space>
+                                ))}
+                                <Form.Item>
+                                    <Button type="dashed" onClick={() => {
+                                        onAddProblem();
+                                        add();
+                                    }} block icon={<PlusOutlined/>}>
+                                        Add problem
+                                    </Button>
+                                </Form.Item>
+                            </>
 
-                    )}
-                </Form.List>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit">Save</Button>
-                </Form.Item>
-            </Form>
-        </>);
+                        )}
+                    </Form.List>
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit">Save</Button>
+                    </Form.Item>
+                </Form>
+            </Col>
+        </Row>)
+        ;
 }
