@@ -5,7 +5,7 @@ Here is my future vision of the project for some period. If you are interested i
 
 ## Roadmap
 - [ ] Migrate backend to .net 6 or .net 8.
-- [ ] Migrate frontend to React/Angular.
+- [x] Migrate frontend to React/Angular.
 - [ ] Add openId providers.
 - [ ] Rewrite JudgeService (replace `run.exe`).
 - [ ] Docker support.
