@@ -59,6 +59,9 @@ export const ContestProblemDetail: React.FC = () => {
                         remarkPlugins={[remarkGfm]}
                         rehypePlugins={[rehypeRaw]}>{problem?.statement}</Markdown>
 
+                    {!user && <Alert type="warning" description={<span>You must <a
+                        href='/login'>login</a> to submit solutions.</span>}/>}
+
                     {contest?.status === ContestStatus.Completed &&
                         <Alert message="Contest is over. You can not submit solutions." type="warning"/>
                     }

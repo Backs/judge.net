@@ -2,7 +2,7 @@
 import {useParams} from "react-router-dom";
 import {Problem} from "../../api/Api.ts";
 import Title from "antd/lib/typography/Title";
-import {Flex, Spin} from "antd";
+import {Alert, Flex, Spin} from "antd";
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from "rehype-raw";
@@ -44,7 +44,8 @@ export const ProblemDetail: React.FC = () => {
     return (
         isLoading ? <Spin size="large"/> :
             <>
-                <Title style={{textAlign: 'center'}}>{problem?.name} {isAdmin && <a href={`${problemId}/edit`}><EditOutlined /></a>}</Title>
+                <Title style={{textAlign: 'center'}}>{problem?.name} {isAdmin &&
+                    <a href={`${problemId}/edit`}><EditOutlined/></a>}</Title>
                 <Flex gap="small" vertical>
                     <div style={{textAlign: 'center'}}>
                         Time limit, seconds: {convertMsToSeconds(problem?.timeLimitMilliseconds)}
@@ -59,10 +60,14 @@ export const ProblemDetail: React.FC = () => {
                         remarkRehypeOptions={{allowDangerousHtml: true}}
                     >{problem?.statement}</Markdown>
 
+                    {!user && <Alert type="warning" description={<span>You must <a
+                        href='/login'>login</a> to submit solutions.</span>}/>}
+
                     {user && problem && <SubmitProblem languages={problem.languages} problemId={problem.id}
                                                        onSubmit={(submitId) => setLastSubmitId(submitId)}/>}
                     {user && problem &&
-                        <ProblemSubmits pageSize={5} problemId={problem.id} userId={user.id} lastSubmitId={lastSubmitId}/>}
+                        <ProblemSubmits pageSize={5} problemId={problem.id} userId={user.id}
+                                        lastSubmitId={lastSubmitId}/>}
                 </Flex>
             </>
     );
