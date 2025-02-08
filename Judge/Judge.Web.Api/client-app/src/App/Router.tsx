@@ -18,6 +18,7 @@ import {ProblemEdit} from "../components/Administration/ProblemEdit.tsx";
 import {AllProblems} from "../components/Administration/AllProblems.tsx";
 import {AllContests} from "../components/Administration/AllContests.tsx";
 import {ContestEdit} from "../components/Administration/ContestEdit.tsx";
+import {AllUsers} from "../components/Administration/AllUsers.tsx";
 
 export const Router: React.FC = () => {
     return (
@@ -42,6 +43,7 @@ export const Router: React.FC = () => {
                 <Route path="/administration/languages" element={<Languages/>}/>
                 <Route path="/administration/problems" element={<AllProblems/>}/>
                 <Route path="/administration/contests" element={<AllContests/>}/>
+                <Route path="/administration/users" element={<AllUsers/>}/>
                 <Route path="/notFound" element={<NotFound/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>

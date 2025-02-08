@@ -17,11 +17,12 @@ export const AllProblems: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams({page: "1", size: "10"});
     const [total, setTotal] = useState(0);
     const [isLoading, setLoading] = useState(true);
+    const api = judgeApi();
 
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
-            const api = judgeApi();
+            
             const page = Number(searchParams.get("page"));
             const size = Number(searchParams.get("size"));
             const skip = (page - 1) * size;
