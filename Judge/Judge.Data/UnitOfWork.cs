@@ -14,13 +14,11 @@ namespace Judge.Data
     internal sealed class UnitOfWork : IUnitOfWork
     {
         private readonly DataContext context;
-        private IContestResultRepository? contestResultRepository;
         private IContestsRepository? contestsRepository;
         private IContestTaskRepository? contestTaskRepository;
         private ILanguageRepository? languageRepository;
         private ISubmitRepository? submitRepository;
         private ISubmitResultRepository? submitResultRepository;
-        private ITaskNameRepository? taskNameRepository;
         private ITaskRepository? taskRepository;
         private IUserRepository? userRepository;
         private readonly IDbContextTransaction? transaction;
@@ -53,9 +51,6 @@ namespace Judge.Data
             await this.context.SaveChangesAsync();
         }
 
-        public IContestResultRepository ContestResults =>
-            this.contestResultRepository ??= new ContestResultRepository(this.context);
-
         public IContestsRepository Contests =>
             this.contestsRepository ??= new ContestsRepository(this.context);
 
@@ -70,9 +65,6 @@ namespace Judge.Data
 
         public ISubmitResultRepository SubmitResults =>
             this.submitResultRepository ??= new SubmitResultRepository(this.context);
-
-        public ITaskNameRepository TaskNames =>
-            this.taskNameRepository ??= new TaskNameRepository(this.context);
 
         public ITaskRepository Tasks =>
             this.taskRepository ??= new TaskRepository(this.context);

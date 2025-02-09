@@ -16,18 +16,6 @@ internal sealed class LanguageRepository : ILanguageRepository
         this.context = context;
     }
 
-    public IEnumerable<Language> GetLanguages(bool activeOnly)
-    {
-        IQueryable<Language> query = this.context.Set<Language>();
-
-        if (activeOnly)
-        {
-            query = query.Where(o => o.IsHidden == false);
-        }
-
-        return query.OrderBy(o => o.Name).AsEnumerable();
-    }
-
     public async Task<IReadOnlyCollection<Language>> GetAllAsync(bool activeOnly)
     {
         IQueryable<Language> query = this.context.Set<Language>();
@@ -43,15 +31,5 @@ internal sealed class LanguageRepository : ILanguageRepository
     public Language? Get(int id)
     {
         return this.context.Set<Language>().FirstOrDefault(o => o.Id == id);
-    }
-
-    public void Add(Language language)
-    {
-        this.context.Set<Language>().Add(language);
-    }
-
-    public void Delete(Language language)
-    {
-        this.context.Set<Language>().Remove(language);
     }
 }

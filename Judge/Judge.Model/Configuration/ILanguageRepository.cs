@@ -7,10 +7,7 @@ namespace Judge.Model.Configuration
 
     public interface ILanguageRepository
     {
-        IEnumerable<Language> GetLanguages(bool activeOnly);
         Task<IReadOnlyCollection<Language>> GetAllAsync(bool activeOnly);
         Language Get(int id);
-        void Add(Language language);
-        void Delete(Language language);
     }
 }

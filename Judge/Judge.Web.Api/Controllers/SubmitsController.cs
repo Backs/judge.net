@@ -43,7 +43,7 @@ public class SubmitsController : ControllerBase
             TaskLabel = query.ProblemLabel,
             UserId = query.UserId
         };
-        var result = await this.submitsService.SearchAsync(submitsQuery, this.User.TryGetUserId());
+        var result = await this.submitsService.SearchAsync(submitsQuery);
 
         return this.Ok(result);
     }
@@ -72,7 +72,7 @@ public class SubmitsController : ControllerBase
             Take = take
         };
 
-        var result = await this.submitsService.SearchAsync(query, this.User.TryGetUserId());
+        var result = await this.submitsService.SearchAsync(query);
 
         return this.Ok(result);
     }
@@ -109,7 +109,7 @@ public class SubmitsController : ControllerBase
     [ProducesResponseType(typeof(SubmitResultExtendedInfo), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetSubmit([FromRoute] long id)
     {
-        var result = await this.submitsService.GetResultAsync(id, this.User.TryGetUserId());
+        var result = await this.submitsService.GetResultAsync(id);
         if (result == null)
             return this.NotFound();
 
@@ -125,7 +125,7 @@ public class SubmitsController : ControllerBase
     [ProducesResponseType(typeof(SubmitResultExtendedInfo), StatusCodes.Status200OK)]
     public async Task<IActionResult> Rejudge([FromRoute] long id)
     {
-        var result = await this.submitsService.RejudgeAsync(id, this.User.TryGetUserId());
+        var result = await this.submitsService.RejudgeAsync(id);
         if (result == null)
             return this.NotFound();
 

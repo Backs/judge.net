@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AssemblyTitle>Judge.Checker</AssemblyTitle>
     <Product>Judge.Checker</Product>
     <Copyright>Copyright ©  2017</Copyright>

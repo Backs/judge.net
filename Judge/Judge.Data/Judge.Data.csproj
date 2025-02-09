@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AssemblyTitle>Judge.Data</AssemblyTitle>
     <Product>Judge.Data</Product>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <LangVersion>default</LangVersion>
     <Nullable>enable</Nullable>
+    <NoWarn>CS8981</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Judge.Model\Judge.Model.csproj" />

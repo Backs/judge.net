@@ -27,13 +27,6 @@ internal sealed class TaskRepository : ITaskRepository
         this.context.Set<Task>().Add(problem);
     }
 
-    public IEnumerable<Task> GetTasks(IEnumerable<long> ids)
-    {
-        return this.context.Set<Task>()
-            .Where(o => ids.Contains(o.Id))
-            .AsEnumerable();
-    }
-
     public async Task<IReadOnlyCollection<Task>> GetAsync(IEnumerable<long> ids)
     {
         return await this.context.Set<Task>()

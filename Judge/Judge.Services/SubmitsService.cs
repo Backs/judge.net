@@ -28,7 +28,7 @@ internal sealed class SubmitsService : ISubmitsService
         this.submitsConverter = submitsConverter;
     }
 
-    public async Task<Client.Submits.SubmitResultsList> SearchAsync(SubmitsQuery query, long? currentUserId)
+    public async Task<Client.Submits.SubmitResultsList> SearchAsync(SubmitsQuery query)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
 
@@ -92,7 +92,7 @@ internal sealed class SubmitsService : ISubmitsService
         return await this.SaveSubmitAsync(submitSolution, userInfo);
     }
 
-    public async Task<Client.Submits.SubmitResultExtendedInfo?> GetResultAsync(long id, long? currentUserId)
+    public async Task<Client.Submits.SubmitResultExtendedInfo?> GetResultAsync(long id)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
         var submitResult = await unitOfWork.SubmitResults.GetAsync(id);
@@ -125,7 +125,7 @@ internal sealed class SubmitsService : ISubmitsService
         return result;
     }
 
-    public async Task<Client.Submits.SubmitResultExtendedInfo?> RejudgeAsync(long id, long? currentUserId)
+    public async Task<Client.Submits.SubmitResultExtendedInfo?> RejudgeAsync(long id)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
         var submitResult = await unitOfWork.SubmitResults.GetAsync(id);
@@ -138,7 +138,7 @@ internal sealed class SubmitsService : ISubmitsService
 
         await unitOfWork.CommitAsync();
 
-        return await this.GetResultAsync(newSubmitResult.Id, currentUserId);
+        return await this.GetResultAsync(newSubmitResult.Id);
     }
 
     private async Task<long> SaveSubmitAsync(Client.Submits.SubmitSolution submitSolution,
