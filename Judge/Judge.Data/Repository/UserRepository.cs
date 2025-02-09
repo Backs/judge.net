@@ -51,7 +51,7 @@ internal sealed class UserRepository : IUserRepository
 
     public Task<int> CountAsync(ISpecification<User> specification)
     {
-        return this.context.Set<User?>().CountAsync(specification.IsSatisfiedBy!);
+        return this.context.Set<User>().CountAsync(specification.IsSatisfiedBy!);
     }
 
     public Task<User?> GetAsync(long id)
@@ -61,6 +61,6 @@ internal sealed class UserRepository : IUserRepository
 
     private IIncludableQueryable<User?, ICollection<UserRole>> BaseQuery()
     {
-        return this.context.Set<User?>().Include(o => o!.UserRoles);
+        return this.context.Set<User>().Include(o => o.UserRoles);
     }
 }

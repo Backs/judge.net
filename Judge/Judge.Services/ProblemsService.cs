@@ -123,7 +123,7 @@ internal sealed class ProblemsService : IProblemsService
     public async Task<Client.EditProblem?> SaveAsync(Client.EditProblem problem)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork(false);
-        Task task;
+        Task? task;
         if (problem.Id != null)
         {
             task = await unitOfWork.Tasks.GetAsync(problem.Id.Value);

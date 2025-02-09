@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#nullable enable
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Judge.Model.SubmitSolution
@@ -9,9 +10,9 @@ namespace Judge.Model.SubmitSolution
 
         Task<IReadOnlyCollection<long>> GetSolvedProblemsAsync(ISpecification<SubmitResult> specification);
 
-        SubmitResult DequeueUnchecked();
+        SubmitResult? DequeueUnchecked();
         Task<int> CountAsync(ISpecification<SubmitResult> specification);
-        Task<SubmitResult> GetAsync(long id);
+        Task<SubmitResult?> GetAsync(long id);
         Task<SubmitResult> SaveAsync(SubmitResult submitResult);
     }
 }

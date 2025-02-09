@@ -25,7 +25,7 @@ namespace Judge.JudgeService
                 if (submit == null)
                     return;
 
-                using (NestedDiagnosticsLogicalContext.Push($"Submit-{submit.Id}"))
+                using (ScopeContext.PushNestedState($"Submit-{submit.Id}"))
                 {
                     this.logger.Info("Dequeued submit");
 

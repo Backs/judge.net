@@ -113,7 +113,7 @@ internal sealed class SubmitsService : ISubmitsService
 
         var result = this.submitsConverter.Convert<Client.Submits.SubmitResultExtendedInfo>(submitResult,
             languages[submitResult.Submit.LanguageId],
-            task,
+            task!,
             user!,
             contestTasks);
 

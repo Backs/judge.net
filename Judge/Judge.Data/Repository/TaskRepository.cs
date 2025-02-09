@@ -50,7 +50,7 @@ internal sealed class TaskRepository : ITaskRepository
         return this.context.Set<Task>().Where(specification.IsSatisfiedBy).CountAsync();
     }
 
-    public Task<Task> GetAsync(long id)
+    public Task<Task?> GetAsync(long id)
     {
         return this.context.Set<Task>().FirstOrDefaultAsync(o => o.Id == id);
     }
