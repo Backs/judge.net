@@ -1,18 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectGuid>{2E820D4C-9D10-452B-A284-A1E01B311199}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <AssemblyTitle>Judge.JudgeService</AssemblyTitle>
     <Product>Judge.JudgeService</Product>
-    <Copyright>Copyright ©  2017</Copyright>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Judge.Checker\Judge.Checker.csproj" />
     <ProjectReference Include="..\Judge.Compiler\Judge.Compiler.csproj" />
@@ -25,7 +20,6 @@
     <PackageReference Include="NLog" Version="4.6.8" />
     <PackageReference Include="NLog.Extensions.Logging" Version="1.6.1" />
     <PackageReference Include="SimpleInjector" Version="5.3.3" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.1" />
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
   </ItemGroup>
   <ItemGroup>

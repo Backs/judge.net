@@ -1,5 +1,5 @@
 <Project>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)IsExternalInit.cs" Visible="false" />
+    <PackageReference Include="Collections.Analyzer" Version="0.2.11" />
   </ItemGroup>
 </Project>

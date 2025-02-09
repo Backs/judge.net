@@ -9,3 +9,8 @@ dotnet_style_qualification_for_field = true:warning
 dotnet_style_qualification_for_method = true:warning
 dotnet_style_qualification_for_property = true:warning
 
+[*.csproj]
+indent_style = space
+indent_size = 2
+tab_width = 2
+ij_xml_space_inside_empty_tag = true

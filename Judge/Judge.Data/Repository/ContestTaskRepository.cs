@@ -93,7 +93,7 @@ internal sealed class ContestTaskRepository : IContestTaskRepository
                                     s.Status != SubmitStatus.Pending && s.Status != SubmitStatus.CompilationError)
                         .Select(s => new
                         {
-                            s.Id,
+                            s!.Id,
                             s.Status,
                             s.SubmitDateUtc
                         }).OrderBy(s => s.Id).ToArray()

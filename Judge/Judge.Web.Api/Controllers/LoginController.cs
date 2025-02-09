@@ -48,7 +48,7 @@ public class LoginController : ControllerBase
 
         if (authenticationResult == AuthenticationResult.Success)
         {
-            var key = Encoding.ASCII.GetBytes(this.configuration["AppSettings:SecurityKey"]);
+            var key = Encoding.ASCII.GetBytes(this.configuration["AppSettings:SecurityKey"]!);
             var claims = new List<Claim>(4)
             {
                 new("Id", user!.Id.ToString()),

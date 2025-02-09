@@ -66,10 +66,10 @@ internal static class Program
         });
 
         builder.Services.AddHttpContextAccessor();
-        builder.Services.AddServices(builder.Configuration["AppSettings:DatabaseConnectionString"]);
+        builder.Services.AddServices(builder.Configuration["AppSettings:DatabaseConnectionString"]!);
         builder.Services.AddTransient<ErrorHandlerMiddleware>();
 
-        var key = builder.Configuration["AppSettings:SecurityKey"];
+        var key = builder.Configuration["AppSettings:SecurityKey"]!;
         var issuer = builder.Configuration["AppSettings:Issuer"];
         var audience = builder.Configuration["AppSettings:Audience"];
 

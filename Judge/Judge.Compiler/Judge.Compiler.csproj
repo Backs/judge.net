@@ -3,8 +3,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <AssemblyTitle>Judge.Compiler</AssemblyTitle>
     <Product>Judge.Compiler</Product>
-    <Copyright>Copyright ©  2017</Copyright>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NLog" Version="4.6.8" />

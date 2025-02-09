@@ -3,8 +3,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <AssemblyTitle>Judge.Checker</AssemblyTitle>
     <Product>Judge.Checker</Product>
-    <Copyright>Copyright ©  2017</Copyright>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Checkers\acmp.exe" />
