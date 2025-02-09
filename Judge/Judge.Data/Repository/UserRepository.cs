@@ -18,34 +18,9 @@ internal sealed class UserRepository : IUserRepository
         this.context = context;
     }
 
-    public User? Get(long id)
-    {
-        return this.BaseQuery().FirstOrDefault(o => o!.Id == id);
-    }
-
     public void Add(User user)
     {
         this.context.Set<User>().Add(user);
-    }
-
-    public void Update(User user)
-    {
-        this.context.Entry(user).State = EntityState.Modified;
-    }
-
-    public void Delete(User user)
-    {
-        this.context.Set<User>().Remove(user);
-    }
-
-    public User? FindByName(string userName)
-    {
-        return this.BaseQuery().FirstOrDefault(o => o!.UserName == userName);
-    }
-
-    public User? FindByEmail(string email)
-    {
-        return this.BaseQuery().FirstOrDefault(o => o!.Email == email);
     }
 
     public Task<User?> FindByEmailAsync(string email)
@@ -56,11 +31,6 @@ internal sealed class UserRepository : IUserRepository
     public Task<User?> FindByLoginASync(string login)
     {
         return this.BaseQuery().FirstOrDefaultAsync(o => o!.UserName == login);
-    }
-
-    public IEnumerable<User> Find(ISpecification<User> specification)
-    {
-        return this.BaseQuery().Where(specification.IsSatisfiedBy!)!;
     }
 
     public async Task<IReadOnlyCollection<User>> SearchAsync(ISpecification<User> specification, int skip = 0,

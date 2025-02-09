@@ -16,17 +16,6 @@ internal sealed class ContestsRepository : IContestsRepository
         this.context = context;
     }
 
-    public IEnumerable<Contest> GetList(ISpecification<Contest> specification)
-    {
-        return this.context.Set<Contest>().Where(specification.IsSatisfiedBy).OrderByDescending(o => o.StartTime)
-            .AsEnumerable();
-    }
-
-    public Contest? Get(int id)
-    {
-        return this.context.Set<Contest>().FirstOrDefault(o => o.Id == id);
-    }
-
     public Task<Contest?> TryGetAsync(int id)
     {
         return this.context.Set<Contest>().FirstOrDefaultAsync(o => o.Id == id)!;

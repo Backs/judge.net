@@ -7,10 +7,6 @@ namespace Judge.Model.SubmitSolution
     {
         void Add(SubmitBase item);
 
-        SubmitBase Get(long submitId);
-
-        IEnumerable<SubmitBase> Get(ISpecification<SubmitBase> specification);
         Task<IReadOnlyCollection<SubmitBase>> SearchAsync(ISpecification<SubmitBase> specification);
-        Task<SubmitBase> GetAsync(long id);
     }
 }

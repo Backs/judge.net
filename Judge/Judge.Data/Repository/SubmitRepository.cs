@@ -21,23 +21,8 @@ internal sealed class SubmitRepository : ISubmitRepository
         this.context.Set<SubmitBase>().Add(item);
     }
 
-    public SubmitBase? Get(long submitId)
-    {
-        return this.context.Set<SubmitBase>().AsNoTracking().FirstOrDefault(o => o.Id == submitId);
-    }
-
-    public IEnumerable<SubmitBase> Get(ISpecification<SubmitBase> specification)
-    {
-        return this.context.Set<SubmitBase>().AsNoTracking().Where(specification.IsSatisfiedBy).AsEnumerable();
-    }
-
     public async Task<IReadOnlyCollection<SubmitBase>> SearchAsync(ISpecification<SubmitBase> specification)
     {
         return await this.context.Set<SubmitBase>().AsNoTracking().Where(specification.IsSatisfiedBy).ToListAsync();
-    }
-
-    public Task<SubmitBase?> GetAsync(long id)
-    {
-        return this.context.Set<SubmitBase>().AsNoTracking().FirstOrDefaultAsync(o => o.Id == id)!;
     }
 }

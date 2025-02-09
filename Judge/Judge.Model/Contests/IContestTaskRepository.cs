@@ -7,11 +7,9 @@ namespace Judge.Model.Contests
     {
         void Add(ContestTask task);
         void Delete(ContestTask task);
-        IEnumerable<ContestTask> GetTasks(int contestId);
         Task<IReadOnlyCollection<ContestTask>> SearchAsync(IEnumerable<int> contestIds);
         ContestTask Get(int contestId, string label);
         Task<ContestTask> TryGetAsync(int contestId, string label);
-        IEnumerable<ContestTask> GetTasks();
         Task<IReadOnlyCollection<ContestTask>> SearchAsync(int contestId);
         Task<IReadOnlyCollection<ContestResult>> GetResultsAsync(long contestId);
     }

@@ -26,16 +26,6 @@ internal sealed class ContestTaskRepository : IContestTaskRepository
         this.context.Set<ContestTask>().Remove(task);
     }
 
-    public IEnumerable<ContestTask> GetTasks(int contestId)
-    {
-        return this.context.Set<ContestTask>()
-            .Where(o => o.Contest.Id == contestId)
-            .Include(o => o.Task)
-            .Include(o => o.Contest)
-            .OrderBy(o => o.TaskName)
-            .AsEnumerable();
-    }
-
     public async Task<IReadOnlyCollection<ContestTask>> SearchAsync(IEnumerable<int> contestIds)
     {
         return await this.context.Set<ContestTask>()
@@ -57,14 +47,6 @@ internal sealed class ContestTaskRepository : IContestTaskRepository
             .Include(o => o.Task)
             .Include(o => o.Contest)
             .FirstOrDefaultAsync(o => o.Contest.Id == contestId && o.TaskName == label)!;
-    }
-
-    public IEnumerable<ContestTask> GetTasks()
-    {
-        return this.context.Set<ContestTask>()
-            .Include(o => o.Task)
-            .OrderBy(o => o.TaskName)
-            .AsEnumerable();
     }
 
     public async Task<IReadOnlyCollection<ContestTask>> SearchAsync(int contestId)
