@@ -1,17 +1,27 @@
 ﻿import React, {useEffect, useState} from "react";
-import {useSearchParams} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import {judgeApi} from "../../api/JudgeApi.ts";
 import {User} from "../../api/Api.ts";
 import {Input, Pagination, Table} from "antd";
 import {handleError} from "../../helpers/handleError.ts";
 import {ColumnType} from "antd/lib/table";
+import {UserState} from "../../userSlice.ts";
+import {useSelector} from "react-redux";
 
 export const AllUsers: React.FC = () => {
+    const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams({page: "1", size: "50", name: ""});
     const [isLoading, setLoading] = useState(true);
     const [users, setUsers] = useState<User[]>([]);
     const [total, setTotal] = useState(0);
     const api = judgeApi();
+
+    const {user}: UserState = useSelector((state: any) => state.user)
+    const isAdmin = user?.roles.includes("admin") || false;
+
+    if (!isAdmin) {
+        navigate("/login");
+    }
 
     useEffect(() => {
         const fetchData = async () => {

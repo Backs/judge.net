@@ -4,12 +4,21 @@ import {TableProps} from "antd/lib/table";
 import {Language} from "../../api/Api.ts";
 import {Table} from "antd";
 import {handleError} from "../../helpers/handleError.ts";
+import {UserState} from "../../userSlice.ts";
+import {useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
-// TODO: https://ant.design/components/table#table-demo-edit-row
 type ColumnTypes = Exclude<TableProps<Language>['columns'], undefined>;
 export const Languages: React.FC = () => {
+    const navigate = useNavigate();
     const [isLoading, setLoading] = useState(true);
     const [languages, setLanguages] = useState<Language[]>([]);
+    const {user}: UserState = useSelector((state: any) => state.user)
+    const isAdmin = user?.roles.includes("admin") || false;
+
+    if (!isAdmin) {
+        navigate("/login");
+    }
 
     useEffect(() => {
         const fetchData = async () => {

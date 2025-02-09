@@ -1,10 +1,12 @@
 ﻿import React, {useEffect, useState} from "react";
-import {Link, useSearchParams} from "react-router-dom";
+import {Link, useNavigate, useSearchParams} from "react-router-dom";
 import {judgeApi} from "../../api/JudgeApi.ts";
 import {handleError} from "../../helpers/handleError.ts";
 import {getColor, getStatusTest} from "../../helpers/contestStatusHelper.ts";
 import {Pagination, Table, Tag} from "antd";
 import {ColumnType} from "antd/lib/table";
+import {UserState} from "../../userSlice.ts";
+import {useSelector} from "react-redux";
 
 interface ContestItem {
     key: number;
@@ -16,10 +18,18 @@ interface ContestItem {
 }
 
 export const AllContests: React.FC = () => {
+    const navigate = useNavigate();
     const [contestList, setContestList] = useState<ContestItem[]>([]);
     const [searchParams, setSearchParams] = useSearchParams({page: "1", size: "10"});
     const [isLoading, setLoading] = useState(true);
     const [total, setTotal] = useState(0);
+
+    const {user}: UserState = useSelector((state: any) => state.user)
+    const isAdmin = user?.roles.includes("admin") || false;
+
+    if (!isAdmin) {
+        navigate("/login");
+    }
 
     useEffect(() => {
         const fetchData = async () => {

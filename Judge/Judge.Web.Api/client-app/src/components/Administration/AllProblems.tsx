@@ -1,10 +1,12 @@
 ﻿import React, {useState, useEffect} from "react";
 import {Pagination, Table} from "antd";
-import {Link, useSearchParams} from "react-router-dom";
+import {Link, useNavigate, useSearchParams} from "react-router-dom";
 import {handleError} from "../../helpers/handleError.ts";
 import {judgeApi} from "../../api/JudgeApi.ts";
 import {CheckOutlined} from '@ant-design/icons';
 import {ColumnType} from "antd/lib/table";
+import {UserState} from "../../userSlice.ts";
+import {useSelector} from "react-redux";
 
 interface ProblemItem {
     key: number,
@@ -13,11 +15,19 @@ interface ProblemItem {
 }
 
 export const AllProblems: React.FC = () => {
+    const navigate = useNavigate();
     const [problemsList, setProblemsList] = useState<ProblemItem[]>([]);
     const [searchParams, setSearchParams] = useSearchParams({page: "1", size: "10"});
     const [total, setTotal] = useState(0);
     const [isLoading, setLoading] = useState(true);
     const api = judgeApi();
+
+    const {user}: UserState = useSelector((state: any) => state.user)
+    const isAdmin = user?.roles.includes("admin") || false;
+
+    if (!isAdmin) {
+        navigate("/login");
+    }
 
     useEffect(() => {
         const fetchData = async () => {
