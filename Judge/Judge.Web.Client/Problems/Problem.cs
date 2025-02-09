@@ -39,4 +39,9 @@ public class Problem
     /// </summary>
     [Required]
     public ProblemLanguage[] Languages { get; set; } = [];
+
+    /// <summary>
+    /// Problem is opened for submits
+    /// </summary>
+    public bool IsOpened { get; set; }
 }

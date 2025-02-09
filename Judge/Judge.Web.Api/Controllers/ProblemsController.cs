@@ -52,6 +52,11 @@ public class ProblemsController : ControllerBase
         if (result == null)
             return this.NotFound();
 
+        if (!result.IsOpened && !this.User.IsAdmin())
+        {
+            return this.NotFound();
+        }
+
         return this.Ok(result);
     }
 

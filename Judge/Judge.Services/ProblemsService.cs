@@ -92,6 +92,7 @@ internal sealed class ProblemsService : IProblemsService
             Statement = task.Statement,
             MemoryLimitBytes = task.MemoryLimitBytes,
             TimeLimitMilliseconds = task.TimeLimitMilliseconds,
+            IsOpened = task.IsOpened,
             Languages = languages.Select(o => new Client.ProblemLanguage
             {
                 Id = o.Id,
