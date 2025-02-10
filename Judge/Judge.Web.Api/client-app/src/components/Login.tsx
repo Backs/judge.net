@@ -2,7 +2,7 @@
 import {LockOutlined, MailOutlined} from '@ant-design/icons';
 import {Button, Col, Form, Input, Row} from "antd";
 import {judgeApi} from "../api/JudgeApi.ts";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {handleError} from "../helpers/handleError.ts";
 import {Typography} from 'antd';
 import {setUser} from "../userSlice.ts";
@@ -79,7 +79,7 @@ export const Login: React.FC = () => {
                             Log in
                         </Button>
                     </Form.Item>
-                    Or <a href="/register">register now!</a>
+                    Or <Link to="/register">register now!</Link>
                     <Form.ErrorList errors={errors}/>
                 </Form>
             </Col>

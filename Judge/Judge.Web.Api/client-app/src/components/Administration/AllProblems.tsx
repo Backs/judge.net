@@ -74,7 +74,7 @@ export const AllProblems: React.FC = () => {
 
     return (
         <div>
-            <a href="/problems/new">Create new</a>
+            <Link to="/problems/new">Create new</Link>
             <br />
             <br />
             <Table dataSource={problemsList} columns={columns} pagination={false} loading={isLoading}/>

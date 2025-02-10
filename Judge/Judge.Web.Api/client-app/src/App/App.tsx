@@ -14,7 +14,7 @@ const App: React.FC = () => {
     } = theme.useToken();
 
     const dispatch = useDispatch();
-    const {user}: UserState = useSelector((state: any) => state.user)
+    const {user}: UserState = useSelector((state: any) => state.user);
 
     useEffect(() => {
         const fetchData = async () => {

@@ -1,5 +1,5 @@
 ﻿import React, {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {Problem} from "../../api/Api.ts";
 import Title from "antd/lib/typography/Title";
 import {Alert, Flex, Spin} from "antd";
@@ -45,7 +45,7 @@ export const ProblemDetail: React.FC = () => {
         isLoading ? <Spin size="large"/> :
             <>
                 <Title style={{textAlign: 'center'}}>{problem?.name} {isAdmin &&
-                    <a href={`${problemId}/edit`}><EditOutlined/></a>}</Title>
+                    <Link to={`/problems/${problemId}/edit`}><EditOutlined/></Link>}</Title>
                 <Flex gap="small" vertical>
                     <div style={{textAlign: 'center'}}>
                         Time limit, seconds: {convertMsToSeconds(problem?.timeLimitMilliseconds)}
@@ -60,8 +60,8 @@ export const ProblemDetail: React.FC = () => {
                         remarkRehypeOptions={{allowDangerousHtml: true}}
                     >{problem?.statement}</Markdown>
 
-                    {!user && <Alert type="warning" description={<span>You must <a
-                        href='/login'>login</a> to submit solutions.</span>}/>}
+                    {!user && <Alert type="warning" description={<span>You must <Link
+                        to='/login'>login</Link> to submit solutions.</span>}/>}
 
                     {user && problem && <SubmitProblem languages={problem.languages} problemId={problem.id}
                                                        onSubmit={(submitId) => setLastSubmitId(submitId)}/>}

@@ -97,7 +97,7 @@ export const AllContests: React.FC = () => {
 
     return (
         <div>
-            <a href="/contests/new">Create new</a>
+            <Link to="/contests/new">Create new</Link>
             <br />
             <br />
             <Table dataSource={contestList} columns={columns} pagination={false} loading={isLoading}/>

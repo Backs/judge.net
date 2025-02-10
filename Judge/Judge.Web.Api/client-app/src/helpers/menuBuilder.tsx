@@ -1,5 +1,6 @@
 ﻿import {CurrentUser} from "../api/Api.ts";
 import {MenuProps} from "antd/lib";
+import {Link} from "react-router-dom";
 
 export type MenuItem = Required<MenuProps>['items'][number];
 
@@ -7,23 +8,23 @@ export const buildMenu = (user: CurrentUser | null): MenuItem[] => {
     const subMenu = [];
     if (user?.roles.includes("admin")) {
         const items = {
-            label: (<a href="/administration">Administration</a>),
+            label: (<Link to="/administration">Administration</Link>),
             key: 'Administration',
             children: [
                 {
-                    label: (<a href="/administration/languages">Languages</a>),
+                    label: (<Link to="/administration/languages">Languages</Link>),
                     key: 'admin-languages',
                 },
                 {
-                    label: (<a href="/administration/problems">Problems</a>),
+                    label: (<Link to="/administration/problems">Problems</Link>),
                     key: 'admin-problems',
                 },
                 {
-                    label: (<a href="/administration/contests">Contests</a>),
+                    label: (<Link to="/administration/contests">Contests</Link>),
                     key: 'admin-contests',
                 },
                 {
-                    label: (<a href="/administration/users">Users</a>),
+                    label: (<Link to="/administration/users">Users</Link>),
                     key: 'admin-users',
                 }]
         };
@@ -35,23 +36,23 @@ export const buildMenu = (user: CurrentUser | null): MenuItem[] => {
     }
     return [
         {
-            label: (<a href="/">Home</a>),
+            label: (<Link to="/">Home</Link>),
             key: 'home',
         },
         {
-            label: (<a href="/problems">Problems</a>),
+            label: (<Link to="/problems">Problems</Link>),
             key: 'problems',
         },
         {
-            label: (<a href="/contests">Contests</a>),
+            label: (<Link to="/contests">Contests</Link>),
             key: 'contests',
         },
         {
-            label: (<a href="/submits">Submits</a>),
+            label: (<Link to="/submits">Submits</Link>),
             key: 'submits',
         },
         {
-            label: user?.login || (<a href="/login">Login</a>),
+            label: user?.login || (<Link to="/login">Login</Link>),
             key: 'login',
             children: subMenu,
         }

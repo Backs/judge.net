@@ -8,6 +8,7 @@ import {defaultColumns, extendedColumns, SubmitInfo} from "../../helpers/submits
 import {SubmitResultInfo, SubmitStatus} from "../../api/Api.ts";
 import {UserState} from "../../userSlice.ts";
 import {useSelector} from "react-redux";
+import {Link} from "react-router-dom";
 
 export interface ProblemSubmitsProps {
     problemId?: number,
@@ -32,15 +33,15 @@ export const ProblemSubmits: React.FC<ProblemSubmitsProps> = (props) => {
 
     const getProblemLink = (submit: SubmitResultInfo): any => {
         if (submit.contestInfo) {
-            return <a
-                href={`contests/${submit.contestInfo.contestId}/${submit.contestInfo.label}`}>{submit.problemName}</a>
+            return <Link
+                to={`/contests/${submit.contestInfo.contestId}/${submit.contestInfo.label}`}>{submit.problemName}</Link>
         }
-        return <a href={`problems/${submit.problemId}`}>{submit.problemName}</a>
+        return <Link to={`/problems/${submit.problemId}`}>{submit.problemName}</Link>
     }
 
     const getSubmitResultLink = (submit: SubmitResultInfo): any => {
         if (isAdmin) {
-            return <a href={`/submit-results/${submit.submitResultId}`}>{submit.submitDate}</a>
+            return <Link to={`/submit-results/${submit.submitResultId}`}>{submit.submitDate}</Link>
         }
         return submit.submitDate;
     }
