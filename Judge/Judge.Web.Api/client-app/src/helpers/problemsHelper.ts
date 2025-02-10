@@ -1,6 +1,6 @@
-﻿export const problemTemplate = "### Формат входных данных\n\n" +
-    "### Формат выходных данных\n\n" +
-    "### Пример\n" +
+﻿export const problemTemplate = "### Input\n\n" +
+    "### Output\n\n" +
+    "### Example\n" +
     "| input   | output |\n" +
     "|---------|--------|\n" +
     "|         |        |\n" +

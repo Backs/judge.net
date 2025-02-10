@@ -17,7 +17,7 @@ export const ProblemEdit: React.FC = () => {
     const {problemId} = useParams();
     const [problem, setProblem] = useState<EditProblem>({
         isOpened: false,
-        memoryLimitBytes: 104857600,
+        memoryLimitBytes: 524288000,
         name: "",
         statement: problemTemplate,
         testsFolder: "",
