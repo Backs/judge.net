@@ -1,12 +1,15 @@
-﻿import React from "react";
+﻿import React, {ReactNode, useState} from "react";
 import {Button, Col, Form, Input, Row} from "antd";
 import {judgeApi} from "../api/JudgeApi.ts";
 import {useNavigate} from "react-router-dom";
 import {LockOutlined, MailOutlined, UserOutlined} from "@ant-design/icons";
+import { Typography } from 'antd';
+const { Text } = Typography;
 
 
 export const Register: React.FC = () => {
     const [form] = Form.useForm();
+    const [errors, setErrors] = useState<ReactNode[]>([]);
     const navigate = useNavigate();
     const onFinish = async (values: any) => {
         console.log('Received values of form: ', values);
@@ -21,6 +24,9 @@ export const Register: React.FC = () => {
 
             navigate("/login");
         } catch (e: any) {
+            if (e.response?.status === 409) {
+                setErrors([<Text type="danger">User with this login or email already exists.</Text>]);
+            }
             console.log(e);
         }
     };
@@ -52,7 +58,7 @@ export const Register: React.FC = () => {
                     </Form.Item>
 
                     <Form.Item
-                        name="userName"
+                        name="login"
                         rules={[
                             {
                                 required: true,
@@ -61,7 +67,7 @@ export const Register: React.FC = () => {
                         ]}
                     >
                         <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="User name"
-                               autoComplete="username"/>
+                               autoComplete="login"/>
                     </Form.Item>
 
                     <Form.Item
@@ -70,6 +76,7 @@ export const Register: React.FC = () => {
                             {
                                 required: true,
                                 message: 'Please input your password!',
+                                min: 6
                             },
                         ]}
                         hasFeedback
@@ -99,6 +106,9 @@ export const Register: React.FC = () => {
                     >
                         <Input.Password prefix={<LockOutlined className="site-form-item-icon"/>}
                                         placeholder="Confirm password" autoComplete="new-password"/>
+                    </Form.Item>
+                    <Form.Item>
+                        <Form.ErrorList errors={errors}/>
                     </Form.Item>
                     <Form.Item>
                         <Button type="primary" htmlType="submit">
