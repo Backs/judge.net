@@ -52,6 +52,10 @@ export const buildMenu = (user: CurrentUser | null): MenuItem[] => {
             key: 'submits',
         },
         {
+            label: (<Link to="/help">Help</Link>),
+            key: 'help'
+        },
+        {
             label: user?.login || (<Link to="/login">Login</Link>),
             key: 'login',
             children: subMenu,

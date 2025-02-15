@@ -19,12 +19,14 @@ import {AllProblems} from "../components/Administration/AllProblems.tsx";
 import {AllContests} from "../components/Administration/AllContests.tsx";
 import {ContestEdit} from "../components/Administration/ContestEdit.tsx";
 import {AllUsers} from "../components/Administration/AllUsers.tsx";
+import {Help} from "../components/Help.tsx";
 
 export const Router: React.FC = () => {
     return (
         <Routes>
             <Route path="/" element={<Main/>}/>
             <Route path="/login" element={<Login/>}/>
+            <Route path="/help" element={<Help/>}/>
             <Route path="/register" element={<Register/>}/>
             <Route path="/problems" element={<Problems/>}/>
             <Route path="/problems/:problemId" element={<ProblemDetail/>}/>
