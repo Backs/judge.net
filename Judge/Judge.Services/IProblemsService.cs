@@ -6,7 +6,7 @@ namespace Judge.Services;
 
 public interface IProblemsService
 {
-    Task<ProblemsList> SearchAsync(long? userId, ProblemsQuery query);
+    Task<ProblemsList> SearchAsync(long? userId, ProblemsQuery query, bool openedOnly);
     Task<AllProblemsList> GetAllAsync(int skip, int take);
     Task<Problem?> GetAsync(long id);
     Task<EditProblem?> GetEditableAsync(long id);

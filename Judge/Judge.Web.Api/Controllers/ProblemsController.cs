@@ -34,7 +34,8 @@ public class ProblemsController : ControllerBase
     {
         query ??= new ProblemsQuery();
 
-        var result = await this.problemsService.SearchAsync(this.User.TryGetUserId(), query);
+        var openedOnly = !this.User.IsAdmin();
+        var result = await this.problemsService.SearchAsync(this.User.TryGetUserId(), query, openedOnly);
 
         return this.Ok(result);
     }

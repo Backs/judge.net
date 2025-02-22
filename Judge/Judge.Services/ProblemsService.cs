@@ -20,10 +20,10 @@ internal sealed class ProblemsService : IProblemsService
         this.unitOfWorkFactory = unitOfWorkFactory;
     }
 
-    public async Task<Client.ProblemsList> SearchAsync(long? userId, Client.ProblemsQuery query)
+    public async Task<Client.ProblemsList> SearchAsync(long? userId, Client.ProblemsQuery query, bool openedOnly)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork(false);
-        var specification = new OpenedTasksSpecification(query.Name);
+        var specification = new TasksSpecification(query.Name, openedOnly);
         var tasks = await unitOfWork.Tasks.GetTasksAsync(specification, query.Skip,
             query.Take);
 
