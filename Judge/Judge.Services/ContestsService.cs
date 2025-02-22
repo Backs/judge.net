@@ -24,12 +24,12 @@ internal sealed class ContestsService : IContestsService
         this.contestConverterFactory = contestConverterFactory;
     }
 
-    public async Task<Client.ContestsInfoList> SearchAsync(Client.ContestsQuery query)
+    public async Task<Client.ContestsInfoList> SearchAsync(Client.ContestsQuery query, bool openedOnly)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
         ISpecification<Contest> specification = query.UpcomingOnly
             ? new UpcomingContestSpecification(DateTime.UtcNow)
-            : AllContestsSpecification.Instance;
+            : new AllContestsSpecification(openedOnly);
 
         var contests = await unitOfWork.Contests.SearchAsync(specification, query.Skip, query.Take);
         var totalCount = await unitOfWork.Contests.CountAsync(specification);
@@ -270,7 +270,8 @@ internal sealed class ContestsService : IContestsService
             StartDate = contest.StartTime,
             Duration = (contest.FinishTime - contest.StartTime),
             Status = GetStatus(contest),
-            Rules = GetRules(contest.Rules)
+            Rules = GetRules(contest.Rules),
+            IsOpened = contest.IsOpened
         };
 
     private static Client.ContestRules GetRules(ContestRules contestRules) =>

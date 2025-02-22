@@ -33,7 +33,8 @@ public class ContestsController : ControllerBase
     {
         query ??= new ContestsQuery();
 
-        var result = await this.contestsService.SearchAsync(query);
+        var openedOnly = !this.User.IsAdmin();
+        var result = await this.contestsService.SearchAsync(query, openedOnly);
 
         return this.Ok(result);
     }
@@ -47,10 +48,13 @@ public class ContestsController : ControllerBase
     public async Task<IActionResult> Get([FromRoute] int contestId)
     {
         var contest = await this.contestsService.GetAsync(contestId, this.User.TryGetUserId());
-
+        
         if (contest == null)
             return this.NotFound();
 
+        if (!contest.IsOpened && !this.User.IsAdmin())
+            return this.NotFound();
+        
         return this.Ok(contest);
     }
 
@@ -115,6 +119,9 @@ public class ContestsController : ControllerBase
         var contest = await this.contestsService.GetResultAsync(contestId);
 
         if (contest == null)
+            return this.NotFound();
+        
+        if (!contest.IsOpened && !this.User.IsAdmin())
             return this.NotFound();
 
         return this.Ok(contest);

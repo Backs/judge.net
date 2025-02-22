@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace Judge.Model.Contests
+namespace Judge.Model.Contests;
+
+public sealed class AllContestsSpecification : ISpecification<Contest>
 {
-    public sealed class AllContestsSpecification : ISpecification<Contest>
+    public AllContestsSpecification(bool openedOnly)
     {
-        private AllContestsSpecification()
+        if (openedOnly)
         {
-
+            IsSatisfiedBy = c => c.IsOpened;
         }
-
-        public static AllContestsSpecification Instance { get; } = new AllContestsSpecification();
-
-        public Expression<Func<Contest, bool>> IsSatisfiedBy { get; } = a => true;
     }
+
+    public Expression<Func<Contest, bool>> IsSatisfiedBy { get; } = a => true;
 }

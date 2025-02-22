@@ -7,7 +7,7 @@ namespace Judge.Services;
 
 public interface IContestsService
 {
-    Task<ContestsInfoList> SearchAsync(ContestsQuery query);
+    Task<ContestsInfoList> SearchAsync(ContestsQuery query, bool openedOnly);
     Task<Contest?> GetAsync(int id, long? userId);
     Task<EditContest?> GetEditableAsync(int id);
     Task<ContestResult?> GetResultAsync(int id);

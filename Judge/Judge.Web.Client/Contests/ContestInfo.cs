@@ -39,4 +39,10 @@ public class ContestInfo
     /// <inheritdoc cref="Judge.Web.Client.Contests.ContestRules"/>
     [Required]
     public ContestRules Rules { get; set; }
+
+    /// <summary>
+    /// Is opened
+    /// </summary>
+    [Required]
+    public bool IsOpened { get; set; }
 }
