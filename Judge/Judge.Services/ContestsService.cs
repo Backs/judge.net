@@ -204,6 +204,22 @@ internal sealed class ContestsService : IContestsService
     public async Task<Problem?> GetProblemAsync(int contestId, string label)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
+        var contest = await unitOfWork.Contests.TryGetAsync(contestId);
+        if (contest == null)
+        {
+            return null;
+        }
+
+        if (!contest.IsOpened)
+        {
+            return null;
+        }
+
+        if (contest.StartTime > DateTime.UtcNow)
+        {
+            return null;
+        }
+
         var problem = await unitOfWork.ContestTasks.TryGetAsync(contestId, label);
         var languages = await unitOfWork.Languages.GetAllAsync(true);
 

@@ -29,9 +29,23 @@ export const ContestProblemDetail: React.FC = () => {
         const fetchData = async () => {
             const contestResponse = await api.api.contestsDetail(Number(contestId));
             setContest(contestResponse.data);
-            const problemResponse = await api.api.contestsDetail2(Number(contestId), label!);
 
-            setProblem(problemResponse.data);
+            if (contest?.status !== ContestStatus.Planned) {
+                const problemResponse = await api.api.contestsDetail2(Number(contestId), label!);
+                setProblem(problemResponse.data);
+            } else {
+                const problemInfo = contest?.tasks.find(t => t.label === label);
+
+                setProblem({
+                    name: problemInfo?.name || "",
+                    languages: [],
+                    id: 0,
+                    memoryLimitBytes: 0,
+                    statement: "",
+                    timeLimitMilliseconds: 0
+                });
+            }
+
             setLoading(false);
         }
 
@@ -54,20 +68,22 @@ export const ContestProblemDetail: React.FC = () => {
                     <div style={{textAlign: 'center'}}>
                         Memory limit, megabytes: {convertBytesToMegabytes(problem?.memoryLimitBytes)}
                     </div>
-                    <Markdown
-                        className={styles.markdown}
-                        remarkPlugins={[remarkGfm]}
-                        rehypePlugins={[rehypeRaw]}>{problem?.statement}</Markdown>
+
+                    {contest?.status === ContestStatus.Planned &&
+                        <Alert message="Contest has not started yet. You can not submit solutions." type="warning"/>
+                    }
+                    {contest?.status !== ContestStatus.Planned &&
+                        <Markdown
+                            className={styles.markdown}
+                            remarkPlugins={[remarkGfm]}
+                            rehypePlugins={[rehypeRaw]}>{problem?.statement}</Markdown>
+                    }
 
                     {!user && <Alert type="warning" description={<span>You must <a
                         href='/login'>login</a> to submit solutions.</span>}/>}
 
                     {contest?.status === ContestStatus.Completed &&
                         <Alert message="Contest is over. You can not submit solutions." type="warning"/>
-                    }
-
-                    {contest?.status === ContestStatus.Planned &&
-                        <Alert message="Contest has not started yet. You can not submit solutions." type="warning"/>
                     }
 
                     {contest?.status === ContestStatus.Running && user && problem &&
