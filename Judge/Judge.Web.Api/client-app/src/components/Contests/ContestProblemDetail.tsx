@@ -30,11 +30,11 @@ export const ContestProblemDetail: React.FC = () => {
             const contestResponse = await api.api.contestsDetail(Number(contestId));
             setContest(contestResponse.data);
 
-            if (contest?.status !== ContestStatus.Planned) {
+            if (contestResponse.data?.status !== ContestStatus.Planned) {
                 const problemResponse = await api.api.contestsDetail2(Number(contestId), label!);
                 setProblem(problemResponse.data);
             } else {
-                const problemInfo = contest?.tasks.find(t => t.label === label);
+                const problemInfo = contestResponse.data?.tasks.find(t => t.label === label);
 
                 setProblem({
                     name: problemInfo?.name || "",
