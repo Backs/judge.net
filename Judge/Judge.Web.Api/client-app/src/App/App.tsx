@@ -23,7 +23,7 @@ const App: React.FC = () => {
             const event = new Date();
             setTime(event.toUTCString());
         };
-        const intervalId = setInterval(time, 1000);
+        const intervalId = setInterval(time, 5000);
 
         return () => {
             clearInterval(intervalId);

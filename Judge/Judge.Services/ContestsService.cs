@@ -8,6 +8,7 @@ using Judge.Model.Account;
 using Judge.Model.Contests;
 using Judge.Model.Entities;
 using Judge.Services.Converters.Contests;
+using Judge.Services.Model;
 using Judge.Web.Client.Problems;
 using Client = Judge.Web.Client.Contests;
 
@@ -89,8 +90,8 @@ internal sealed class ContestsService : IContestsService
         {
             Name = contest.Name,
             Id = contest.Id,
-            StartTime = contest.StartTime,
-            FinishTime = contest.FinishTime,
+            StartTime = contest.StartTime.SetUtcKind(),
+            FinishTime = contest.FinishTime.SetUtcKind(),
             Rules = GetRules(contest.Rules),
             Problems = tasks.Select(o => new Client.EditContestProblem
             {
@@ -99,7 +100,7 @@ internal sealed class ContestsService : IContestsService
                 Name = o.Task.Name
             }).ToArray(),
             IsOpened = contest.IsOpened,
-            CheckPointTime = contest.CheckPointTime,
+            CheckPointTime = contest.CheckPointTime?.SetUtcKind(),
             OneLanguagePerTask = contest.OneLanguagePerTask
         };
 

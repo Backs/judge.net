@@ -5,11 +5,14 @@ import {Button, Modal, DatePicker, Form, Input, Select, Space, Spin, Switch, Fle
 import {handleError} from "../../helpers/handleError.ts";
 import {ContestRules, EditContest, EditContestProblem, ProblemInfo} from "../../api/Api.ts";
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import {UserState} from "../../userSlice.ts";
 import {useSelector} from "react-redux";
 import {EditOutlined, MinusCircleOutlined, PlusOutlined} from '@ant-design/icons';
 
 export const ContestEdit: React.FC = () => {
+    dayjs.extend(utc);
+    
     const navigate = useNavigate();
     const {contestId} = useParams();
     const [isLoading, setLoading] = useState(true);
@@ -177,16 +180,16 @@ export const ContestEdit: React.FC = () => {
                         </Select>
                     </Form.Item>
                     <Form.Item label="Start time" name="startTime"
-                               getValueProps={(value) => ({value: value ? dayjs(value) : ""})}>
+                               getValueProps={(value) => ({value: value ? dayjs(value).utc() : ""})}>
                         <DatePicker allowClear={false} showTime/>
                     </Form.Item>
                     <Form.Item label="Finish time" name="finishTime"
-                               getValueProps={(value) => ({value: value ? dayjs(value) : ""})}>
+                               getValueProps={(value) => ({value: value ? dayjs(value).utc() : ""})}>
                         <DatePicker allowClear={false} showTime/>
                     </Form.Item>
                     {contest.rules === ContestRules.CheckPoint &&
                         <Form.Item label="Check point time" name="checkPointTime"
-                                   getValueProps={(value) => ({value: value ? dayjs(value) : ""})}>
+                                   getValueProps={(value) => ({value: value ? dayjs(value).utc() : ""})}>
                             <DatePicker allowClear={false} showTime/>
                         </Form.Item>}
                     <Form.Item label="One language per task" name="oneLanguagePerTask">
