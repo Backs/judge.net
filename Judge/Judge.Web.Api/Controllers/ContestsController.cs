@@ -67,7 +67,7 @@ public class ContestsController : ControllerBase
     [ProducesResponseType(typeof(Problem), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetProblem([FromRoute] int contestId, [FromRoute] string label)
     {
-        var problem = await this.contestsService.GetProblemAsync(contestId, label);
+        var problem = await this.contestsService.GetProblemAsync(contestId, label, this.User.TryGetUserId());
 
         if (problem == null)
             return this.NotFound();

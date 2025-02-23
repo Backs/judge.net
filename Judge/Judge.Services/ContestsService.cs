@@ -201,7 +201,7 @@ internal sealed class ContestsService : IContestsService
         return editContest;
     }
 
-    public async Task<Problem?> GetProblemAsync(int contestId, string label)
+    public async Task<Problem?> GetProblemAsync(int contestId, string label, long? userId)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
         var contest = await unitOfWork.Contests.TryGetAsync(contestId);
@@ -221,7 +221,30 @@ internal sealed class ContestsService : IContestsService
         }
 
         var problem = await unitOfWork.ContestTasks.TryGetAsync(contestId, label);
-        var languages = await unitOfWork.Languages.GetAllAsync(true);
+
+        var allLanguages = await unitOfWork.Languages.GetAllAsync(true);
+
+        if (contest.OneLanguagePerTask && userId != null)
+        {
+            var languages = (await unitOfWork.Languages.GetAllAsync(true)).Select(o => o.Id).ToHashSet();
+
+            var submits =
+                await unitOfWork.Submits.SearchAsync(
+                    new ContestUserSubmitsSpecification(userId.Value, contestId));
+            var prevSubmit = submits.FirstOrDefault(o => o.ProblemId == problem.TaskId);
+
+            if (prevSubmit == null)
+            {
+                var usedLanguages = submits.Select(o => o.LanguageId).ToHashSet();
+                languages.ExceptWith(usedLanguages);
+            }
+            else
+            {
+                languages = languages.Where(o => o == prevSubmit.LanguageId).ToHashSet();
+            }
+
+            allLanguages = allLanguages.Where(c => languages.Contains(c.Id)).ToHashSet();
+        }
 
         if (problem == null)
         {
@@ -237,7 +260,7 @@ internal sealed class ContestsService : IContestsService
             Statement = task.Statement,
             MemoryLimitBytes = task.MemoryLimitBytes,
             TimeLimitMilliseconds = task.TimeLimitMilliseconds,
-            Languages = languages.Select(o => new ProblemLanguage
+            Languages = allLanguages.Select(o => new ProblemLanguage
             {
                 Id = o.Id,
                 Name = o.Name

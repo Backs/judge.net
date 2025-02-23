@@ -12,5 +12,5 @@ public interface IContestsService
     Task<EditContest?> GetEditableAsync(int id);
     Task<ContestResult?> GetResultAsync(int id);
     Task<EditContest?> SaveAsync(EditContest editContest);
-    Task<Problem?> GetProblemAsync(int contestId, string label);
+    Task<Problem?> GetProblemAsync(int contestId, string label, long? userId);
 }
