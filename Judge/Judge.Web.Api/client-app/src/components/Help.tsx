@@ -195,7 +195,56 @@ func main() {
    var a, b int
    fmt.Scan(&a)
    fmt.Scan(&b)
-   
+   fmt.Println(a + b)
+}  
+`}
+              </code>
+            </pre>
+
+            <h4>Rust</h4>
+            <pre>
+              <code>
+                  {`
+use std::io;
+
+fn main() {
+    let mut numbers = String::new();
+	
+	io::stdin()
+    .read_line(&mut numbers)
+    .ok()
+    .expect("read error");
+	let mut iter = numbers.split_whitespace();
+	let mut x: i32 = iter.next().unwrap().parse().unwrap();
+	let mut y: i32 = iter.next().unwrap().parse().unwrap();
+	println!("{}", x + y);
+}
+`}
+              </code>
+            </pre>
+
+            <h4>Haskell</h4>
+            <pre>
+              <code>
+                  {`
+convert :: Read a => String -> [a]
+convert = map read . words
+
+main = do
+    line <- getLine
+    let [a,b] = convert line :: [Int] in putStrLn (show (a+b))
+`}
+              </code>
+            </pre>
+
+            <h4>Perl</h4>
+            <pre>
+              <code>
+                  {`
+#!usr/bin/perl
+chomp(my $line = <>);
+my ($n, $k) = split " ", $line;
+print $n+$k;
 `}
               </code>
             </pre>
