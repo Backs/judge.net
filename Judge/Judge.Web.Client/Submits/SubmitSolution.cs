@@ -10,10 +10,10 @@ namespace Judge.Web.Client.Submits;
 public sealed class SubmitSolution : IValidatableObject
 {
     /// <summary>
-    /// File with solution
+    /// Solution
     /// </summary>
     [Required]
-    public IFormFile File { get; set; } = null!;
+    public string Solution { get; set; } = null!;
 
     /// <summary>
     /// Language id
