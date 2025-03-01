@@ -1,9 +1,8 @@
-﻿namespace Judge.Model.SubmitSolution
+﻿namespace Judge.Model.SubmitSolution;
+
+public enum SubmitsType
 {
-    public enum SubmitsType
-    {
-        All,
-        Problem,
-        Contest
-    }
+    All,
+    Problem,
+    Contest
 }

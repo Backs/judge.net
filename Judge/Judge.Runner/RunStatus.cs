@@ -1,13 +1,12 @@
-﻿namespace Judge.Runner
+﻿namespace Judge.Runner;
+
+public enum RunStatus
 {
-    public enum RunStatus
-    {
-        Success,
-        TimeLimitExceeded,
-        MemoryLimitExceeded,
-        SecurityViolation,
-        RuntimeError,
-        InvocationFailed,
-        IdlenessLimitExceeded
-    }
+    Success,
+    TimeLimitExceeded,
+    MemoryLimitExceeded,
+    SecurityViolation,
+    RuntimeError,
+    InvocationFailed,
+    IdlenessLimitExceeded
 }

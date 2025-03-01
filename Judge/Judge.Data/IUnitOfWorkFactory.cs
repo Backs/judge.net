@@ -1,9 +1,8 @@
-﻿namespace Judge.Data
-{
-    public interface IUnitOfWorkFactory
-    {
-        IUnitOfWork GetUnitOfWork();
+﻿namespace Judge.Data;
 
-        IUnitOfWork GetUnitOfWork(bool startTransaction);
-    }
+public interface IUnitOfWorkFactory
+{
+    IUnitOfWork GetUnitOfWork();
+
+    IUnitOfWork GetUnitOfWork(bool startTransaction);
 }

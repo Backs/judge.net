@@ -1,48 +1,47 @@
 ﻿using System.Diagnostics;
 using System.IO;
 
-namespace Judge.Runner
+namespace Judge.Runner;
+
+public sealed class RunService : IRunService
 {
-    public sealed class RunService : IRunService
+    private readonly string _runnerPath;
+    private readonly string _workingDirectory;
+
+    public RunService(string runnerPath, string workingDirectory)
     {
-        private readonly string _runnerPath;
-        private readonly string _workingDirectory;
+        _runnerPath = runnerPath;
+        _workingDirectory = workingDirectory;
+    }
 
-        public RunService(string runnerPath, string workingDirectory)
+    public RunResult Run(Configuration configuration)
+    {
+        var startInfo = new ProcessStartInfo(_runnerPath, configuration.ToString())
         {
-            _runnerPath = runnerPath;
-            _workingDirectory = workingDirectory;
+            UseShellExecute = false,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            WorkingDirectory = _workingDirectory,
+            CreateNoWindow = true,
+            ErrorDialog = false
+        };
+
+        if (!Directory.Exists(_workingDirectory))
+        {
+            Directory.CreateDirectory(_workingDirectory);
         }
 
-        public RunResult Run(Configuration configuration)
+        string output;
+        var exitCode = 0;
+        using (var p = new Process { StartInfo = startInfo })
         {
-            var startInfo = new ProcessStartInfo(_runnerPath, configuration.ToString())
-            {
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                WorkingDirectory = _workingDirectory,
-                CreateNoWindow = true,
-                ErrorDialog = false
-            };
+            p.Start();
 
-            if (!Directory.Exists(_workingDirectory))
-            {
-                Directory.CreateDirectory(_workingDirectory);
-            }
-
-            string output;
-            var exitCode = 0;
-            using (var p = new Process { StartInfo = startInfo })
-            {
-                p.Start();
-
-                output = p.StandardOutput.ReadToEnd();
-                p.WaitForExit();
-                exitCode = p.ExitCode;
-            }
-
-            return RunResult.Parse(output, exitCode);
+            output = p.StandardOutput.ReadToEnd();
+            p.WaitForExit();
+            exitCode = p.ExitCode;
         }
+
+        return RunResult.Parse(output, exitCode);
     }
 }

@@ -1,9 +1,8 @@
 ﻿using Judge.Model.SubmitSolution;
 
-namespace Judge.JudgeService
+namespace Judge.JudgeService;
+
+internal interface IJudgeService
 {
-    internal interface IJudgeService
-    {
-        JudgeResult Check(SubmitResult submitResult);
-    }
+    JudgeResult Check(SubmitResult submitResult);
 }

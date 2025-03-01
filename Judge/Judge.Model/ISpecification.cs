@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace Judge.Model
+namespace Judge.Model;
+
+public interface ISpecification<T>
 {
-    public interface ISpecification<T>
-    {
-        Expression<Func<T, bool>> IsSatisfiedBy { get; }
-    }
+    Expression<Func<T, bool>> IsSatisfiedBy { get; }
 }

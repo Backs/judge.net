@@ -1,9 +1,8 @@
-﻿namespace Judge.Compiler
+﻿namespace Judge.Compiler;
+
+public enum CompileStatus
 {
-    public enum CompileStatus
-    {
-        Success,
-        Error,
-        CompilerNotFound
-    }
+    Success,
+    Error,
+    CompilerNotFound
 }

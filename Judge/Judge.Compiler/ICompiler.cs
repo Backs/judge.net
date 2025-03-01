@@ -1,7 +1,6 @@
-﻿namespace Judge.Compiler
+﻿namespace Judge.Compiler;
+
+public interface ICompiler
 {
-    public interface ICompiler
-    {
-        CompileResult Compile(CompileSource sourceCode, string workingDirectory);
-    }
+    CompileResult Compile(CompileSource sourceCode, string workingDirectory);
 }

@@ -3,90 +3,89 @@ using System.IO;
 using System.Text;
 using NLog;
 
-namespace Judge.Compiler
+namespace Judge.Compiler;
+
+public class Compiler : ICompiler
 {
-    public class Compiler : ICompiler
+    public string CompilerPath { get; set; }
+    public string CompilerOptionsTemplate { get; set; }
+    public string OutputFileTemplate { get; set; }
+
+    private readonly ILogger logger;
+
+    public Compiler(ILogger logger)
     {
-        public string CompilerPath { get; set; }
-        public string CompilerOptionsTemplate { get; set; }
-        public string OutputFileTemplate { get; set; }
+        this.logger = logger;
+    }
 
-        private readonly ILogger logger;
-
-        public Compiler(ILogger logger)
+    public CompileResult Compile(CompileSource sourceCode, string workingDirectory)
+    {
+        if (!Directory.Exists(workingDirectory))
         {
-            this.logger = logger;
+            Directory.CreateDirectory(workingDirectory);
         }
 
-        public CompileResult Compile(CompileSource sourceCode, string workingDirectory)
+        CreateFile(sourceCode, workingDirectory);
+
+        var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(sourceCode.FileName);
+        var fileExtension = Path.GetExtension(sourceCode.FileName).Substring(1);
+
+        var options = CompilerOptionsTemplate.Replace(TemplateKeys.FileName, fileNameWithoutExtension)
+            .Replace(TemplateKeys.FileNameExtension, fileExtension);
+
+        this.logger.Info($"Compile options: {options}");
+
+        var startInfo = new ProcessStartInfo(CompilerPath, options)
         {
-            if (!Directory.Exists(workingDirectory))
+            UseShellExecute = false,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            WorkingDirectory = workingDirectory,
+            CreateNoWindow = true,
+            ErrorDialog = false
+        };
+
+        var output = new StringBuilder();
+        int exitCode;
+
+        using (var p = new Process { StartInfo = startInfo })
+        {
+            p.OutputDataReceived += (s, e) =>
             {
-                Directory.CreateDirectory(workingDirectory);
-            }
-
-            CreateFile(sourceCode, workingDirectory);
-
-            var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(sourceCode.FileName);
-            var fileExtension = Path.GetExtension(sourceCode.FileName).Substring(1);
-
-            var options = CompilerOptionsTemplate.Replace(TemplateKeys.FileName, fileNameWithoutExtension)
-                                                    .Replace(TemplateKeys.FileNameExtension, fileExtension);
-
-            this.logger.Info($"Compile options: {options}");
-
-            var startInfo = new ProcessStartInfo(CompilerPath, options)
-            {
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                WorkingDirectory = workingDirectory,
-                CreateNoWindow = true,
-                ErrorDialog = false
+                output.AppendLine(e.Data);
             };
 
-            var output = new StringBuilder();
-            int exitCode;
-
-            using (var p = new Process { StartInfo = startInfo })
+            p.ErrorDataReceived += (s, e) =>
             {
-                p.OutputDataReceived += (s, e) =>
-                {
-                    output.AppendLine(e.Data);
-                };
-
-                p.ErrorDataReceived += (s, e) =>
-                {
-                    output.AppendLine(e.Data);
-                };
+                output.AppendLine(e.Data);
+            };
                 
-                p.Start();
-                p.BeginOutputReadLine();
-                p.BeginErrorReadLine();
+            p.Start();
+            p.BeginOutputReadLine();
+            p.BeginErrorReadLine();
 
-                p.WaitForExit(30 * 1000);
-                exitCode = p.ExitCode;
-            }
-
-            if (exitCode == 0)
-            {
-                return CompileResult.Success(output.ToString(), OutputFileTemplate.Replace(TemplateKeys.FileName, fileNameWithoutExtension));
-            }
-
-            return CompileResult.Error(output.ToString());
+            p.WaitForExit(30 * 1000);
+            exitCode = p.ExitCode;
         }
 
-        private static void CreateFile(CompileSource sourceCode, string workingDirectory)
+        if (exitCode == 0)
         {
-            var filePath = Path.Combine(workingDirectory, sourceCode.FileName);
+            return CompileResult.Success(output.ToString(), OutputFileTemplate.Replace(TemplateKeys.FileName, fileNameWithoutExtension));
+        }
 
-            if (File.Exists(filePath))
-                File.Delete(filePath);
+        return CompileResult.Error(output.ToString());
+    }
 
-            using (var sw = new StreamWriter(filePath))
-            {
-                sw.Write(sourceCode.SourceCode);
-            }
+    private static void CreateFile(CompileSource sourceCode, string workingDirectory)
+    {
+        var filePath = Path.Combine(workingDirectory, sourceCode.FileName);
+
+        if (File.Exists(filePath))
+            File.Delete(filePath);
+
+        using (var sw = new StreamWriter(filePath))
+        {
+            sw.Write(sourceCode.SourceCode);
         }
     }
 }

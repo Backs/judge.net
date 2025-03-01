@@ -1,8 +1,7 @@
-﻿namespace Judge.Compiler
+﻿namespace Judge.Compiler;
+
+public static class TemplateKeys
 {
-    public static class TemplateKeys
-    {
-        public const string FileName = "{FileName}";
-        public const string FileNameExtension = "{Ext}";
-    }
+    public const string FileName = "{FileName}";
+    public const string FileNameExtension = "{Ext}";
 }

@@ -1,7 +1,6 @@
-﻿namespace Judge.Runner
+﻿namespace Judge.Runner;
+
+public interface IRunService
 {
-    public interface IRunService
-    {
-        RunResult Run(Configuration configuration);
-    }
+    RunResult Run(Configuration configuration);
 }

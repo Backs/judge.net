@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using Judge.Model.SubmitSolution;
 
-namespace Judge.JudgeService.CustomCheckers
+namespace Judge.JudgeService.CustomCheckers;
+
+internal interface ICustomCheckerService
 {
-    internal interface ICustomCheckerService
-    {
-        ICollection<SubmitRunResult> Check(SubmitResult submitResult);
-    }
+    ICollection<SubmitRunResult> Check(SubmitResult submitResult);
 }

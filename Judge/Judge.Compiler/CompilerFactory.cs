@@ -1,6 +1,5 @@
-﻿namespace Judge.Compiler
+﻿namespace Judge.Compiler;
+
+public class CompilerFactory
 {
-    public class CompilerFactory
-    {
-    }
 }

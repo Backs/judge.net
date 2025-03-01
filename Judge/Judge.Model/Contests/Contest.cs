@@ -1,30 +1,29 @@
-﻿namespace Judge.Model.Contests
+﻿namespace Judge.Model.Contests;
+
+using System;
+
+public sealed class Contest
 {
-    using System;
+    public int Id { get; private set; }
+        
+    public string Name { get; set; }
+        
+    public DateTime StartTime { get; set; }
+        
+    public DateTime FinishTime { get; set; }
+        
+    public DateTime? FreezeTime { get; set; }
+        
+    public bool IsOpened { get; set; }
+        
+    public ContestRules Rules { get; set; }
+        
+    public DateTime? CheckPointTime { get; set; }
 
-    public sealed class Contest
+    public bool OneLanguagePerTask { get; set; }
+
+    public override string ToString()
     {
-        public int Id { get; private set; }
-        
-        public string Name { get; set; }
-        
-        public DateTime StartTime { get; set; }
-        
-        public DateTime FinishTime { get; set; }
-        
-        public DateTime? FreezeTime { get; set; }
-        
-        public bool IsOpened { get; set; }
-        
-        public ContestRules Rules { get; set; }
-        
-        public DateTime? CheckPointTime { get; set; }
-
-        public bool OneLanguagePerTask { get; set; }
-
-        public override string ToString()
-        {
-            return $"{this.Id}-{this.Name}";
-        }
+        return $"{this.Id}-{this.Name}";
     }
 }
