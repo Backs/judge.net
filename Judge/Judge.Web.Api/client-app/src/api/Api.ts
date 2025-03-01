@@ -61,6 +61,8 @@ export interface Contest {
   status: ContestStatus;
   /** Contest rules */
   rules: ContestRules;
+  /** Is opened */
+  isOpened: boolean;
   tasks: ContestTask[];
 }
 
@@ -90,6 +92,8 @@ export interface ContestInfo {
   status: ContestStatus;
   /** Contest rules */
   rules: ContestRules;
+  /** Is opened */
+  isOpened: boolean;
 }
 
 /** Contest problem result */
@@ -135,6 +139,8 @@ export interface ContestResult {
   status: ContestStatus;
   /** Contest rules */
   rules: ContestRules;
+  /** Is opened */
+  isOpened: boolean;
   tasks: ContestTask[];
   users: ContestUserResult[];
 }
@@ -306,6 +312,46 @@ export interface EditContestProblem {
   name: string;
 }
 
+export interface EditLanguage {
+  /**
+   * Id
+   * @format int32
+   */
+  id?: number | null;
+  /**
+   * Language name
+   * @minLength 1
+   */
+  name: string;
+  /**
+   * Language description
+   * @minLength 1
+   */
+  description: string;
+  /** Is language compilable */
+  isCompilable: boolean;
+  /** Compiler path */
+  compilerPath?: string | null;
+  /** Compiler options template */
+  compilerOptionsTemplate?: string | null;
+  /**
+   * Executable file template
+   * @minLength 1
+   */
+  outputFileTemplate: string;
+  /**
+   * Run string template
+   * @minLength 1
+   */
+  runStringTemplate: string;
+  /** Is hidden */
+  isHidden: boolean;
+  /** Default file name */
+  defaultFileName?: string | null;
+  /** Autodetect file name from source code */
+  autoDetectFileName: boolean;
+}
+
 /** Creates or edit problem */
 export interface EditProblem {
   /**
@@ -377,6 +423,10 @@ export interface Language {
   runStringTemplate: string;
   /** Is hidden */
   isHidden: boolean;
+  /** Default file name */
+  defaultFileName?: string | null;
+  /** Autodetect file name from source code */
+  autoDetectFileName: boolean;
 }
 
 /** Language list */
@@ -436,6 +486,8 @@ export interface Problem {
   statement: string;
   /** Available languages */
   languages: ProblemLanguage[];
+  /** Problem is opened for submits */
+  isOpened?: boolean;
 }
 
 export interface ProblemDetails {
@@ -847,6 +899,25 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/admin/languages`,
         method: "GET",
         secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Admin
+     * @name AdminLanguagesUpdate
+     * @request PUT:/api/admin/languages
+     * @secure
+     */
+    adminLanguagesUpdate: (data: EditLanguage, params: RequestParams = {}) =>
+      this.request<LanguageList, any>({
+        path: `/api/admin/languages`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),

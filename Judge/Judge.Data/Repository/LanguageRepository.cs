@@ -28,8 +28,18 @@ internal sealed class LanguageRepository : ILanguageRepository
         return await query.OrderBy(o => o.Name).ToListAsync();
     }
 
+    public Task<Language?> GetAsync(int id)
+    {
+        return this.context.Set<Language>().FirstOrDefaultAsync(o => o.Id == id);
+    }
+
     public Language? Get(int id)
     {
         return this.context.Set<Language>().FirstOrDefault(o => o.Id == id);
+    }
+
+    public void Add(Language language)
+    {
+        this.context.Set<Language>().Add(language);
     }
 }

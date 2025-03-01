@@ -2,16 +2,12 @@
 
 namespace Judge.Web.Client.Admin;
 
-/// <summary>
-/// Language
-/// </summary>
-public class Language
+public class EditLanguage
 {
     /// <summary>
     /// Id
     /// </summary>
-    [Required]
-    public int Id { get; set; }
+    public int? Id { get; set; }
 
     /// <summary>
     /// Language name

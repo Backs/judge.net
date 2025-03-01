@@ -34,6 +34,17 @@ public class AdminController : ControllerBase
         return this.Ok(result);
     }
 
+    [HttpPut("languages")]
+    [ProducesResponseType(typeof(LanguageList), StatusCodes.Status200OK)]
+    public async Task<IActionResult> SaveLanguage([FromBody] EditLanguage language)
+    {
+        var result = await this.languageService.SaveAsync(language);
+        if (result == null)
+            return this.NotFound();
+
+        return this.Ok(result);
+    }
+
     [HttpGet("problems")]
     [ProducesResponseType(typeof(AllProblemsList), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetProblems([FromQuery] int skip = 0, [FromQuery] int take = 100)

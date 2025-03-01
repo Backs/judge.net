@@ -11,5 +11,7 @@
         public string OutputFileTemplate { get; set; }
         public string RunStringFormat { get; set; }
         public bool IsHidden { get; set; }
+        public string DefaultFileName { get; set; }
+        public bool AutoDetectFileName { get; set; }
     }
 }
