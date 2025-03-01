@@ -1,6 +1,6 @@
-﻿namespace Judge.Model.Contests;
+﻿using System;
 
-using System;
+namespace Judge.Model.Contests;
 
 public sealed class ContestTaskResult
 {
