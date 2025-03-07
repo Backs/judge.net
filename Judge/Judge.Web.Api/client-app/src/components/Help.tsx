@@ -93,8 +93,6 @@ namespace Judge.Tests.TestSolutions
               </code>
             </pre>
             <h4>Java</h4>
-            The main class must have the same name as the file name. For example, the following code is contained in the
-            file <code>yield.java</code>:
             <pre>
               <code>
                   {`
@@ -156,7 +154,7 @@ rl.on('line', function(data){
 open System
 
 [<EntryPoint>]
-let main argv = 
+let main argv =
     let result = Console.ReadLine().Split(' ') |> Seq.map System.Int32.Parse |> Seq.sum
     printfn "%d" result
     0
@@ -180,7 +178,7 @@ print(sum(int(x) for x in input().split(' ')))
 fun main(args: Array<String>) {
    val (x, y) = readLine()!!.split(' ').map(String::toInt)
    println(x + y)
-`}
+}`}
               </code>
             </pre>
 
@@ -196,7 +194,7 @@ func main() {
    fmt.Scan(&a)
    fmt.Scan(&b)
    fmt.Println(a + b)
-}  
+}
 `}
               </code>
             </pre>
@@ -209,7 +207,7 @@ use std::io;
 
 fn main() {
     let mut numbers = String::new();
-	
+
 	io::stdin()
     .read_line(&mut numbers)
     .ok()
