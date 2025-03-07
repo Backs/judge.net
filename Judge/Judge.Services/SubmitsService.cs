@@ -1,7 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Judge.Data;
 using Judge.Model.Account;
@@ -18,14 +16,16 @@ namespace Judge.Services;
 
 internal sealed class SubmitsService : ISubmitsService
 {
-    private static readonly Regex WhitespaceRegex = new Regex(@"\s+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
     private readonly IUnitOfWorkFactory unitOfWorkFactory;
     private readonly ISubmitsConverter submitsConverter;
+    private readonly IFileNameResolver fileNameResolver;
 
-    public SubmitsService(IUnitOfWorkFactory unitOfWorkFactory, ISubmitsConverter submitsConverter)
+    public SubmitsService(IUnitOfWorkFactory unitOfWorkFactory, ISubmitsConverter submitsConverter,
+        IFileNameResolver fileNameResolver)
     {
         this.unitOfWorkFactory = unitOfWorkFactory;
         this.submitsConverter = submitsConverter;
+        this.fileNameResolver = fileNameResolver;
     }
 
     public async Task<Client.Submits.SubmitResultsList> SearchAsync(SubmitsQuery query)
@@ -144,19 +144,18 @@ internal sealed class SubmitsService : ISubmitsService
     private async Task<long> SaveSubmitAsync(Client.Submits.SubmitSolution submitSolution,
         Client.Submits.SubmitUserInfo userInfo)
     {
-        using var sr = new StreamReader(submitSolution.File.OpenReadStream());
-        var sourceCode = await sr.ReadToEndAsync();
+        await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
+        var allLanguages = await unitOfWork.Languages.GetAllAsync(true);
 
         var submit = ProblemSubmit.Create();
 
         submit.ProblemId = submitSolution.ProblemId!.Value;
         submit.LanguageId = submitSolution.LanguageId;
         submit.UserId = userInfo.UserId;
-        submit.FileName = GetFileName(submitSolution.File.FileName);
-        submit.SourceCode = sourceCode;
+        submit.FileName = this.fileNameResolver.Resolve(submitSolution.Solution, submit.LanguageId, allLanguages);
+        submit.SourceCode = submitSolution.Solution;
         submit.UserHost = userInfo.Host;
 
-        await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
         unitOfWork.Submits.Add(submit);
         await unitOfWork.CommitAsync();
 
@@ -184,9 +183,11 @@ internal sealed class SubmitsService : ISubmitsService
         if (task == null)
             throw new InvalidOperationException("Task not found");
 
+        var allLanguages = await unitOfWork.Languages.GetAllAsync(true);
+
         if (contest.OneLanguagePerTask)
         {
-            var availableLanguages = (await unitOfWork.Languages.GetAllAsync(true)).Select(o => o.Id).ToHashSet();
+            var availableLanguages = allLanguages.Select(o => o.Id).ToHashSet();
 
             var submits =
                 await unitOfWork.Submits.SearchAsync(
@@ -209,28 +210,18 @@ internal sealed class SubmitsService : ISubmitsService
             }
         }
 
-        using var sr = new StreamReader(submitSolution.File.OpenReadStream());
-        var sourceCode = await sr.ReadToEndAsync();
-
         var submit = ContestTaskSubmit.Create();
 
         submit.ProblemId = task.Task.Id;
         submit.ContestId = contestId;
         submit.LanguageId = submitSolution.LanguageId;
         submit.UserId = userInfo.UserId;
-        submit.FileName = GetFileName(submitSolution.File.FileName);
-        submit.SourceCode = sourceCode;
+        submit.FileName = this.fileNameResolver.Resolve(submitSolution.Solution, submit.LanguageId, allLanguages);
+        submit.SourceCode = submitSolution.Solution;
         submit.UserHost = userInfo.Host;
 
         unitOfWork.Submits.Add(submit);
         await unitOfWork.CommitAsync();
         return submit.Id;
-    }
-
-    private static string GetFileName(string fileName)
-    {
-        fileName = Path.GetFileName(fileName);
-
-        return WhitespaceRegex.Replace(fileName, "_");
     }
 }

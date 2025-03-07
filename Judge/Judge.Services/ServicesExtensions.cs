@@ -21,5 +21,6 @@ public static class ServicesExtensions
         services.AddSingleton<IContestConverterFactory, ContestConverterFactory>();
         services.AddSingleton<ISubmitsConverter, SubmitsConverter>();
         services.AddSingleton<ILanguageService, LanguageService>();
+        services.AddSingleton<IFileNameResolver, FileNameResolver>();
     }
 }
