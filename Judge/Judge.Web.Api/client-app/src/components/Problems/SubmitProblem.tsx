@@ -1,10 +1,9 @@
 ﻿import React, {useState} from "react";
 import {ProblemLanguage} from "../../api/Api.ts";
-import {Button, Flex, Select, Upload, UploadProps} from "antd";
-import {UploadOutlined} from '@ant-design/icons';
+import {Alert, Button, Flex, Select} from "antd";
 import {judgeApi} from "../../api/JudgeApi.ts";
 import {handleError} from "../../helpers/handleError.ts";
-import {RcFile} from "antd/es/upload";
+import TextArea from "antd/lib/input/TextArea";
 
 export interface SubmitProblemProps {
     languages: ProblemLanguage[],
@@ -20,34 +19,23 @@ export const SubmitProblem: React.FC<SubmitProblemProps> = (props) => {
         label: p.name
     }));
 
-    const [fileList, setFileList] = useState<RcFile[]>();
     const [languageId, setLanguageId] = useState<number>();
     const [isUpdating, setUpdating] = useState<boolean>(false);
-
-    const uploadProps: UploadProps = {
-        onRemove: () => {
-            setFileList([]);
-        },
-        beforeUpload: (file) => {
-            setFileList([file]);
-            return false;
-        },
-        maxCount: 1,
-        fileList: fileList
-    };
+    const [solution, setSolution] = useState<string>();
+    const [isLengthValid, setLengthValid] = useState<boolean>(true);
 
     const submitSolution = async () => {
         setUpdating(true);
         const api = judgeApi();
         const data: {
-            File: File,
             LanguageId: number,
             ProblemId?: number,
             ContestId?: number,
             ProblemLabel?: string
+            Solution: string
         } = {
-            File: fileList![0],
-            LanguageId: languageId!
+            LanguageId: languageId!,
+            Solution: solution!
         };
 
         if (props.problemId) {
@@ -63,32 +51,41 @@ export const SubmitProblem: React.FC<SubmitProblemProps> = (props) => {
 
         try {
             const response = await api.api.submitsUpdate(data);
-            setFileList([]);
             if (props.onSubmit) {
                 props.onSubmit(response.data.id);
             }
         } catch (e: any) {
             handleError(e);
         } finally {
+            setSolution(undefined);
             setUpdating(false);
         }
-
     }
 
     return (
-        <Flex gap="small" vertical style={{width: 360}}>
-            <h3>Send solution</h3>
-            <Select options={values} onChange={value => setLanguageId(value)}/>
-            <Upload {...uploadProps}>
-                <Button icon={<UploadOutlined/>}>Select File</Button>
-            </Upload>
-            <Button
-                type="primary"
-                disabled={!fileList?.length || !languageId || isUpdating}
-                onClick={submitSolution}
-            >
-                Submit
-            </Button>
+        <Flex gap="middle" align="start" justify="center" style={{width: "100%"}}>
+            <Flex gap="small" vertical style={{width: 620}}>
+                <h3>Send solution</h3>
+                <Select options={values} onChange={value => setLanguageId(value)}/>
+                <TextArea
+                    value={solution}
+                    rows={10}
+                    maxLength={20001}
+                    style={{fontFamily: "monospace"}}
+                    onChange={value => {
+                        const text = value.target.value;
+                        setSolution(text);
+                        setLengthValid(text.length <= 20000);
+                    }}/>
+                <Button
+                    type="primary"
+                    disabled={!languageId || isUpdating || !solution || !isLengthValid}
+                    onClick={submitSolution}
+                >
+                    Submit
+                </Button>
+                {!isLengthValid && <Alert message="The solution must be less than 20000 characters." type="error"/>}
+            </Flex>
         </Flex>
     );
 };

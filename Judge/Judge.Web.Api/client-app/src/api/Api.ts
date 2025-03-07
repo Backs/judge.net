@@ -1270,11 +1270,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     submitsUpdate: (
       data: {
-        /**
-         * File with solution
-         * @format binary
-         */
-        File: File;
+        /** Solution */
+        Solution: string;
         /**
          * Language id
          * @format int32

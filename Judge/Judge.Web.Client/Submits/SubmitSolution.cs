@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Http;
 
 namespace Judge.Web.Client.Submits;
 
@@ -13,6 +12,7 @@ public sealed class SubmitSolution : IValidatableObject
     /// Solution
     /// </summary>
     [Required]
+    [MaxLength(20000)]
     public string Solution { get; set; } = null!;
 
     /// <summary>
