@@ -25,4 +25,4 @@ jobs:
     - name: Build
       run: dotnet build Judge/Judge.sln --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test Judge/Judge.sln --no-build --verbosity normal
