@@ -18,7 +18,7 @@ internal sealed class ContestsRepository : IContestsRepository
 
     public Task<Contest?> TryGetAsync(int id)
     {
-        return this.context.Set<Contest>().FirstOrDefaultAsync(o => o.Id == id)!;
+        return this.context.Set<Contest>().FirstOrDefaultAsync(o => o.Id == id);
     }
 
     public void Add(Contest contest)

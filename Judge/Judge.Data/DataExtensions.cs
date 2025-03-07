@@ -6,6 +6,6 @@ public static class DataExtensions
 {
     public static void AddData(this IServiceCollection services, string connectionString)
     {
-        services.AddSingleton<IUnitOfWorkFactory>(f => new UnitOfWorkFactory(connectionString));
+        services.AddSingleton<IUnitOfWorkFactory>(new UnitOfWorkFactory(connectionString));
     }
 }
