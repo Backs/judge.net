@@ -49,7 +49,8 @@ public static class Program
                 typeof(MaxLengthChecker)
             },
             Lifestyle.Singleton);
-        container.Register<ICustomCheckerService, CustomCheckerService>(Lifestyle.Singleton);
+        container.RegisterSingleton<IProblemSettingsProvider, ProblemSettingsProvider>();
+        container.RegisterSingleton<ICustomCheckerService, CustomCheckerService>();
         container.RegisterInstance(logger);
 
         logger.Info("Service started");

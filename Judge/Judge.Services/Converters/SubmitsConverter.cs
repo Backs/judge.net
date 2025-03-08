@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using Judge.Model.CheckSolution;
 using Judge.Model.Contests;
 using Judge.Model.Entities;
@@ -38,9 +37,9 @@ internal sealed class SubmitsConverter : ISubmitsConverter
             ? Math.Min(submitResult.TotalMilliseconds.Value, task.TimeLimitMilliseconds)
             : (int?)null;
 
-        var currentUser = contextAccessor.HttpContext.User;
+        var currentUser = this.contextAccessor.HttpContext.User;
         var currentUserId = currentUser?.TryGetUserId();
-        var isAdmin = currentUser?.HasClaim(ClaimTypes.Role, "admin") == true;
+        var isAdmin = currentUser?.IsAdmin() ?? false;
 
         var submitResultInfo = new T
         {
@@ -103,6 +102,8 @@ internal sealed class SubmitsConverter : ISubmitsConverter
             SubmitStatus.TooManyLines => Client.Submits.SubmitStatus.TooManyLines,
             SubmitStatus.PresentationError => Client.Submits.SubmitStatus.PresentationError,
             SubmitStatus.WrongLanguage => Client.Submits.SubmitStatus.WrongLanguage,
+            SubmitStatus.PRNotFound => Client.Submits.SubmitStatus.PRNotFound,
+            SubmitStatus.LoginNotFound => Client.Submits.SubmitStatus.LoginNotFound,
             _ => throw new ArgumentOutOfRangeException(nameof(status), status, null)
         };
     }

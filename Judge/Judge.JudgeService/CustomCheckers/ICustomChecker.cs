@@ -6,5 +6,6 @@ namespace Judge.JudgeService.CustomCheckers;
 
 internal interface ICustomChecker
 {
+    CheckerType Type { get; }
     ICollection<SubmitRunResult> Check(ProblemSettings problemSettings, SubmitResult submitResult);
 }

@@ -4,12 +4,12 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-    
-public sealed class Checker
+
+public static class ExecutableChecker
 {
     private const string CheckerFileName = "check.exe";
 
-    public CheckResult Check(string workingDirectory, string inputFileName, string outputFileName, string answerFileName)
+    public static CheckResult Check(string workingDirectory, string inputFileName, string outputFileName, string answerFileName)
     {
         if (!Directory.Exists(workingDirectory))
         {

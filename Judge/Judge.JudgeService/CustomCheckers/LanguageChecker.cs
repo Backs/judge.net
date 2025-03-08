@@ -8,6 +8,8 @@ namespace Judge.JudgeService.CustomCheckers;
 
 internal sealed class LanguageChecker : ICustomChecker
 {
+    public CheckerType Type => CheckerType.PreExecutable;
+
     public ICollection<SubmitRunResult> Check(ProblemSettings problemSettings, SubmitResult submitResult)
     {
         if (problemSettings?.Language != null && problemSettings.Language != submitResult.Submit.LanguageId)

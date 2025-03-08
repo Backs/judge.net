@@ -15,5 +15,7 @@ public enum SubmitStatus
     TooEarly = 9900,
     Unpolite = 9901,
     TooManyLines = 9902,
-    WrongLanguage = 9903
+    WrongLanguage = 9903,
+    PRNotFound = 9904,
+    LoginNotFound = 9905,
 }
