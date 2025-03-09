@@ -11,6 +11,10 @@ public class ProblemSettings
     public string[] ForbiddenStrings { get; set; }
 
     public int? MaxSourceCodeLength { get; set; }
+
+    public bool SkipExecutableChecker { get; set; }
+
+    public bool UserPullRequestChecker { get; set; }
 }
 
 public class ContestSettings

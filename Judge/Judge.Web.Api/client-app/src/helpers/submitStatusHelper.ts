@@ -41,6 +41,10 @@ export const getStatusText = (status: SubmitStatus) => {
             return "Unpolite solution";
         case SubmitStatus.TooManyLines:
             return "Too many lines for such a simple task";
+        case SubmitStatus.PRNotFound:
+            return "PR not found";
+        case SubmitStatus.LoginNotFound:
+            return "Your login not found";
     }
 
     return status;

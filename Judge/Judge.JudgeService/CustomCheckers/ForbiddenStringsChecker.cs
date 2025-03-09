@@ -10,7 +10,9 @@ namespace Judge.JudgeService.CustomCheckers;
 
 internal sealed class ForbiddenStringsChecker : ICustomChecker
 {
-    public ICollection<SubmitRunResult> Check(ProblemSettings problemSettings, SubmitResult submitResult)
+    public CheckerType Type => CheckerType.PreExecutable;
+    public ICollection<SubmitRunResult> Check(ProblemSettings problemSettings, SubmitResult submitResult,
+        FileOptions fileOptions)
     {
         if (problemSettings.ForbiddenStrings != null &&
             problemSettings.ForbiddenStrings.Any(o =>

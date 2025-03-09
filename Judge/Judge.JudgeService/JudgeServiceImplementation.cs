@@ -6,12 +6,14 @@ using Judge.Checker;
 using Judge.Compiler;
 using Judge.Data;
 using Judge.JudgeService.CustomCheckers;
+using Judge.JudgeService.Settings;
 using Judge.Model.CheckSolution;
 using Judge.Model.Entities;
 using Judge.Model.SubmitSolution;
 using Judge.Runner;
 using NLog;
 using Configuration = Judge.Runner.Configuration;
+using FileOptions = Judge.Checker.FileOptions;
 
 namespace Judge.JudgeService;
 
@@ -20,17 +22,22 @@ internal sealed class JudgeServiceImplementation : IJudgeService
     private readonly IUnitOfWorkFactory unitOfWorkFactory;
     private readonly ILogger logger;
     private readonly ICustomCheckerService customCheckerService;
+    private readonly IProblemSettingsProvider problemSettingsProvider;
 
     private readonly string workingDirectory = ConfigurationManager.AppSettings["WorkingDirectory"];
     private readonly string storagePath = ConfigurationManager.AppSettings["StoragePath"];
     private readonly string runnerPath = ConfigurationManager.AppSettings["RunnerPath"];
 
-    public JudgeServiceImplementation(IUnitOfWorkFactory unitOfWorkFactory,
-        ICustomCheckerService customCheckerService, ILogger logger)
+    public JudgeServiceImplementation(
+        IUnitOfWorkFactory unitOfWorkFactory,
+        ICustomCheckerService customCheckerService,
+        IProblemSettingsProvider problemSettingsProvider,
+        ILogger logger)
     {
         this.unitOfWorkFactory = unitOfWorkFactory;
-        this.logger = logger;
+        this.problemSettingsProvider = problemSettingsProvider;
         this.customCheckerService = customCheckerService;
+        this.logger = logger;
     }
 
     private CompileResult Compile(Language language, string fileName, string sourceCode)
@@ -92,14 +99,16 @@ internal sealed class JudgeServiceImplementation : IJudgeService
 
         ICollection<SubmitRunResult> results = null;
 
-        if (compileResult.CompileStatus == CompileStatus.Success)
+        var problemSettings = this.problemSettingsProvider.GetProblemSettings(submitResult.Submit);
+
+        if (compileResult.CompileStatus == CompileStatus.Success && problemSettings != null)
         {
-            results = this.customCheckerService.Check(submitResult);
+            results = this.customCheckerService.Check(submitResult, null, CheckerType.PreExecutable);
         }
 
         if (results == null && compileResult.CompileStatus == CompileStatus.Success)
         {
-            results = this.GetSubmitRunResults(language, task, compileResult.FileName);
+            results = this.GetSubmitRunResults(submitResult, language, task, compileResult.FileName);
         }
 
         var lastRunResult = results?.Last();
@@ -121,14 +130,14 @@ internal sealed class JudgeServiceImplementation : IJudgeService
         };
     }
 
-    private ICollection<SubmitRunResult> GetSubmitRunResults(Language language,
+    private ICollection<SubmitRunResult> GetSubmitRunResults(SubmitResult submitResult, Language language,
         Task task, string fileName)
     {
         var runString = GetRunString(language, fileName);
         this.logger.Info($"Run string: {runString}");
 
         this.CopyChecker(task);
-        return this.Run(task, runString);
+        return this.Run(submitResult, task, runString);
     }
 
     private static string GetRunString(Language language, string compileResultFileName)
@@ -154,13 +163,13 @@ internal sealed class JudgeServiceImplementation : IJudgeService
         }
     }
 
-    private ICollection<SubmitRunResult> Run(Task task, string runString)
+    private ICollection<SubmitRunResult> Run(SubmitResult submitResult, Task task, string runString)
     {
         var inputFiles = this.GetInputFiles(task);
         var results = new List<SubmitRunResult>(10);
         foreach (var input in inputFiles)
         {
-            var runResult = this.Run(task, input, runString);
+            var runResult = this.Run(submitResult, task, input, runString);
             results.Add(runResult);
             if (!runResult.RunSuccess)
             {
@@ -171,7 +180,7 @@ internal sealed class JudgeServiceImplementation : IJudgeService
         return results;
     }
 
-    private SubmitRunResult Run(Task task, string input, string runString)
+    private SubmitRunResult Run(SubmitResult submitResult, Task task, string input, string runString)
     {
         var runService = new RunService(this.runnerPath, this.workingDirectory);
         var configuration = new Configuration(runString, this.workingDirectory, task.TimeLimitMilliseconds,
@@ -196,7 +205,7 @@ internal sealed class JudgeServiceImplementation : IJudgeService
 
         if (runResult.RunStatus == RunStatus.Success)
         {
-            var checkAnswerResult = this.CheckAnswer(configuration);
+            var checkAnswerResult = this.CheckAnswer(submitResult, configuration);
             result.CheckMessage = checkAnswerResult.Message;
             result.CheckStatus = checkAnswerResult.CheckStatus;
         }
@@ -204,12 +213,34 @@ internal sealed class JudgeServiceImplementation : IJudgeService
         return result;
     }
 
-    private CheckResult CheckAnswer(Configuration configuration)
+    private CheckResult CheckAnswer(SubmitResult submitResult, Configuration configuration)
     {
-        var checker = new Checker.Checker();
-        var answerFileName = configuration.InputFile + ".a";
-        var checkResult = checker.Check(this.workingDirectory, configuration.InputFile, configuration.OutputFile,
-            answerFileName);
+        var inputFile = Path.Combine(this.workingDirectory, configuration.InputFile);
+        var outputFile = Path.Combine(this.workingDirectory, configuration.OutputFile);
+        var answerFile = Path.Combine(this.workingDirectory, configuration.InputFile + ".a");
+
+        var fileOptions = new FileOptions(this.workingDirectory, inputFile,
+            outputFile,
+            answerFile);
+
+        var problemSettings = this.problemSettingsProvider.GetProblemSettings(submitResult.Submit);
+
+        if (problemSettings?.SkipExecutableChecker == true)
+        {
+            var results = this.customCheckerService.Check(submitResult, fileOptions, CheckerType.PostExecutable);
+            var result = results?.Last();
+
+            if (result == null)
+            {
+                this.logger.Error(
+                    $"SkipExecutableChecker is true, but no custom checkers were found. Submit id: {submitResult.Submit.Id}");
+                return new CheckResult(CheckStatus.Fail);
+            }
+
+            return new CheckResult(result.CheckStatus);
+        }
+
+        var checkResult = ExecutableChecker.Check(fileOptions);
 
         this.logger.Info(
             $"Check result: {configuration.InputFile}, {checkResult.CheckStatus}, {checkResult.Message}");

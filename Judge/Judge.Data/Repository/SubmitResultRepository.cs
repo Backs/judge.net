@@ -51,7 +51,9 @@ internal sealed class SubmitResultRepository : ISubmitResultRepository
         if (check == null) return null;
 
         return this.context.Set<SubmitResult>().Where(o => o.Id == check.SubmitResultId)
-            .Include(o => o.Submit).First();
+            .Include(o => o.Submit)
+            .Include(o => o.Submit.User)
+            .First();
     }
 
     public Task<int> CountAsync(ISpecification<SubmitResult> specification)

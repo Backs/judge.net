@@ -5,12 +5,12 @@ public sealed class CheckResult
     public CheckResult(CheckStatus checkStatus, string message)
         : this(checkStatus)
     {
-        Message = message;
+        this.Message = message;
     }
 
     public CheckResult(CheckStatus checkStatus)
     {
-        CheckStatus = checkStatus;
+        this.CheckStatus = checkStatus;
     }
 
     public CheckStatus CheckStatus { get; }

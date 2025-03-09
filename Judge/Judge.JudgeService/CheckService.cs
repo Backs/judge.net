@@ -18,29 +18,27 @@ internal sealed class CheckService
 
     public void Check()
     {
-        using (var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork(true))
+        using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork(true);
+        var repository = unitOfWork.SubmitResults;
+        var submit = repository.DequeueUnchecked();
+        if (submit == null)
+            return;
+
+        using (ScopeContext.PushNestedState($"Submit-{submit.Id}"))
         {
-            var repository = unitOfWork.SubmitResults;
-            var submit = repository.DequeueUnchecked();
-            if (submit == null)
-                return;
+            this.logger.Info("Dequeued submit");
 
-            using (ScopeContext.PushNestedState($"Submit-{submit.Id}"))
-            {
-                this.logger.Info("Dequeued submit");
+            var result = this.service.Check(submit);
 
-                var result = this.service.Check(submit);
+            submit.PassedTests = result.TestsPassedCount;
+            submit.TotalBytes = result.PeakMemoryBytes;
+            submit.TotalMilliseconds = result.TimeConsumedMilliseconds;
+            submit.Status = result.GetStatus();
+            submit.CompileOutput = result.CompileResult.Output;
+            submit.RunDescription = result.Description;
+            submit.RunOutput = result.Output;
 
-                submit.PassedTests = result.TestsPassedCount;
-                submit.TotalBytes = result.PeakMemoryBytes;
-                submit.TotalMilliseconds = result.TimeConsumedMilliseconds;
-                submit.Status = result.GetStatus();
-                submit.CompileOutput = result.CompileResult.Output;
-                submit.RunDescription = result.Description;
-                submit.RunOutput = result.Output;
-
-                unitOfWork.Commit();
-            }
+            unitOfWork.Commit();
         }
     }
 }
