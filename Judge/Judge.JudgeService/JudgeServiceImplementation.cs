@@ -13,6 +13,7 @@ using Judge.Model.SubmitSolution;
 using Judge.Runner;
 using NLog;
 using Configuration = Judge.Runner.Configuration;
+using FileOptions = Judge.Checker.FileOptions;
 
 namespace Judge.JudgeService;
 
@@ -98,9 +99,11 @@ internal sealed class JudgeServiceImplementation : IJudgeService
 
         ICollection<SubmitRunResult> results = null;
 
-        if (compileResult.CompileStatus == CompileStatus.Success)
+        var problemSettings = this.problemSettingsProvider.GetProblemSettings(submitResult.Submit);
+
+        if (compileResult.CompileStatus == CompileStatus.Success && problemSettings != null)
         {
-            results = this.customCheckerService.Check(submitResult, CheckerType.PreExecutable);
+            results = this.customCheckerService.Check(submitResult, null, CheckerType.PreExecutable);
         }
 
         if (results == null && compileResult.CompileStatus == CompileStatus.Success)
@@ -212,26 +215,32 @@ internal sealed class JudgeServiceImplementation : IJudgeService
 
     private CheckResult CheckAnswer(SubmitResult submitResult, Configuration configuration)
     {
+        var inputFile = Path.Combine(this.workingDirectory, configuration.InputFile);
+        var outputFile = Path.Combine(this.workingDirectory, configuration.OutputFile);
+        var answerFile = Path.Combine(this.workingDirectory, configuration.InputFile + ".a");
+
+        var fileOptions = new FileOptions(this.workingDirectory, inputFile,
+            outputFile,
+            answerFile);
+
         var problemSettings = this.problemSettingsProvider.GetProblemSettings(submitResult.Submit);
 
         if (problemSettings?.SkipExecutableChecker == true)
         {
-            var results = this.customCheckerService.Check(submitResult, CheckerType.PostExecutable);
+            var results = this.customCheckerService.Check(submitResult, fileOptions, CheckerType.PostExecutable);
             var result = results?.Last();
 
             if (result == null)
             {
-                this.logger.Error($"SkipExecutableChecker is true, but no custom checkers were found. Submit id: {submitResult.Submit.Id}");
+                this.logger.Error(
+                    $"SkipExecutableChecker is true, but no custom checkers were found. Submit id: {submitResult.Submit.Id}");
                 return new CheckResult(CheckStatus.Fail);
             }
 
             return new CheckResult(result.CheckStatus);
         }
 
-        var answerFileName = configuration.InputFile + ".a";
-        var checkResult = ExecutableChecker.Check(this.workingDirectory, configuration.InputFile,
-            configuration.OutputFile,
-            answerFileName);
+        var checkResult = ExecutableChecker.Check(fileOptions);
 
         this.logger.Info(
             $"Check result: {configuration.InputFile}, {checkResult.CheckStatus}, {checkResult.Message}");

@@ -71,6 +71,10 @@ internal sealed class DataContext : DbContext
             builder.Property(o => o.FileName).HasMaxLength(256);
             builder.Property(o => o.UserHost).HasMaxLength(64);
             builder.Property(o => o.SessionId).HasMaxLength(32);
+
+            builder.HasOne(o => o.User)
+                .WithMany()
+                .HasForeignKey(o => o.UserId);
         });
 
         modelBuilder.Entity<CheckQueue>(builder =>

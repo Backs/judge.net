@@ -11,7 +11,8 @@ internal sealed class ForbiddenCharsChecker : ICustomChecker
 {
     public CheckerType Type => CheckerType.PreExecutable;
 
-    public ICollection<SubmitRunResult> Check(ProblemSettings problemSettings, SubmitResult submitResult)
+    public ICollection<SubmitRunResult> Check(ProblemSettings problemSettings, SubmitResult submitResult,
+        FileOptions fileOptions)
     {
         if (problemSettings.ForbiddenChars != null &&
             submitResult.Submit.SourceCode.Any(o => problemSettings.ForbiddenChars.Contains(o)))

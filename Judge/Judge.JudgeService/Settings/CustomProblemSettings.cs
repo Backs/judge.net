@@ -13,6 +13,8 @@ public class ProblemSettings
     public int? MaxSourceCodeLength { get; set; }
 
     public bool SkipExecutableChecker { get; set; }
+
+    public bool UserPullRequestChecker { get; set; }
 }
 
 public class ContestSettings

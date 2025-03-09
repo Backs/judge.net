@@ -9,31 +9,28 @@ public static class ExecutableChecker
 {
     private const string CheckerFileName = "check.exe";
 
-    public static CheckResult Check(string workingDirectory, string inputFileName, string outputFileName, string answerFileName)
+    public static CheckResult Check(FileOptions fileOptions)
     {
-        if (!Directory.Exists(workingDirectory))
+        if (!Directory.Exists(fileOptions.WorkingDirectory))
         {
             return CheckResult.Fail("Working directory not found");
         }
 
-        var checker = Directory.GetFiles(workingDirectory, CheckerFileName).FirstOrDefault();
+        var checker = Directory.GetFiles(fileOptions.WorkingDirectory, CheckerFileName).FirstOrDefault();
 
         if (checker == null)
         {
             return CheckResult.Fail("Checker not found");
         }
 
-        var inputFile = Path.Combine(workingDirectory, inputFileName);
-        var outputFile = Path.Combine(workingDirectory, outputFileName);
-        var answerFile = Path.Combine(workingDirectory, answerFileName);
 
-        string options = $"{inputFile} {outputFile} {answerFile}";
+        string options = $"{fileOptions.InputFileName} {fileOptions.OutputFileName} {fileOptions.AnswerFileName}";
 
         var startInfo = new ProcessStartInfo(checker, options)
         {
             UseShellExecute = false,
             RedirectStandardOutput = true,
-            WorkingDirectory = workingDirectory,
+            WorkingDirectory = fileOptions.WorkingDirectory,
             CreateNoWindow = true,
             ErrorDialog = false
         };
@@ -41,8 +38,9 @@ public static class ExecutableChecker
         var exitCode = 1;
         var message = string.Empty;
 
-        using (var p = new Process { StartInfo = startInfo })
+        using (var p = new Process())
         {
+            p.StartInfo = startInfo;
             try
             {
                 p.Start();

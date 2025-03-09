@@ -2,6 +2,7 @@
 using System.Linq;
 using Judge.JudgeService.Settings;
 using Judge.Model.SubmitSolution;
+using FileOptions = Judge.Checker.FileOptions;
 
 namespace Judge.JudgeService.CustomCheckers;
 
@@ -16,13 +17,14 @@ internal sealed class CustomCheckerService : ICustomCheckerService
         this.checkers = checkers;
     }
 
-    public ICollection<SubmitRunResult> Check(SubmitResult submitResult, CheckerType checkerType)
+    public ICollection<SubmitRunResult> Check(SubmitResult submitResult, FileOptions fileOptions,
+        CheckerType checkerType)
     {
         var problemSettings = this.problemSettingsProvider.GetProblemSettings(submitResult.Submit);
 
         foreach (var checker in this.checkers.Where(o => o.Type == checkerType))
         {
-            var result = checker.Check(problemSettings, submitResult);
+            var result = checker.Check(problemSettings, submitResult, fileOptions);
             if (result != null)
                 return result;
         }

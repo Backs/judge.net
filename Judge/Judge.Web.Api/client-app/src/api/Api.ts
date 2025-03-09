@@ -714,6 +714,8 @@ export enum SubmitStatus {
   TooManyLines = "TooManyLines",
   WrongLanguage = "WrongLanguage",
   PresentationError = "PresentationError",
+  PRNotFound = "PRNotFound",
+  LoginNotFound = "LoginNotFound",
 }
 
 /** User information */
@@ -1270,7 +1272,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     submitsUpdate: (
       data: {
-        /** Solution */
+        /**
+         * Solution
+         * @maxLength 20000
+         */
         Solution: string;
         /**
          * Language id

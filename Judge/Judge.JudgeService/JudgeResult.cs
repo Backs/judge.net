@@ -16,7 +16,10 @@ internal sealed class JudgeResult
     public string Description { get; set; }
     public string Output { get; set; }
     public int TestRunsCount { get; set; }
-    public int TestsPassedCount => this.GetStatus() == SubmitStatus.Accepted ? this.TestRunsCount : this.TestRunsCount - 1;
+
+    public int TestsPassedCount =>
+        this.GetStatus() == SubmitStatus.Accepted ? this.TestRunsCount : this.TestRunsCount - 1;
+
     public CheckStatus? CheckStatus { get; set; }
     public int? TimePassedMilliseconds { get; set; }
 
@@ -31,6 +34,7 @@ internal sealed class JudgeResult
         {
             return SubmitStatus.CompilationError;
         }
+
         if (this.RunStatus == null)
             throw new InvalidOperationException();
 
@@ -76,6 +80,10 @@ internal sealed class JudgeResult
                 return SubmitStatus.TooManyLines;
             case Checker.CheckStatus.WrongLanguage:
                 return SubmitStatus.WrongLanguage;
+            case Checker.CheckStatus.PullRequestNotFound:
+                return SubmitStatus.PullRequestNotFound;
+            case Checker.CheckStatus.LoginNotFound:
+                return SubmitStatus.LoginNotFound;
             default:
                 return SubmitStatus.WrongAnswer;
         }

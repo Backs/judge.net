@@ -41,13 +41,13 @@ public static class Program
         container.Register<IJudgeService, JudgeServiceImplementation>(Lifestyle.Scoped);
         container.Register<CheckService>(Lifestyle.Scoped);
         container.Collection.Register<ICustomChecker>(
-            new[]
-            {
+            [
                 typeof(LanguageChecker),
                 typeof(ForbiddenCharsChecker),
                 typeof(ForbiddenStringsChecker),
-                typeof(MaxLengthChecker)
-            },
+                typeof(MaxLengthChecker),
+                typeof(PullRequestChecker)
+            ],
             Lifestyle.Singleton);
         container.RegisterSingleton<IProblemSettingsProvider, ProblemSettingsProvider>();
         container.RegisterSingleton<ICustomCheckerService, CustomCheckerService>();
