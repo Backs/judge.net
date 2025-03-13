@@ -43,7 +43,10 @@ public class SubmitsController : ControllerBase
             TaskLabel = query.ProblemLabel,
             UserId = query.UserId
         };
-        var result = await this.submitsService.SearchAsync(submitsQuery);
+
+        var isAdmin = this.User.IsAdmin();
+
+        var result = await this.submitsService.SearchAsync(submitsQuery, !isAdmin);
 
         return this.Ok(result);
     }
@@ -72,7 +75,9 @@ public class SubmitsController : ControllerBase
             Take = take
         };
 
-        var result = await this.submitsService.SearchAsync(query);
+        var isAdmin = this.User.IsAdmin();
+
+        var result = await this.submitsService.SearchAsync(query, !isAdmin);
 
         return this.Ok(result);
     }

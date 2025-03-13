@@ -28,7 +28,7 @@ internal sealed class SubmitsService : ISubmitsService
         this.fileNameResolver = fileNameResolver;
     }
 
-    public async Task<Client.Submits.SubmitResultsList> SearchAsync(SubmitsQuery query)
+    public async Task<Client.Submits.SubmitResultsList> SearchAsync(SubmitsQuery query, bool openedOnly)
     {
         await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
 
@@ -44,7 +44,8 @@ internal sealed class SubmitsService : ISubmitsService
             type: Convert(query.Type),
             contestId: query.ContestId,
             problemId: query.ProblemId,
-            userId: query.UserId);
+            userId: query.UserId,
+            openedOnly: openedOnly);
 
         var submitResults = await unitOfWork.SubmitResults.SearchAsync(specification, query.Skip, query.Take);
 
