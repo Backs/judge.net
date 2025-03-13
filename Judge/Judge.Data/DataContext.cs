@@ -75,6 +75,10 @@ internal sealed class DataContext : DbContext
             builder.HasOne(o => o.User)
                 .WithMany()
                 .HasForeignKey(o => o.UserId);
+
+            builder.HasOne(o => o.Problem)
+                .WithMany()
+                .HasForeignKey(o => o.ProblemId);
         });
 
         modelBuilder.Entity<CheckQueue>(builder =>

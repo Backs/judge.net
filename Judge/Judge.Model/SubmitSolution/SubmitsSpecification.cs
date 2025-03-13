@@ -13,7 +13,8 @@ public sealed class SubmitsSpecification : ISpecification<SubmitResult>
         SubmitStatus? status = null,
         long? problemId = null,
         int? contestId = null,
-        long? userId = null)
+        long? userId = null,
+        bool openedOnly = false)
     {
         this.IsSatisfiedBy = type switch
         {
@@ -45,7 +46,12 @@ public sealed class SubmitsSpecification : ISpecification<SubmitResult>
         if (contestId != null)
         {
             this.IsSatisfiedBy = this.IsSatisfiedBy.And(t =>
-                t.Submit is ContestTaskSubmit && ((ContestTaskSubmit) t.Submit).ContestId == contestId);
+                t.Submit is ContestTaskSubmit && ((ContestTaskSubmit)t.Submit).ContestId == contestId);
+        }
+
+        if (openedOnly)
+        {
+            this.IsSatisfiedBy = this.IsSatisfiedBy.And(t => t.Submit.Problem.IsOpened);
         }
     }
 }
