@@ -46,7 +46,7 @@ internal sealed class ContestTaskRepository : IContestTaskRepository
         return this.context.Set<ContestTask>()
             .Include(o => o.Task)
             .Include(o => o.Contest)
-            .FirstOrDefaultAsync(o => o.Contest.Id == contestId && o.TaskName == label)!;
+            .FirstOrDefaultAsync(o => o.Contest.Id == contestId && o.TaskName == label);
     }
 
     public async Task<IReadOnlyCollection<ContestTask>> SearchAsync(int contestId)
