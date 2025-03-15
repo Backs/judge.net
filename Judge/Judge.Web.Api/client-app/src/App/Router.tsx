@@ -22,7 +22,7 @@ import {AllUsers} from "../components/Administration/AllUsers.tsx";
 import {Help} from "../components/Help.tsx";
 import {About} from "../components/About.tsx";
 import {TimerProblemDetail} from "../components/Problems/CustomProblems/TimerProblemDetail.tsx";
-import {TimerContestProblemDetail} from "../components/Contests/CustomProblems/ContestProblemDetail.tsx";
+import {TimerContestProblemDetail} from "../components/Contests/CustomProblems/TimerContestProblemDetail.tsx";
 
 export const Router: React.FC = () => {
     return (
