@@ -15,6 +15,8 @@ public class ProblemSettings
     public bool SkipExecutableChecker { get; set; }
 
     public bool UserPullRequestChecker { get; set; }
+
+    public bool UseCurrentTimeChecker { get; set; }
 }
 
 public class ContestSettings

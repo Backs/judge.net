@@ -21,6 +21,7 @@ import {ContestEdit} from "../components/Administration/ContestEdit.tsx";
 import {AllUsers} from "../components/Administration/AllUsers.tsx";
 import {Help} from "../components/Help.tsx";
 import {About} from "../components/About.tsx";
+import {TimerProblemDetail} from "../components/Problems/CustomProblems/TimerProblemDetail.tsx";
 
 export const Router: React.FC = () => {
     return (
@@ -31,6 +32,7 @@ export const Router: React.FC = () => {
             <Route path="/about" element={<About/>}/>
             <Route path="/register" element={<Register/>}/>
             <Route path="/problems" element={<Problems/>}/>
+            <Route path="/problems/213" element={<TimerProblemDetail/>}/>
             <Route path="/problems/:problemId" element={<ProblemDetail/>}/>
             <Route path="/problems/:problemId/edit" element={<ProblemEdit/>}/>
             <Route path="/problems/new" element={<ProblemEdit/>}/>

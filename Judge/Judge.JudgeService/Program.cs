@@ -46,7 +46,8 @@ public static class Program
                 typeof(ForbiddenCharsChecker),
                 typeof(ForbiddenStringsChecker),
                 typeof(MaxLengthChecker),
-                typeof(PullRequestChecker)
+                typeof(PullRequestChecker),
+                typeof(CurrentTimeChecker)
             ],
             Lifestyle.Singleton);
         container.RegisterSingleton<IProblemSettingsProvider, ProblemSettingsProvider>();
