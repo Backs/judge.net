@@ -28,13 +28,13 @@ export const TimerProblemDetail: React.FC = () => {
         const fetchData = async () => {
             const response = await api.api.problemsDetail(Number(213));
             setProblem({
-                name: "Time",
+                name: response.data.name,
                 id: Number(problemId),
                 languages: response.data.languages,
-                memoryLimitBytes: 524288000,
+                memoryLimitBytes: response.data.memoryLimitBytes,
                 statement: "",
-                timeLimitMilliseconds: 1000,
-                isOpened: false,
+                timeLimitMilliseconds: response.data.timeLimitMilliseconds,
+                isOpened: response.data.isOpened,
             });
             setLoading(false);
         }
