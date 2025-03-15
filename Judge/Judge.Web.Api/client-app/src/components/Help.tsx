@@ -11,10 +11,10 @@ export const Help: React.FC = () => {
             For the first time, I recommend to start with the problem <Link to="/problems/1">A+B</Link>.
 
             <Divider>Solve a problem and submit a solution</Divider>
-            Solution of every problem is a code written in an available programming language
+            Solution of every problem is a code written in an available programming language.
 
-            Example of solving problem <Link to="/problems/1">A+B</Link>, which requires counting sum of two integers
-            (in C++):
+            <p>Example of solving problem <Link to="/problems/1">A+B</Link>, which requires counting sum of two integers
+                (in C++):</p>
             <pre>
               <code>
                   {`

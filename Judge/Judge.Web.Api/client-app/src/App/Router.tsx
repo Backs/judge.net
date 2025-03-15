@@ -23,6 +23,7 @@ import {Help} from "../components/Help.tsx";
 import {About} from "../components/About.tsx";
 import {TimerProblemDetail} from "../components/Problems/CustomProblems/TimerProblemDetail.tsx";
 import {TimerContestProblemDetail} from "../components/Contests/CustomProblems/TimerContestProblemDetail.tsx";
+import {HiddenProblem} from "../components/Problems/CustomProblems/HiddenProblem.tsx";
 
 export const Router: React.FC = () => {
     return (
@@ -52,6 +53,7 @@ export const Router: React.FC = () => {
             <Route path="/administration/contests" element={<AllContests/>}/>
             <Route path="/administration/users" element={<AllUsers/>}/>
             <Route path="/notFound" element={<NotFound/>}/>
+            <Route path="/hiay61a19d" element={<HiddenProblem/>}/>
             <Route path="*" element={<NotFound/>}/>
         </Routes>
     );

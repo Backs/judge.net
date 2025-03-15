@@ -5,17 +5,10 @@ import {handleError} from "../../helpers/handleError.ts";
 import {getColor, getStatusTest} from "../../helpers/contestStatusHelper.ts";
 import {Pagination, Table, Tag} from "antd";
 import {ColumnType} from "antd/lib/table";
-
-interface ContestItem {
-    key: number;
-    name: any;
-    startDate: string;
-    duration: string;
-    status: any;
-}
+import {ContestInfo} from "../../api/Api.ts";
 
 export const Contests: React.FC = () => {
-    const [contestList, setContestList] = useState<ContestItem[]>([]);
+    const [contestList, setContestList] = useState<ContestInfo[]>([]);
     const [searchParams, setSearchParams] = useSearchParams({page: "1", size: "10"});
     const [isLoading, setLoading] = useState(true);
     const [total, setTotal] = useState(0);
@@ -30,15 +23,7 @@ export const Contests: React.FC = () => {
             const response = await api.api.contestsList({Skip: skip, Take: size});
             const items = response.data.items;
 
-            const result: ContestItem[] = items.map(p => ({
-                key: p.id,
-                name: <Link to={p.id.toString()}>{p.name}</Link>,
-                duration: p.duration,
-                startDate: p.startDate,
-                status: <Tag bordered={false} color={getColor(p.status)}>{getStatusTest(p.status)}</Tag>
-            }));
-
-            setContestList(result);
+            setContestList(items);
             setTotal(response.data.totalCount);
 
             setLoading(false);
@@ -47,33 +32,36 @@ export const Contests: React.FC = () => {
         fetchData().catch(e => handleError(e));
     }, [searchParams]);
 
-    const columns: ColumnType<ContestItem>[] = [
+    const columns: ColumnType<ContestInfo>[] = [
         {
             title: 'Id',
-            dataIndex: 'key',
-            key: 'key',
+            dataIndex: 'id',
+            key: 'id',
             align: 'right'
         },
         {
             title: 'Name',
             dataIndex: 'name',
-            key: 'key',
+            key: 'name',
+            render: (_, record) => <Link to={record.id.toString()}>{record.name}</Link>
         },
         {
             title: 'Status',
             dataIndex: 'status',
-            key: 'key',
+            key: 'status',
+            render: (_, record) => <Tag bordered={false}
+                                        color={getColor(record.status)}>{getStatusTest(record.status)}</Tag>
         },
         {
             title: 'Start date',
             dataIndex: 'startDate',
-            key: 'key',
+            key: 'startDate',
             align: 'right'
         },
         {
             title: 'Duration',
             dataIndex: 'duration',
-            key: 'key',
+            key: 'duration',
             align: 'right'
         }
     ];

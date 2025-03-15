@@ -514,6 +514,8 @@ export interface ProblemInfo {
   name: string;
   /** Is problem solve by current user */
   solved: boolean;
+  /** Is problem opened for everyone */
+  isOpened: boolean;
 }
 
 export interface ProblemLanguage {

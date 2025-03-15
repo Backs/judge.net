@@ -24,4 +24,10 @@ public sealed class ProblemInfo
     /// </summary>
     [Required]
     public bool Solved { get; set; }
+
+    /// <summary>
+    /// Is problem opened for everyone
+    /// </summary>
+    [Required]
+    public bool IsOpened { get; set; }
 }

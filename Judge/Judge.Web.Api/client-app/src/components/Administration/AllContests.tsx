@@ -7,19 +7,12 @@ import {Pagination, Table, Tag} from "antd";
 import {ColumnType} from "antd/lib/table";
 import {UserState} from "../../userSlice.ts";
 import {useSelector} from "react-redux";
-
-interface ContestItem {
-    key: number;
-    name: any;
-    startDate: string;
-    duration: string;
-    type: any;
-    status: any;
-}
+import {ContestInfo} from "../../api/Api.ts";
+import {MinusCircleOutlined} from "@ant-design/icons";
 
 export const AllContests: React.FC = () => {
     const navigate = useNavigate();
-    const [contestList, setContestList] = useState<ContestItem[]>([]);
+    const [contestList, setContestList] = useState<ContestInfo[]>([]);
     const [searchParams, setSearchParams] = useSearchParams({page: "1", size: "10"});
     const [isLoading, setLoading] = useState(true);
     const [total, setTotal] = useState(0);
@@ -41,16 +34,7 @@ export const AllContests: React.FC = () => {
             const response = await api.api.contestsList({Skip: skip, Take: size});
             const items = response.data.items;
 
-            const result: ContestItem[] = items.map(p => ({
-                key: p.id,
-                name: <Link to={`/contests/${p.id.toString()}/edit`}>{p.name}</Link>,
-                duration: p.duration,
-                startDate: p.startDate,
-                type: <Tag bordered={false} color="blue">{p.rules}</Tag>,
-                status: <Tag bordered={false} color={getColor(p.status)}>{getStatusTest(p.status)}</Tag>
-            }));
-
-            setContestList(result);
+            setContestList(items);
             setTotal(response.data.totalCount);
 
             setLoading(false);
@@ -59,38 +43,36 @@ export const AllContests: React.FC = () => {
         fetchData().catch(e => handleError(e));
     }, [searchParams]);
 
-    const columns: ColumnType<ContestItem>[] = [
+    const columns: ColumnType<ContestInfo>[] = [
         {
             title: 'Id',
-            dataIndex: 'key',
-            key: 'key',
+            dataIndex: 'id',
+            key: 'id',
             align: 'right'
         },
         {
             title: 'Name',
             dataIndex: 'name',
-            key: 'key',
-        },
-        {
-            title: 'Type',
-            dataIndex: 'type',
-            key: 'key',
+            key: 'name',
+            render: (_, record) => <Link to={`/contests/${record.id.toString()}/edit`}>{record.name} {!record.isOpened && <MinusCircleOutlined />}</Link>
         },
         {
             title: 'Status',
             dataIndex: 'status',
-            key: 'key',
+            key: 'status',
+            render: (_, record) => <Tag bordered={false}
+                                        color={getColor(record.status)}>{getStatusTest(record.status)}</Tag>
         },
         {
             title: 'Start date',
             dataIndex: 'startDate',
-            key: 'key',
+            key: 'startDate',
             align: 'right'
         },
         {
             title: 'Duration',
             dataIndex: 'duration',
-            key: 'key',
+            key: 'duration',
             align: 'right'
         }
     ];

@@ -42,7 +42,8 @@ internal sealed class ProblemsService : IProblemsService
         {
             Id = o.Id,
             Name = o.Name,
-            Solved = solved.Contains(o.Id)
+            Solved = solved.Contains(o.Id),
+            IsOpened  = o.IsOpened,
         }).ToArray();
 
         return new Client.ProblemsList

@@ -3,20 +3,15 @@ import {Pagination, Table} from "antd";
 import {Link, useNavigate, useSearchParams} from "react-router-dom";
 import {handleError} from "../../helpers/handleError.ts";
 import {judgeApi} from "../../api/JudgeApi.ts";
-import {CheckOutlined} from '@ant-design/icons';
+import {MinusCircleOutlined} from '@ant-design/icons';
 import {ColumnType} from "antd/lib/table";
 import {UserState} from "../../userSlice.ts";
 import {useSelector} from "react-redux";
-
-interface ProblemItem {
-    key: number,
-    name: any,
-    isOpened: any
-}
+import {AllProblemInfo} from "../../api/Api.ts";
 
 export const AllProblems: React.FC = () => {
     const navigate = useNavigate();
-    const [problemsList, setProblemsList] = useState<ProblemItem[]>([]);
+    const [problemsList, setProblemsList] = useState<AllProblemInfo[]>([]);
     const [searchParams, setSearchParams] = useSearchParams({page: "1", size: "10"});
     const [total, setTotal] = useState(0);
     const [isLoading, setLoading] = useState(true);
@@ -32,19 +27,14 @@ export const AllProblems: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
-            
+
             const page = Number(searchParams.get("page"));
             const size = Number(searchParams.get("size"));
             const skip = (page - 1) * size;
             const response = await api.api.adminProblemsList({skip: skip, take: size});
             const items = response.data.items;
 
-            const result: ProblemItem[] = items.map(p => ({
-                key: p.id,
-                name: <Link to={`/problems/${p.id}/edit`}>{p.name}</Link>,
-                isOpened: p.isOpened && <CheckOutlined/>
-            }));
-            setProblemsList(result);
+            setProblemsList(items);
             setTotal(response.data.totalCount);
 
             setLoading(false);
@@ -53,30 +43,27 @@ export const AllProblems: React.FC = () => {
         fetchData().catch(e => handleError(e));
     }, [searchParams]);
 
-    const columns: ColumnType<ProblemItem>[] = [
+    const columns: ColumnType<AllProblemInfo>[] = [
         {
             title: 'Id',
-            dataIndex: 'key',
-            key: 'key',
+            dataIndex: 'id',
+            key: 'id',
         },
         {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
-        },
-        {
-            title: 'Is opened',
-            dataIndex: 'isOpened',
-            key: 'isOpened',
-            align: 'center'
-        },
+            render: (_, problem) =>
+                <Link to={`/problems/${problem.id}/edit`}>{problem.name} {!problem.isOpened &&
+                    <MinusCircleOutlined/>}</Link>
+        }
     ];
 
     return (
         <div>
             <Link to="/problems/new">Create new</Link>
-            <br />
-            <br />
+            <br/>
+            <br/>
             <Table dataSource={problemsList} columns={columns} pagination={false} loading={isLoading}/>
             <Pagination defaultCurrent={Number(searchParams.get("page"))} total={total}
                         defaultPageSize={Number(searchParams.get("size"))} onChange={(pageNumber, pageSize) => {

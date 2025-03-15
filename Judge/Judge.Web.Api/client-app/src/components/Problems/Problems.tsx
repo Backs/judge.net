@@ -3,17 +3,12 @@ import {Pagination, Table} from "antd";
 import {Link, useSearchParams} from "react-router-dom";
 import {handleError} from "../../helpers/handleError.ts";
 import {judgeApi} from "../../api/JudgeApi.ts";
-import {CheckOutlined} from '@ant-design/icons';
+import {CheckOutlined, MinusCircleOutlined} from '@ant-design/icons';
 import {ColumnType} from "antd/lib/table";
-
-interface ProblemItem {
-    key: number,
-    name: any,
-    solved: any
-}
+import {ProblemInfo} from "../../api/Api.ts";
 
 export const Problems: React.FC = () => {
-    const [problemsList, setProblemsList] = useState<ProblemItem[]>([]);
+    const [problemsList, setProblemsList] = useState<ProblemInfo[]>([]);
     const [searchParams, setSearchParams] = useSearchParams({page: "1", size: "10"});
     const [total, setTotal] = useState(0);
     const [isLoading, setLoading] = useState(true);
@@ -28,12 +23,7 @@ export const Problems: React.FC = () => {
             const response = await api.api.problemsList({Skip: skip, Take: size});
             const items = response.data.items;
 
-            const result: ProblemItem[] = items.map(p => ({
-                key: p.id,
-                name: <Link to={p.id.toString()}>{p.name}</Link>,
-                solved: p.solved && <CheckOutlined/>
-            }));
-            setProblemsList(result);
+            setProblemsList(items);
             setTotal(response.data.totalCount);
 
             setLoading(false);
@@ -42,22 +32,26 @@ export const Problems: React.FC = () => {
         fetchData().catch(e => handleError(e));
     }, [searchParams]);
 
-    const columns: ColumnType<ProblemItem>[] = [
+    const columns: ColumnType<ProblemInfo>[] = [
         {
             title: 'Id',
-            dataIndex: 'key',
-            key: 'key',
+            dataIndex: 'id',
+            key: 'id',
         },
         {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
+            render: (_, problem) => <Link to={problem.id.toString()} title="Hidden">{problem.name} {!problem.isOpened &&
+                <MinusCircleOutlined/>}</Link>
+
         },
         {
             title: 'Solved',
             dataIndex: 'solved',
             key: 'solved',
-            align: 'center'
+            align: 'center',
+            render: value => value && <CheckOutlined/>
         },
     ];
 
