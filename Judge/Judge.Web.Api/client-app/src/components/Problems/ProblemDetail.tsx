@@ -58,6 +58,7 @@ export const ProblemDetail: React.FC = () => {
                         remarkPlugins={[remarkGfm]}
                         rehypePlugins={[rehypeRaw]}
                         remarkRehypeOptions={{allowDangerousHtml: true}}
+                        urlTransform={(value: string) => value}
                     >{problem?.statement}</Markdown>
 
                     {!user && <Alert type="warning" description={<span>You must <Link

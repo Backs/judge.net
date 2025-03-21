@@ -99,6 +99,7 @@ export const ProblemEdit: React.FC = () => {
                     remarkPlugins={[remarkGfm]}
                     rehypePlugins={[rehypeRaw]}
                     remarkRehypeOptions={{allowDangerousHtml: true}}
+                    urlTransform={(value: string) => value}
                 >{problem?.statement}</Markdown>
             </>
     );
