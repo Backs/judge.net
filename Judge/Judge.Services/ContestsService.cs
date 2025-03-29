@@ -308,6 +308,7 @@ internal sealed class ContestsService : IContestsService
             Id = contest.Id,
             Name = contest.Name,
             StartDate = contest.StartTime,
+            EndDate = contest.FinishTime,
             Duration = (contest.FinishTime - contest.StartTime),
             Status = GetStatus(contest),
             Rules = GetRules(contest.Rules),

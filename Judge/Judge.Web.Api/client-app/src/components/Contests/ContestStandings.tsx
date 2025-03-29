@@ -7,6 +7,7 @@ import {Flex, Table} from "antd";
 import Title from "antd/lib/typography/Title";
 import {ContestResult} from "../../api/Api.ts";
 import {convertUserResult, ContestResultRow} from "../../helpers/contestResultHelper.tsx";
+import {ContestDuration} from "./ContestDuration.tsx";
 
 export const ContestStandings: React.FC = () => {
     const {contestId} = useParams();
@@ -77,7 +78,7 @@ export const ContestStandings: React.FC = () => {
             Start date: {contest?.startDate}
         </div>
         <div style={{textAlign: 'center'}}>
-            Duration: {contest?.duration}
+            <ContestDuration endDate={contest?.endDate} duration={contest?.duration}/>
         </div>
         <div style={{textAlign: 'center'}}>
             <Link to="./..">Problems</Link>

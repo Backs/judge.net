@@ -53,6 +53,11 @@ export interface Contest {
    */
   startDate: string;
   /**
+   * Contest end date in UTC
+   * @format date-time
+   */
+  endDate: string;
+  /**
    * Contest duration
    * @example "00:00:00"
    */
@@ -83,6 +88,11 @@ export interface ContestInfo {
    * @format date-time
    */
   startDate: string;
+  /**
+   * Contest end date in UTC
+   * @format date-time
+   */
+  endDate: string;
   /**
    * Contest duration
    * @example "00:00:00"
@@ -130,6 +140,11 @@ export interface ContestResult {
    * @format date-time
    */
   startDate: string;
+  /**
+   * Contest end date in UTC
+   * @format date-time
+   */
+  endDate: string;
   /**
    * Contest duration
    * @example "00:00:00"

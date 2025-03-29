@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Layout, Menu, theme} from 'antd';
 import {Router} from "./Router.tsx";
 import {useDispatch, useSelector} from "react-redux";
@@ -15,20 +15,6 @@ const App: React.FC = () => {
 
     const dispatch = useDispatch();
     const {user}: UserState = useSelector((state: any) => state.user);
-
-    const [time, setTime] = useState(new Date().toUTCString());
-
-    useEffect(() => {
-        const time = () => {
-            const event = new Date();
-            setTime(event.toUTCString());
-        };
-        const intervalId = setInterval(time, 5000);
-
-        return () => {
-            clearInterval(intervalId);
-        };
-    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -56,7 +42,6 @@ const App: React.FC = () => {
                     style={{flex: 1, minWidth: 0}}
                 >
                 </Menu>
-                <span style={{color: "white"}}>Server time: {time}</span>
             </Header>
             <Content style={{padding: '0 48px'}}>
                 <div

@@ -27,6 +27,12 @@ public class ContestInfo
     public DateTime StartDate { get; set; }
 
     /// <summary>
+    /// Contest end date in UTC
+    /// </summary>
+    [Required]
+    public DateTime EndDate { get; set; }
+
+    /// <summary>
     /// Contest duration
     /// </summary>
     [Required]

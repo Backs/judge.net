@@ -8,6 +8,7 @@ import Title from "antd/lib/typography/Title";
 import {CheckOutlined} from "@ant-design/icons";
 import {ColumnType} from "antd/lib/table";
 import {getColor, getStatusTest} from "../../helpers/contestStatusHelper.ts";
+import {ContestDuration} from "./ContestDuration.tsx";
 
 interface ContestTaskItem {
     key: string,
@@ -71,7 +72,7 @@ export const ContestDetails: React.FC = () => {
                     Start date: {contest?.startDate}
                 </div>
                 <div style={{textAlign: 'center'}}>
-                    Duration: {contest?.duration}
+                    <ContestDuration endDate={contest?.endDate} duration={contest?.duration}/>
                 </div>
                 {contest &&
                     <div style={{textAlign: 'center'}}>
