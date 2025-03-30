@@ -35,7 +35,10 @@ export const ContestAnalysis: React.FC = () => {
             <Markdown
                 className={styles.markdown}
                 remarkPlugins={[remarkGfm]}
-                rehypePlugins={[rehypeRaw]}>{contest?.analysis}
+                rehypePlugins={[rehypeRaw]}
+                remarkRehypeOptions={{allowDangerousHtml: true}}
+                urlTransform={(value: string) => value}
+            >{contest?.analysis}
             </Markdown>
         </Flex>);
 }
