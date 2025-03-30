@@ -80,4 +80,9 @@ public enum SubmitStatus
     /// Login not found
     /// </summary>
     LoginNotFound,
+
+    /// <summary>
+    /// Not solved yet
+    /// </summary>
+    NotSolvedYet
 }

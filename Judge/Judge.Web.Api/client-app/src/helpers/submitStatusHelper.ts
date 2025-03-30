@@ -45,6 +45,8 @@ export const getStatusText = (status: SubmitStatus) => {
             return "PR not found";
         case SubmitStatus.LoginNotFound:
             return "Your login not found";
+        case SubmitStatus.NotSolvedYet:
+            return "Not solved yet";
     }
 
     return status;

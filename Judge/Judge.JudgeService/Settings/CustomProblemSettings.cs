@@ -17,13 +17,14 @@ public class ProblemSettings
     public bool UserPullRequestChecker { get; set; }
 
     public bool UseCurrentTimeChecker { get; set; }
+
+    public long? PreSolvedProblemId { get; set; }
 }
 
 public class ContestSettings
 {
     public Dictionary<long, ProblemSettings> Problems { get; set; } = new Dictionary<long, ProblemSettings>();
 }
-
 
 public class CustomProblemSettings
 {

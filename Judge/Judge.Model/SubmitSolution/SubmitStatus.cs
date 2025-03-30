@@ -18,4 +18,5 @@ public enum SubmitStatus
     WrongLanguage = 9903,
     PullRequestNotFound = 9904,
     LoginNotFound = 9905,
+    NotSolvedYet =  9906,
 }

@@ -104,6 +104,7 @@ internal sealed class SubmitsConverter : ISubmitsConverter
             SubmitStatus.WrongLanguage => Client.Submits.SubmitStatus.WrongLanguage,
             SubmitStatus.PullRequestNotFound => Client.Submits.SubmitStatus.PRNotFound,
             SubmitStatus.LoginNotFound => Client.Submits.SubmitStatus.LoginNotFound,
+            SubmitStatus.NotSolvedYet => Client.Submits.SubmitStatus.NotSolvedYet,
             _ => throw new ArgumentOutOfRangeException(nameof(status), status, null)
         };
     }

@@ -47,9 +47,10 @@ public static class Program
                 typeof(ForbiddenStringsChecker),
                 typeof(MaxLengthChecker),
                 typeof(PullRequestChecker),
-                typeof(CurrentTimeChecker)
+                typeof(CurrentTimeChecker),
+                typeof(SolvedChecker)
             ],
-            Lifestyle.Singleton);
+            Lifestyle.Scoped);
         container.RegisterSingleton<IProblemSettingsProvider, ProblemSettingsProvider>();
         container.RegisterSingleton<ICustomCheckerService, CustomCheckerService>();
         container.RegisterInstance(logger);

@@ -733,6 +733,7 @@ export enum SubmitStatus {
   PresentationError = "PresentationError",
   PRNotFound = "PRNotFound",
   LoginNotFound = "LoginNotFound",
+  NotSolvedYet = "NotSolvedYet",
 }
 
 /** User information */
