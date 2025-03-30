@@ -42,6 +42,7 @@ const App: React.FC = () => {
                     style={{flex: 1, minWidth: 0}}
                 >
                 </Menu>
+                <span style={{color: "white"}}>Server time: {new Date().toUTCString()}</span>
             </Header>
             <Content style={{padding: '0 48px'}}>
                 <div

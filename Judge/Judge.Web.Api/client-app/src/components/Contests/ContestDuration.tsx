@@ -4,6 +4,7 @@ import moment from "moment/moment";
 interface ContestDurationProps {
     duration: string | undefined,
     endDate: string | undefined,
+    startDate: string | undefined
 }
 
 export const ContestDuration: React.FC<ContestDurationProps> = (props) => {
@@ -13,8 +14,9 @@ export const ContestDuration: React.FC<ContestDurationProps> = (props) => {
         const time = () => {
             const currentDate = moment();
             const endDate = moment(props?.endDate);
+            const startDate = moment(props?.startDate);
 
-            if (endDate > currentDate) {
+            if (currentDate >= startDate && endDate > currentDate) {
                 const remaining = endDate.diff(currentDate, "seconds");
                 const days = Math.trunc(remaining / 86400);
                 const hours = Math.trunc((remaining % 86400) / 3600);

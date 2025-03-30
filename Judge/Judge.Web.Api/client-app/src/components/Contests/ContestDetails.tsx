@@ -72,7 +72,7 @@ export const ContestDetails: React.FC = () => {
                     Start date: {contest?.startDate}
                 </div>
                 <div style={{textAlign: 'center'}}>
-                    <ContestDuration endDate={contest?.endDate} duration={contest?.duration}/>
+                    <ContestDuration startDate={contest?.startDate} endDate={contest?.endDate} duration={contest?.duration}/>
                 </div>
                 {contest &&
                     <div style={{textAlign: 'center'}}>
