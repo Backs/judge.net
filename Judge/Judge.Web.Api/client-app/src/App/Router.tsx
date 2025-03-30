@@ -21,8 +21,6 @@ import {ContestEdit} from "../components/Administration/ContestEdit.tsx";
 import {AllUsers} from "../components/Administration/AllUsers.tsx";
 import {Help} from "../components/Help.tsx";
 import {About} from "../components/About.tsx";
-import {TimerProblemDetail} from "../components/Problems/CustomProblems/TimerProblemDetail.tsx";
-import {TimerContestProblemDetail} from "../components/Contests/CustomProblems/TimerContestProblemDetail.tsx";
 import {HiddenProblem} from "../components/Problems/CustomProblems/HiddenProblem.tsx";
 
 export const Router: React.FC = () => {
@@ -34,7 +32,6 @@ export const Router: React.FC = () => {
             <Route path="/about" element={<About/>}/>
             <Route path="/register" element={<Register/>}/>
             <Route path="/problems" element={<Problems/>}/>
-            <Route path="/problems/213" element={<TimerProblemDetail/>}/>
             <Route path="/problems/:problemId" element={<ProblemDetail/>}/>
             <Route path="/problems/:problemId/edit" element={<ProblemEdit/>}/>
             <Route path="/problems/new" element={<ProblemEdit/>}/>
@@ -45,7 +42,6 @@ export const Router: React.FC = () => {
             <Route path="/contests/:contestId/edit" element={<ContestEdit/>}/>
             <Route path="/contests/new" element={<ContestEdit/>}/>
             <Route path="/contests/:contestId/standings" element={<ContestStandings/>}/>
-            <Route path="/contests/24/C" element={<TimerContestProblemDetail/>}/>
             <Route path="/contests/:contestId/:label" element={<ContestProblemDetail/>}/>
             <Route path="/administration" element={<Administration/>}/>
             <Route path="/administration/languages" element={<Languages/>}/>
