@@ -28,12 +28,13 @@ internal sealed class DataContext : DbContext
         {
             builder.HasKey(o => o.Id);
             builder.ToTable("Languages");
-            builder.Property(o => o.CompilerPath).HasMaxLength(1024).IsRequired();
+            builder.Property(o => o.CompilerPath).HasMaxLength(1024);
             builder.Property(o => o.Description).HasMaxLength(1024).IsRequired();
             builder.Property(o => o.Name).HasMaxLength(128).IsRequired();
-            builder.Property(o => o.CompilerOptionsTemplate).HasMaxLength(512).IsRequired();
+            builder.Property(o => o.CompilerOptionsTemplate).HasMaxLength(512);
             builder.Property(o => o.OutputFileTemplate).HasMaxLength(512).IsRequired();
             builder.Property(o => o.RunStringFormat).HasMaxLength(512).IsRequired();
+            builder.Property(o => o.DefaultFileName).HasMaxLength(512);
         });
 
         modelBuilder.Entity<User>(builder =>
@@ -69,8 +70,8 @@ internal sealed class DataContext : DbContext
             builder.ToTable("Submits", "dbo");
 
             builder.Property(o => o.FileName).HasMaxLength(256).IsRequired();
-            builder.Property(o => o.UserHost).HasMaxLength(64).IsRequired();
-            builder.Property(o => o.SessionId).HasMaxLength(32).IsRequired();
+            builder.Property(o => o.UserHost).HasMaxLength(64);
+            builder.Property(o => o.SessionId).HasMaxLength(32);
             builder.Property(o => o.SourceCode).IsRequired();
 
             builder.HasOne(o => o.User)
@@ -98,9 +99,9 @@ internal sealed class DataContext : DbContext
             builder.HasKey(o => o.Id);
 
             builder.HasOne(o => o.CheckQueue).WithOne();
-            builder.Property(o => o.RunDescription).HasMaxLength(4096).IsRequired();
-            builder.Property(o => o.RunOutput).HasMaxLength(4096).IsRequired();
-            builder.Property(o => o.CompileOutput).IsRequired();
+            builder.Property(o => o.RunDescription).HasMaxLength(4096);
+            builder.Property(o => o.RunOutput).HasMaxLength(4096);
+            builder.Property(o => o.CompileOutput);
 
             builder.ToTable("SubmitResults", "dbo");
         });
