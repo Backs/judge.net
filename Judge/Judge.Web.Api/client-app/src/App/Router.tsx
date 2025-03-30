@@ -22,6 +22,7 @@ import {AllUsers} from "../components/Administration/AllUsers.tsx";
 import {Help} from "../components/Help.tsx";
 import {About} from "../components/About.tsx";
 import {HiddenProblem} from "../components/Problems/CustomProblems/HiddenProblem.tsx";
+import {ContestAnalysis} from "../components/Contests/ContestAnalysis.tsx";
 
 export const Router: React.FC = () => {
     return (
@@ -39,6 +40,7 @@ export const Router: React.FC = () => {
             <Route path="/submit-results/:submitResultId" element={<SubmitResultInfo/>}/>
             <Route path="/contests" element={<Contests/>}/>
             <Route path="/contests/:contestId" element={<ContestDetails/>}/>
+            <Route path="/contests/:contestId/analysis" element={<ContestAnalysis/>}/>
             <Route path="/contests/:contestId/edit" element={<ContestEdit/>}/>
             <Route path="/contests/new" element={<ContestEdit/>}/>
             <Route path="/contests/:contestId/standings" element={<ContestStandings/>}/>

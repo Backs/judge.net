@@ -28,12 +28,12 @@ internal sealed class DataContext : DbContext
         {
             builder.HasKey(o => o.Id);
             builder.ToTable("Languages");
-            builder.Property(o => o.CompilerPath).HasMaxLength(1024);
-            builder.Property(o => o.Description).HasMaxLength(1024);
-            builder.Property(o => o.Name).HasMaxLength(128);
-            builder.Property(o => o.CompilerOptionsTemplate).HasMaxLength(512);
-            builder.Property(o => o.OutputFileTemplate).HasMaxLength(512);
-            builder.Property(o => o.RunStringFormat).HasMaxLength(512);
+            builder.Property(o => o.CompilerPath).HasMaxLength(1024).IsRequired();
+            builder.Property(o => o.Description).HasMaxLength(1024).IsRequired();
+            builder.Property(o => o.Name).HasMaxLength(128).IsRequired();
+            builder.Property(o => o.CompilerOptionsTemplate).HasMaxLength(512).IsRequired();
+            builder.Property(o => o.OutputFileTemplate).HasMaxLength(512).IsRequired();
+            builder.Property(o => o.RunStringFormat).HasMaxLength(512).IsRequired();
         });
 
         modelBuilder.Entity<User>(builder =>
@@ -42,9 +42,9 @@ internal sealed class DataContext : DbContext
             builder.HasMany(o => o.UserRoles)
                 .WithOne()
                 .HasForeignKey(o => o.UserId);
-            builder.Property(o => o.Email).HasMaxLength(256);
-            builder.Property(o => o.PasswordHash).HasMaxLength(256);
-            builder.Property(o => o.UserName).HasMaxLength(256);
+            builder.Property(o => o.Email).HasMaxLength(256).IsRequired();
+            builder.Property(o => o.PasswordHash).HasMaxLength(256).IsRequired();
+            builder.Property(o => o.UserName).HasMaxLength(256).IsRequired();
 
             builder.ToTable("Users");
         });
@@ -68,9 +68,10 @@ internal sealed class DataContext : DbContext
 
             builder.ToTable("Submits", "dbo");
 
-            builder.Property(o => o.FileName).HasMaxLength(256);
-            builder.Property(o => o.UserHost).HasMaxLength(64);
-            builder.Property(o => o.SessionId).HasMaxLength(32);
+            builder.Property(o => o.FileName).HasMaxLength(256).IsRequired();
+            builder.Property(o => o.UserHost).HasMaxLength(64).IsRequired();
+            builder.Property(o => o.SessionId).HasMaxLength(32).IsRequired();
+            builder.Property(o => o.SourceCode).IsRequired();
 
             builder.HasOne(o => o.User)
                 .WithMany()
@@ -97,8 +98,9 @@ internal sealed class DataContext : DbContext
             builder.HasKey(o => o.Id);
 
             builder.HasOne(o => o.CheckQueue).WithOne();
-            builder.Property(o => o.RunDescription).HasMaxLength(4096);
-            builder.Property(o => o.RunOutput).HasMaxLength(4096);
+            builder.Property(o => o.RunDescription).HasMaxLength(4096).IsRequired();
+            builder.Property(o => o.RunOutput).HasMaxLength(4096).IsRequired();
+            builder.Property(o => o.CompileOutput).IsRequired();
 
             builder.ToTable("SubmitResults", "dbo");
         });
@@ -110,8 +112,9 @@ internal sealed class DataContext : DbContext
                 .HasDefaultValueSql("GETUTCDATE()")
                 .ValueGeneratedOnAdd()
                 .HasColumnType("datetime");
-            builder.Property(o => o.TestsFolder).HasMaxLength(512);
-            builder.Property(o => o.Name).HasMaxLength(256);
+            builder.Property(o => o.TestsFolder).HasMaxLength(512).IsRequired();
+            builder.Property(o => o.Name).HasMaxLength(256).IsRequired();
+            builder.Property(o => o.Statement).IsRequired();
 
             builder.ToTable("Tasks");
         });
@@ -119,7 +122,7 @@ internal sealed class DataContext : DbContext
         modelBuilder.Entity<Contest>(builder =>
         {
             builder.HasKey(o => o.Id);
-            builder.Property(o => o.Name).HasMaxLength(128);
+            builder.Property(o => o.Name).HasMaxLength(128).IsRequired();
             builder.Property(o => o.FinishTime).HasColumnType("datetime");
             builder.Property(o => o.FreezeTime).HasColumnType("datetime");
             builder.Property(o => o.CheckPointTime).HasColumnType("datetime");
@@ -139,7 +142,7 @@ internal sealed class DataContext : DbContext
                 .WithMany()
                 .HasForeignKey(o => o.ContestId);
 
-            builder.Property(o => o.TaskName).HasMaxLength(5);
+            builder.Property(o => o.TaskName).HasMaxLength(5).IsRequired();
 
             builder.ToTable("ContestTasks");
         });
@@ -147,7 +150,7 @@ internal sealed class DataContext : DbContext
         modelBuilder.Entity<UserRole>(builder =>
         {
             builder.HasKey(o => o.Id);
-            builder.Property(o => o.RoleName).HasMaxLength(32);
+            builder.Property(o => o.RoleName).HasMaxLength(32).IsRequired();
 
             builder.ToTable("UserRoles");
         });

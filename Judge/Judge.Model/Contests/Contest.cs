@@ -22,6 +22,8 @@ public sealed class Contest
 
     public bool OneLanguagePerTask { get; set; }
 
+    public string Analysis { get; set; }
+
     public override string ToString()
     {
         return $"{this.Id}-{this.Name}";

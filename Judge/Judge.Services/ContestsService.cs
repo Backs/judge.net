@@ -268,6 +268,19 @@ internal sealed class ContestsService : IContestsService
         };
     }
 
+    public async Task<Client.ContestAnalysisInfo?> GetAnalysisAsync(int id)
+    {
+        await using var unitOfWork = this.unitOfWorkFactory.GetUnitOfWork();
+        var contest = await unitOfWork.Contests.TryGetAsync(id);
+        if (contest?.Analysis == null)
+            return null;
+
+        var result = Convert<Client.ContestAnalysisInfo>(contest);
+        result.Analysis = contest.Analysis;
+
+        return result;
+    }
+
     private static ContestRules Convert(Client.ContestRules rules) =>
         rules switch
         {

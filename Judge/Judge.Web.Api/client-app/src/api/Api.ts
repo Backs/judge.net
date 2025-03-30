@@ -71,6 +71,41 @@ export interface Contest {
   tasks: ContestTask[];
 }
 
+export interface ContestAnalysisInfo {
+  /**
+   * Contest id
+   * @format int32
+   */
+  id: number;
+  /**
+   * Contest name
+   * @minLength 1
+   */
+  name: string;
+  /**
+   * Contest start date in UTC
+   * @format date-time
+   */
+  startDate: string;
+  /**
+   * Contest end date in UTC
+   * @format date-time
+   */
+  endDate: string;
+  /**
+   * Contest duration
+   * @example "00:00:00"
+   */
+  duration: string;
+  /** Contest status */
+  status: ContestStatus;
+  /** Contest rules */
+  rules: ContestRules;
+  /** Is opened */
+  isOpened: boolean;
+  analysis?: string | null;
+}
+
 /** Contest information */
 export interface ContestInfo {
   /**
@@ -1101,6 +1136,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     contestsResultsDetail: (contestId: number, params: RequestParams = {}) =>
       this.request<ContestResult, any>({
         path: `/api/contests/${contestId}/results`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Contests
+     * @name ContestsAnalysisDetail
+     * @summary Get contest analysis
+     * @request GET:/api/contests/{contestId}/analysis
+     * @secure
+     */
+    contestsAnalysisDetail: (contestId: number, params: RequestParams = {}) =>
+      this.request<ContestAnalysisInfo, any>({
+        path: `/api/contests/${contestId}/analysis`,
         method: "GET",
         secure: true,
         format: "json",

@@ -48,13 +48,13 @@ public class ContestsController : ControllerBase
     public async Task<IActionResult> Get([FromRoute] int contestId)
     {
         var contest = await this.contestsService.GetAsync(contestId, this.User.TryGetUserId());
-        
+
         if (contest == null)
             return this.NotFound();
 
         if (!contest.IsOpened && !this.User.IsAdmin())
             return this.NotFound();
-        
+
         return this.Ok(contest);
     }
 
@@ -74,7 +74,7 @@ public class ContestsController : ControllerBase
 
         return this.Ok(problem);
     }
-    
+
     /// <summary>
     /// Get editable contest information
     /// </summary>
@@ -120,8 +120,27 @@ public class ContestsController : ControllerBase
 
         if (contest == null)
             return this.NotFound();
-        
+
         if (!contest.IsOpened && !this.User.IsAdmin())
+            return this.NotFound();
+
+        return this.Ok(contest);
+    }
+
+    /// <summary>
+    /// Get contest analysis
+    /// </summary>
+    /// <param name="contestId">Contest id</param>
+    [HttpGet("{contestId:int}/analysis")]
+    [ProducesResponseType(typeof(ContestAnalysisInfo), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAnalysis([FromRoute] int contestId)
+    {
+        var contest = await this.contestsService.GetAnalysisAsync(contestId);
+
+        if (contest == null)
+            return this.NotFound();
+
+        if (contest.Status != ContestStatus.Completed && !this.User.IsAdmin())
             return this.NotFound();
 
         return this.Ok(contest);
