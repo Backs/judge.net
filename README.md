@@ -1,5 +1,5 @@
 # judge.net
-Programming contests system.
+Best programming contests system.
 
 Can be used for organization local programming competitions.
 
