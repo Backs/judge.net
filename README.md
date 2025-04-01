@@ -12,7 +12,7 @@ Can be used for organization local programming competitions.
 - Dynamically add new languages
 
 ## Components
-- Web application
+- Web application EG
 - Windows host to store tests and run solutions
 - Console application for checking solutions
 - SQL Server database
