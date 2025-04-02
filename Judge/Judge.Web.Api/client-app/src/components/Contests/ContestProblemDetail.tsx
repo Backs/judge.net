@@ -60,7 +60,7 @@ export const ContestProblemDetail: React.FC = () => {
     return (
         isLoading ? <Spin size="large"/> :
             <>
-                <Title style={{textAlign: 'center'}}><Link to="./..">{contest?.name}</Link>: {problem?.name}</Title>
+                <Title style={{textAlign: 'center'}}><Link to="./..">{contest?.name}</Link>: {label}. {problem?.name}</Title>
                 <Flex gap="small" vertical>
                     <div style={{textAlign: 'center'}}>
                         Time limit, seconds: {convertMsToSeconds(problem?.timeLimitMilliseconds)}

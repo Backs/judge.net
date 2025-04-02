@@ -2,7 +2,7 @@
 import {useParams} from "react-router-dom";
 import {handleError} from "../../helpers/handleError.ts";
 import {judgeApi} from "../../api/JudgeApi.ts";
-import {Flex, Spin} from "antd";
+import {Col, Flex, Row, Spin} from "antd";
 import styles from "../../styles/Markdown.module.css";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
@@ -32,13 +32,17 @@ export const ContestAnalysis: React.FC = () => {
     return (isLoading ? <Spin size="large"/> :
         <Flex gap="small" vertical>
             <Title style={{textAlign: 'center'}}>{contest?.name}</Title>
-            <Markdown
-                className={styles.markdown}
-                remarkPlugins={[remarkGfm]}
-                rehypePlugins={[rehypeRaw]}
-                remarkRehypeOptions={{allowDangerousHtml: true}}
-                urlTransform={(value: string) => value}
-            >{contest?.analysis}
-            </Markdown>
+            <Row>
+                <Col span={20} offset={2}>
+                    <Markdown
+                        className={styles.markdown}
+                        remarkPlugins={[remarkGfm]}
+                        rehypePlugins={[rehypeRaw]}
+                        remarkRehypeOptions={{allowDangerousHtml: true}}
+                        urlTransform={(value: string) => value}
+                    >{contest?.analysis}
+                    </Markdown>
+                </Col>
+            </Row>
         </Flex>);
 }

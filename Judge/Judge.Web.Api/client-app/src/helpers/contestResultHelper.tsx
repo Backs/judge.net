@@ -17,7 +17,7 @@ function getAttempts(taskResult: ContestProblemResult) {
     if (taskResult.solved && taskResult.attempts === 1) {
         return "+";
     } else if (taskResult.solved) {
-        return `+${taskResult.attempts}`;
+        return `+${taskResult.attempts - 1}`;
     } else {
         return `-${taskResult.attempts}`
     }

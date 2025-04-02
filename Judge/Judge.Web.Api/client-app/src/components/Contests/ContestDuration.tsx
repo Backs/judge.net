@@ -12,7 +12,7 @@ export const ContestDuration: React.FC<ContestDurationProps> = (props) => {
 
     useEffect(() => {
         const time = () => {
-            const currentDate = moment();
+            const currentDate = moment().utc();
             const endDate = moment(props?.endDate);
             const startDate = moment(props?.startDate);
 

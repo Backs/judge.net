@@ -21,6 +21,8 @@ internal sealed class CustomCheckerService : ICustomCheckerService
         CheckerType checkerType)
     {
         var problemSettings = this.problemSettingsProvider.GetProblemSettings(submitResult.Submit);
+        if (problemSettings == null)
+            return null;
 
         foreach (var checker in this.checkers.Where(o => o.Type == checkerType))
         {
