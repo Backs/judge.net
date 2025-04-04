@@ -1,7 +1,7 @@
 # judge.net
 Programming contests system.
 
-Can be used for organization local programming competitions.
+Can be used for organization local programming competitions...
 
 ## Features
 - Problems archive
