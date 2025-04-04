@@ -1,4 +1,4 @@
-# judge.net
+# judge.net1
 Programming contests system.
 
 Can be used for organization local programming competitions.
