@@ -4,18 +4,18 @@ Programming contests system.
 Can be used for organization local programming competitions.
 
 ## Features
-- Problems archive
+- Problems archive.
 - Scheduling of contests with different rules:
-  - ACM-like
-  - Points-based
-- Support non-compilable languages
-- Dynamically add new languages
+  - ACM-like.
+  - Points-based.
+- Support non-compilable languages.
+- Dynamically add new languages.
 
 ## Components
-- Web application
-- Windows host to store tests and run solutions
-- Console application for checking solutions
-- SQL Server database
+- Web application.
+- Windows host to store tests and run solutions.
+- Console application for checking solutions.
+- SQL Server database.
 
 ## Installing and configuration
 - Judge.Web. Set connection string to SQL Server in `Web.config`:
