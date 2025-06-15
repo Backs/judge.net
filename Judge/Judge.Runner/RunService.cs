@@ -1,40 +1,54 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using Judge.Runner.Abstractions;
 
 namespace Judge.Runner;
 
 public sealed class RunService : IRunService
 {
-    private readonly string _runnerPath;
-    private readonly string _workingDirectory;
+    private readonly string runnerPath;
+    private readonly string workingDirectory;
 
     public RunService(string runnerPath, string workingDirectory)
     {
-        _runnerPath = runnerPath;
-        _workingDirectory = workingDirectory;
+        this.runnerPath = runnerPath;
+        this.workingDirectory = workingDirectory;
     }
 
-    public RunResult Run(Configuration configuration)
+    public IRunResult Run(RunOptions options)
     {
-        var startInfo = new ProcessStartInfo(_runnerPath, configuration.ToString())
+        var configuration = new Configuration(options.Executable,
+            options.WorkingDirectory, (int)options.TimeLimit.TotalMilliseconds, options.MemoryLimitBytes)
+        {
+            InputFile = options.Input,
+            OutputFile = options.Output
+        };
+
+        return this.Run(configuration);
+    }
+
+    public IRunResult Run(Configuration configuration)
+    {
+        var startInfo = new ProcessStartInfo(this.runnerPath, configuration.ToString())
         {
             UseShellExecute = false,
             RedirectStandardOutput = true,
             RedirectStandardError = true,
-            WorkingDirectory = _workingDirectory,
+            WorkingDirectory = this.workingDirectory,
             CreateNoWindow = true,
             ErrorDialog = false
         };
 
-        if (!Directory.Exists(_workingDirectory))
+        if (!Directory.Exists(this.workingDirectory))
         {
-            Directory.CreateDirectory(_workingDirectory);
+            Directory.CreateDirectory(this.workingDirectory);
         }
 
         string output;
-        var exitCode = 0;
-        using (var p = new Process { StartInfo = startInfo })
+        int exitCode;
+        using (var p = new Process())
         {
+            p.StartInfo = startInfo;
             p.Start();
 
             output = p.StandardOutput.ReadToEnd();

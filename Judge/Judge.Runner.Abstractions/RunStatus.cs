@@ -1,4 +1,4 @@
-﻿namespace Judge.Runner;
+﻿namespace Judge.Runner.Abstractions;
 
 public enum RunStatus
 {

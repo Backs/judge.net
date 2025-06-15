@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <AssemblyTitle>Judge.JobRunner</AssemblyTitle>
+    <Product>Judge.JobRunner</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Judge.Runner.Abstractions\Judge.Runner.Abstractions.csproj" />
+    <ProjectReference Include="..\Judge.Runner\Judge.Runner.csproj" />
+  </ItemGroup>
+
+</Project>

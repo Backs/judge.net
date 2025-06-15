@@ -2,7 +2,7 @@
 using Judge.Checker;
 using Judge.Compiler;
 using Judge.Model.SubmitSolution;
-using Judge.Runner;
+using Judge.Runner.Abstractions;
 
 namespace Judge.JudgeService;
 
@@ -38,25 +38,17 @@ internal sealed class JudgeResult
         if (this.RunStatus == null)
             throw new InvalidOperationException();
 
-        switch (this.RunStatus.Value)
+        return this.RunStatus.Value switch
         {
-            case Runner.RunStatus.TimeLimitExceeded:
-                return SubmitStatus.TimeLimitExceeded;
-            case Runner.RunStatus.MemoryLimitExceeded:
-                return SubmitStatus.MemoryLimitExceeded;
-            case Runner.RunStatus.SecurityViolation:
-                return SubmitStatus.RuntimeError;
-            case Runner.RunStatus.RuntimeError:
-                return SubmitStatus.RuntimeError;
-            case Runner.RunStatus.InvocationFailed:
-                return SubmitStatus.ServerError;
-            case Runner.RunStatus.IdlenessLimitExceeded:
-                return SubmitStatus.TimeLimitExceeded;
-            case Runner.RunStatus.Success:
-                return this.GetCheckStatus();
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+            Judge.Runner.Abstractions.RunStatus.TimeLimitExceeded => SubmitStatus.TimeLimitExceeded,
+            Judge.Runner.Abstractions.RunStatus.MemoryLimitExceeded => SubmitStatus.MemoryLimitExceeded,
+            Judge.Runner.Abstractions.RunStatus.SecurityViolation => SubmitStatus.RuntimeError,
+            Judge.Runner.Abstractions.RunStatus.RuntimeError => SubmitStatus.RuntimeError,
+            Judge.Runner.Abstractions.RunStatus.InvocationFailed => SubmitStatus.ServerError,
+            Judge.Runner.Abstractions.RunStatus.IdlenessLimitExceeded => SubmitStatus.TimeLimitExceeded,
+            Judge.Runner.Abstractions.RunStatus.Success => this.GetCheckStatus(),
+            _ => throw new ArgumentOutOfRangeException()
+        };
     }
 
     private SubmitStatus GetCheckStatus()
