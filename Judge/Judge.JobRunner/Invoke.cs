@@ -29,8 +29,34 @@ internal static class Invoke
         uint cbJobObjectInfoLength,
         out uint lpReturnLength);
 
+    [DllImport("kernel32.dll")]
+    public static extern bool GetQueuedCompletionStatus(
+        IntPtr completionPort,
+        out uint code,
+        out UIntPtr lpCompletionKey,
+        out IntPtr lpOverlapped,
+        uint dwMilliseconds);
+
+    [DllImport("kernel32.dll")]
+    public static extern IntPtr CreateIoCompletionPort(
+        IntPtr fileHandle,
+        IntPtr existingCompletionPort,
+        UIntPtr completionKey,
+        uint numberOfConcurrentThreads);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    public static extern uint WaitForMultipleObjects(
+        uint nCount,
+        IntPtr[] lpHandles,
+        bool bWaitAll,
+        uint dwMilliseconds);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    public static extern bool GetExitCodeProcess(IntPtr process, out uint exitCode);
+
     public enum JobObjectInfoType
     {
+        BasicAccountingInformation = 1,
         AssociateCompletionPortInformation = 7,
         BasicLimitInformation = 2,
         BasicUIRestrictions = 4,
@@ -41,7 +67,20 @@ internal static class Invoke
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct JOBOBJECT_BASIC_LIMIT_INFORMATION
+    public struct JobObjectBasicAccountingInformation
+    {
+        public ulong TotalUserTime;
+        public ulong TotalKernelTime;
+        public ulong ThisPeriodTotalUserTime;
+        public ulong ThisPeriodTotalKernelTime;
+        public uint TotalPageFaultCount;
+        public uint TotalProcesses;
+        public uint ActiveProcesses;
+        public uint TotalTerminatedProcesses;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct JobobjectBasicLimitInformation
     {
         public long PerProcessUserTimeLimit;
         public long PerJobUserTimeLimit;
@@ -55,7 +94,7 @@ internal static class Invoke
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct IO_COUNTERS
+    public struct IoCounters
     {
         public ulong ReadOperationCount;
         public ulong WriteOperationCount;
@@ -66,14 +105,34 @@ internal static class Invoke
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct JOBOBJECT_EXTENDED_LIMIT_INFORMATION
+    public struct JobobjectExtendedLimitInformation
     {
-        public JOBOBJECT_BASIC_LIMIT_INFORMATION BasicLimitInformation;
-        public IO_COUNTERS IoInfo;
+        public JobobjectBasicLimitInformation BasicLimitInformation;
+        public IoCounters IoInfo;
         public UIntPtr ProcessMemoryLimit;
         public UIntPtr JobMemoryLimit;
         public UIntPtr PeakProcessMemoryUsed;
         public UIntPtr PeakJobMemoryUsed;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct JobObjectAssociateCompletionPort
+    {
+        public int CompletionKey;
+        public IntPtr CompletionPort;
+    }
+
+    public enum JobObjectMessageType : uint
+    {
+        JOB_OBJECT_MSG_END_OF_JOB_TIME = 1,
+        JOB_OBJECT_MSG_END_OF_PROCESS_TIME = 2,
+        JOB_OBJECT_MSG_ACTIVE_PROCESS_LIMIT = 3,
+        JOB_OBJECT_MSG_ACTIVE_PROCESS_ZERO = 4,
+        JOB_OBJECT_MSG_NEW_PROCESS = 6,
+        JOB_OBJECT_MSG_EXIT_PROCESS = 7,
+        JOB_OBJECT_MSG_ABNORMAL_EXIT_PROCESS = 8,
+        JOB_OBJECT_MSG_PROCESS_MEMORY_LIMIT = 9,
+        JOB_OBJECT_MSG_JOB_MEMORY_LIMIT = 10, // 0x0000000A
     }
 
     [Flags]
@@ -94,10 +153,4 @@ internal static class Invoke
         JOB_OBJECT_LIMIT_SILENT_BREAKAWAY_OK = 0x00001000,
         JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE = 0x00002000
     }
-
-    // Коды исключений Windows для ошибок памяти
-    public const uint STATUS_WORKING_SET_QUOTA = 0xC00000A0;
-    public const uint STATUS_PAGE_FAULT_QUOTA = 0xC000012C;
-    public const uint STATUS_QUOTA_EXCEEDED = 0xC0000044;
-    public const uint STATUS_ACCESS_VIOLATION = 0xC0000005;
 }
