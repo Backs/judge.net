@@ -13,10 +13,15 @@ public abstract class TestBase
     }
 
     [SetUp]
-    public void SetUp()
+    public void SetUpInternal()
     {
         Directory.CreateDirectory(this.WorkingDirectory);
-        File.WriteAllText(Path.Combine(this.WorkingDirectory, "input.txt"), "test");
+        this.SetUp();
+    }
+
+    protected virtual void SetUp()
+    {
+        File.Create(Path.Combine(this.WorkingDirectory, "input.txt")).Dispose();
     }
 
     [TearDown]
