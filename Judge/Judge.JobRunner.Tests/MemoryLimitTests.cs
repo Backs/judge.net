@@ -4,29 +4,25 @@ using NUnit.Framework;
 namespace Judge.JobRunner.Tests;
 
 [TestFixture]
-public class MemoryLimitTests
+public class MemoryLimitTests : TestBase
 {
     [Test]
-    public void PassMemoryLimitTest()
+    [TestCase("50mb.exe", 60 * 1024 * 1024, RunStatus.Success, TestName = "Pass memory limit test")]
+    [TestCase("50mb.exe", 50 * 1024 * 1024, RunStatus.MemoryLimitExceeded, TestName = "Fail memory limit test")]
+    public void MemoryLimitTest(string fileName, int memoryLimitBytes, RunStatus status)
     {
-        var path = Path.Combine(Directory.GetCurrentDirectory(), "Examples", "50mb.exe");
+        this.CopyFile(fileName);
+        var options = new RunOptions
+        {
+            WorkingDirectory = this.WorkingDirectory,
+            TimeLimit = TimeSpan.FromSeconds(4),
+            MemoryLimitBytes = memoryLimitBytes,
+            Executable = fileName,
+            Input = "input.txt",
+            Output = "output.txt"
+        };
 
-        var result = ProcessRunner.RunProcessWithLimits(
-            path, "",
-            TimeSpan.FromSeconds(10),
-            60 * 1024 * 1024);
-        result.Status.Should().Be(RunStatus.Success);
-    }
-
-    [Test]
-    public void FailMemoryLimitTest()
-    {
-        var path = Path.Combine(Directory.GetCurrentDirectory(), "Examples", "50mb.exe");
-
-        var result = ProcessRunner.RunProcessWithLimits(
-            path, "",
-            TimeSpan.FromSeconds(10),
-            50 * 1024 * 1024);
-        result.Status.Should().Be(RunStatus.MemoryLimitExceeded);
+        var result = ProcessRunner.RunProcessWithLimits(options);
+        result.Status.Should().Be(status);
     }
 }
