@@ -15,6 +15,11 @@ public abstract class TestBase
     [SetUp]
     public void SetUpInternal()
     {
+        if (Directory.Exists(this.WorkingDirectory))
+        {
+            Directory.Delete(this.WorkingDirectory, true);
+        }
+
         Directory.CreateDirectory(this.WorkingDirectory);
         this.SetUp();
     }

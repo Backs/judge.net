@@ -25,7 +25,7 @@ public static class Pinvoke
     public static extern bool QueryInformationJobObject(
         IntPtr hJob,
         JobObjectInfoType infoType,
-        IntPtr lpJobObjectInfo,
+        out JobObjectBasicAccountingInformation lpJobObjectInfo,
         uint cbJobObjectInfoLength,
         out uint lpReturnLength);
 

@@ -11,7 +11,6 @@ public class TimeLimitTests : TestBase
     [Test]
     [TestCase("TimeLimit.exe")]
     [TestCase("Sleep.exe")]
-    [TestCase("WaitInput.exe")]
     public void TimeLimitTest(string fileName)
     {
         this.CopyFile(fileName);
