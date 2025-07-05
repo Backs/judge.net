@@ -29,6 +29,14 @@ public static class Pinvoke
         uint cbJobObjectInfoLength,
         out uint lpReturnLength);
 
+    [DllImport("kernel32.dll", SetLastError = true)]
+    public static extern bool QueryInformationJobObject(
+        IntPtr hJob,
+        JobObjectInfoType infoType,
+        out JobobjectExtendedLimitInformation lpJobObjectInfo,
+        uint cbJobObjectInfoLength,
+        out uint lpReturnLength);
+
     [DllImport("kernel32.dll")]
     public static extern bool GetQueuedCompletionStatus(
         IntPtr completionPort,

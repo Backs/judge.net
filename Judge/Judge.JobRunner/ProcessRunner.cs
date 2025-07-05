@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using static Judge.JobRunner.Pinvoke;
 
 namespace Judge.JobRunner;
@@ -74,23 +73,11 @@ public static class ProcessRunner
                     ];
                     ResumeThread(pi.hThread);
 
-                    var checkTask = Task.Run(async () =>
-                    {
-                        var prevTime = TimeSpan.Zero;
-                        while (true)
-                        {
-                            await Task.Delay(options.ProcessorConsumingCheckInterval);
-                            var userTimeConsumed = GetUserTimeConsumed(job);
-                            var val1 = (decimal)(100.0 * userTimeConsumed.Subtract(prevTime).TotalMilliseconds /
-                                                 options.ProcessorConsumingCheckInterval.TotalMilliseconds);
-                            prevTime = userTimeConsumed;
-                        }
-                    });
-
                     var waitResult = WaitForMultipleObjects(2U, lpHandles, false,
                         (uint)options.TimeLimit.TotalMilliseconds);
 
                     var time = GetUserTimeConsumed(job);
+                    var memory = GetPeakMemoryUsed(job);
 
                     if (waitResult == WAIT_FAILED)
                     {
@@ -104,7 +91,9 @@ public static class ProcessRunner
                         return new RunResult
                         {
                             Status = RunStatus.TimeLimitExceeded,
-                            ExitCode = -1
+                            ExitCode = -1,
+                            TimeConsumed = time,
+                            PeakMemoryUsed = memory
                         };
                     }
 
@@ -116,7 +105,9 @@ public static class ProcessRunner
                     return new RunResult
                     {
                         ExitCode = (int)exitCode,
-                        Status = result
+                        Status = result,
+                        TimeConsumed = time,
+                        PeakMemoryUsed = memory
                     };
                 }
                 finally
@@ -150,6 +141,22 @@ public static class ProcessRunner
 
         return result
             ? userTime
+            : throw new Win32Exception(Marshal.GetLastWin32Error());
+    }
+
+    private static int GetPeakMemoryUsed(IntPtr job)
+    {
+        var lpJobObjectInfo = new JobobjectExtendedLimitInformation
+        {
+            BasicLimitInformation = new JobobjectBasicLimitInformation()
+        };
+
+        var result = QueryInformationJobObject(job, JobObjectInfoType.ExtendedLimitInformation,
+            out lpJobObjectInfo,
+            (uint)Marshal.SizeOf(lpJobObjectInfo), out _);
+
+        return result
+            ? (int)lpJobObjectInfo.PeakJobMemoryUsed
             : throw new Win32Exception(Marshal.GetLastWin32Error());
     }
 
