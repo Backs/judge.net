@@ -6,6 +6,7 @@ using System.Linq;
 using Judge.Checker;
 using Judge.Compiler;
 using Judge.Data;
+using Judge.JobRunner;
 using Judge.JudgeService.CustomCheckers;
 using Judge.JudgeService.Settings;
 using Judge.Model.CheckSolution;
@@ -28,6 +29,7 @@ internal sealed class JudgeServiceImplementation : IJudgeService
     private readonly string workingDirectory = ConfigurationManager.AppSettings["WorkingDirectory"];
     private readonly string storagePath = ConfigurationManager.AppSettings["StoragePath"];
     private readonly string runnerPath = ConfigurationManager.AppSettings["RunnerPath"];
+    private readonly bool useExeRunner = bool.Parse(ConfigurationManager.AppSettings["UseExeRunner"]!);
 
     public JudgeServiceImplementation(
         IUnitOfWorkFactory unitOfWorkFactory,
@@ -170,7 +172,8 @@ internal sealed class JudgeServiceImplementation : IJudgeService
         var results = new List<SubmitRunResult>(10);
         foreach (var input in inputFiles)
         {
-            var runResult = this.Run(submitResult, task, input, runString);
+            this.CopyFiles(input);
+            var runResult = this.Run(submitResult, task, Path.GetFileName(input), runString);
             results.Add(runResult);
             if (!runResult.RunSuccess)
             {
@@ -181,15 +184,25 @@ internal sealed class JudgeServiceImplementation : IJudgeService
         return results;
     }
 
+    private void CopyFiles(string input)
+    {
+        File.Copy(input, Path.Combine(this.workingDirectory, Path.GetFileName(input)));
+        var ansFile = input + ".a";
+        if (File.Exists(ansFile))
+        {
+            File.Copy(ansFile, Path.Combine(this.workingDirectory, Path.GetFileName(input) + ".a"));
+        }
+    }
+
     private SubmitRunResult Run(SubmitResult submitResult, Task task, string input, string runString)
     {
-        var runService = new RunService(this.runnerPath, this.workingDirectory);
+        var runService = this.GetRunService();
 
         var runOptions = new RunOptions
         {
             Executable = runString,
             Input = input,
-            Output = "output.txt", //TODO
+            Output = "output.txt",
             TimeLimit = TimeSpan.FromMilliseconds(task.TimeLimitMilliseconds),
             MemoryLimitBytes = task.MemoryLimitBytes,
             WorkingDirectory = this.workingDirectory
@@ -217,6 +230,16 @@ internal sealed class JudgeServiceImplementation : IJudgeService
         }
 
         return result;
+    }
+
+    private IRunService GetRunService()
+    {
+        if (this.useExeRunner)
+        {
+            return new RunService(this.runnerPath, this.workingDirectory);
+        }
+
+        return new JobObjectRunner();
     }
 
     private CheckResult CheckAnswer(SubmitResult submitResult, RunOptions configuration)

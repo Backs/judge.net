@@ -12,6 +12,7 @@
     <ProjectReference Include="..\Judge.Checker\Judge.Checker.csproj" />
     <ProjectReference Include="..\Judge.Compiler\Judge.Compiler.csproj" />
     <ProjectReference Include="..\Judge.Data\Judge.Data.csproj" />
+    <ProjectReference Include="..\Judge.JobRunner\Judge.JobRunner.csproj" />
     <ProjectReference Include="..\Judge.Model\Judge.Model.csproj" />
     <ProjectReference Include="..\Judge.Runner\Judge.Runner.csproj" />
   </ItemGroup>
