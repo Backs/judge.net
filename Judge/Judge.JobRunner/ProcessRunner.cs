@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.InteropServices;
+using Judge.Runner.Abstractions;
 using static Judge.JobRunner.Pinvoke;
 
 namespace Judge.JobRunner;
@@ -92,7 +93,7 @@ public static class ProcessRunner
                         {
                             Status = RunStatus.TimeLimitExceeded,
                             ExitCode = -1,
-                            TimeConsumed = time,
+                            TimeConsumedMilliseconds = time,
                             PeakMemoryUsed = memory
                         };
                     }
@@ -106,7 +107,7 @@ public static class ProcessRunner
                     {
                         ExitCode = (int)exitCode,
                         Status = result,
-                        TimeConsumed = time,
+                        TimeConsumedMilliseconds = time,
                         PeakMemoryUsed = memory
                     };
                 }
@@ -130,17 +131,15 @@ public static class ProcessRunner
         }
     }
 
-    private static TimeSpan GetUserTimeConsumed(IntPtr job)
+    private static int GetUserTimeConsumed(IntPtr job)
     {
         var lpJobObjectInfo = new JobObjectBasicAccountingInformation();
 
         var result = QueryInformationJobObject(job, JobObjectInfoType.BasicAccountingInformation,
             out lpJobObjectInfo, (uint)Marshal.SizeOf(lpJobObjectInfo), out _);
 
-        var userTime = new TimeSpan(0, 0, 0, 0, (int)(lpJobObjectInfo.TotalUserTime / 10000));
-
         return result
-            ? userTime
+            ? (int)lpJobObjectInfo.TotalUserTime / 10000
             : throw new Win32Exception(Marshal.GetLastWin32Error());
     }
 

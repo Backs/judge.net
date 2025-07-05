@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Judge.Runner.Abstractions;
 using NUnit.Framework;
 
 namespace Judge.JobRunner.Tests;

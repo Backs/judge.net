@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Judge.JobRunner;
+﻿namespace Judge.Runner.Abstractions;
 
 public class RunOptions
 {

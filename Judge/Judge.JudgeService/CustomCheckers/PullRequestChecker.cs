@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Judge.JudgeService.Settings;
 using Judge.Model.SubmitSolution;
-using Judge.Runner;
+using Judge.Runner.Abstractions;
 using Octokit;
 using CheckStatus = Judge.Checker.CheckStatus;
 using FileOptions = Judge.Checker.FileOptions;

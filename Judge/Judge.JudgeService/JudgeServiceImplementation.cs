@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -11,8 +12,8 @@ using Judge.Model.CheckSolution;
 using Judge.Model.Entities;
 using Judge.Model.SubmitSolution;
 using Judge.Runner;
+using Judge.Runner.Abstractions;
 using NLog;
-using Configuration = Judge.Runner.Configuration;
 using FileOptions = Judge.Checker.FileOptions;
 
 namespace Judge.JudgeService;
@@ -183,29 +184,34 @@ internal sealed class JudgeServiceImplementation : IJudgeService
     private SubmitRunResult Run(SubmitResult submitResult, Task task, string input, string runString)
     {
         var runService = new RunService(this.runnerPath, this.workingDirectory);
-        var configuration = new Configuration(runString, this.workingDirectory, task.TimeLimitMilliseconds,
-            task.MemoryLimitBytes);
-        configuration.InputFile = input;
-        configuration.OutputFile = "output.txt"; //TODO
 
-        var runResult = runService.Run(configuration);
+        var runOptions = new RunOptions
+        {
+            Executable = runString,
+            Input = input,
+            Output = "output.txt", //TODO
+            TimeLimit = TimeSpan.FromMilliseconds(task.TimeLimitMilliseconds),
+            MemoryLimitBytes = task.MemoryLimitBytes,
+            WorkingDirectory = this.workingDirectory
+        };
+
+        var runResult = runService.Run(runOptions);
 
         var result = new SubmitRunResult
         {
             Description = runResult.Description,
             Output = runResult.Output,
-            PeakMemoryBytes = runResult.PeakMemoryBytes,
-            RunStatus = runResult.RunStatus,
+            PeakMemoryBytes = runResult.PeakMemoryUsed,
+            RunStatus = runResult.Status,
             TextStatus = runResult.TextStatus,
-            TimeConsumedMilliseconds = runResult.TimeConsumedMilliseconds,
-            TimePassedMilliseconds = runResult.TimePassedMilliseconds
+            TimeConsumedMilliseconds = runResult.TimeConsumedMilliseconds
         };
 
-        this.logger.Info($"Run status: {runResult.RunStatus}");
+        this.logger.Info($"Run status: {runResult.Status}");
 
-        if (runResult.RunStatus == RunStatus.Success)
+        if (runResult.Status == RunStatus.Success)
         {
-            var checkAnswerResult = this.CheckAnswer(submitResult, configuration);
+            var checkAnswerResult = this.CheckAnswer(submitResult, runOptions);
             result.CheckMessage = checkAnswerResult.Message;
             result.CheckStatus = checkAnswerResult.CheckStatus;
         }
@@ -213,11 +219,11 @@ internal sealed class JudgeServiceImplementation : IJudgeService
         return result;
     }
 
-    private CheckResult CheckAnswer(SubmitResult submitResult, Configuration configuration)
+    private CheckResult CheckAnswer(SubmitResult submitResult, RunOptions configuration)
     {
-        var inputFile = Path.Combine(this.workingDirectory, configuration.InputFile);
-        var outputFile = Path.Combine(this.workingDirectory, configuration.OutputFile);
-        var answerFile = Path.Combine(this.workingDirectory, configuration.InputFile + ".a");
+        var inputFile = Path.Combine(this.workingDirectory, configuration.Input);
+        var outputFile = Path.Combine(this.workingDirectory, configuration.Output);
+        var answerFile = Path.Combine(this.workingDirectory, configuration.Input + ".a");
 
         var fileOptions = new FileOptions(this.workingDirectory, inputFile,
             outputFile,
@@ -242,8 +248,7 @@ internal sealed class JudgeServiceImplementation : IJudgeService
 
         var checkResult = ExecutableChecker.Check(fileOptions);
 
-        this.logger.Info(
-            $"Check result: {configuration.InputFile}, {checkResult.CheckStatus}, {checkResult.Message}");
+        this.logger.Info($"Check result: {configuration.Input}, {checkResult.CheckStatus}, {checkResult.Message}");
 
         return checkResult;
     }

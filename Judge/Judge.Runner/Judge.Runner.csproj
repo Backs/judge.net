@@ -13,4 +13,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Judge.Runner.Abstractions\Judge.Runner.Abstractions.csproj" />
+  </ItemGroup>
 </Project>

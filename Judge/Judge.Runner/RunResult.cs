@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using Judge.Runner.Abstractions;
 
 namespace Judge.Runner;
 
-public sealed class RunResult
+public sealed class RunResult : IRunResult
 {
-    public RunStatus RunStatus { get; private set; }
-    public int TimeConsumedMilliseconds { get; private set; }
+    public int ExitCode { get; private init; }
+    public RunStatus Status { get; private init; }
+    public TimeSpan TimeConsumed => TimeSpan.FromMilliseconds(this.TimeConsumedMilliseconds);
+    public int TimeConsumedMilliseconds { get; private init; }
     public int TimePassedMilliseconds { get; private set; }
-    public int PeakMemoryBytes { get; private set; }
+    public int PeakMemoryUsed { get; private init; }
     public string TextStatus { get; private set; }
     public string Description { get; private set; }
     public string Output { get; private set; }
 
     private RunResult()
     {
-
     }
 
     private static readonly Regex TimeRegex = new Regex(@"\d*\.\d{2}", RegexOptions.Compiled);
@@ -52,11 +54,12 @@ public sealed class RunResult
                 (double.Parse(TimeRegex.Match(timeConsumedRow).Value, CultureInfo.InvariantCulture) * 1000),
             TimePassedMilliseconds =
                 (int)(double.Parse(TimeRegex.Match(timePassedRow).Value, CultureInfo.InvariantCulture) * 1000),
-            PeakMemoryBytes = int.Parse(NumberRegex.Match(peakMemoryRow).Value),
-            RunStatus = runStatus,
+            PeakMemoryUsed = int.Parse(NumberRegex.Match(peakMemoryRow).Value),
+            Status = runStatus,
             TextStatus = textStatus,
             Description = description,
-            Output = input
+            Output = input,
+            ExitCode = exitCode
         };
         return runResult;
     }
@@ -65,7 +68,7 @@ public sealed class RunResult
     {
         return new RunResult
         {
-            RunStatus = RunStatus.InvocationFailed,
+            Status = RunStatus.InvocationFailed,
             TextStatus = textStatus,
             Output = output
         };

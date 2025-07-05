@@ -1,6 +1,8 @@
-﻿namespace Judge.Runner;
+﻿using Judge.Runner.Abstractions;
+
+namespace Judge.Runner;
 
 public interface IRunService
 {
-    RunResult Run(Configuration configuration);
+    IRunResult Run(RunOptions options);
 }

@@ -7,4 +7,8 @@
     <Product>Judge.JobRunner</Product>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Judge.Runner.Abstractions\Judge.Runner.Abstractions.csproj" />
+  </ItemGroup>
+
 </Project>

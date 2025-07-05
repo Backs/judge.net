@@ -4,7 +4,7 @@ using Judge.Checker;
 using Judge.Data;
 using Judge.JudgeService.Settings;
 using Judge.Model.SubmitSolution;
-using Judge.Runner;
+using Judge.Runner.Abstractions;
 
 namespace Judge.JudgeService.CustomCheckers;
 
