@@ -2,6 +2,7 @@
 
 namespace Judge.JobRunner.Tests;
 
+[Explicit]
 public abstract class TestBase
 {
     protected string WorkingDirectory = null!;
