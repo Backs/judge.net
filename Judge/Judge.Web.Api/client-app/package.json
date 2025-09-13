@@ -13,7 +13,7 @@
     "@reduxjs/toolkit": "^2.2.5",
     "@vitejs/plugin-basic-ssl": "^1.2.0",
     "antd": "^5.17.0",
-    "axios": "^1.8.2",
+    "axios": "^1.12.0",
     "moment": "^2.30.1",
     "normalize.css": "^8.0.1",
     "react": "^18.2.0",
