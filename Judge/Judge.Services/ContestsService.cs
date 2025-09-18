@@ -287,6 +287,7 @@ internal sealed class ContestsService : IContestsService
             Client.ContestRules.Acm => ContestRules.Acm,
             Client.ContestRules.Points => ContestRules.Points,
             Client.ContestRules.CheckPoint => ContestRules.CheckPoint,
+            Client.ContestRules.Dynamic => ContestRules.Dynamic,
             _ => throw new ArgumentOutOfRangeException(nameof(rules), rules, null)
         };
 
@@ -311,6 +312,7 @@ internal sealed class ContestsService : IContestsService
             ContestRules.Acm => Client.ContestRules.Acm,
             ContestRules.Points => Client.ContestRules.Points,
             ContestRules.CheckPoint => Client.ContestRules.CheckPoint,
+            ContestRules.Dynamic => Client.ContestRules.Dynamic,
             _ => throw new ArgumentOutOfRangeException(nameof(contestRules), contestRules, null)
         };
 
@@ -334,6 +336,7 @@ internal sealed class ContestsService : IContestsService
             ContestRules.Acm => Client.ContestRules.Acm,
             ContestRules.Points => Client.ContestRules.Points,
             ContestRules.CheckPoint => Client.ContestRules.CheckPoint,
+            ContestRules.Dynamic => Client.ContestRules.Dynamic,
             _ => throw new ArgumentOutOfRangeException(nameof(contestRules), contestRules, null)
         };
 

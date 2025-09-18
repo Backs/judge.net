@@ -11,7 +11,7 @@ internal sealed class CheckPointsConverter : BaseContestConverter
     protected override IComparer<Client.ContestUserResult> Comparer { get; } = new ContestUserResultComparer();
 
     protected override Client.ContestProblemResult ConvertContestTaskResult(Contest contest,
-        ContestTaskResult contestTaskResult)
+        ContestTaskResult contestTaskResult, IReadOnlyCollection<ContestResult> allResults)
     {
         var diff = contestTaskResult.SubmitDateUtc.Subtract(contest.CheckPointTime!.Value).Duration();
 
@@ -20,7 +20,7 @@ internal sealed class CheckPointsConverter : BaseContestConverter
         {
             points = (contestTaskResult.Attempts - 1) * 20 + (int)diff.TotalMinutes;
         }
-        
+
         var hours = (int)diff.TotalHours;
         var minutes = diff.Minutes;
         var time =  $"{hours}:{minutes:00}";

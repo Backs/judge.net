@@ -12,7 +12,7 @@ import {EditOutlined, MinusCircleOutlined, PlusOutlined} from '@ant-design/icons
 
 export const ContestEdit: React.FC = () => {
     dayjs.extend(utc);
-    
+
     const navigate = useNavigate();
     const {contestId} = useParams();
     const [isLoading, setLoading] = useState(true);
@@ -177,6 +177,7 @@ export const ContestEdit: React.FC = () => {
                             <Select.Option value="Acm">Acm</Select.Option>
                             <Select.Option value="Points">Points</Select.Option>
                             <Select.Option value="CheckPoint">CheckPoint</Select.Option>
+                            <Select.Option value="Dynamic">Dynamic</Select.Option>
                         </Select>
                     </Form.Item>
                     <Form.Item label="Start time" name="startTime"

@@ -25,7 +25,7 @@ public abstract class BaseContestConverter : IContestConverter
                 Tasks = o.TaskResults.Select(t => new
                     {
                         Label = contestTasks[t.ProblemId].TaskName,
-                        Result = this.ConvertContestTaskResult(contest, t)
+                        Result = this.ConvertContestTaskResult(contest, t, contestResults)
                     }).OrderBy(t => t.Label)
                     .ToDictionary(t => t.Label, t => t.Result),
             })
@@ -58,5 +58,5 @@ public abstract class BaseContestConverter : IContestConverter
     }
 
     protected abstract Client.ContestProblemResult ConvertContestTaskResult(Contest contest,
-        ContestTaskResult contestTaskResult);
+        ContestTaskResult contestTaskResult, IReadOnlyCollection<ContestResult> allResults);
 }

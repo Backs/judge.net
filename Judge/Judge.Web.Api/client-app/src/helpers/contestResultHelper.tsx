@@ -56,6 +56,7 @@ export const formatTaskResult = (rules: ContestRules, taskResult: ContestProblem
         case ContestRules.Acm:
             return formatAcmTaskResult(taskResult);
         case ContestRules.Points:
+        case ContestRules.Dynamic:
             return formatPointsTaskResult(taskResult);
         case ContestRules.CheckPoint:
             return formatAcmTaskResult(taskResult);

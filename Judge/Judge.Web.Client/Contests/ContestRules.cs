@@ -9,14 +9,19 @@ public enum ContestRules
     /// Classic ACM-like rules
     /// </summary>
     Acm,
-    
+
     /// <summary>
     /// Points-based results
     /// </summary>
     Points,
-    
+
     /// <summary>
-    /// Acm rules, but penalty is calculated relative to CheckPoint
+    /// Acm rules, but the penalty is calculated relative to CheckPoint
     /// </summary>
-    CheckPoint
+    CheckPoint,
+
+    /// <summary>
+    /// Dynamic points
+    /// </summary>
+    Dynamic
 }

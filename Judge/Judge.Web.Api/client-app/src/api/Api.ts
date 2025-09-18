@@ -200,6 +200,7 @@ export enum ContestRules {
   Acm = "Acm",
   Points = "Points",
   CheckPoint = "CheckPoint",
+  Dynamic = "Dynamic",
 }
 
 /** Contest status */

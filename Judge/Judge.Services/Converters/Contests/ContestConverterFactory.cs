@@ -11,6 +11,7 @@ internal sealed class ContestConverterFactory : IContestConverterFactory
             ContestRules.Acm => AcmConverter.Instance,
             ContestRules.Points => PointsConverter.Instance,
             ContestRules.CheckPoint => CheckPointsConverter.Instance,
+            ContestRules.Dynamic => DynamicPointsConverter.Instance,
             _ => throw new ArgumentOutOfRangeException(nameof(rules), rules, null)
         };
 }

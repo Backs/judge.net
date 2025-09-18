@@ -1,37 +1,39 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Judge.Model.Contests;
+using Contest = Judge.Model.Contests.Contest;
 using Client = Judge.Web.Client.Contests;
 
 namespace Judge.Services.Converters.Contests;
 
-internal sealed class AcmConverter : BaseContestConverter
+internal sealed class DynamicPointsConverter : BaseContestConverter
 {
-    public static IContestConverter Instance { get; } = new AcmConverter();
-
+    public static IContestConverter Instance { get; } = new DynamicPointsConverter();
     protected override IComparer<Client.ContestUserResult> Comparer { get; } = new ContestTaskResultComparer();
 
     protected override Client.ContestProblemResult ConvertContestTaskResult(Contest contest,
         ContestTaskResult contestTaskResult, IReadOnlyCollection<ContestResult> allResults)
     {
-        var elapsedTime = contestTaskResult.SubmitDateUtc - contest.StartTime;
+        var solvedCount = allResults.Count(o =>
+            o.TaskResults.Any(t => t.ProblemId == contestTaskResult.ProblemId && t.Solved));
+
         var points = 0;
         if (contestTaskResult.Solved)
         {
-            points = (contestTaskResult.Attempts - 1) * 20 + (int)elapsedTime.TotalMinutes;
+            points = MaxScore / solvedCount - (contestTaskResult.Attempts - 1) * Penalty;
+            points = points <= 0 ? 1 : points;
         }
-
-        var hours = (int)elapsedTime.TotalHours;
-        var minutes = elapsedTime.Minutes;
-        var time =  $"{hours}:{minutes:00}";
 
         return new Client.ContestProblemResult
         {
-            Solved = contestTaskResult.Solved,
             Points = points,
             Attempts = contestTaskResult.Attempts,
-            Time = time
+            Solved = contestTaskResult.Solved
         };
     }
+
+    private const int Penalty = 20;
+    private const int MaxScore = 1000;
 
     private sealed class ContestTaskResultComparer : IComparer<Client.ContestUserResult>
     {
@@ -42,10 +44,7 @@ internal sealed class AcmConverter : BaseContestConverter
             if (y == null)
                 return 1;
 
-            if (x.SolvedCount == y.SolvedCount)
-                return x.Points.CompareTo(y.Points);
-
-            return y.SolvedCount.CompareTo(x.SolvedCount);
+            return y.Points.CompareTo(x.Points);
         }
     }
 }

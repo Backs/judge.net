@@ -14,7 +14,7 @@ internal sealed class PointsConverter : BaseContestConverter
     protected override IComparer<Client.ContestUserResult> Comparer { get; } = new ContestTaskResultComparer();
 
     protected override Client.ContestProblemResult ConvertContestTaskResult(Contest contest,
-        ContestTaskResult contestTaskResult)
+        ContestTaskResult contestTaskResult, IReadOnlyCollection<ContestResult> allResults)
     {
         var points = 0;
         if (contestTaskResult.Solved)
