@@ -21,7 +21,7 @@ internal sealed class DynamicPointsConverter : BaseContestConverter
         if (contestTaskResult.Solved)
         {
             points = MaxScore / solvedCount - (contestTaskResult.Attempts - 1) * Penalty;
-            points = points <= 0 ? 1 : points;
+            points = points <= 0 ? 10 : points;
         }
 
         return new Client.ContestProblemResult
