@@ -37,6 +37,7 @@ internal sealed class SubmitsService : ISubmitsService
             var contestTask =
                 await unitOfWork.ContestTasks.TryGetAsync(query.ContestId.Value, query.TaskLabel);
             query.ProblemId = contestTask?.TaskId;
+            openedOnly = false;
         }
 
         var languages = await unitOfWork.Languages.GetDictionaryAsync(false);
