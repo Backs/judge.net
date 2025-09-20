@@ -76,7 +76,10 @@ export const ContestProblemDetail: React.FC = () => {
                         <Markdown
                             className={styles.markdown}
                             remarkPlugins={[remarkGfm]}
-                            rehypePlugins={[rehypeRaw]}>{problem?.statement}</Markdown>
+                            rehypePlugins={[rehypeRaw]}
+                            remarkRehypeOptions={{allowDangerousHtml: true}}
+                            urlTransform={(value: string) => value}
+                        >{problem?.statement}</Markdown>
                     }
 
                     {!user && <Alert type="warning" description={<span>You must <a
