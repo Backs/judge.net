@@ -13,10 +13,10 @@ export const ContestDuration: React.FC<ContestDurationProps> = (props) => {
     useEffect(() => {
         const time = () => {
             const currentDate = moment().utc();
-            const endDate = moment(props?.endDate);
-            const startDate = moment(props?.startDate);
+            const endDate = moment.utc(props?.endDate);
+            const startDate = moment.utc(props?.startDate);
 
-            if (currentDate >= startDate && endDate > currentDate) {
+            if (currentDate.isBetween(startDate, endDate)) {
                 const remaining = endDate.diff(currentDate, "seconds");
                 const days = Math.trunc(remaining / 86400);
                 const hours = Math.trunc((remaining % 86400) / 3600);
