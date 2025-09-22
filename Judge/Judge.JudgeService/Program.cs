@@ -3,6 +3,7 @@ using System.Configuration;
 using System.IO;
 using System.Threading;
 using Judge.Data;
+using Judge.JobRunner;
 using Judge.JudgeService.CustomCheckers;
 using Judge.JudgeService.Settings;
 using Newtonsoft.Json;
@@ -38,6 +39,7 @@ public static class Program
 
         new DataContainerExtension(connectionString, Lifestyle.Scoped).Configure(container);
 
+        container.RegisterSingleton<IRunService, JobObjectRunner>();
         container.Register<IJudgeService, JudgeServiceImplementation>(Lifestyle.Scoped);
         container.Register<CheckService>(Lifestyle.Scoped);
         container.Collection.Register<ICustomChecker>(

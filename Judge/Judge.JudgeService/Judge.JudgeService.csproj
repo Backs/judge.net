@@ -14,7 +14,6 @@
     <ProjectReference Include="..\Judge.Data\Judge.Data.csproj" />
     <ProjectReference Include="..\Judge.JobRunner\Judge.JobRunner.csproj" />
     <ProjectReference Include="..\Judge.Model\Judge.Model.csproj" />
-    <ProjectReference Include="..\Judge.Runner\Judge.Runner.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

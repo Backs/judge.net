@@ -1,6 +1,6 @@
 ﻿using Judge.Runner.Abstractions;
 
-namespace Judge.Runner;
+namespace Judge.JobRunner;
 
 public interface IRunService
 {

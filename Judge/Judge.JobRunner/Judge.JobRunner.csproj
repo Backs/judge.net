@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Judge.Runner.Abstractions\Judge.Runner.Abstractions.csproj" />
-    <ProjectReference Include="..\Judge.Runner\Judge.Runner.csproj" />
   </ItemGroup>
 
 </Project>

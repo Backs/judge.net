@@ -12,7 +12,6 @@ using Judge.JudgeService.Settings;
 using Judge.Model.CheckSolution;
 using Judge.Model.Entities;
 using Judge.Model.SubmitSolution;
-using Judge.Runner;
 using Judge.Runner.Abstractions;
 using NLog;
 using FileOptions = Judge.Checker.FileOptions;
@@ -25,20 +24,21 @@ internal sealed class JudgeServiceImplementation : IJudgeService
     private readonly ILogger logger;
     private readonly ICustomCheckerService customCheckerService;
     private readonly IProblemSettingsProvider problemSettingsProvider;
+    private readonly IRunService runService;
 
     private readonly string workingDirectory = ConfigurationManager.AppSettings["WorkingDirectory"];
     private readonly string storagePath = ConfigurationManager.AppSettings["StoragePath"];
-    private readonly string runnerPath = ConfigurationManager.AppSettings["RunnerPath"];
-    private readonly bool useExeRunner = bool.Parse(ConfigurationManager.AppSettings["UseExeRunner"]!);
 
     public JudgeServiceImplementation(
         IUnitOfWorkFactory unitOfWorkFactory,
         ICustomCheckerService customCheckerService,
         IProblemSettingsProvider problemSettingsProvider,
+        IRunService runService,
         ILogger logger)
     {
         this.unitOfWorkFactory = unitOfWorkFactory;
         this.problemSettingsProvider = problemSettingsProvider;
+        this.runService = runService;
         this.customCheckerService = customCheckerService;
         this.logger = logger;
     }
@@ -196,8 +196,6 @@ internal sealed class JudgeServiceImplementation : IJudgeService
 
     private SubmitRunResult Run(SubmitResult submitResult, Task task, string input, string runString)
     {
-        var runService = this.GetRunService();
-
         var runOptions = new RunOptions
         {
             Executable = runString,
@@ -208,7 +206,7 @@ internal sealed class JudgeServiceImplementation : IJudgeService
             WorkingDirectory = this.workingDirectory
         };
 
-        var runResult = runService.Run(runOptions);
+        var runResult = this.runService.Run(runOptions);
 
         var result = new SubmitRunResult
         {
@@ -230,16 +228,6 @@ internal sealed class JudgeServiceImplementation : IJudgeService
         }
 
         return result;
-    }
-
-    private IRunService GetRunService()
-    {
-        if (this.useExeRunner)
-        {
-            return new RunService(this.runnerPath, this.workingDirectory);
-        }
-
-        return new JobObjectRunner();
     }
 
     private CheckResult CheckAnswer(SubmitResult submitResult, RunOptions configuration)
