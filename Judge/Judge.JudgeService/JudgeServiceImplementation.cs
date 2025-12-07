@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Security;
 using Judge.Checker;
 using Judge.Compiler;
 using Judge.Data;
@@ -28,6 +29,8 @@ internal sealed class JudgeServiceImplementation : IJudgeService
 
     private readonly string workingDirectory = ConfigurationManager.AppSettings["WorkingDirectory"];
     private readonly string storagePath = ConfigurationManager.AppSettings["StoragePath"];
+    private readonly string userName = ConfigurationManager.AppSettings["UserName"];
+    private readonly SecureString userPassword = new SecureString();
 
     public JudgeServiceImplementation(
         IUnitOfWorkFactory unitOfWorkFactory,
@@ -41,6 +44,15 @@ internal sealed class JudgeServiceImplementation : IJudgeService
         this.runService = runService;
         this.customCheckerService = customCheckerService;
         this.logger = logger;
+
+        var password = ConfigurationManager.AppSettings["Password"];
+        if (!string.IsNullOrWhiteSpace(password))
+        {
+            foreach (var c in password)
+            {
+                this.userPassword.AppendChar(c);
+            }
+        }
     }
 
     private CompileResult Compile(Language language, string fileName, string sourceCode)
@@ -203,7 +215,10 @@ internal sealed class JudgeServiceImplementation : IJudgeService
             Output = "output.txt",
             TimeLimit = TimeSpan.FromMilliseconds(task.TimeLimitMilliseconds),
             MemoryLimitBytes = task.MemoryLimitBytes,
-            WorkingDirectory = this.workingDirectory
+            WorkingDirectory = this.workingDirectory,
+            UserCredentials = !string.IsNullOrWhiteSpace(this.userName)
+                ? new UserCredentials(this.userName, null, this.userPassword)
+                : null
         };
 
         var runResult = this.runService.Run(runOptions);

@@ -70,8 +70,8 @@ public static class Pinvoke
 
     [DllImport("kernel32.dll", SetLastError = true)]
     public static extern bool CreateProcess(
-        string? imageName,
-        string cmdLine,
+        string? applicationName,
+        string commandLine,
         ref SecurityAttributes lpProcessAttributes,
         ref SecurityAttributes lpThreadAttributes,
         bool boolInheritHandles,
@@ -81,6 +81,21 @@ public static class Pinvoke
         ref StartupInfo startupInfo,
         out ProcessInformation pi);
 
+    [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+    public static extern bool CreateProcessWithLogonW(
+        string lpUsername,
+        string lpDomain,
+        IntPtr lpPassword,
+        uint dwLogonFlags,
+        string? applicationName,
+        string commandLine,
+        CreationFlags dwCreationFlags,
+        IntPtr lpEnvironment,
+        string lpCurrentDirectory,
+        ref StartupInfo startupInfo,
+        out ProcessInformation pi
+    );
+
     [DllImport("kernel32.dll", SetLastError = true)]
     public static extern uint ResumeThread(IntPtr hThread);
 
@@ -88,6 +103,46 @@ public static class Pinvoke
     public static extern IntPtr CreateFile(string lpFileName, DesiredAccess dwDesiredAccess, uint dwShareMode,
         ref SecurityAttributes lpSecurityAttributes, CreationDisposition dwCreationDisposition,
         uint dwFlagsAndAttributes, IntPtr hTemplateFile);
+
+    [DllImport("advapi32.dll", SetLastError = true)]
+    public static extern bool OpenProcessToken(IntPtr ProcessHandle, uint DesiredAccess, out IntPtr TokenHandle);
+
+    [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+    public static extern bool LookupPrivilegeValue(string lpSystemName, string lpName, out LUID lpLuid);
+
+    [DllImport("advapi32.dll", SetLastError = true)]
+    public static extern bool AdjustTokenPrivileges(
+        IntPtr TokenHandle,
+        bool DisableAllPrivileges,
+        ref TOKEN_PRIVILEGES NewState,
+        uint BufferLength,
+        IntPtr PreviousState,
+        IntPtr ReturnLength);
+
+    [DllImport("kernel32.dll")]
+    public static extern IntPtr GetCurrentProcess();
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct LUID
+    {
+        public uint LowPart;
+        public int HighPart;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct TOKEN_PRIVILEGES
+    {
+        public uint PrivilegeCount;
+        public LUID Luid;
+        public uint Attributes;
+    }
+
+    public const uint TOKEN_ADJUST_PRIVILEGES = 0x0020;
+    public const uint TOKEN_QUERY = 0x0008;
+    public const uint SE_PRIVILEGE_ENABLED = 0x00000002;
+    public const string SE_ASSIGNPRIMARYTOKEN_NAME = "SeAssignPrimaryTokenPrivilege";
+    public const string SE_INCREASE_QUOTA_NAME = "SeIncreaseQuotaPrivilege";
+
 
     public enum DesiredAccess : uint
     {
@@ -290,4 +345,11 @@ public static class Pinvoke
         public IntPtr hStdOutput;
         public IntPtr hStdError;
     }
+
+    public const int LOGON32_LOGON_BATCH = 4;
+    public const int LOGON32_LOGON_INTERACTIVE = 2;
+    public const int LOGON32_PROVIDER_DEFAULT = 0;
+
+    public const uint LOGON_WITH_PROFILE = 0x00000001;
+    public const uint LOGON_NETCREDENTIALS_ONLY = 0x00000002;
 }

@@ -58,9 +58,27 @@ public static class ProcessRunner
                                                     CreationFlags.CREATE_NO_WINDOW;
 
                 var file = Path.Combine(options.WorkingDirectory, options.Executable);
-                if (!CreateProcess(null, file, ref securityAttributes,
+
+                bool processCreated;
+                ProcessInformation pi;
+                if (options.UserCredentials != null)
+                {
+                    processCreated = CreateProcessWithCredentials(
+                        options.UserCredentials,
+                        options.WorkingDirectory,
+                        file,
+                        creationFlags,
+                        ref startupInfo,
+                        out pi);
+                }
+                else
+                {
+                    processCreated = CreateProcess(null, file, ref securityAttributes,
                         ref securityAttributes, true, creationFlags, IntPtr.Zero, options.WorkingDirectory,
-                        ref startupInfo, out var pi))
+                        ref startupInfo, out pi);
+                }
+
+                if (!processCreated)
                     throw new Win32Exception(Marshal.GetLastWin32Error());
                 try
                 {
@@ -130,6 +148,52 @@ public static class ProcessRunner
                 CloseHandle(job);
         }
     }
+
+    private static bool CreateProcessWithCredentials(
+        UserCredentials credentials,
+        string workingDirectory,
+        string file,
+        CreationFlags creationFlags,
+        ref StartupInfo startupInfo,
+        out ProcessInformation pi)
+    {
+        IntPtr passPtr = IntPtr.Zero;
+        try
+        {
+            passPtr = Marshal.SecureStringToGlobalAllocUnicode(credentials.Password);
+
+            // CreateProcessWithLogonW не требует специальных привилегий
+            var processCreated = CreateProcessWithLogonW(
+                credentials.UserName,
+                credentials.Domain ?? ".",
+                passPtr,
+                LOGON_NETCREDENTIALS_ONLY,
+                null,
+                file,
+                creationFlags,
+                IntPtr.Zero,
+                workingDirectory,
+                ref startupInfo,
+                out pi
+            );
+
+            if (!processCreated)
+            {
+                throw new Win32Exception(Marshal.GetLastWin32Error(),
+                    $"CreateProcessWithLogonW failed for user {credentials.UserName}");
+            }
+
+            return processCreated;
+        }
+        finally
+        {
+            if (passPtr != IntPtr.Zero)
+            {
+                Marshal.ZeroFreeGlobalAllocUnicode(passPtr);
+            }
+        }
+    }
+
 
     private static int GetUserTimeConsumed(IntPtr job)
     {

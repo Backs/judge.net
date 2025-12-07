@@ -8,6 +8,9 @@
     <Product>Judge.JudgeService</Product>
     <LangVersion>default</LangVersion>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Judge.Checker\Judge.Checker.csproj" />
     <ProjectReference Include="..\Judge.Compiler\Judge.Compiler.csproj" />
