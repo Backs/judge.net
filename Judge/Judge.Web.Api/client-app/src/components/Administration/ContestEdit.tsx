@@ -47,8 +47,23 @@ export const ContestEdit: React.FC = () => {
         const fetchData = async () => {
             if (contestId) {
                 const response = await api.api.contestsEditableDetail(Number(contestId));
-                setContest(response.data);
-                form.setFieldsValue(response.data);
+                const serverData = response.data;
+
+                setContest(serverData);
+
+                const toLocalFaceValue = (utcStr?: string | null) => {
+                    if (!utcStr) return null;
+                    return dayjs(dayjs.utc(utcStr).format('YYYY-MM-DD HH:mm:ss'));
+                };
+
+                const formValues = {
+                    ...serverData,
+                    startTime: toLocalFaceValue(serverData.startTime),
+                    finishTime: toLocalFaceValue(serverData.finishTime),
+                    checkPointTime: toLocalFaceValue(serverData.checkPointTime),
+                };
+
+                form.setFieldsValue(formValues);
             } else {
                 form.setFieldsValue(contest);
             }
@@ -60,10 +75,23 @@ export const ContestEdit: React.FC = () => {
 
     const onFinish = async (values: any) => {
         setLoading(true);
-        setContest(values);
-        try {
-            const response = await api.api.contestsUpdate(values);
 
+        const toUtcSubmitValue = (localDayjs: any) => {
+            if (!localDayjs) return null; // или "" в зависимости от требований API
+            return dayjs.utc(localDayjs.format('YYYY-MM-DD HH:mm:ss')).format();
+        };
+
+        const submitValues: EditContest = {
+            ...values,
+            startTime: toUtcSubmitValue(values.startTime),
+            finishTime: toUtcSubmitValue(values.finishTime),
+            checkPointTime: toUtcSubmitValue(values.checkPointTime),
+        };
+
+        setContest(submitValues);
+
+        try {
+            const response = await api.api.contestsUpdate(submitValues);
             navigate(`/contests/${response.data.id}/edit`, {replace: true});
         } catch (e: any) {
             handleError(e)
@@ -133,7 +161,6 @@ export const ContestEdit: React.FC = () => {
         problems.splice(index, 1);
         setContest({...contest, problems});
     };
-
     return (isLoading ? <Spin size="large"/> :
         <Row>
             <Col span={12}>
@@ -180,17 +207,14 @@ export const ContestEdit: React.FC = () => {
                             <Select.Option value="Dynamic">Dynamic</Select.Option>
                         </Select>
                     </Form.Item>
-                    <Form.Item label="Start time" name="startTime"
-                               getValueProps={(value) => ({value: value ? dayjs(value).utc() : ""})}>
+                    <Form.Item label="Start time" name="startTime">
                         <DatePicker allowClear={false} showTime/>
                     </Form.Item>
-                    <Form.Item label="Finish time" name="finishTime"
-                               getValueProps={(value) => ({value: value ? dayjs(value).utc() : ""})}>
+                    <Form.Item label="Finish time" name="finishTime">
                         <DatePicker allowClear={false} showTime/>
                     </Form.Item>
                     {contest.rules === ContestRules.CheckPoint &&
-                        <Form.Item label="Check point time" name="checkPointTime"
-                                   getValueProps={(value) => ({value: value ? dayjs(value).utc() : ""})}>
+                        <Form.Item label="Check point time" name="checkPointTime">
                             <DatePicker allowClear={false} showTime/>
                         </Form.Item>}
                     <Form.Item label="One language per task" name="oneLanguagePerTask">

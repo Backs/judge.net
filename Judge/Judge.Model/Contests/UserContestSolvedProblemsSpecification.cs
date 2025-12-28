@@ -15,7 +15,7 @@ public sealed class UserContestSolvedProblemsSpecification : ISpecification<Subm
         this.problems = problems.Distinct().ToArray();
     }
 
-    private readonly long[] problems;
+    private readonly IEnumerable<long> problems;
     private readonly long userId;
     private readonly int contestId;
 
