@@ -102,20 +102,22 @@ export const ContestEdit: React.FC = () => {
 
     const onEditProblem = (index: number) => {
         setEditIndex(index);
-        setEditProblem(contest.problems![index]);
+        const problems = form.getFieldValue('problems');
+        setEditProblem(problems[index]);
         setModalOpen(true);
     }
 
+
     const onSaveModal = () => {
         if (editProblem) {
-            const problems = contest.problems!;
+            const problems = form.getFieldValue('problems');
             problems[editIndex] = editProblem;
+            form.setFieldValue('problems', problems);
+
             setContest({...contest, problems});
         }
         setModalOpen(false);
-        form.setFieldValue('problems', contest.problems);
         setData([]);
-        console.log(contest);
     }
 
     const handleSearch = async (value: string) => {
@@ -146,21 +148,6 @@ export const ContestEdit: React.FC = () => {
         setData([]);
     };
 
-    const onAddProblem = () => {
-        const problems = contest.problems!;
-        problems.push({
-            name: "",
-            problemId: 0,
-            label: ""
-        });
-        setContest({...contest, problems});
-    }
-
-    const onRemoveProblem = (index: number) => {
-        const problems = contest.problems!;
-        problems.splice(index, 1);
-        setContest({...contest, problems});
-    };
     return (isLoading ? <Spin size="large"/> :
         <Row>
             <Col span={12}>
@@ -243,16 +230,16 @@ export const ContestEdit: React.FC = () => {
                                             <Input disabled={true} style={{width: 200}}/>
                                         </Form.Item>
                                         <EditOutlined onClick={() => onEditProblem(name)}/>
-                                        <MinusCircleOutlined onClick={() => {
-                                            onRemoveProblem(name);
-                                            remove(name);
-                                        }}/>
+                                        <MinusCircleOutlined onClick={() => remove(name)}/>
                                     </Space>
                                 ))}
                                 <Form.Item>
                                     <Button type="dashed" onClick={() => {
-                                        onAddProblem();
-                                        add();
+                                        add({
+                                            name: "",
+                                            problemId: 0,
+                                            label: ""
+                                        });
                                     }} block icon={<PlusOutlined/>}>
                                         Add problem
                                     </Button>
