@@ -68,6 +68,7 @@ internal sealed class JudgeResult
             Checker.CheckStatus.PullRequestNotFound => SubmitStatus.PullRequestNotFound,
             Checker.CheckStatus.LoginNotFound => SubmitStatus.LoginNotFound,
             Checker.CheckStatus.NotSolvedYet => SubmitStatus.NotSolvedYet,
+            Checker.CheckStatus.TimeLimitNotExceeded => SubmitStatus.TimeLimitNotExceeded,
             _ => SubmitStatus.WrongAnswer
         };
     }

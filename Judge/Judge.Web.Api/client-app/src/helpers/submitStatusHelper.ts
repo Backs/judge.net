@@ -47,6 +47,8 @@ export const getStatusText = (status: SubmitStatus) => {
             return "Your login not found";
         case SubmitStatus.NotSolvedYet:
             return "Not solved yet";
+        case SubmitStatus.TimeLimitNotExceeded:
+            return "Time limit not exceeded";
     }
 
     return status;

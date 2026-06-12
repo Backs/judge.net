@@ -18,7 +18,7 @@ internal sealed class PullRequestChecker : ICustomChecker
     private static readonly Regex NumberRegex = new Regex(@"#(\d+)", RegexOptions.Compiled);
 
     public ICollection<SubmitRunResult> Check(ProblemSettings problemSettings, SubmitResult submitResult,
-        FileOptions fileOptions)
+        FileOptions fileOptions, IRunResult runResult)
     {
         if (!problemSettings.UserPullRequestChecker)
             return null;

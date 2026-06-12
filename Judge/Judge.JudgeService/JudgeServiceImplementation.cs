@@ -118,7 +118,7 @@ internal sealed class JudgeServiceImplementation : IJudgeService
 
         if (compileResult.CompileStatus == CompileStatus.Success && problemSettings != null)
         {
-            results = this.customCheckerService.Check(submitResult, null, CheckerType.PreExecutable);
+            results = this.customCheckerService.Check(submitResult, null, null, CheckerType.PreExecutable);
         }
 
         if (results == null && compileResult.CompileStatus == CompileStatus.Success)
@@ -208,12 +208,18 @@ internal sealed class JudgeServiceImplementation : IJudgeService
 
     private SubmitRunResult Run(SubmitResult submitResult, Task task, string input, string runString)
     {
+        var problemSettings = this.problemSettingsProvider.GetProblemSettings(submitResult.Submit);
+
+        var taskTimeLimitMilliseconds = problemSettings?.UseTimeLimitNotExceededChecker == true
+            ? task.TimeLimitMilliseconds * 5
+            : task.TimeLimitMilliseconds;
+
         var runOptions = new RunOptions
         {
             Executable = runString,
             Input = input,
             Output = "output.txt",
-            TimeLimit = TimeSpan.FromMilliseconds(task.TimeLimitMilliseconds),
+            TimeLimit = TimeSpan.FromMilliseconds(taskTimeLimitMilliseconds),
             MemoryLimitBytes = task.MemoryLimitBytes,
             WorkingDirectory = this.workingDirectory,
             UserCredentials = !string.IsNullOrWhiteSpace(this.userName)
@@ -237,7 +243,7 @@ internal sealed class JudgeServiceImplementation : IJudgeService
 
         if (runResult.Status == RunStatus.Success)
         {
-            var checkAnswerResult = this.CheckAnswer(submitResult, runOptions);
+            var checkAnswerResult = this.CheckAnswer(submitResult, runOptions, runResult);
             result.CheckMessage = checkAnswerResult.Message;
             result.CheckStatus = checkAnswerResult.CheckStatus;
         }
@@ -245,7 +251,7 @@ internal sealed class JudgeServiceImplementation : IJudgeService
         return result;
     }
 
-    private CheckResult CheckAnswer(SubmitResult submitResult, RunOptions configuration)
+    private CheckResult CheckAnswer(SubmitResult submitResult, RunOptions configuration, IRunResult runResult)
     {
         var inputFile = Path.Combine(this.workingDirectory, configuration.Input);
         var outputFile = Path.Combine(this.workingDirectory, configuration.Output);
@@ -259,7 +265,8 @@ internal sealed class JudgeServiceImplementation : IJudgeService
 
         if (problemSettings?.SkipExecutableChecker == true)
         {
-            var results = this.customCheckerService.Check(submitResult, fileOptions, CheckerType.PostExecutable);
+            var results =
+                this.customCheckerService.Check(submitResult, fileOptions, runResult, CheckerType.PostExecutable);
             var result = results?.Last();
 
             if (result == null)

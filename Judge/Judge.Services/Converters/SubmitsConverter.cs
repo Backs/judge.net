@@ -105,6 +105,7 @@ internal sealed class SubmitsConverter : ISubmitsConverter
             SubmitStatus.PullRequestNotFound => Client.Submits.SubmitStatus.PRNotFound,
             SubmitStatus.LoginNotFound => Client.Submits.SubmitStatus.LoginNotFound,
             SubmitStatus.NotSolvedYet => Client.Submits.SubmitStatus.NotSolvedYet,
+            SubmitStatus.TimeLimitNotExceeded => Client.Submits.SubmitStatus.TimeLimitNotExceeded,
             _ => throw new ArgumentOutOfRangeException(nameof(status), status, null)
         };
     }

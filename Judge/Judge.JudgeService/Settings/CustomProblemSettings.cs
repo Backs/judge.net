@@ -18,6 +18,8 @@ public class ProblemSettings
 
     public bool UseCurrentTimeChecker { get; set; }
 
+    public bool UseTimeLimitNotExceededChecker { get; set; }
+
     public long? PreSolvedProblemId { get; set; }
 }
 

@@ -18,4 +18,5 @@ public enum CheckStatus
     PullRequestNotFound = 9904,
     LoginNotFound = 9905,
     NotSolvedYet = 9906,
+    TimeLimitNotExceeded = 9907
 }

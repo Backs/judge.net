@@ -50,7 +50,8 @@ public static class Program
                 typeof(MaxLengthChecker),
                 typeof(PullRequestChecker),
                 typeof(CurrentTimeChecker),
-                typeof(SolvedChecker)
+                typeof(SolvedChecker),
+                typeof(TimeLimitNotExceededChecker),
             ],
             Lifestyle.Scoped);
         container.RegisterSingleton<IProblemSettingsProvider, ProblemSettingsProvider>();

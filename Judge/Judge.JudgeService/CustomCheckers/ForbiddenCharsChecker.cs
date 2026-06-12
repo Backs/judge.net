@@ -12,7 +12,7 @@ internal sealed class ForbiddenCharsChecker : ICustomChecker
     public CheckerType Type => CheckerType.PreExecutable;
 
     public ICollection<SubmitRunResult> Check(ProblemSettings problemSettings, SubmitResult submitResult,
-        FileOptions fileOptions)
+        FileOptions fileOptions, IRunResult runResult)
     {
         if (problemSettings.ForbiddenChars != null &&
             submitResult.Submit.SourceCode.Any(o => problemSettings.ForbiddenChars.Contains(o)))

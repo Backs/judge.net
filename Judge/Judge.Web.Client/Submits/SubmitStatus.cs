@@ -84,5 +84,10 @@ public enum SubmitStatus
     /// <summary>
     /// Not solved yet
     /// </summary>
-    NotSolvedYet
+    NotSolvedYet,
+
+    /// <summary>
+    /// Time limit not exceeded
+    /// </summary>
+    TimeLimitNotExceeded
 }

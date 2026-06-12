@@ -20,7 +20,7 @@ internal class SolvedChecker : ICustomChecker
     }
 
     public ICollection<SubmitRunResult> Check(ProblemSettings problemSettings, SubmitResult submitResult,
-        FileOptions fileOptions)
+        FileOptions fileOptions, IRunResult runResult)
     {
         if (problemSettings?.PreSolvedProblemId == null)
         {

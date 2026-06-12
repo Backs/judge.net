@@ -11,7 +11,7 @@ internal sealed class MaxLengthChecker : ICustomChecker
     public CheckerType Type => CheckerType.PreExecutable;
 
     public ICollection<SubmitRunResult> Check(ProblemSettings problemSettings, SubmitResult submitResult,
-        FileOptions fileOptions)
+        FileOptions fileOptions, IRunResult runResult)
     {
         if (problemSettings.MaxSourceCodeLength != null &&
             submitResult.Submit.SourceCode.Length > problemSettings.MaxSourceCodeLength)

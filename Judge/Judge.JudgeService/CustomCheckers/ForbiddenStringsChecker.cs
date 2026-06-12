@@ -12,7 +12,7 @@ internal sealed class ForbiddenStringsChecker : ICustomChecker
 {
     public CheckerType Type => CheckerType.PreExecutable;
     public ICollection<SubmitRunResult> Check(ProblemSettings problemSettings, SubmitResult submitResult,
-        FileOptions fileOptions)
+        FileOptions fileOptions, IRunResult runResult)
     {
         if (problemSettings.ForbiddenStrings != null &&
             problemSettings.ForbiddenStrings.Any(o =>

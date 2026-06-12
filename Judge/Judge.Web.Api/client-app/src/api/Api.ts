@@ -770,6 +770,7 @@ export enum SubmitStatus {
   PRNotFound = "PRNotFound",
   LoginNotFound = "LoginNotFound",
   NotSolvedYet = "NotSolvedYet",
+  TimeLimitNotExceeded = "TimeLimitNotExceeded",
 }
 
 /** User information */
