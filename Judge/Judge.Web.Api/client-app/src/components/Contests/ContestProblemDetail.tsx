@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import {Contest, ContestStatus, Problem} from "../../api/Api.ts";
 import Title from "antd/lib/typography/Title";
@@ -21,6 +21,7 @@ export const ContestProblemDetail: React.FC = () => {
     const [isLoading, setLoading] = useState(true);
     const [lastSubmitId, setLastSubmitId] = useState<number>();
     const [contest, setContest] = useState<Contest>();
+    const markdownRef = useRef<HTMLDivElement>(null);
     const api = judgeApi();
 
     const {user}: UserState = useSelector((state: any) => state.user)
@@ -52,6 +53,26 @@ export const ContestProblemDetail: React.FC = () => {
         fetchData().catch(e => handleError(e));
     }, [contestId, label]);
 
+    useLayoutEffect(() => {
+        const root = markdownRef.current;
+        if (!root) return;
+
+        const scripts = Array.from(root.querySelectorAll('script:not([data-executed])'));
+
+        scripts.forEach((oldScript) => {
+            const newScript = document.createElement('script');
+
+            for (const attr of oldScript.attributes) {
+                newScript.setAttribute(attr.name, attr.value);
+            }
+
+            newScript.textContent = oldScript.textContent || '';
+            newScript.setAttribute('data-executed', 'true');
+
+            oldScript.parentNode?.replaceChild(newScript, oldScript);
+        });
+    }, [problem?.statement]);
+
     useEffect(() => {
         if (problem?.name)
             document.title = `${problem?.name} - Judge.NET`;
@@ -60,7 +81,8 @@ export const ContestProblemDetail: React.FC = () => {
     return (
         isLoading ? <Spin size="large"/> :
             <>
-                <Title style={{textAlign: 'center'}}><Link to="./..">{contest?.name}</Link>: {label}. {problem?.name}</Title>
+                <Title style={{textAlign: 'center'}}><Link to="./..">{contest?.name}</Link>: {label}. {problem?.name}
+                </Title>
                 <Flex gap="small" vertical>
                     <div style={{textAlign: 'center'}}>
                         Time limit, seconds: {convertMsToSeconds(problem?.timeLimitMilliseconds)}
@@ -73,13 +95,15 @@ export const ContestProblemDetail: React.FC = () => {
                         <Alert message="Contest has not started yet. You can not submit solutions." type="warning"/>
                     }
                     {contest?.status !== ContestStatus.Planned &&
-                        <Markdown
-                            className={styles.markdown}
-                            remarkPlugins={[remarkGfm]}
-                            rehypePlugins={[rehypeRaw]}
-                            remarkRehypeOptions={{allowDangerousHtml: true}}
-                            urlTransform={(value: string) => value}
-                        >{problem?.statement}</Markdown>
+                        <div ref={markdownRef}>
+                            <Markdown
+                                className={styles.markdown}
+                                remarkPlugins={[remarkGfm]}
+                                rehypePlugins={[rehypeRaw]}
+                                remarkRehypeOptions={{allowDangerousHtml: true}}
+                                urlTransform={(value: string) => value}
+                            >{problem?.statement}</Markdown>
+                        </div>
                     }
 
                     {!user && <Alert type="warning" description={<span>You must <a
